@@ -7,10 +7,10 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-file": {
+    "org.apache.cordova.file": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-file"
+            "id": "org.apache.cordova.file"
         },
         "is_top_level": true,
         "variables": {}

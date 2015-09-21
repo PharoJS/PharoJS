@@ -17,7 +17,7 @@
  under the License.
  */
 //
-// Prefix header for all source files of the 'Hello World' target in the 'Hello World' project
+// Prefix header for all source files of the 'File System Test' target in the 'File System Test' project
 //
 
 #ifdef __OBJC__
