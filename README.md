@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bouraqadi/PharoJS.svg?branch=master)](https://travis-ci.org/bouraqadi/PharoJS)
+
 # PharoJS
 PharoJS: Develop in Pharo, Run on JavaScript
 
