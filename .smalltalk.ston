@@ -2,9 +2,14 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #configuration : 'PharoJS',
-	  #repository : 'http://smalltalkhub.com/mc/noury/PharoJS/main',
+	  #repository : 'http://smalltalkhub.com/mc/noury/PharoJsDev/main',
 	  #onWarningLog : true,
       #platforms : [ #pharo]
     }
   ]
+  #testing : {
+     #exclude : {
+       #categories : [ '*-Old' ]
+     }
+   }
 }

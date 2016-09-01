@@ -4,8 +4,8 @@ sudo: false
 smalltalk:
   # - Pharo-alpha   # identical to Pharo-6.0
   # - Pharo-stable  # identical to Pharo-5.0
-  # - Pharo-5.0
-  - Pharo-4.0
+  - Pharo-5.0
+  #- Pharo-4.0
 
 os:
   - linux
