@@ -3,8 +3,12 @@ SmalltalkCISpec {
     SCIMetacelloLoadSpec {
       #configuration : 'PharoJsDev',
 	  #repository : 'http://smalltalkhub.com/mc/noury/PharoJsDev/main',
-	  #onWarningLog : true,
       #platforms : [ #pharo]
     }
-  ]
+  ],
+  #testing : {
+    #exclude : {
+       #categories : [ 'PharoJsTranspiler-Tests-Old' ]
+     }
+   }
 }
