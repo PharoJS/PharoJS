@@ -6,10 +6,5 @@ SmalltalkCISpec {
 	  #onWarningLog : true,
       #platforms : [ #pharo]
     }
-  ],
-  #testing : {
-     #exclude : {
-       #categories : [ 'PharoJsTranspiler-Tests-Old' ]
-     }
-   }
+  ]
 }
