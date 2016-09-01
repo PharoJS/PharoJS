@@ -6,7 +6,7 @@ SmalltalkCISpec {
 	  #onWarningLog : true,
       #platforms : [ #pharo]
     }
-  ]
+  ],
   #testing : {
      #exclude : {
        #categories : [ '*-Old' ]
