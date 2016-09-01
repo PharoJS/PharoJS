@@ -9,7 +9,7 @@ SmalltalkCISpec {
   ],
   #testing : {
      #exclude : {
-       #categories : [ '*-Old' ]
+       #categories : [ 'PharoJsTranspiler-Tests-Old' ]
      }
    }
 }
