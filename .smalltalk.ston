@@ -1,7 +1,7 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #configuration : 'PharoJS',
+      #configuration : 'PharoJsDev',
 	  #repository : 'http://smalltalkhub.com/mc/noury/PharoJsDev/main',
 	  #onWarningLog : true,
       #platforms : [ #pharo]
