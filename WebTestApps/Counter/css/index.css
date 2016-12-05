@@ -1,0 +1,25 @@
+.container{
+text-align: center;
+}
+.countText{
+	font-size: 6em;
+    font-weight: bold;
+}
+
+.resetButton, .incrementButton{
+	font-size: 2em;
+	width: 200px;
+    border: none;
+	height: 50px;
+	border-radius: 10px;	
+}
+
+.resetButton{
+	color: white;
+	background-color: #FF3333;
+}
+
+.incrementButton{
+	color: white;
+	background-color: #3399FF;
+}
