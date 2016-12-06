@@ -1,0 +1,91 @@
+"
+I represent the Javascript Boolean type.  Many of my operations may be optimized away, in which case these are fallbacks for perform: etc.
+"
+Class {
+	#name : #PjBoolean,
+	#superclass : #PjObject,
+	#traits : 'PjTExtensionClass',
+	#classTraits : 'PjTExtensionClass classTrait',
+	#category : #'PharoJsCoreLibraries-Kernel'
+}
+
+{ #category : #'logical operations' }
+PjBoolean >> & aBoolean [
+	^ self ifTrue: [ ^ aBoolean ] ifFalse: [ ^ false ]
+]
+
+{ #category : #testing }
+PjBoolean >> = other [
+	<javascript: 'return this==Boolean(other)'>
+]
+
+{ #category : #testing }
+PjBoolean >> == other [
+	^ self = other
+]
+
+{ #category : #controlling }
+PjBoolean >> and: aBlock [
+	<javascript: 'if(this==true){return aBlock();}else{return false;}'>
+]
+
+{ #category : #converting }
+PjBoolean >> asBit [
+	<javascript: 'return this + 0'>
+]
+
+{ #category : #converting }
+PjBoolean >> asString [
+	<javascript: 'return this + ""'>
+]
+
+{ #category : #controlling }
+PjBoolean >> ifFalse: aBlock [
+	^ self ifTrue: [] ifFalse: aBlock
+]
+
+{ #category : #controlling }
+PjBoolean >> ifFalse: falseBlock ifTrue: trueBlock [
+	^self ifTrue: trueBlock ifFalse: falseBlock 
+	
+]
+
+{ #category : #controlling }
+PjBoolean >> ifTrue: aBlock [
+	^ self ifTrue: aBlock ifFalse: [  ]
+]
+
+{ #category : #controlling }
+PjBoolean >> ifTrue: trueBlock ifFalse: falseBlock [
+	<javascript: 'if(this==true){return trueBlock()}else{return falseBlock()}'>
+]
+
+{ #category : #'logical operations' }
+PjBoolean >> not [
+	^ self ifTrue: [ ^ false ] ifFalse: [ ^ true ]
+]
+
+{ #category : #controlling }
+PjBoolean >> or: aBlock [
+	<javascript: 'if(this==true){return true}else{return aBlock()}'>
+]
+
+{ #category : #proxy }
+PjBoolean >> proxyResponse [
+	<javascript: 'return true==this'>
+]
+
+{ #category : #controlling }
+PjBoolean >> xor: aBoolean [
+	self ifTrue: [ ^ aBoolean value not ] ifFalse: [ ^ aBoolean value ]
+]
+
+{ #category : #'logical operations' }
+PjBoolean >> | aBoolean [
+	^ self ifFalse: [ ^ aBoolean ] ifTrue: [ ^ true ]
+]
+
+{ #category : #testing }
+PjBoolean >> ~~ other [
+	^ self ~= other
+]
