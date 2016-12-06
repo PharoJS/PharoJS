@@ -1,7 +1,5 @@
-[![Build Status](https://travis-ci.org/bouraqadi/PharoJS.svg?branch=master)](https://travis-ci.org/bouraqadi/PharoJS)
-
 # PharoJS
-PharoJS: Develop in Pharo, Run on JavaScript
+PharoJS: Develop in Pharo, Run on Javascript
 
-- Pharo code available on repo: http://smalltalkhub.com/#!/~noury/JavaScriptBridge
-- Doc available at: http://car.mines-douai.fr/pharojs/
+- Pharo code available on repo: http://smalltalkhub.com/#!/~noury/PharoJS
+- Doc available at: http://pharojs.org/
