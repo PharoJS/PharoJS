@@ -37,3 +37,13 @@ PjUndefinedObject class >> new [
 PjUndefinedObject >> = other [
 	<javascript: 'return undefined==other'>
 ]
+
+{ #category : #converting }
+PjUndefinedObject >> asJSON [
+	^ 'null'
+]
+
+{ #category : #converting }
+PjUndefinedObject >> value [
+	^ nil
+]

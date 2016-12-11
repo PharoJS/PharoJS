@@ -77,6 +77,11 @@ PjObject >> add: assoc [
 	]
 ]
 
+{ #category : #converting }
+PjObject >> asJSON [
+	^ JSON stringify: self value
+]
+
 { #category : #'dictionary emulation' }
 PjObject >> associationsDo: aBlock [
 	self keysAndValuesDo: [: key : value |
@@ -213,7 +218,7 @@ PjObject >> proxyResponse [
 		Object.$Pj_counter = (Object.$Pj_counter||0)+1;
 		name = "$_"+Object.$Pj_counter;
 		(function(){return this})()[name]=this;
-		Object.defineProperty(this,"$_jsName",{value:name,writable:true});
+		try{Object.defineProperty(this,"$_jsName",{value:name,writable:true})}catch(e){}
 	}
 	return { remove : this.$PjProxyRemove , proxy : name}
 	'>
@@ -222,6 +227,16 @@ PjObject >> proxyResponse [
 { #category : #'dictionary emulation' }
 PjObject >> removeKey: key [
 	<javascript: 'var result=this[key];delete this[key];return result'>
+]
+
+{ #category : #'dictionary emulation' }
+PjObject >> size [
+	| count |
+	count := 0.
+	self keysAndValuesDo: [: key : value |
+		count := count + 1
+	].
+	^ count
 ]
 
 { #category : #reflection }

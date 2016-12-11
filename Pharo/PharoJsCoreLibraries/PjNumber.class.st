@@ -229,6 +229,11 @@ PjNumber >> truncated [
 	<javascript: 'if (this>=0)return Math.floor(this);return Math.ceil(this)'>
 ]
 
+{ #category : #converting }
+PjNumber >> value [
+	<javascript: 'return 0+this'>
+]
+
 { #category : #arithmetics }
 PjNumber >> | anObject [
 	<javascript: 'return this | anObject;'>

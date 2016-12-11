@@ -12,6 +12,11 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #'initialization-release' }
+PjError class >> javascriptInitialize [
+	self instVarNamed: #stackTraceLimit put: 100 
+]
+
 { #category : #'instance creation' }
 PjError class >> signal [
 	^self new signal

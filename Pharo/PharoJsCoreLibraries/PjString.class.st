@@ -252,6 +252,11 @@ PjString >> to: other [
 				[:ascii | ascii asCharacter]
 ]
 
+{ #category : #converting }
+PjString >> value [
+	<javascript: 'return ""+this'>
+]
+
 { #category : #testing }
 PjString >> ~= other [
 	<javascript: 'return this!=other'>

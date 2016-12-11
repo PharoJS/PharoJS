@@ -75,6 +75,11 @@ PjBoolean >> proxyResponse [
 	<javascript: 'return true==this'>
 ]
 
+{ #category : #converting }
+PjBoolean >> value [
+	<javascript: 'return true==this'>
+]
+
 { #category : #controlling }
 PjBoolean >> xor: aBoolean [
 	self ifTrue: [ ^ aBoolean value not ] ifFalse: [ ^ aBoolean value ]
