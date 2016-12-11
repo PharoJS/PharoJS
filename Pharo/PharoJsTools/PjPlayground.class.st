@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'bridge',
 		'bridgeVar',
-		'allJavascriptGlobals'
+		'allJavascriptGlobals',
+		'page'
 	],
 	#category : #'PharoJsTools-Playground'
 }
@@ -66,6 +67,7 @@ PjPlayground >> bridge: anObject [
 	anObject ifNil: [
 		self label: '...disconnected...'.
 		^ self].
+	page saveContent: page content,bridge playgroundInitialContent.
 	self
 		label: anObject clientTitle;
 		setupProxies
@@ -82,7 +84,7 @@ PjPlayground >> codePresentationIn: composite [
 ]
 
 { #category : #initialization }
-PjPlayground >> initPage: page [
+PjPlayground >> initPage [
 	| bindings |
 	self openOn: page.
 	bridgeVar := (PjWorkspaceBridgeVariable key: #bridge value: nil)
@@ -94,29 +96,21 @@ PjPlayground >> initPage: page [
 
 { #category : #initialization }
 PjPlayground >> initialize [
-	| page |
 	super initialize.
 	page := GTPlayPage new saveContent:
 		'" cmd-D on the following line will open a bridge and globals will be defined"', String cr
 		,'bridge := ' , PjBrowserApplication name, ' bridge start.' , String cr
-		,'bridge evalBlock: [ PjLoadForTest fortyTwo ]. " loads the referenced classes and executes the block "', String cr
-		,'bridge loadClass: PjLoadForTest. " reloads methods "', String cr
-		,'console dir: document.', String cr
-		,'document fonts. " inspect this "', String cr
-		,'bridge evalBlock: [Math sin: 1]. " inspect or print this "', String cr
-		,'document body style backgroundColor: ''#fee''.', String cr
 		;
 		yourself.
-	self initPage: page
+	self initPage
 ]
 
 { #category : #initialization }
 PjPlayground >> initializeWithBridge: aPjBridge [
-	| page |
 	super initialize.
-	page := GTPlayPage new saveContent: aPjBridge playgroundInitialContent;
+	page := GTPlayPage new saveContent: '" a bridge is now open and globals are defined"', String cr;
 		yourself.
-	self initPage: page.
+	self initPage.
 	bridgeVar value: aPjBridge
 ]
 
