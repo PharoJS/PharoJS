@@ -22,3 +22,23 @@ NsSQLite3Polyfill class >> serialize [
 NsSQLite3Polyfill class >> verbose [
 	<pharoJsSkip>
 ]
+
+{ #category : #API }
+NsSQLite3Polyfill >> all: commandString with: aDictionary callback: aBlock [
+	<pharoJsSkip>
+]
+
+{ #category : #API }
+NsSQLite3Polyfill >> each: commandString with: aDictionary callback: aBlockPerRow onCompletion: aBlock [
+	<pharoJsSkip>
+]
+
+{ #category : #API }
+NsSQLite3Polyfill >> get: commandString with: aDictionary callback: aBlock [
+	<pharoJsSkip>
+]
+
+{ #category : #API }
+NsSQLite3Polyfill >> run: commandString with: aDictionary callback: aBlock [
+	<pharoJsSkip>
+]
