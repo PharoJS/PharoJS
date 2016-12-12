@@ -76,11 +76,11 @@ PjTranspiler >> classVariablesHolderName [
 
 { #category : #transpiling }
 PjTranspiler >> convertAllClasses: classes [
-	self convertAllClasses: classes writeDnu: true
+	self convertAllClasses: classes writeDnuAndBeforeInitializationHook: true
 ]
 
 { #category : #transpiling }
-PjTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
+PjTranspiler >> convertAllClasses: classes writeDnuAndBeforeInitializationHook: hook [
 	| actualClassesToConvert classesToInit sortedClassesToInit classesInWriteOrder |
 	actualClassesToConvert := classes collect: #classToUseForJsConversion.
 	actualClassesToConvert asIdentitySet do: [ :aClass | self writeClassDefinitionOf: aClass ].
@@ -93,7 +93,7 @@ PjTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
 			self writeClassInheritanceLinksOf: aClass.
 			self writeClassAndPoolVariablesDeclarationOf: aClass.
 			self writeMethodsOf: aClass ].
-	shouldWriteDnu ifTrue: [ self writeDnuList ].
+	hook value ifTrue: [ self writeDnuList ].
 	classesToInit := classesInWriteOrder select: #needsInitialization.
 	sortedClassesToInit := self orderForInitialization: classesToInit.
 	sortedClassesToInit do: [ :aClass | self writeClassInitializeOf: aClass ]

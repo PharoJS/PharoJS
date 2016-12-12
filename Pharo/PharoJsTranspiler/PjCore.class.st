@@ -137,7 +137,7 @@ PjCore class >> javascriptName [
 PjCore class >> keys: anObject [
 	<javascript: '
 	var result={};
-	for (var i in anObject) { if(typeof anObject[i]!="function" && anObject[i]!=null) result[i]=anObject[i]._proxyResponse()}
+	for (var i in anObject) { if(typeof anObject[i]!="function" && anObject[i]!=null && anObject[i]._proxyResponse) result[i]=anObject[i]._proxyResponse()}
 	return {_proxyResponse:function(){return {keys:result}}}
 	'>
 ]

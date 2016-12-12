@@ -42,7 +42,7 @@ PjJavascriptGlobals class >> nodePolyfill: aStream [
 	aStream
 		nextPutAll: 'var ';
 		nextPutAll: self classVarNames first;
-		nextPutAll: '=require("';
+		nextPutAll: '=Smalltalk.require("';
 		nextPutAll: self nodePackageName;
 		nextPutAll: '");';cr
 ]
