@@ -83,11 +83,3 @@ PjApplication classSide >> setUpAppFolder [
 		^self error: 'PharoJS: Invalid folder for app ', self name].
 	self appFolder: folder.
 ]
-
-{ #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> writeGlobalsPolyfillsOn: aStream [
-	<pharoJsSkip>
-	self globalsPools do: [ : pool |
-		self polyfill: pool onStream: aStream
-	]	
-]

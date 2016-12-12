@@ -11,7 +11,8 @@ Class {
 		'transpiler',
 		'jsStream',
 		'launchBlock',
-		'launchArgs'
+		'launchArgs',
+		'globalsPools'
 	],
 	#category : #'PharoJsExporter-Kernel'
 }
@@ -85,6 +86,14 @@ PjExporter >> classes [
 	^ classes
 ]
 
+{ #category : #loading }
+PjExporter >> convertAllClassesToJs: someClasses [
+	someClasses do: [ : aClass | self invalidateClass: aClass]. 
+	self addAllClasses: someClasses.
+	^ self transpiler onTempStreamDo: [
+		self transpiler convertAllClasses: self nonBootstrapClasses writeDnuAndBeforeInitializationHook: self dnuHook].
+]
+
 { #category : #accessing }
 PjExporter >> coreClass [
 	^ self class coreClass
@@ -93,6 +102,14 @@ PjExporter >> coreClass [
 { #category : #'writing low-level' }
 PjExporter >> cr [
 	jsStream lf
+]
+
+{ #category : #writing }
+PjExporter >> dnuHook [
+	^ [
+	 	self writeGlobalsPolyfills.
+		true
+	]
 ]
 
 { #category : #accessing }
@@ -104,6 +121,7 @@ PjExporter >> headerLine [
 PjExporter >> initialize [
 	super initialize.
 	classes := Set new.
+	globalsPools := Set new.
 	self transpiler: self transpilerClass new.
 	self transpiler addAllOptionalConversions"Except: 0 to: 1/2".
 
@@ -193,6 +211,10 @@ PjExporter >> writeCoreObject [
 		nextPutAll: '=global.';
 		nextPutAll: coreName;
 		nextPutAll: '||{}';cr;
+		nextPutAll: 'var require';cr;
+		nextPutAll: 'global.';
+		nextPutAll: coreName;
+		nextPutAll: '.require=require';cr;
 		writeClassDefinitionOf: PjClass;
 		nextPutAll: coreName;
 		nextPutAll: '.theClassClass=';
@@ -206,7 +228,11 @@ PjExporter >> writeCoreObject [
 
 { #category : #writing }
 PjExporter >> writeGlobalsPolyfills [
-	self appClass writeGlobalsPolyfillsOn: self
+	self appClass globalsPools do: [ : pool |
+		(globalsPools includes: pool) ifFalse: [
+			self appClass polyfill: pool onStream: self transpiler jsStream.
+			globalsPools add: pool
+	]]
 ]
 
 { #category : #writing }
@@ -214,8 +240,7 @@ PjExporter >> writeJsCode [
 	| time |
 	time := [
 	self writeJsCoreAndBootstrap.
-	self transpiler convertAllClasses: self nonBootstrapClasses.
-	self writeGlobalsPolyfills.
+	self transpiler convertAllClasses: self nonBootstrapClasses writeDnuAndBeforeInitializationHook: self dnuHook.
 	self writeLaunchCode.
 	] timeToRun.
 	self transpiler numberOfClasses ifNil: [ ^ self ]. 
@@ -241,7 +266,7 @@ PjExporter >> writeJsCodeOn: aStream [
 PjExporter >> writeJsCoreAndBootstrap [
 	self nextPutAll: self setupCode; cr.
 	self writeCoreObject.
-	self transpiler convertAllClasses: self bootstrapClasses writeDnu: false
+	self transpiler convertAllClasses: self bootstrapClasses writeDnuAndBeforeInitializationHook: false
 ]
 
 { #category : #writing }
