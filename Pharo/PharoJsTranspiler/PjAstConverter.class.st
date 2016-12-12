@@ -113,6 +113,12 @@ PjAstConverter >> convertValuedBlock: block [
 ]
 
 { #category : #visiting }
+PjAstConverter >> discoveredGlobalsPool: aClass [
+	self transpiler ifNotNil: [ 
+	transpiler discoveredGlobalsPool: aClass]
+]
+
+{ #category : #visiting }
 PjAstConverter >> discoveredMessage: selector [
 		self transpiler ifNil: [ ^ self ].
 		transpiler discoveredMessage: selector
@@ -442,6 +448,7 @@ PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
 	].
 	(variableClass theNonMetaClass sharedPoolOfVarNamedRecursive: id) ifNotNil: [ :pool |
 			pool isJavascriptGlobalsPool ifTrue: [
+				self discoveredGlobalsPool: pool.
 				^ PjGlobalNode identifier: id].
 			self signal: 'pool' ifClosedBlockReferences: id.
 			^ PjFieldNode target: PjSelfNode new selectorNode: (PjPoolVariableNode identifier: id) isNonNil: true

@@ -15,7 +15,8 @@ Class {
 		'jsStream',
 		'neededDNUs',
 		'classesReferencingCache',
-		'writtenDNUs'
+		'writtenDNUs',
+		'beforeCodeOutputHook'
 	],
 	#category : #'PharoJsTranspiler-Kernel'
 }
@@ -70,18 +71,24 @@ PjTranspiler >> addAllOptionalConversionsExcept: low to: high [
 ]
 
 { #category : #accessing }
+PjTranspiler >> beforeCodeOutputHook: aBlockClosure [ 
+	beforeCodeOutputHook := aBlockClosure
+]
+
+{ #category : #accessing }
 PjTranspiler >> classVariablesHolderName [
 	^ self class classVariablesHolderName
 ]
 
 { #category : #transpiling }
 PjTranspiler >> convertAllClasses: classes [
-	self convertAllClasses: classes writeDnuAndBeforeInitializationHook: true
+	self convertAllClasses: classes writeDnu: true
 ]
 
 { #category : #transpiling }
-PjTranspiler >> convertAllClasses: classes writeDnuAndBeforeInitializationHook: hook [
+PjTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
 	| actualClassesToConvert classesToInit sortedClassesToInit classesInWriteOrder |
+	beforeCodeOutputHook ifNotNil: [ beforeCodeOutputHook value ].
 	actualClassesToConvert := classes collect: #classToUseForJsConversion.
 	actualClassesToConvert asIdentitySet do: [ :aClass | self writeClassDefinitionOf: aClass ].
 "	Transcript
@@ -93,7 +100,7 @@ PjTranspiler >> convertAllClasses: classes writeDnuAndBeforeInitializationHook: 
 			self writeClassInheritanceLinksOf: aClass.
 			self writeClassAndPoolVariablesDeclarationOf: aClass.
 			self writeMethodsOf: aClass ].
-	hook value ifTrue: [ self writeDnuList ].
+	shouldWriteDnu ifTrue: [ self writeDnuList ].
 	classesToInit := classesInWriteOrder select: #needsInitialization.
 	sortedClassesToInit := self orderForInitialization: classesToInit.
 	sortedClassesToInit do: [ :aClass | self writeClassInitializeOf: aClass ]
@@ -176,6 +183,12 @@ PjTranspiler >> defaultGeneratorClass [
 { #category : #initialization }
 PjTranspiler >> defaultMessageConversions [
 	^ { PjJsThisConversion. PjJsAtConversion. PjJsAtPutConversion }
+]
+
+{ #category : #loading }
+PjTranspiler >> discoveredGlobalsPool: aClass [
+	"To be used for loading polyfills"
+	^self
 ]
 
 { #category : #loading }
