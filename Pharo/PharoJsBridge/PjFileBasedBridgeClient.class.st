@@ -4,6 +4,11 @@ Class {
 	#category : #'PharoJsBridge-Client-Kernel'
 }
 
+{ #category : #files }
+PjFileBasedBridgeClient >> appFolder [
+	^ self appClass appFolder
+]
+
 { #category : #accessing }
 PjFileBasedBridgeClient >> exporterClass [
 	^ PjFileExporter
@@ -18,6 +23,11 @@ PjFileBasedBridgeClient >> fileName [
 PjFileBasedBridgeClient >> start [
 	self writeFiles.
 
+]
+
+{ #category : #accessing }
+PjFileBasedBridgeClient >> title [
+	^ appClass title
 ]
 
 { #category : #files }

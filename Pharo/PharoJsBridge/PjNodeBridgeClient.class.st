@@ -10,17 +10,12 @@ PjNodeBridgeClient >> defaultAppClass [
 ]
 
 { #category : #activity }
-PjNodeBridgeClient >> runNodeOn: aFileName [
-	WebBrowser openTerminalWithNodeOn: aFileName
+PjNodeBridgeClient >> runNodeOn: aFileName inFolder: aFolder [
+	WebBrowser openTerminalWithNodeOn: aFileName inFolder: aFolder
 ]
 
 { #category : #activity }
 PjNodeBridgeClient >> start [
 	super start.
-	self runNodeOn: self fileName fullName
-]
-
-{ #category : #accessing }
-PjNodeBridgeClient >> title [
-	^ 'Node Bridge'
+	self runNodeOn: self fileName fullName inFolder: self appFolder fullName
 ]

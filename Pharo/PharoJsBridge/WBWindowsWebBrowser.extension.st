@@ -23,6 +23,6 @@ WBWindowsWebBrowser class >> openBrowser: browserName on: anURLString inBackgrou
 ]
 
 { #category : #'*PharoJsBridge' }
-WBWindowsWebBrowser class >> openTerminalWithNodeOn: theFileName [
+WBWindowsWebBrowser class >> openTerminalWithNodeOn: theFileName inFolder: anObject [
 	self shellExecute: 'open' file: 'node' parameters: theFileName directory: '' show: 5 "SW_SHOW"
 ]

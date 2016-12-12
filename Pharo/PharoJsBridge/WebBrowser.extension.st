@@ -38,9 +38,10 @@ WebBrowser class >> openOn: anURLString inBackground: backgroundFlag [
 ]
 
 { #category : #'*PharoJsBridge' }
-WebBrowser class >> openTerminalWithNodeOn: theFileName [
+WebBrowser class >> openTerminalWithNodeOn: theFileName inFolder: theFolder [
 	" Open a terminal with node running on the given file "
-	
-	^self webbrowserClassForPlatform openTerminalWithNodeOn: theFileName	
 
+	^ self webbrowserClassForPlatform
+		openTerminalWithNodeOn: theFileName
+		inFolder: theFolder
 ]

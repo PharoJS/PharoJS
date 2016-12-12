@@ -380,18 +380,15 @@ PjBridge >> isSyncDataAvailable [
 { #category : #public }
 PjBridge >> loadAllClasses: classes [
 	| javaScriptClassesDefinition |
-	javaScriptClassesDefinition := self exporter convertAllClasses: (classes select: [: c | (c isTrait or: [ c inheritsFrom: TestCase ]) not ]). 
+	javaScriptClassesDefinition := self exporter convertAllClassesToJs: classes.
 	self evalJavascript: javaScriptClassesDefinition.
 	^classes
-	
+
 ]
 
 { #category : #public }
 PjBridge >> loadClass: aClass [
-	| javaScriptClassDefinition |
-	self exporter invalidateClass: aClass. 
-	javaScriptClassDefinition := self convertToJs: aClass. 
-	self evalJavascript: javaScriptClassDefinition.
+	self loadAllClasses: {aClass}.
 	^aClass
 	
 ]

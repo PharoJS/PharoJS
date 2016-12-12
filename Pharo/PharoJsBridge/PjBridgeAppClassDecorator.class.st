@@ -68,9 +68,19 @@ PjBridgeAppClassDecorator >> classesForBridgeClient [
 	^ self websocketDelegateClass allSuperclasses
 ]
 
+{ #category : #polyfill }
+PjBridgeAppClassDecorator >> globalsPools [
+	^ self rawAppClass globalsPools
+]
+
 { #category : #accessing }
 PjBridgeAppClassDecorator >> headerLine [
 	^self rawAppClass headerLine
+]
+
+{ #category : #polyfill }
+PjBridgeAppClassDecorator >> polyfill: aPolyfillClass onStream: aStream [
+	self rawAppClass polyfill: aPolyfillClass onStream: aStream
 ]
 
 { #category : #accessing }
@@ -96,10 +106,4 @@ PjBridgeAppClassDecorator >> webSocketUrlTag [
 { #category : #accessing }
 PjBridgeAppClassDecorator >> websocketDelegateClass [
 	^ self class websocketDelegateClass
-]
-
-{ #category : #polyfill }
-PjBridgeAppClassDecorator >> writeGlobalsPolyfillsOn: aStream [
-	self rawAppClass writeGlobalsPolyfillsOn: aStream.
-
 ]

@@ -23,11 +23,13 @@ WBMacWebBrowser class >> openBrowser: browserName on: anURLString inBackground: 
 ]
 
 { #category : #'*PharoJsBridge' }
-WBMacWebBrowser class >> openTerminalWithNodeOn: theFileName [
+WBMacWebBrowser class >> openTerminalWithNodeOn: theFileName inFolder: theFolder [
+	| cd |
+	cd := theFolder ifNil: [ '' ] ifNotNil: [ 'cd ',theFolder,'; ' ].
 	self system: 'osascript -e ''
   tell application "Terminal"
     activate
-    set newTab to do script("exec node ',theFileName,'")
+    set newTab to do script("',cd,'exec node ',theFileName,'")
     set current settings of selected tab of window 1 to settings set "PharoNode"
   end tell'''
 ]

@@ -224,6 +224,11 @@ PjProxy >> jsName: aString onBridge: aBridge [
 ]
 
 { #category : #'force proxy' }
+PjProxy >> log: aString [
+	^ self doesNotUnderstand: (Message selector: #log: argument: aString)
+]
+
+{ #category : #'force proxy' }
 PjProxy >> name [
 	^ self doesNotUnderstand: (Message selector: #name)
 ]
