@@ -9,6 +9,10 @@ Class {
 	#pools : [
 		'PjDomGlobals'
 	],
+	#classInstVars : [
+		'cssFile',
+		'htmlFile'
+	],
 	#category : #PharoJsApp
 }
 
