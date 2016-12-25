@@ -14,6 +14,14 @@ PjTJavascriptCodeAnalyser >> assert: actualString includes: expectedSubString [
 ]
 
 { #category : #asserting }
+PjTJavascriptCodeAnalyser >> assert: firstString precedes: secondString [
+	| first second |
+	first := self jsCode findString: firstString.
+	second := self jsCode findString: secondString.
+	self assert: first<second
+]
+
+{ #category : #asserting }
 PjTJavascriptCodeAnalyser >> assertClassMethod: method equals: aString [
 	self assert: (self classMethod: method) equals: aString
 ]

@@ -256,15 +256,15 @@ PjTranspiler >> lineEnding [
 ]
 
 { #category : #ordering }
-PjTranspiler >> moveHighestPriorityClassIn: initialClasses to: orderedClasses with: doesReferenceBlock [
-	| nextClassIndex nextClass |
-	nextClassIndex := initialClasses findFirst: [ :aClass | 
-			initialClasses noneSatisfy: [ :each | 
-				self should: each occurBefore: aClass with: doesReferenceBlock]].
-	nextClassIndex = 0 ifTrue: [ ^ converter transpilationError: 'circular class dependency' ].
-	nextClass := initialClasses at: nextClassIndex.
-	initialClasses removeAt: nextClassIndex.
-	orderedClasses addLast: nextClass.
+PjTranspiler >> moveHighestPriorityClassesIn: initialClasses to: orderedClasses with: doesReferenceBlock [
+	| nextClasses |
+	nextClasses  := initialClasses select: [: aClass | 
+			initialClasses noneSatisfy: [: bClass | 
+				self should: bClass occurBefore: aClass with: doesReferenceBlock]].
+	nextClasses isEmpty ifTrue: [ ^ converter transpilationError: 'circular class dependency' ].
+	(nextClasses includes: PjObject) ifTrue: [ nextClasses size > 1 ifTrue: [self halt] ].
+	initialClasses removeAll: nextClasses.
+	orderedClasses addAll: nextClasses.
 
 ]
 
@@ -312,9 +312,9 @@ PjTranspiler >> order: classes with: doesReferenceBlock [
 	initialClasses := classes copy asOrderedCollection.
 	cache := Dictionary new.
 	orderedClasses := OrderedCollection new: initialClasses size.
-	initialClasses size timesRepeat: [
+	[initialClasses size > 0] whileTrue: [
 		self
-			moveHighestPriorityClassIn: initialClasses
+			moveHighestPriorityClassesIn: initialClasses
 			to: orderedClasses
 			with: doesReferenceBlock ].
 	^ orderedClasses
@@ -329,7 +329,7 @@ PjTranspiler >> orderForInitialization: classes [
 { #category : #ordering }
 PjTranspiler >> orderForWriting: classes [ 
 	^ self order: classes with: [ : first : last |
-		last sharedPools includes: first ]
+		last allSharedPoolsRecursive includes: first]
 ]
 
 { #category : #conversions }
@@ -345,8 +345,8 @@ PjTranspiler >> setExtraBindings: aDictionary [
 { #category : #ordering }
 PjTranspiler >> should: first occurBefore: last with: doesReferenceBlock [
 	first=last ifTrue: [ ^false ].
-	(last inheritsFrom: first) ifTrue: [ ^true ].
-	(first inheritsFrom: last) ifTrue: [ ^false ].
+	(last javescriptInheritsFrom: first) ifTrue: [ ^true ].
+	(first javescriptInheritsFrom: last) ifTrue: [ ^false ].
 	^ doesReferenceBlock value: first value: last
 
 ]

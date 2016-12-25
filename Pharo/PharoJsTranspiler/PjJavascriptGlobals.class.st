@@ -46,3 +46,8 @@ PjJavascriptGlobals class >> nodePolyfill: aStream [
 		nextPutAll: self nodePackageName;
 		nextPutAll: '");';cr
 ]
+
+{ #category : #polyfills }
+PjJavascriptGlobals class >> requiredPolyfills [
+	^ #()
+]

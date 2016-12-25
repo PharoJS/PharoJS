@@ -15,3 +15,9 @@ ProtoObject class >> hasClassMethod: selector [
 ProtoObject class >> hasJavascriptPlaceholder [
 	^self hasClassMethod: #javascriptPlaceholder
 ]
+
+{ #category : #'*PharoJsTranspiler' }
+ProtoObject class >> javascriptPlaceholderInheritance [
+	self hasJavascriptPlaceholder ifTrue: [ ^ self javascriptPlaceholder].
+	^ self
+]
