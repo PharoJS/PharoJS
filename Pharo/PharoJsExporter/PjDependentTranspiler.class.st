@@ -11,7 +11,8 @@ Class {
 		'alreadyDefinedClasses',
 		'alreadyInitializedClasses',
 		'alreadyInheritanceLinkedClasses',
-		'alreadyVariablesDeclaredClasses'
+		'alreadyVariablesDeclaredClasses',
+		'globalPools'
 	],
 	#category : #'PharoJsExporter-Kernel'
 }
@@ -38,8 +39,13 @@ PjDependentTranspiler >> alreadyConvertedClasses: classes [
 	convertedClasses addAll: classes
 ]
 
+{ #category : #accessing }
+PjDependentTranspiler >> beforeCodeOutputHook: aBlock [
+	super beforeCodeOutputHook: [ aBlock value: globalPools ]
+]
+
 { #category : #transpiling }
-PjDependentTranspiler >> convertAllClasses: classes writeDnuAndBeforeInitializationHook: hook [
+PjDependentTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
 	| newClasses |
 	self addClassesToConvert: (classes select: #javascriptIsExportableClass).
 	newClasses := OrderedCollection new.
@@ -51,19 +57,19 @@ PjDependentTranspiler >> convertAllClasses: classes writeDnuAndBeforeInitializat
 				convertMethodAsts: aClass theNonMetaClass
 				newClasses: newClasses
 	]].
-	super convertAllClasses: newClasses writeDnuAndBeforeInitializationHook: hook
+	super convertAllClasses: newClasses writeDnu: shouldWriteDnu
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> convertAndWriteClosedBlock: valuedBlock [ 
 	self convertAndWriteClosedBlock: valuedBlock with: [
-		self convertAllClasses: #() writeDnuAndBeforeInitializationHook: true
+		self convertAllClasses: #() writeDnu: true
 	]
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> convertClass: aClass [ 
-	self convertAllClasses: { aClass } writeDnuAndBeforeInitializationHook: false
+	self convertAllClasses: { aClass } writeDnu: false
 ]
 
 { #category : #transpiling }
@@ -90,13 +96,18 @@ PjDependentTranspiler >> convertMethodAsts: aClass newClasses: newClasses [
 ]
 
 { #category : #loading }
+PjDependentTranspiler >> discoveredGlobalsPool: aClass [
+	globalPools add: aClass
+]
+
+{ #category : #loading }
 PjDependentTranspiler >> discoveredReferenceToClass: aClass [
 	^ self addClassToConvert: aClass
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> generateCodeStringFrom: jsAst. [
-	self convertAllClasses: #() writeDnuAndBeforeInitializationHook: true.
+	self convertAllClasses: #() writeDnu: true.
 	generator asString: jsAst on: self jsStream.
 
 ]
@@ -126,6 +137,7 @@ PjDependentTranspiler >> initialize [
 	alreadyInitializedClasses := Set new.
 	alreadyInheritanceLinkedClasses := Set new.
 	alreadyVariablesDeclaredClasses := Set new.
+	globalPools := Set new.
 
 ]
 
@@ -167,17 +179,20 @@ PjDependentTranspiler >> transpileMethod: aMethod [
 
 { #category : #transpiling }
 PjDependentTranspiler >> withMethodsOf: aClass do: aBlock [
-	| nonOverriddenSelectors importMethods |
-	super withMethodsOf: aClass do: aBlock.
+	| nonOverriddenSelectors importMethods methodsToOutput |
+	methodsToOutput := OrderedCollection new.
+	super withMethodsOf: aClass do: [: method | methodsToOutput add: method].
 	importMethods := self
 		importMethodsAll: #(jsTranspilationImportMethods jsTranspilationImportMethodsNonstandard)
 		forClass: aClass.
 	importMethods keysAndValuesDo: [ : class : selectors |
 		class isMeta = aClass isMeta ifTrue: [
 			nonOverriddenSelectors := selectors copyWithoutAll: aClass selectors.
-			nonOverriddenSelectors do: [ : aSymbol | aBlock value: (class compiledMethodAt: aSymbol) ]] 
-	]
-	
+			nonOverriddenSelectors do: [ : aSymbol |
+				methodsToOutput add: (class compiledMethodAt: aSymbol) ]]].
+	methodsToOutput sort: [: l : r | l selector < r selector ].
+	methodsToOutput do: aBlock.
+
 ]
 
 { #category : #transpiling }

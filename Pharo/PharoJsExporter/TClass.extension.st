@@ -2,23 +2,25 @@ Extension { #name : #TClass }
 
 { #category : #'*PharoJsExporter-App' }
 TClass >> allSharedPoolsRecursive [
-	"Answer an ordered collection of the pools the receiver shares, including those defined  in the superclasses of the receiver."
-	| aSet additions new |
-	self superclass == nil
-		ifTrue: [aSet := Set new]
-		ifFalse: [aSet := self superclass allSharedPoolsRecursive].
-	additions := self sharedPools.
-	[ additions isEmpty ] whileFalse: [
-		new := Set new.
-		additions do: [ : each |
-			(aSet includes: each) ifFalse: [
-				aSet add: each.
-				new addAll: each allSharedPools
-			]
-		].
-		additions := new
+	"Answer a set of the pools the receiver shares, including those defined  in the superclasses of the receiver."
+	^ self allSharedPoolsRecursiveInto: Set new
+]
+
+{ #category : #'*PharoJsExporter-App' }
+TClass >> allSharedPoolsRecursiveInto: aCollection [
+	"Add to the collection all of the pools the receiver shares, including those defined  in the superclasses of the receiver."
+	self inheritedSharedPools do: [ : each |
+		(aCollection includes: each) ifFalse: [
+			aCollection add: each.
+			each allSharedPoolsRecursiveInto: aCollection
+		]
 	].
-	^ aSet
+	^ aCollection
+]
+
+{ #category : #'*PharoJsExporter-App' }
+TClass >> inheritedSharedPools [
+	^ self allSharedPools
 ]
 
 { #category : #'*PharoJsExporter-App' }

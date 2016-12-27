@@ -91,7 +91,7 @@ PjExporter >> convertAllClassesToJs: someClasses [
 	someClasses do: [ : aClass | self invalidateClass: aClass]. 
 	self addAllClasses: someClasses.
 	^ self transpiler onTempStreamDo: [
-		self transpiler convertAllClasses: self nonBootstrapClasses writeDnuAndBeforeInitializationHook: self dnuHook].
+		self transpiler convertAllClasses: self nonBootstrapClasses writeDnu: true].
 ]
 
 { #category : #accessing }
@@ -106,10 +106,8 @@ PjExporter >> cr [
 
 { #category : #writing }
 PjExporter >> dnuHook [
-	^ [
-	 	self writeGlobalsPolyfills.
-		true
-	]
+	^ [ self writeGlobalsPolyfills: nil.
+	true ]
 ]
 
 { #category : #accessing }
@@ -124,7 +122,7 @@ PjExporter >> initialize [
 	globalsPools := Set new.
 	self transpiler: self transpilerClass new.
 	self transpiler addAllOptionalConversions"Except: 0 to: 1/2".
-
+	self transpiler beforeCodeOutputHook: [: pools | self writeGlobalsPolyfills: pools]
 
 ]
 
@@ -227,12 +225,14 @@ PjExporter >> writeCoreObject [
 ]
 
 { #category : #writing }
-PjExporter >> writeGlobalsPolyfills [
-	self appClass globalsPools do: [ : pool |
-		(globalsPools includes: pool) ifFalse: [
-			self appClass polyfill: pool onStream: self transpiler jsStream.
-			globalsPools add: pool
-	]]
+PjExporter >> writeGlobalsPolyfills: pools [
+	pools do: [ :pool | 
+		self appClass
+			polyfill: pool
+			onStream: self transpiler jsStream
+			unlessIn: globalsPools
+	].
+
 ]
 
 { #category : #writing }
@@ -240,7 +240,7 @@ PjExporter >> writeJsCode [
 	| time |
 	time := [
 	self writeJsCoreAndBootstrap.
-	self transpiler convertAllClasses: self nonBootstrapClasses writeDnuAndBeforeInitializationHook: self dnuHook.
+	self transpiler convertAllClasses: self nonBootstrapClasses writeDnu: true.
 	self writeLaunchCode.
 	] timeToRun.
 	self transpiler numberOfClasses ifNil: [ ^ self ]. 
@@ -266,7 +266,7 @@ PjExporter >> writeJsCodeOn: aStream [
 PjExporter >> writeJsCoreAndBootstrap [
 	self nextPutAll: self setupCode; cr.
 	self writeCoreObject.
-	self transpiler convertAllClasses: self bootstrapClasses writeDnuAndBeforeInitializationHook: false
+	self transpiler convertAllClasses: self bootstrapClasses writeDnu: false
 ]
 
 { #category : #writing }

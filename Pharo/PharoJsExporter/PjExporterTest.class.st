@@ -42,8 +42,14 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 ]
 
 { #category : #testing }
+PjExporterTest >> testClassInheritanceOrder [
+	exporter appClass: PjApplication.
+	jsCode := exporter javascriptCode.
+	self assert: 'Object._subclass_(Error)' precedes: 'Error._subclass_'
+]
+
+{ #category : #testing }
 PjExporterTest >> testCoreClassedLoaded [
-	| jsCode |
 	exporter appClass: PjApplication.
 	jsCode := exporter javascriptCode.
 	self assert: (jsCode includesSubstring: 'function PjApplication(){}' ).
@@ -60,7 +66,7 @@ PjExporterTest >> testExportingClassesAndPackages [
 	exporter addAllClasses: {String. Array}.
 	self assert: exporter classes size equals: 3.
 	exporter addPackage: 'PharoJsExporter-Tests-Support'.
-	self assert: exporter classes size = 4.
+	self assert: exporter classes size = 7.
 	exporter addAllPackages: {PjExporter category.  PjTranspiler category}.
 	self assert: exporter classes size > 10.
 
@@ -91,6 +97,21 @@ PjExporterTest >> testMainClassIsAddedToClassesToExport [
 	exporter appClass: PjBrowserApplication.
 	self assert: (exporter classes includes: PjBrowserApplication).
 	self assert: exporter classes size > 1.
+
+]
+
+{ #category : #testing }
+PjExporterTest >> testPolyfills [
+	| contents foobar bar |
+	contents := (PjTestFileExporter exportApp: PjMinimalNodeApplication) contents.
+	self deny: (contents includesSubstring: ' WebSocket=Smalltalk.require("ws")').
+	contents := (PjTestFileExporter exportApp: PjTestClassForPolyfill) contents.
+	self assert: (contents includesSubstring: ' WebSocket=Smalltalk.require("ws")').
+	self assert: (contents includesSubstring: ' Foobar=Smalltalk.require("foobar")').
+	self assert: (contents includesSubstring: 'Bar=Foobar.Bar').
+	foobar := contents findString: ' Foobar=Smalltalk.require("foobar")'.
+	bar := contents findString: 'Bar=Foobar.Bar'.
+	self assert: foobar<bar.
 
 ]
 

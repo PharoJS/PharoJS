@@ -38,7 +38,10 @@ PjDOMApplication classSide >> appHtmlUrlString [
 ]
 
 { #category : #'*PharoJsExporter' }
-PjDOMApplication classSide >> polyfill: aPolyfillClass onStream: aStream [
+PjDOMApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	<pharoJsSkip>
-	aPolyfillClass domPolyfill: aStream
+	^ (super polyfill: aPolyfillClass onStream: aStream unlessIn: aSet) and: [
+		aPolyfillClass domPolyfill: aStream.
+		true
+	]
 ]

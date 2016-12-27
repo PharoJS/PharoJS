@@ -9,37 +9,50 @@ Class {
 
 { #category : #exporting }
 PjFileExporter class >> exportApp: aClass [
-	(self exporterForApp: aClass) writeFiles
+	^ (self exporterForApp: aClass) writeFiles
 ]
 
 { #category : #files }
 PjFileExporter >> createFileNamed: fName startingWith: beginning and: string ifEditableDo: aBlock [
 	| header match first100 |
-	match := string, ' *** DO NOT EDIT ***'.
-	header := [ : f |
-		self jsStream: f do: [
-			beginning ifNotNil: [ self nextPutAll: beginning; cr ].
+	match := string , ' *** DO NOT EDIT ***'.
+	header := [ :f | 
+	self
+		jsStream: f
+		do: [ beginning
+				ifNotNil: [ self
+						nextPutAll: beginning;
+						cr ].
 			self
 				nextPutAll: match;
 				nextPutAll: ' on ';
 				nextPutAll: DateAndTime now asString;
 				cr.
-			aBlock value: f]].
-	[ ^ FileStream newFileNamed: fName do: header
-	] on: FileExistsException do: [: exception |
-		FileStream readOnlyFileNamed: fName do: [ : file |
-			first100 := file next: 100 into: (String new: 100).
-			( first100='' or: [(first100 findString: match startingAt: 1 caseSensitive: true)>0]) ifTrue: [
-				^ FileStream forceNewFileNamed: fName do: header
-			]
-		].
-		Error signal: fName pathString,' exists and does not contain "',string,'" in the first 100 bytes'
-	]
+			aBlock value: f ] ].
+	[ ^ self fileStreamClass newFileNamed: fName do: header ]
+		on: FileExistsException
+		do: [ :exception | 
+			self fileStreamClass
+				readOnlyFileNamed: fName
+				do: [ :file | 
+					first100 := file next: 100 into: (String new: 100).
+					(first100 = ''
+						or: [ (first100 findString: match startingAt: 1 caseSensitive: true) > 0 ])
+						ifTrue: [ ^ self fileStreamClass forceNewFileNamed: fName do: header ] ].
+			Error
+				signal:
+					fName pathString , ' exists and does not contain "' , string
+						, '" in the first 100 bytes' ]
 ]
 
 { #category : #files }
 PjFileExporter >> fileName [
 	^ self appClass appFullJsFileName
+]
+
+{ #category : #files }
+PjFileExporter >> fileStreamClass [
+	^ FileStream
 ]
 
 { #category : #files }

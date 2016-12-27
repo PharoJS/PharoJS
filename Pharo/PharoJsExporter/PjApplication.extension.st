@@ -69,8 +69,16 @@ PjApplication classSide >> ifInvalidFolder: folder do: aBlock [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> polyfill: aPolyfillClass onStream: aStream [
+PjApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	<pharoJsSkip>
+	(aSet includes: aPolyfillClass) ifFalse: [
+		aSet add: aPolyfillClass.
+		aPolyfillClass requiredPolyfills do: [ : pool |
+			self polyfill: pool onStream: aStream unlessIn: aSet
+		].
+		^ true
+	].
+	^ false
 
 ]
 
@@ -78,8 +86,13 @@ PjApplication classSide >> polyfill: aPolyfillClass onStream: aStream [
 PjApplication classSide >> setUpAppFolder [
 	<pharoJsSkip>
 	| folder |
-	folder := UIManager default chooseDirectory: 'PharoJS: Folder for app ', self name, ' please?'.
+	folder := UIManager default chooseDirectory: self setUpAppFolderPrompt.
 	self ifInvalidFolder: folder do: [  
 		^self error: 'PharoJS: Invalid folder for app ', self name].
 	self appFolder: folder.
+]
+
+{ #category : #'*PharoJsExporter-App' }
+PjApplication classSide >> setUpAppFolderPrompt [
+	^ 'PharoJS: Folder for app ', self name, ' please?'.
 ]
