@@ -79,8 +79,11 @@ PjBridgeAppClassDecorator >> headerLine [
 ]
 
 { #category : #polyfill }
-PjBridgeAppClassDecorator >> polyfill: aPolyfillClass onStream: aStream [
-	self rawAppClass polyfill: aPolyfillClass onStream: aStream
+PjBridgeAppClassDecorator >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+	self rawAppClass
+		polyfill: aPolyfillClass
+		onStream: aStream
+		unlessIn: aSet
 ]
 
 { #category : #accessing }

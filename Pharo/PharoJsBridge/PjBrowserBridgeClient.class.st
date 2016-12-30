@@ -55,10 +55,6 @@ PjBrowserBridgeClient >> serverUrlString [
 PjBrowserBridgeClient >> start [
 	self bridge server
 		javascript: (String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ]).
-	WebBrowser openOn: self serverUrlString inBackground: self openBrowserInBackground.
-]
-
-{ #category : #accessing }
-PjBrowserBridgeClient >> title [
-	^ appClass title
+	self launchJavascriptInterpreter ifTrue: [
+		WebBrowser openOn: self serverUrlString inBackground: self openBrowserInBackground].
 ]

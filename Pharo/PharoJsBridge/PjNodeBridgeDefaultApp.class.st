@@ -1,3 +1,6 @@
+"
+I am a trivial client for NodeJS bridge for exploration.
+"
 Class {
 	#name : #PjNodeBridgeDefaultApp,
 	#superclass : #PjNodeApplication,

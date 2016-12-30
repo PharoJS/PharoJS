@@ -1,3 +1,6 @@
+"
+I am the super class for bridge clients that need to write out the javascript file.  This includes NodeJS apps and browsers that have more resources than the CSS and HTML files.
+"
 Class {
 	#name : #PjFileBasedBridgeClient,
 	#superclass : #PjBridgeClient,
@@ -23,11 +26,6 @@ PjFileBasedBridgeClient >> fileName [
 PjFileBasedBridgeClient >> start [
 	self writeFiles.
 
-]
-
-{ #category : #accessing }
-PjFileBasedBridgeClient >> title [
-	^ appClass title
 ]
 
 { #category : #files }

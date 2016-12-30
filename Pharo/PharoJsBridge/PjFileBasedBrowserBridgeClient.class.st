@@ -1,3 +1,6 @@
+"
+I am for browsers that have more resources than the CSS and HTML files that need to be loaded.
+"
 Class {
 	#name : #PjFileBasedBrowserBridgeClient,
 	#superclass : #PjFileBasedBridgeClient,
@@ -17,5 +20,6 @@ PjFileBasedBrowserBridgeClient >> openWebBrowserOn: appHtmlFileUrlString [
 { #category : #activity }
 PjFileBasedBrowserBridgeClient >> start [
 	super start.
-	self openWebBrowserOn: self appClass appHtmlUrlString
+	self launchJavascriptInterpreter ifTrue: [
+		self openWebBrowserOn: self appClass appHtmlUrlString]
 ]

@@ -96,7 +96,7 @@ PjProxy >> = anObject [
 	^ proxySpecificBridge = anObject jsBridge
 ]
 
-{ #category : #'reflective-operations' }
+{ #category : #'reflective operations' }
 PjProxy >> addEventListener: type block: listener [
 	| jsMessage |
 	^ self jsBridge: [ :bridge | | bc |
@@ -141,12 +141,12 @@ PjProxy >> confirm: aString [
 	^ self doesNotUnderstand: (Message selector: #confirm: argument: aString)
 ]
 
-{ #category : #'reflective-operations' }
+{ #category : #'reflective operations' }
 PjProxy >> convertToJavascriptAstUsing: aPjAstConverter [
 	^ PjGlobalNode identifier: jsName
 ]
 
-{ #category : #'reflective-operations' }
+{ #category : #'reflective operations' }
 PjProxy >> doesNotUnderstand: aMessage [
 	^ self jsBridge: [ : bridge | 
 		bridge evalMessage: aMessage sentTo: jsName
@@ -158,7 +158,7 @@ PjProxy >> head [
 	^ self doesNotUnderstand: (Message selector: #head)
 ]
 
-{ #category : #'reflective-operations' }
+{ #category : #introspection }
 PjProxy >> instVarNamed: aString [
 	^ self jsBridge: [ : bridge | | selector |
 		selector := jsName,'.',aString.
@@ -166,7 +166,7 @@ PjProxy >> instVarNamed: aString [
 	]
 ]
 
-{ #category : #'reflective-operations' }
+{ #category : #introspection }
 PjProxy >> instVarNamed: aString put: aValue [
 	^ self jsBridge: [ : bridge | | selector |
 		selector := jsName,'.',aString,'=',(bridge convertToJs: aValue).
@@ -238,7 +238,7 @@ PjProxy >> printOn: aStream [
 	self subclassResponsibility
 ]
 
-{ #category : #'reflective-operations' }
+{ #category : #'reflective operations' }
 PjProxy >> removeEventListener: type [
 	^ self jsBridge: [ : bridge |
 		bridge evalJavascript: bridge websocketDelegateClassName,

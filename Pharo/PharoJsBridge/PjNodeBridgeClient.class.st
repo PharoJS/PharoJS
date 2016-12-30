@@ -1,3 +1,6 @@
+"
+I am the bridge client for applications to run on NodeJS
+"
 Class {
 	#name : #PjNodeBridgeClient,
 	#superclass : #PjFileBasedBridgeClient,
@@ -17,5 +20,6 @@ PjNodeBridgeClient >> runNodeOn: aFileName inFolder: aFolder [
 { #category : #activity }
 PjNodeBridgeClient >> start [
 	super start.
-	self runNodeOn: self fileName fullName inFolder: self appFolder fullName
+	self launchJavascriptInterpreter ifTrue: [
+		self runNodeOn: self fileName fullName inFolder: self appFolder fullName]
 ]

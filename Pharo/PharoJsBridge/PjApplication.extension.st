@@ -31,15 +31,3 @@ PjApplication classSide >> bridgeForDebug [
 	^ self bridge withClientLogging
 
 ]
-
-{ #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> generateHtmlUsing: ignored [
-	<pharoJsSkip>
-	^ false
-]
-
-{ #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> ifInvalidFile: file do: aBlock [
-	<pharoJsSkip>
-	(file isNil or: [(FileStream fileNamed: file) isNil]) ifTrue: aBlock
-]

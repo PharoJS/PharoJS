@@ -148,6 +148,12 @@ PjEvaluatorWebsocketDelegate >> eval: aString [
 	}'>
 ]
 
+{ #category : #'initialize-release' }
+PjEvaluatorWebsocketDelegate >> initialize [
+	(Object js_at: #prototype) js_at: #_inspect put: self makeInspect.
+
+]
+
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> logReceived: aString [
 	console log: 'Received: ',aString
@@ -181,6 +187,15 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation:
 	PjBlockClosureProxy.$PjRefCount=0;
 	return PjBlockClosureProxy;
 	'>
+]
+
+{ #category : #'initialize-release' }
+PjEvaluatorWebsocketDelegate >> makeInspect. [
+	<javascript: 'var wsd=this;
+	return function(){
+		wsd._doCallBack_(JSON.stringify({inspect:Object._resultObject_(this)}));
+		return this
+	}'>
 ]
 
 { #category : #connecting }

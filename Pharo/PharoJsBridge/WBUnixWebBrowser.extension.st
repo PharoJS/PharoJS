@@ -12,8 +12,8 @@ WBUnixWebBrowser class >> openBrowser: browserName on: anURLString inBackground:
 
 	| openCommand |
 	self flag: #todo.
-	(browserName or: [ backgroundFlag not ])
-		ifNil: [ ^ self
+	(browserName isNil or: [ backgroundFlag not ])
+		ifTrue: [ ^ self
 				error: 'TODO: handle when the browserName is nil or when backgroundFlag is false' ].
 	openCommand := '{1} {2} &'
 		format:

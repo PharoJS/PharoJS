@@ -52,7 +52,8 @@ Class {
 		'executingCallbacks',
 		'proxies',
 		'blockClosures',
-		'client'
+		'client',
+		'launchJavascriptInterpreter'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -180,7 +181,7 @@ PjBridge >> client: aClient [
 
 { #category : #'initialize-release' }
 PjBridge >> clientTitle [
-	^self client title,' bridge on ',self serverUrlString
+	^self client title
 ]
 
 { #category : #public }
@@ -236,19 +237,6 @@ PjBridge >> evalJavascript: javaScriptString [
 	^ self evalGetResult
 ]
 
-{ #category : #evaluating }
-PjBridge >> evalJsValue: aString [
-	(aString at: 1)=$" ifTrue: [ 
-			^ (aString copyFrom: 2 to: aString size - 1)
-				copyWithRegex: '\\["\\]'
-				matchesTranslatedUsing: [ :str | str copyFrom: 2 to: 2 ] ].
-	aString = 'true'
-		ifTrue: [ ^ true ].
-	aString = 'false'
-		ifTrue: [ ^ false ].
-	^ Number readFrom: (aString copyWithRegex: 'e\+' matchesTranslatedUsing: [ :str | 'e' ])
-]
-
 { #category : #public }
 PjBridge >> evalMessage: jsMessage [
 	^self evalJavascript: (self convertToJs: jsMessage)
@@ -279,14 +267,19 @@ PjBridge >> evalResult: aString parsed: value [
 	value at: #proxy ifPresent: [ : name | | proxy |
 		proxy := PjProxy nilOrProxyNamed: name asSymbol onBridge: self.
 		^ proxy ].
+	value at: #inspect ifPresent: [ : val |
+		| proxy |
+		proxy := self evalResult: aString parsed: val.
+		self scheduleCallback: [proxy inspect].
+		^ self ].
 	value at: #cb ifPresent: [ : array |
 		| proxy args |
 		proxy := PjProxy proxyNamed: array first onBridge: self.
-		args := array allButFirst collect: [ : each | self evalResult: '' parsed: each ].
+		args := array allButFirst collect: [ : each | self evalResult: aString parsed: each ].
 		self scheduleCallback: [ proxy runBlockClosure: args first with: args second ].
 		^ self ].
 	value at: #keys ifPresent: [ : map |
-		^ map collect: [ : val | self evalResult: '' parsed: val ] ].
+		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
 	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
 	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
 ]
@@ -328,6 +321,7 @@ PjBridge >> handOffResult: aBlock [
 PjBridge >> initialize [
 	super initialize.
 	executingCallbacks := false.
+	launchJavascriptInterpreter := true.
 	callbacks := OrderedCollection new.
 	self server: self serverClass new.
 	self finalizationRegistry add: self executor:
@@ -375,6 +369,16 @@ PjBridge >> isSyncDataAvailable [
 	].
 	self executeAnyCallbacks.
 	^ result ~~ self
+]
+
+{ #category : #accessing }
+PjBridge >> launchJavascriptInterpreter [
+	^ launchJavascriptInterpreter
+]
+
+{ #category : #accessing }
+PjBridge >> launchJavascriptInterpreter: aBoolean [
+	launchJavascriptInterpreter := aBoolean
 ]
 
 { #category : #public }
@@ -527,11 +531,9 @@ PjBridge >> setExtraBindings: aDictionary [
 
 { #category : #public }
 PjBridge >> start [
-	self isStarted ifTrue: [ ^self ].
-	self startServer.
-	self waitForServerToStart.
-	self client start.
-	self waitForClientToStart
+	self startWithoutWaitingForClient.
+	self waitForClientToStart.
+
 ]
 
 { #category : #activity }
@@ -543,6 +545,15 @@ PjBridge >> startOn: portNumber title: title [
 { #category : #activity }
 PjBridge >> startServer [
 	self server start
+]
+
+{ #category : #public }
+PjBridge >> startWithoutWaitingForClient [
+	self isStarted ifTrue: [ ^self ].
+	self startServer.
+	self waitForServerToStart.
+	self client start.
+
 ]
 
 { #category : #public }
@@ -588,6 +599,15 @@ PjBridge >> waitForClientToStart [
 		do: [^self] 
 		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
 
+]
+
+{ #category : #activity }
+PjBridge >> waitForClientToStartFor: time doing: aBlock [
+	self 
+		when: [aBlock value. self isConnected] 
+		do: [^self] 
+		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
+		timeOutDuration: time
 ]
 
 { #category : #activity }

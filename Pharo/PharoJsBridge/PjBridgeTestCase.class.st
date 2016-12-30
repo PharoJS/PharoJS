@@ -109,7 +109,8 @@ PjBridgeTestCase >> setUp [
 	debugging
 		ifTrue: [ bridge withClientLogging ]
 		ifFalse: [ bridge client openBrowserInBackground: true.
-			self inform: 'Web browser should open in background'].
+			self inform: 'Web browser should open in background'.
+			World doOneCycle;doOneCycle].
 	bridge appClass: PjBrowserBridgeDefaultAppForTest.
 	bridge openOn: 63425 test: self.
 	bridge start.

@@ -11,8 +11,8 @@ WBWindowsWebBrowser class >> openBrowser: browserName on: anURLString inBackgrou
 	"
 
 	self flag: #todo.
-	(browserName or: [ backgroundFlag not ])
-		ifNil: [ ^ self
+	(browserName isNil or: [ backgroundFlag not ])
+		ifTrue: [ ^ self
 				error: 'TODO: handle when the browserName is nil or when backgroundFlag is false' ].
 	^ self
 		shellExecute: 'open'

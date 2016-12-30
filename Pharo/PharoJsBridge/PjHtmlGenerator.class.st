@@ -22,7 +22,8 @@ Class {
 	#instVars : [
 		'headerStream',
 		'bodyStream',
-		'scriptsStream'
+		'scriptsStream',
+		'bodyAttributes'
 	],
 	#category : #'PharoJsBridge-Client-CodeGenerator'
 }
@@ -215,7 +216,9 @@ PjHtmlGenerator >> html [
 		cr;
 		nextPutAll: '</head>';
 		cr;
-		nextPutAll: '<body>';
+		nextPutAll: '<body';
+		nextPutAll: bodyAttributes contents;
+		nextPut: $>;
 		cr;
 		nextPutAll: bodyStream contents;
 		cr;
@@ -232,7 +235,28 @@ PjHtmlGenerator >> initialize [
 	super initialize.
 	headerStream := String new writeStream.
 	bodyStream := String new writeStream.
+	bodyAttributes := String new writeStream.
 	scriptsStream := String new writeStream.
+]
+
+{ #category : #public }
+PjHtmlGenerator >> loadFrom: aString [
+	| hStart hEnd bStart bAngle bEnd |
+	hStart := aString indexOfSubCollection: '<head>'.
+	hEnd := aString indexOfSubCollection: '</head>'.
+	(hStart>0 and: [hEnd>hStart]) ifFalse: [
+		headerStream nextPutAll: '<!-- no head tag in file -->'
+	] ifTrue: [
+		headerStream nextPutAll: (aString copyFrom: hStart+6 to: hEnd-1)].
+	bStart := aString indexOfSubCollection: '<body'.
+	bAngle := aString findString: '>' startingAt: bStart.
+	bEnd := aString indexOfSubCollection: '</body>'.
+	(bAngle>0 and: [(aString at: bStart+5)=$ ]) ifTrue: [ bodyAttributes nextPutAll: (aString copyFrom: bStart+5 to: bAngle-1)].
+	(bAngle>0 and: [bEnd>bAngle]) ifFalse: [
+		bodyStream nextPutAll: '<!-- no body tag in file -->'
+	] ifTrue: [
+		bodyStream nextPutAll: (aString copyFrom: bAngle+1 to: bEnd-1)].
+
 ]
 
 { #category : #public }

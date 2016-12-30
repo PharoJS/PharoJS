@@ -86,8 +86,14 @@ PjBridgeClient >> initialize [
 
 { #category : #accessing }
 PjBridgeClient >> jsGlobalNames [
-	^ (appClass allSharedPoolsRecursive select: #isJavascriptGlobalsPool)
+	^ (self appClass allSharedPoolsRecursive select: #isJavascriptGlobalsPool)
 			flatCollectAsSet: #classVarNames
+]
+
+{ #category : #accessing }
+PjBridgeClient >> launchJavascriptInterpreter [
+	^ self bridge launchJavascriptInterpreter
+		
 ]
 
 { #category : #accessing }
@@ -107,6 +113,11 @@ PjBridgeClient >> stop [
 	self bridge websocketDelegateClassName ifNil: [ ^self ].
 	self bridge sendMessage: self bridge websocketDelegateClassName, '._terminate()'.
 
+]
+
+{ #category : #accessing }
+PjBridgeClient >> title [
+	^ self appClass title
 ]
 
 { #category : #accessing }

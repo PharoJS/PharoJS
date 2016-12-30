@@ -36,6 +36,40 @@ PjDOMApplication classSide >> favicon [
 ]
 
 { #category : #'*PharoJsBridge-App' }
+PjDOMApplication classSide >> generateHtmlFromFileUsing: aHtmlGenerator [
+	<pharoJsSkip>
+	aHtmlGenerator loadFrom: (FileStream fileNamed: self htmlFile) contentsOfEntireFile.
+	^ true
+
+]
+
+{ #category : #'*PharoJsBridge-App' }
+PjDOMApplication classSide >> generateHtmlUsing: aPjHtmlGenerator [
+	<pharoJsSkip>
+	^ false
+	" consider overriding with '^ self generateHtmlFromFileUsing: aPjHtmlGenerator' "
+]
+
+{ #category : #'*PharoJsBridge-App' }
+PjDOMApplication classSide >> htmlFile [
+	<pharoJsSkip>
+	self ifInvalidFile: htmlFile do:[self setUpHtmlFile].
+	^htmlFile
+]
+
+{ #category : #'*PharoJsBridge-App' }
+PjDOMApplication classSide >> htmlFile: anObject [
+	<pharoJsSkip>
+	htmlFile := anObject
+]
+
+{ #category : #'*PharoJsBridge-App' }
+PjDOMApplication classSide >> ifInvalidFile: file do: aBlock [
+	<pharoJsSkip>
+	(file isNil or: [(FileStream fileNamed: file) isNil]) ifTrue: aBlock
+]
+
+{ #category : #'*PharoJsBridge-App' }
 PjDOMApplication classSide >> setUpCssFile [
 	<pharoJsSkip>
 	| fileName |
@@ -43,4 +77,14 @@ PjDOMApplication classSide >> setUpCssFile [
 	self ifInvalidFile: fileName do: [  
 		^self error: 'PharoJS: Invalid CSS file for app ', self name].
 	self cssFile: fileName.
+]
+
+{ #category : #'*PharoJsBridge-App' }
+PjDOMApplication classSide >> setUpHtmlFile [
+	<pharoJsSkip>
+	| fileName |
+	fileName := UIManager default chooseFullFileNameMatching: #('*.html') label:  'PharoJS: HTML file for app ', self name, ' please?'.
+	self ifInvalidFile: fileName do: [  
+		^self error: 'PharoJS: Invalid HTML file for app ', self name].
+	self htmlFile: fileName.
 ]

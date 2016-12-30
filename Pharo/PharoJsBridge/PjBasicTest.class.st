@@ -88,6 +88,19 @@ PjBasicTest >> testExceptionHandling [
 ]
 
 { #category : #testing }
+PjBasicTest >> testHash [
+	self assertEquivalent: [nil hash].
+	self assertEquivalent: [0 hash].
+	self assertEquivalent: [ 1234 hash].
+	self assertEquivalent: [true hash].
+	self assertEquivalent: [false hash].
+	self assert: ['abc' hash ] evaluatesTo: 135459374. " not the same as on Pharo, but uses same code with different initialization "
+	self assertEquivalent: [|x| x:= Object new. x hash = x hash].
+	self assertEquivalent: [|x y| x:= Object new. y:= Object new. x hash ~= y hash].
+
+]
+
+{ #category : #testing }
 PjBasicTest >> testIdentity [
 	self assertEquivalent: [false == false].
 
@@ -125,6 +138,30 @@ PjBasicTest >> testJavascriptSemanticsComparisons [
 	self assert: [0>nil] evaluatesTo: false.
 	self assert: [0<=nil] evaluatesTo: false.
 	self assert: [0<nil] evaluatesTo: false.
+
+]
+
+{ #category : #testing }
+PjBasicTest >> testMethodsForBitManipulation [
+	self assertEquivalent: [-257 bitShift: -4].
+	self assertEquivalent: [257 bitShift: -4].
+	self assertEquivalent: [-257 bitShift: 4].
+	self assertEquivalent: [257 bitShift: 4].
+	self assertEquivalent: [-5 bitAnd: -11].
+	self assertEquivalent: [5 bitAnd: 11].
+	self assertEquivalent: [-5 bitAnd: 11].
+	self assertEquivalent: [5 bitAnd: 11].
+	self assertEquivalent: [-5 bitOr: -11].
+	self assertEquivalent: [5 bitOr: 11].
+	self assertEquivalent: [-5 bitOr: 11].
+	self assertEquivalent: [5 bitOr: 11].
+	self assertEquivalent: [-5 bitXor: -11].
+	self assertEquivalent: [5 bitXor: 11].
+	self assertEquivalent: [-5 bitXor: 11].
+	self assertEquivalent: [5 bitXor: 11].
+	self assertEquivalent: [1234567 highBit].
+	self assertEquivalent: [12300000 lowBit].
+	self assertEquivalent: [-12300000 lowBit].
 
 ]
 
