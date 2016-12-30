@@ -60,16 +60,17 @@ PjPlayground >> bridge [
 
 { #category : #accessing }
 PjPlayground >> bridge: anObject [
-	bridge ifNotNil: [ bridge stop ].
-	self allJavascriptGlobals do: [ :name |
-		self removeBinding: name -> nil ].
+	bridge ifNotNil: [
+		bridge stop .
+		self allJavascriptGlobals do: [ :name |
+			self removeBinding: name -> nil ]].
 	bridge := anObject.
 	anObject ifNil: [
 		self label: '...disconnected...'.
 		^ self].
 	page saveContent: page content,bridge playgroundInitialContent.
 	self
-		label: anObject clientTitle;
+		label: 'PharoJS Playground: ',anObject clientTitle;
 		setupProxies
 ]
 
@@ -91,7 +92,7 @@ PjPlayground >> initPage [
 		playground: self.
 	bindings := Dictionary newFrom: {bridgeVar}.
 	self setBindings: bindings.
-	self label: 'PharoJS Playground'
+
 ]
 
 { #category : #initialization }
@@ -102,15 +103,36 @@ PjPlayground >> initialize [
 		,'bridge := ' , PjBrowserApplication name, ' bridge start.' , String cr
 		;
 		yourself.
-	self initPage
+	self initPage.
+	self label: 'PharoJS Playground'.
+
 ]
 
 { #category : #initialization }
 PjPlayground >> initializeWithBridge: aPjBridge [
+	| waitTime endTime |
 	super initialize.
-	page := GTPlayPage new saveContent: '" a bridge is now open and globals are defined"', String cr;
+	aPjBridge startWithoutWaitingForClient.
+	bridge := aPjBridge.
+	waitTime := 60 seconds.
+	page := GTPlayPage new
+		title: 'waiting for connection';
+		saveContent: '"  listening on:', String cr, String cr,
+			'     ',aPjBridge serverUrl asString, String cr, String cr,'"';
 		yourself.
 	self initPage.
+	self label: 'PharoJS Playground: ',aPjBridge clientTitle.
+	endTime := DateAndTime now + waitTime.
+	aPjBridge waitForClientToStartFor: waitTime doing: [
+		page title: 'waiting for connection for ',(endTime-DateAndTime now) seconds asString,' more seconds'.
+		self startOn: page.
+		World doOneCycle
+	].
+	page
+		title: 'bridge connected on port ',aPjBridge port asString;
+		saveContent: '" a bridge is now open and globals are defined"', String cr.
+	self startOn: page.
+	bridge := nil.
 	bridgeVar value: aPjBridge
 ]
 
