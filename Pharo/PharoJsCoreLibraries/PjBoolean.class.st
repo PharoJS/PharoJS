@@ -14,12 +14,12 @@ PjBoolean >> & aBoolean [
 	^ self ifTrue: [ ^ aBoolean ] ifFalse: [ ^ false ]
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjBoolean >> = other [
 	<javascript: 'return this==Boolean(other)'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjBoolean >> == other [
 	^ self = other
 ]
@@ -37,6 +37,11 @@ PjBoolean >> asBit [
 { #category : #converting }
 PjBoolean >> asString [
 	<javascript: 'return this + ""'>
+]
+
+{ #category : #comparing }
+PjBoolean >> identityHash [
+	<javascript: 'return this*256+512'>
 ]
 
 { #category : #controlling }
@@ -57,7 +62,7 @@ PjBoolean >> ifTrue: aBlock [
 
 { #category : #controlling }
 PjBoolean >> ifTrue: trueBlock ifFalse: falseBlock [
-	<javascript: 'if(this==true){return trueBlock()}else{return falseBlock()}'>
+	<javascript: 'if(this==true){return typeof trueBlock=="function"?trueBlock():trueBlock}else{return typeof falseBlock=="function"?falseBlock():falseBlock}'>
 ]
 
 { #category : #'logical operations' }
@@ -90,7 +95,7 @@ PjBoolean >> | aBoolean [
 	^ self ifFalse: [ ^ aBoolean ] ifTrue: [ ^ true ]
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjBoolean >> ~~ other [
 	^ self ~= other
 ]

@@ -62,13 +62,20 @@ PjNumber class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^ self jsTranspilationImportMethodsMagnitude,
 		{Number -> #(
-				negated reciprocal log: asInteger squared isNumber even odd isNaN fractionPart integerPart //
+				negated reciprocal log: asInteger squared even odd fractionPart integerPart // strictlyPositive positive negative raisedToInteger: raisedTo:
+				isNumber isNaN isZero
 			).
 		Integer -> #(
 				asCharacter
 			).
+		SmallInteger -> #(
+				highBit basicIdentityHash identityHash hashMultiply hash
+			).
 		Float -> #(
-				rounded
+				isInfinite rounded
+			).
+		Float class -> #(
+				denormalized e emax emin epsilon fmax fmin fminDenormalized fminNormalized halfPi infinity maxExactInteger nan negativeInfinity negativeZero one pi precision radix threePi twoPi zero
 			).
 		}
 ]
@@ -158,6 +165,31 @@ PjNumber >> asString [
 	<javascript: 'return this + "";'>
 ]
 
+{ #category : #'bit manipulation' }
+PjNumber >> bitAnd: arg [ 
+	<javascript: 'return this&arg'>
+]
+
+{ #category : #'bit manipulation' }
+PjNumber >> bitInvert [
+	<javascript: 'return ~this'>
+]
+
+{ #category : #'bit manipulation' }
+PjNumber >> bitOr: arg [ 
+	<javascript: 'return this|arg'>
+]
+
+{ #category : #'bit manipulation' }
+PjNumber >> bitShift: shiftCount [
+	<javascript: 'if (shiftCount<0) return this>>(-shiftCount);return this<<shiftCount'>
+]
+
+{ #category : #'bit manipulation' }
+PjNumber >> bitXor: arg [ 
+	<javascript: 'return this^arg'>
+]
+
 { #category : #'mathematical functions' }
 PjNumber >> cos [
 	<javascript: 'return Math.cos(this);'>
@@ -175,6 +207,51 @@ PjNumber >> exp [
 ]
 
 { #category : #'mathematical functions' }
+PjNumber >> floorLog: radix [
+	<pharoJsImportFrom: Number>
+]
+
+{ #category : #'bit manipulation' }
+PjNumber >> highBitOfPositiveReceiver [
+	| shifted bitNo |
+	"Answer the index of the high order bit of the receiver, or zero if the 
+	receiver is zero. Receiver has to be positive!"
+	shifted := self.
+	bitNo := 0.
+	[shifted < 65536]
+		whileFalse: 
+			[shifted := shifted bitShift: -16.
+			bitNo := bitNo + 16].
+	shifted < 256
+		ifFalse: 
+			[shifted := shifted bitShift: -8.
+			bitNo := bitNo + 8].
+	shifted < 16
+		ifFalse: 
+			[shifted := shifted bitShift: -4.
+			bitNo := bitNo + 4].
+	shifted < 4
+		ifFalse: 
+			[shifted := shifted bitShift: -2.
+			bitNo := bitNo + 2].
+	shifted < 2
+		ifFalse: 
+			[shifted := shifted bitShift: -1.
+			bitNo := bitNo +1].
+	^ shifted+bitNo
+]
+
+{ #category : #testing }
+PjNumber >> isFloat [
+	^ self isInteger not
+]
+
+{ #category : #testing }
+PjNumber >> isInteger [
+	<javascript: 'return (this|0)==this'>
+]
+
+{ #category : #'mathematical functions' }
 PjNumber >> ln [
 	<javascript: 'return Math.log(this);'>
 ]
@@ -182,6 +259,29 @@ PjNumber >> ln [
 { #category : #'mathematical functions' }
 PjNumber >> log [
 	<javascript: 'return Math.log10(this);'>
+]
+
+{ #category : #'bit manipulation' }
+PjNumber >> lowBit [
+	" Answer the index of the low order one bit.
+		2r00101000 lowBit       (Answers: 4)
+		2r-00101000 lowBit      (Answers: 4)
+	  First we skip bits in groups of 8, then by 1.
+	  While not optimal, this is a good tradeoff; long
+	  integer #lowBit always invokes us with bytes."
+	| n result |
+	n := self.
+	n = 0 ifTrue: [ ^ 0 ].
+	result := 1.
+	[(n bitAnd: 16rFF) = 0]
+		whileTrue: [
+			result := result + 8.
+			n := n bitShift: -8 ].
+	[(n bitAnd: 1) = 0]
+		whileTrue: [
+			result := result + 1.
+			n := n bitShift: -1 ].
+	^ result
 ]
 
 { #category : #proxy }

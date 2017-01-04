@@ -33,7 +33,7 @@ PjUndefinedObject class >> new [
 	^PjCore signal: 'cannot create instances of UndefinedObject'
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjUndefinedObject >> = other [
 	<javascript: 'return undefined==other'>
 ]
@@ -41,6 +41,11 @@ PjUndefinedObject >> = other [
 { #category : #converting }
 PjUndefinedObject >> asJSON [
 	^ 'null'
+]
+
+{ #category : #comparing }
+PjUndefinedObject >> identityHash [
+	^ 256
 ]
 
 { #category : #converting }

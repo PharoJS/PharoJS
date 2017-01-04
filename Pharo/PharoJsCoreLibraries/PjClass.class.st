@@ -31,13 +31,6 @@ PjClass >> adoptInstance: anObject [
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> canUnderstand: selector [
-	| jsSelector |
-	jsSelector := PjCore makeJavascriptSelector: selector.
-	^ (self prototype js_at: jsSelector) ifNil: [ false ] ifNotNil: [: selct | '__DNU' ~= (selct js_at: #name)]
-]
-
-{ #category : #'Behavior: reflection' }
 PjClass >> class [
 	^ PjCore metaclassOf: self
 ]

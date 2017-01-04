@@ -17,6 +17,15 @@ PjString class >> defaultSize [
 	^10 
 ]
 
+{ #category : #'pharoJs support' }
+PjString class >> jsTranspilationImportMethods [
+	<pharoJsSkip>
+	^ {String class -> #(
+				stringHash:initialHash: 
+			).
+		}
+]
+
 { #category : #'instance creation' }
 PjString class >> new [
 	^ ''
@@ -37,32 +46,32 @@ PjString >> , other [
 	<javascript: 'return this+other'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjString >> < other [
 	<javascript: 'return this<other'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjString >> <= other [
 	<javascript: 'return this<=other'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjString >> = other [
 	<javascript: 'return this==other'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjString >> > other [
 	<javascript: 'return this>other'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjString >> >= other [
 	<javascript: 'return this>=other'>
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjString >> allButFirst [
 	^ self js_substring: 1
 ]
@@ -72,12 +81,12 @@ PjString >> allButFirst: n [
 	^ self js_substring: n
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjString >> allButLast [
 	^ self js_substring: 0 to: self size - 1
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjString >> allButLast: n [
 	^ self js_substring: 0 to: self size - n
 ]
@@ -141,6 +150,11 @@ PjString >> at: index put: anObject [
 	<javascript: 'throw new Error("cannot mutate strings");'>
 ]
 
+{ #category : #accessing }
+PjString >> basicAt: aNumber [
+	^ 	self js_charCodeAt: aNumber-1
+]
+
 { #category : #comparing }
 PjString >> beginsWith: prefix [
 	^ (self js_substring: 0 to: prefix size)=prefix
@@ -154,7 +168,7 @@ PjString >> capitalized [
 
 { #category : #accessing }
 PjString >> charCode [
-	^ self js_charCodeAt: 0
+	^ self basicAt: 1
 ]
 
 { #category : #accessing }
@@ -162,7 +176,7 @@ PjString >> codePoint [
 	^ self js_charCodeAt: 0
 ]
 
-{ #category : #testing }
+{ #category : #enumerating }
 PjString >> collect: aBlock [
 	| arr |
 	arr := self js_split: ''.
@@ -197,6 +211,15 @@ PjString >> first: n [
 	^ self js_substring: 0 to: n
 ]
 
+{ #category : #comparing }
+PjString >> hash [
+	"#hash is implemented, because #= is implemented"
+	"ar 4/10/2005: I had to change this to use ByteString hash as initial 
+	hash in order to avoid having to rehash everything and yet compute
+	the same hash for ByteString and WideString."
+	^ self class stringHash: self initialHash: 0
+]
+
 { #category : #testing }
 PjString >> ifEmpty: aBlock [
 	self isEmpty ifTrue: [^aBlock value].
@@ -221,7 +244,7 @@ PjString >> isString [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : #splitjoin }
 PjString >> join: anArray [
 	^ anArray js_join: self
 ]
@@ -257,7 +280,7 @@ PjString >> value [
 	<javascript: 'return ""+this'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjString >> ~= other [
 	<javascript: 'return this!=other'>
 ]

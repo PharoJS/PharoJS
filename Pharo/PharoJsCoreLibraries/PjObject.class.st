@@ -13,6 +13,9 @@ Class {
 	#pools : [
 		'PjDomGlobals'
 	],
+	#classInstVars : [
+		'nextIdentityHash'
+	],
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
@@ -36,7 +39,7 @@ PjObject class >> jsTranspilationImportMethods [
 				-> as: asOrderedCollection 
 				isKindOf: error: respondsTo: isMemberOf: className
 				isNotNil notNil isString isClass isBlock isNumber isBehavior 
-				isCollection isArray 
+				isCollection isArray isFloat isInteger isCharacter isSymbol isStream
 			).
 		Collection -> #(
 				addAll: 
@@ -50,6 +53,11 @@ PjObject class >> jsTranspilationImportMethods [
 		}
 ]
 
+{ #category : #comparing }
+PjObject class >> nextIdentityHash [
+	^ nextIdentityHash := (nextIdentityHash ifNil: [12345]) hashMultiply
+]
+
 { #category : #proxy }
 PjObject class >> resultObject: result [
 	<javascript: '
@@ -58,12 +66,12 @@ PjObject class >> resultObject: result [
 	'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjObject >> = other [
 	<javascript: 'return this==other'>
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjObject >> == other [
 	<javascript: 'return this===other'>
 ]
@@ -131,6 +139,17 @@ PjObject >> doesNotUnderstand: aMessage [
 PjObject >> flag: aSymbol [
 ]
 
+{ #category : #comparing }
+PjObject >> hash [
+	^ self identityHash
+]
+
+{ #category : #comparing }
+PjObject >> identityHash [
+	^ (self instVarNamed: #_js_hash) ifNil: [
+		self instVarNamed: #_js_hash putHidden: self class nextIdentityHash ]
+]
+
 { #category : #'dictionary emulation' }
 PjObject >> includesKey: key [
 	<javascript: 'return this.hasOwnProperty(key)'>
@@ -141,14 +160,21 @@ PjObject >> initialize [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #introspection }
 PjObject >> instVarNamed: aString [
 	^ self js_at: aString
 ]
 
-{ #category : #accessing }
+{ #category : #introspection }
 PjObject >> instVarNamed: aString put: anObject [
 	^ self js_at: aString put: anObject
+]
+
+{ #category : #introspection }
+PjObject >> instVarNamed: aString putHidden: anObject [
+	<javascript: '
+	try{Object.defineProperty(this,aString,{value:anObject,writable:true})}catch(e){}
+	return anObject'>
 ]
 
 { #category : #'dictionary emulation' }
@@ -275,12 +301,12 @@ PjObject >> yourself [
 	^self
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjObject >> ~= other [
 	^ (self = other) not
 ]
 
-{ #category : #testing }
+{ #category : #comparing }
 PjObject >> ~~ other [
 	^ (self == other) not
 ]

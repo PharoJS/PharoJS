@@ -64,6 +64,13 @@ PjFunction >> basicNew: arg1 with: arg2 with: arg3 with: arg4 with: arg5 [
 	<javascript: 'return new this(arg1, arg2, arg3, arg4, arg5)'>
 ]
 
+{ #category : #'Behavior: reflection' }
+PjFunction >> canUnderstand: selector [
+	| jsSelector |
+	jsSelector := PjCore makeJavascriptSelector: selector.
+	^ (self prototype js_at: jsSelector) ifNil: [ false ] ifNotNil: [: selct | '__DNU' ~= (selct js_at: #name)]
+]
+
 { #category : #evaluating }
 PjFunction >> close [
 	PjCore log: 'unoptimized close may not capture semantics'.
