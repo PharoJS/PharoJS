@@ -60,24 +60,17 @@ PjNumber class >> javascriptInitialize [
 { #category : #'pharoJs support' }
 PjNumber class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^ self jsTranspilationImportMethodsMagnitude,
-		{Number -> #(
-				negated reciprocal log: asInteger squared even odd fractionPart integerPart // strictlyPositive positive negative raisedToInteger: raisedTo:
-				isNumber isNaN isZero
-			).
-		Integer -> #(
-				asCharacter
-			).
-		SmallInteger -> #(
-				highBit basicIdentityHash identityHash hashMultiply hash
-			).
-		Float -> #(
-				isInfinite rounded
-			).
-		Float class -> #(
-				denormalized e emax emin epsilon fmax fmin fminDenormalized fminNormalized halfPi infinity maxExactInteger nan negativeInfinity negativeZero one pi precision radix threePi twoPi zero
-			).
-		}
+	^ self jsTranspilationImportMethodsMagnitude
+		,
+			{(Number 
+				->
+					#(#floorLog: #negated #reciprocal #log: #asInteger #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isNaN #isZero)).
+			(Integer -> #(#asCharacter)).
+			(SmallInteger -> #(#highBit #basicIdentityHash #identityHash #hashMultiply #hash)).
+			(Float -> #(#isInfinite #rounded)).
+			(Float class
+				->
+					#(#denormalized #e #emax #emin #epsilon #fmax #fmin #fminDenormalized #fminNormalized #halfPi #infinity #maxExactInteger #nan #negativeInfinity #negativeZero #one #pi #precision #radix #threePi #twoPi #zero))}
 ]
 
 { #category : #arithmetics }
@@ -204,11 +197,6 @@ PjNumber >> degreesToRadians [
 { #category : #'mathematical functions' }
 PjNumber >> exp [
 	<javascript: 'return Math.exp(this);'>
-]
-
-{ #category : #'mathematical functions' }
-PjNumber >> floorLog: radix [
-	<pharoJsImportFrom: Number>
 ]
 
 { #category : #'bit manipulation' }
