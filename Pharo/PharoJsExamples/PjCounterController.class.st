@@ -3,10 +3,20 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'counter',
-		'updateDisplayBlock'
+		'countDisplay'
 	],
 	#category : #'PharoJsExamples-Counter'
 }
+
+{ #category : #accessing }
+PjCounterController >> countDisplay [
+	^ countDisplay
+]
+
+{ #category : #accessing }
+PjCounterController >> countDisplay: anObject [
+	countDisplay := anObject
+]
 
 { #category : #accessing }
 PjCounterController >> counter [
@@ -32,15 +42,5 @@ PjCounterController >> reset [
 
 { #category : #displaying }
 PjCounterController >> updateDisplay [
-	self updateDisplayBlock value: self counter count
-]
-
-{ #category : #accessing }
-PjCounterController >> updateDisplayBlock [
-	^ updateDisplayBlock
-]
-
-{ #category : #accessing }
-PjCounterController >> updateDisplayBlock: anObject [
-	updateDisplayBlock := anObject
+	self countDisplay innerHTML: self counter count
 ]

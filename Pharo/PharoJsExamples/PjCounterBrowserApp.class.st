@@ -36,18 +36,13 @@ PjCounterBrowserApp >> incrementButton [
 
 { #category : #'initialize-release' }
 PjCounterBrowserApp >> initialize [
-	| countDisplay resetButton incrementButton |
 	super initialize.
 	counter := PjCounter new.
 	controller := PjCounterController new.
-	countDisplay := self countDisplay.
-	resetButton := self resetButton.
-	incrementButton := self incrementButton.
-	
 	controller counter: counter.
-	controller updateDisplayBlock: [ :newCount | countDisplay innerHTML: newCount ].
-	resetButton addEventListener: #click block: [ controller reset ].
-	incrementButton addEventListener: #click block: [ controller increment ]
+	controller countDisplay: self countDisplay.
+	self resetButton addEventListener: #click block: [ controller reset ].
+	self incrementButton addEventListener: #click block: [ controller increment ]
 ]
 
 { #category : #accessing }
