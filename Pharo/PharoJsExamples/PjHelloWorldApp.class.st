@@ -2,9 +2,12 @@
 Simple Hello World example. 
 The app UI relies on an text input field and a button.
 The HTML file is on GIT https://github.com/bouraqadi/PharoJS.git sub-folder PharoJsExamples/HelloWorld/
+
+To generate the javascript index.js file, evaluate the following expression: 
+PjHelloWorldApp exportApp
 "
 Class {
-	#name : #PjGreetingApp,
+	#name : #PjHelloWorldApp,
 	#superclass : #PjFileBasedBrowserApp,
 	#instVars : [
 		'user'
@@ -13,13 +16,13 @@ Class {
 }
 
 { #category : #description }
-PjGreetingApp class >> appClasses [
+PjHelloWorldApp class >> appClasses [
 	<pharoJsSkip>
 	^super appClasses, { PjUser }
 ]
 
 { #category : #'initialize-release' }
-PjGreetingApp >> start [
+PjHelloWorldApp >> start [
 	| nameInput sayHelloButton |
 	super start.
 	user := PjUser new.
