@@ -253,6 +253,7 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 
 { #category : #evaluating }
 PjBridge >> evalResult: aString [
+	self server logSocketRead: aString.
 	^ self evalResult: aString parsed: (STON fromString: aString)
 ]
 
@@ -489,7 +490,9 @@ PjBridge >> scheduleCallback: aBlock [
 PjBridge >> sendMessage: aString [
 	self 
 		when: [self isConnected] 
-		do: [self webSocket sendMessage: aString] 
+		do: [
+			self webSocket sendMessage: aString.
+			self server logSocketWritten: aString] 
 		onTimeOutDo: [ self inform: 'WebSocket is NOT avaialble' ]
 		timeOutDuration: 100 milliSeconds
 ]
@@ -517,6 +520,11 @@ PjBridge >> serverClass [
 { #category : #accessing }
 PjBridge >> serverUrl [
 	^ self server url
+]
+
+{ #category : #accessing }
+PjBridge >> serverUrl: aString [
+	^ self server serverUrl: aString
 ]
 
 { #category : #accessing }

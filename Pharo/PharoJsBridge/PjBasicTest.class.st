@@ -188,6 +188,14 @@ PjBasicTest >> testMultilineConstants [
 { #category : #testing }
 PjBasicTest >> testNumber [
 	self assertEquivalent: [ 1 ].
+	self assertEquivalent: [ 2 asInteger ].
+	self assertEquivalent: [ 2.5 asInteger ].
+	self assertEquivalent: [ 2 asFloat ].
+	self assertEquivalent: [ 2.5 asFloat ].
+	self assertEquivalent: [ 2 asNumber ].
+	self assertEquivalent: [ 2.5 asNumber ].
+	self assertEquivalent: [ '2' asNumber ].
+	self assertEquivalent: [ '2.5' asNumber ].
 
 ]
 

@@ -111,6 +111,31 @@ PjServer >> javascript: jsString [
 	self delegate javascript: jsString
 ]
 
+{ #category : #logging }
+PjServer >> logSocketRead: aString [
+	logLevel < 4 ifTrue: [ ^ self ].
+	(self newLogEvent: PjSocketLogEvent)
+		direction: 'read';
+		contents: aString;
+		emit.
+
+]
+
+{ #category : #logging }
+PjServer >> logSocketWritten: aString [
+	logLevel < 4 ifTrue: [ ^ self ].
+	(self newLogEvent: PjSocketLogEvent)
+		direction: 'wrote';
+		contents: aString;
+		emit.
+
+]
+
+{ #category : #logging }
+PjServer >> loggingOn [
+	logLevel := 4 " extended for websocket tracking "
+]
+
 { #category : #'request handling' }
 PjServer >> responseHeadersForKey: key [
 	"Return the headers for a WebSocket setup response, given key"
