@@ -1,0 +1,34 @@
+{
+    "title" : "PharoJS User Documentation",
+    "author": "Dave Mason & Noury Bouraqadi"
+}
+!User Manual
+!!Overview
+
+PharoJS is a system to allow you to develop your code in Pharo using
+    all the tools available in the IDE, including refactoring browsers
+    and playgrounds, and then to be able to deploy your code to a
+    Javascript environment - web browser or NodeJS.
+
+There are many ways you can approach this, depending on the nature of
+your project and your preferred development workflow.
+
+!!!Standalone Applications
+
+Perhaps the simplest approach is to develop a standalone application
+to run as a SPA (Single Page Application).
+To do this simply subclass ==PjBrowserApplication== (or
+==PjNodeApplication== for a Node application)
+
+!!Dealing with Callbacks
+
+When using NodeJS, callbacks are a fact of life.
+Many NodeJS packages provide functions that run asynchronously calling
+a callback function upon error or completion.  The PharoJS way to
+provide these callbacks is with Smalltalk blocks.  Normally these will
+take 2 parameters: an error value and a success value.  The key point
+is that you should NOT attempt to return from these callback.
+Firstly, the return will not make any sense as the original call stack
+has long since disappeared.  Secondly, Smalltalk non-local returns are
+implemented in PharoJS as throwing a value, which will appear to the
+NodeJS runtime as an uncaught error, and abort execution.
