@@ -3,7 +3,7 @@ Extension { #name : #PjApplication }
 { #category : #'*PharoJsTools-Playground' }
 PjApplication classSide >> playground [
 	<pharoJsSkip>
-	self bridge playground
+	^ self bridge playground
 ]
 
 { #category : #'*PharoJsTools-Playground' }
@@ -31,6 +31,12 @@ PjApplication classSide >> playgroundLoadClassesContent [
 PjApplication classSide >> playgroundWithoutLaunch [
 	<pharoJsSkip>
 	self bridge playgroundWithoutLaunch
+]
+
+{ #category : #'*PharoJsTools-Playground' }
+PjApplication classSide >> playgroundWithoutLaunchOnUrl: aString [
+	<pharoJsSkip>
+	^ self bridge playgroundWithoutLaunchOnUrl: aString
 ]
 
 { #category : #'*PharoJsTools-Playground' }

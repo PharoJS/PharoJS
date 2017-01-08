@@ -8,7 +8,8 @@ Class {
 		'bridge',
 		'bridgeVar',
 		'allJavascriptGlobals',
-		'page'
+		'page',
+		'pageTitle'
 	],
 	#category : #'PharoJsTools-Playground'
 }
@@ -80,6 +81,16 @@ PjPlayground >> bridgeVar [
 ]
 
 { #category : #building }
+PjPlayground >> codeIn: a [
+	^ (super codeIn: a)
+		title: [ :aPage | 
+			GLMLiveLabelBrick new
+				textLogic: [pageTitle];
+				yourself ];
+		yourself
+]
+
+{ #category : #building }
 PjPlayground >> codePresentationIn: composite [
 	^ composite custom: (PjPresentation onPlayground: self) 
 ]
@@ -103,6 +114,7 @@ PjPlayground >> initialize [
 		,'bridge := ' , PjBrowserApplication name, ' bridge start.' , String cr
 		;
 		yourself.
+	pageTitle := ''.
 	self initPage.
 	self label: 'PharoJS Playground'.
 
@@ -115,8 +127,9 @@ PjPlayground >> initializeWithBridge: aPjBridge [
 	aPjBridge startWithoutWaitingForClient.
 	bridge := aPjBridge.
 	waitTime := 60 seconds.
+	pageTitle := 'waiting for connection'.
 	page := GTPlayPage new
-		title: 'waiting for connection';
+		title: pageTitle;
 		saveContent: '"  listening on:', String cr, String cr,
 			'     ',aPjBridge serverUrl asString, String cr, String cr,'"';
 		yourself.
@@ -124,12 +137,11 @@ PjPlayground >> initializeWithBridge: aPjBridge [
 	self label: 'PharoJS Playground: ',aPjBridge clientTitle.
 	endTime := DateAndTime now + waitTime.
 	aPjBridge waitForClientToStartFor: waitTime doing: [
-		page title: 'waiting for connection for ',(endTime-DateAndTime now) seconds asString,' more seconds'.
-		self startOn: page.
+		pageTitle := 'waiting for connection for ',(endTime-DateAndTime now) seconds asString,' more seconds'.
 		World doOneCycle
 	].
+	pageTitle := 'bridge connected on port ',aPjBridge port asString.
 	page
-		title: 'bridge connected on port ',aPjBridge port asString;
 		saveContent: '" a bridge is now open and globals are defined"', String cr.
 	self startOn: page.
 	bridge := nil.
