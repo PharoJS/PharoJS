@@ -25,7 +25,10 @@ PjFunction class >> forceSubclass: aFunction [
 { #category : #'pharoJs support' }
 PjFunction class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^{BlockClosure -> #( isBlock ).}
+	^{
+		Behavior -> #( inheritsFrom: ).
+		BlockClosure -> #( isBlock ).
+	}
 ]
 
 { #category : #'instance creation' }
@@ -160,6 +163,12 @@ PjFunction >> on: exception do: handlerAction [
 		if(ex._isKindOf_(exception)){return handlerAction(ex)}
 		throw ex
 	}'>
+]
+
+{ #category : #'Behavior: reflection' }
+PjFunction >> superclass [
+	self == Object ifTrue: [ ^nil ].
+	^((self js_at: #prototype) js_at: #__proto__) class
 ]
 
 { #category : #evaluating }

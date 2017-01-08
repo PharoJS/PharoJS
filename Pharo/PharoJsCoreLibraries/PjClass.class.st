@@ -19,7 +19,7 @@ PjClass class >> javascriptName [
 PjClass class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
-		Behavior -> #( inheritsFrom: subclassesDo: allSubclassesDo: isBehavior ).
+		Behavior -> #( subclassesDo: allSubclassesDo: isBehavior ).
 		Class -> #( isClass ).
 	}
 ]
@@ -70,12 +70,6 @@ PjClass >> prototype [
 { #category : #'Behavior: reflection' }
 PjClass >> subclasses [
 	^ subclasses
-]
-
-{ #category : #'Behavior: reflection' }
-PjClass >> superclass [
-	self == Object ifTrue: [ ^nil ].
-	^((self js_at: #prototype) js_at: #__proto__) class
 ]
 
 { #category : #'Behavior: reflection' }

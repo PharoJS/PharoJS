@@ -117,6 +117,11 @@ PjString >> asLowercase [
 ]
 
 { #category : #converting }
+PjString >> asNumber [
+	<javascript: 'return Number(this)'>
+]
+
+{ #category : #converting }
 PjString >> asRegex [
 	<javascript: 'return new RegExp(this)'>
 ]

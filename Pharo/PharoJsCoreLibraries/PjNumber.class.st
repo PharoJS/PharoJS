@@ -64,7 +64,7 @@ PjNumber class >> jsTranspilationImportMethods [
 		,
 			{(Number 
 				->
-					#(#floorLog: #negated #reciprocal #log: #asInteger #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isNaN #isZero)).
+					#(#floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isNaN #isZero)).
 			(Integer -> #(#asCharacter)).
 			(SmallInteger -> #(#highBit #basicIdentityHash #identityHash #hashMultiply #hash)).
 			(Float -> #(#isInfinite #rounded)).
@@ -150,7 +150,7 @@ PjNumber >> arcTan: denominator [
 
 { #category : #converting }
 PjNumber >> asFloat [
-	<javascript: 'return +self'>
+	<javascript: 'return +this'>
 ]
 
 { #category : #arithmetics }
