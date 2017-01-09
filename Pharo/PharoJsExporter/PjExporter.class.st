@@ -122,7 +122,7 @@ PjExporter >> initialize [
 	globalsPools := Set new.
 	self transpiler: self transpilerClass new.
 	self transpiler addAllOptionalConversions"Except: 0 to: 1/2".
-	self transpiler beforeCodeOutputHook: [: pools | self writeGlobalsPolyfills: pools]
+	self setUpForPolyfill.
 
 ]
 
@@ -176,6 +176,12 @@ PjExporter >> nonBootstrapClasses [
 	actualBootstrapClasses := self bootstrapClasses asSet collect: #classToUseForJsConversion.
 	^self classes reject: [ :setClass | 
 			actualBootstrapClasses includes: setClass classToUseForJsConversion]
+]
+
+{ #category : #'initialize-release' }
+PjExporter >> setUpForPolyfill [
+	self transpiler beforeCodeOutputHook: [: pools | self writeGlobalsPolyfills: pools]
+
 ]
 
 { #category : #accessing }
