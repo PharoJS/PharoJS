@@ -22,6 +22,7 @@ Class {
 { #category : #stats }
 PjTimingTest class >> gatherStatistics [
 	<script>
+"	self gatherStatistics "
 	self runTests.
 	self stats inspect.
 
@@ -129,15 +130,23 @@ PjTimingTest >> selector: anObject [
 
 { #category : #running }
 PjTimingTest >> setUp [
-	bridge := PjTimingPlatformApp bridgeForDebug.
+	bridge := PjBridge new.
+"	bridge withClientLogging.
+"	bridge client openBrowserInBackground: true.
+	self inform: 'Timing web browser should open in background'.
+	World doOneCycle;doOneCycle.
+	bridge appClass: PjTimingPlatformApp.
 	bridge timeout: 60 seconds.
 	exporter := bridge exporter.
 	exporter transpiler: PjTimingTestTranspiler new.
+	exporter setUpForPolyfill.
 	self transpiler addAllOptionalConversions.
 	self transpiler removeAllConversions: { PjIfFalseOptimization }.
 	self transpiler addAllConversions: { PjIfTrueOptimization }.
 	nullBlock := self transpiler convertToJs: [  ].
 	bridge start.
+	PjBridge bridge: bridge.
+
 
 ]
 
