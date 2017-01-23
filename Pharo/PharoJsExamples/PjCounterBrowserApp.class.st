@@ -19,11 +19,6 @@ PjCounterBrowserApp class >> appJsSubFolder [
 	^'js'
 ]
 
-{ #category : #description }
-PjCounterBrowserApp class >> setUpAppFolderPrompt [
-	^ 'PharoJS: Folder for app ', self name, ' (see GIT repo https://github.com/bouraqadi/PharoJS.git sub-folder PharoJsExamples/Counter/) please?'.
-]
-
 { #category : #accessing }
 PjCounterBrowserApp >> countDisplay [
 	^ self domElementAt: 'countDisplay'
