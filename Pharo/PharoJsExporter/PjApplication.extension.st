@@ -3,6 +3,7 @@ Extension { #name : #PjApplication }
 { #category : #'*PharoJsExporter-App' }
 PjApplication classSide >> appFolder [
 	<pharoJsSkip>
+	appFolder ifNil: [ appFolder := self defaultAppFolder ].
 	self ifInvalidFolder: appFolder do:[self setUpAppFolder].
 	^appFolder	
 ]
@@ -45,6 +46,24 @@ PjApplication classSide >> appJsSubFolder [
 ]
 
 { #category : #'*PharoJsExporter-App' }
+PjApplication classSide >> defaultAppFolder [
+	<pharoJsSkip>
+	^self defaultAppFolderParent / self defaultAppFolderName
+]
+
+{ #category : #'*PharoJsExporter-App' }
+PjApplication classSide >> defaultAppFolderName [
+	<pharoJsSkip>
+	^self name
+]
+
+{ #category : #'*PharoJsExporter-App' }
+PjApplication classSide >> defaultAppFolderParent [
+	<pharoJsSkip>
+	^Smalltalk imageDirectory / 'PharoJS-master' / self package name
+]
+
+{ #category : #'*PharoJsExporter-App' }
 PjApplication classSide >> exportApp [
 	<pharoJsSkip>
 	self exporterClass exportApp: self appClass
@@ -66,6 +85,18 @@ PjApplication classSide >> globalsPools [
 PjApplication classSide >> ifInvalidFolder: folder do: aBlock [
 	<pharoJsSkip>
 	(folder isNil or: [folder exists not]) ifTrue: aBlock
+]
+
+{ #category : #'*PharoJsExporter-App' }
+PjApplication classSide >> initialize [
+	<pharoJsSkip>
+	| gitResponse gitZip |
+	gitResponse := ZnEasy get: 'https://github.com/bouraqadi/PharoJS/archive/master.zip'.
+	gitZip := ZipArchive new.
+	gitZip readFrom: gitResponse entity readStream.
+	gitZip extractAllTo: Smalltalk imageDirectory.
+	
+
 ]
 
 { #category : #'*PharoJsExporter-App' }
