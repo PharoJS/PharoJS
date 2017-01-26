@@ -53,7 +53,7 @@ PjProxyTest >> testChildren [
 
 { #category : #testing }
 PjProxyTest >> testClick [
-	| rectangle count mouseEventClass |
+	| rectangle count |
 	count := 0.
 	rectangle := document createElement: 'div'.
 	rectangle id: 'grn'.
@@ -66,14 +66,13 @@ PjProxyTest >> testClick [
 					rectangle count: rectangle count + 1].
 	bridge evalJavascript: '(',rectangle asJSON,'.click(false),',rectangle asJSON,'.click(true),false)'.
 	Smalltalk garbageCollect.
-	mouseEventClass := window instVarNamed: #MouseEvent.
-	rectangle dispatchEvent: (mouseEventClass new: #click).
-	rectangle dispatchEvent: (mouseEventClass new: #click).
+	rectangle dispatchEvent: (window MouseEvent new: #click).
+	rectangle dispatchEvent: (window MouseEvent new: #click).
 	self assert: (document getElementById: 'grn') count equals: 4.
 	Smalltalk garbageCollect.
 	self assert: (document getElementById: 'grn') count equals: 4.
-	rectangle dispatchEvent: (mouseEventClass new: #click).
-	rectangle dispatchEvent: (mouseEventClass new: #click).
+	rectangle dispatchEvent: (window MouseEvent new: #click).
+	rectangle dispatchEvent: (window MouseEvent new: #click).
 	Smalltalk garbageCollect.
 	self assert: (document getElementById: 'grn') count equals: 6.
 	self assert: count = 6
