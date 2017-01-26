@@ -93,8 +93,12 @@ PjCore class >> installDNU: aType arguments: args selector: selector js: jsSelec
 		1 ~= type and: [
 			2 ~= type and: [
 				(type := anObject js_at: selector) notNil]]]) ifTrue: [
-		type typeof = 'function' ifTrue: [
-			type := 2
+		'function' = type typeof ifTrue: [
+			(type js_at: #prototype) ifNil: [
+				type := 2
+			] ifNotNil: [
+				type := 0 " this is a constructor "
+			]
 		] ifFalse: [
 			type := args js_at: #length
 	]].
@@ -115,7 +119,7 @@ PjCore class >> installDNU: aType arguments: args selector: selector js: jsSelec
 		type := anObject.
 		[ type notNil ] whileTrue: [
 			((type js_hasOwnProperty: selector) and: [
-				(type js_at: selector) typeof = 'function' ]) ifTrue: [
+				'function'  = (type js_at: selector) typeof ]) ifTrue: [
 				func := type js_at: selector.
 				(Object js_defineProperty: type
 						field: jsSelector
