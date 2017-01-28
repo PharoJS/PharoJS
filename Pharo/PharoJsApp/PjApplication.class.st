@@ -69,9 +69,8 @@ PjApplication class >> setupCode [
 
 { #category : #'start-stop application' }
 PjApplication class >> start [
-	self currentInstance ifNil: [currentInstance := self new].
-	self currentInstance start.
-
+	self currentInstance ifNil: [ currentInstance := self new ].
+	^self currentInstance start; yourself
 ]
 
 { #category : #'start-stop application' }
