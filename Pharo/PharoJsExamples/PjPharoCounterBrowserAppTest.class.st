@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #testing }
-PjPharoCounterBrowserAppTest >> app [
-	PjCounterBrowserApp start.
-	^PjCounterBrowserApp currentInstance.
+PjPharoCounterBrowserAppTest >> currentApp [
+	^PjCounterBrowserApp start.
+
 ]

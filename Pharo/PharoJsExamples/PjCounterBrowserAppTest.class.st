@@ -21,14 +21,14 @@ PjCounterBrowserAppTest class >> isAbstract [
 ]
 
 { #category : #testing }
-PjCounterBrowserAppTest >> app [
+PjCounterBrowserAppTest >> currentApp [
 	self subclassResponsibility
 ]
 
 { #category : #testing }
 PjCounterBrowserAppTest >> setUp [
 	super setUp.
-	application := self app.
+	application := self currentApp.
 	countDisplay := application countDisplay.
 	resetButton := application resetButton.
 	incrementButton := application incrementButton.

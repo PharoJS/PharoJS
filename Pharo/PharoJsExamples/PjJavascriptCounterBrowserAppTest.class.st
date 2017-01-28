@@ -10,6 +10,6 @@ PjJavascriptCounterBrowserAppTest class >> targetPlatforms [
 ]
 
 { #category : #testing }
-PjJavascriptCounterBrowserAppTest >> app [
+PjJavascriptCounterBrowserAppTest >> currentApp [
 	^ self evalBlock: [PjCounterBrowserApp currentInstance]
 ]
