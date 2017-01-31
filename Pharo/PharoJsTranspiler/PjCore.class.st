@@ -87,17 +87,20 @@ PjCore class >> install: anObject asGlobalNamed: jsName [
 { #category : #'doesNotUnderstand support' }
 PjCore class >> installDNU: aType arguments: args selector: selector js: jsSelector for: anObject else: aBlock [
 	" this could be a smalltalk object or a native JS object "
-	| type  func |
+	| type  func functionName |
 	type := aType.
 	(0 ~= type and: [
 		1 ~= type and: [
 			2 ~= type and: [
 				(type := anObject js_at: selector) notNil]]]) ifTrue: [
 		'function' = type typeof ifTrue: [
-			(type js_at: #prototype) ifNil: [
+			functionName := type js_at: #name.
+			'' = functionName ifTrue: [
 				type := 2
-			] ifNotNil: [
-				type := 0 " this is a constructor "
+			] ifFalse: [
+				functionName asCharacter = functionName asCharacter capitalized "We rely on the JS convention that constructors are capiltalized"
+					ifTrue: [type := 0 " this is a constructor "]
+					ifFalse: [ type := 2 ]
 			]
 		] ifFalse: [
 			type := args js_at: #length
