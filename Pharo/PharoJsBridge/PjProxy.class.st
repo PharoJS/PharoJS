@@ -53,14 +53,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjProxy class >> new [
-	self = PjProxy ifTrue: [ ^ self error: 'only subclasses should be instantiated' ].
-	^ super new
-]
-
-{ #category : #'instance creation' }
 PjProxy class >> newProxyNamed: proxyName onBridge: aBridge [
-	^ ((proxyName beginsWith: '$_') ifTrue: [ PjProxyTemp ] ifFalse: [ PjProxyGlobal ]) new
+	^ ((proxyName beginsWith: '$_') ifTrue: [ PjProxy ] ifFalse: [ PjProxyForGlobal ]) new
 		jsName: proxyName onBridge: aBridge;
 		yourself
 ]
@@ -231,11 +225,6 @@ PjProxy >> log: aString [
 { #category : #'force proxy' }
 PjProxy >> name [
 	^ self doesNotUnderstand: (Message selector: #name)
-]
-
-{ #category : #printing }
-PjProxy >> printOn: aStream [
-	self subclassResponsibility
 ]
 
 { #category : #'reflective operations' }
