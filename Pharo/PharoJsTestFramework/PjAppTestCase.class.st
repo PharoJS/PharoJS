@@ -34,6 +34,11 @@ PjAppTestCase class >> compositeSuiteClass [
 	^PjCompositeTestSuite
 ]
 
+{ #category : #'instance creation' }
+PjAppTestCase class >> debug: selector [
+	(self buildSuiteFromMethods: {selector}) debug.
+]
+
 { #category : #testing }
 PjAppTestCase class >> isAbstract [
 	^self == PjAppTestCase or: [ ^super isAbstract ].
