@@ -76,6 +76,18 @@ PjApplication classSide >> exporterClass [
 ]
 
 { #category : #'*PharoJsExporter-App' }
+PjApplication classSide >> externalFilesZipUrl: zipUrl [
+	<pharoJsSkip>
+	| gitResponse gitZip |
+	gitResponse := ZnEasy get: zipUrl.
+	gitZip := ZipArchive new.
+	gitZip readFrom: gitResponse entity readStream.
+	gitZip extractAllTo: Smalltalk imageDirectory.
+	
+
+]
+
+{ #category : #'*PharoJsExporter-App' }
 PjApplication classSide >> globalsPools [
 	<pharoJsSkip>
 	^ self allSharedPoolsRecursive select: #isJavascriptGlobalsPool
@@ -90,12 +102,7 @@ PjApplication classSide >> ifInvalidFolder: folder do: aBlock [
 { #category : #'*PharoJsExporter-App' }
 PjApplication classSide >> initialize [
 	<pharoJsSkip>
-	| gitResponse gitZip |
-	gitResponse := ZnEasy get: 'https://github.com/bouraqadi/PharoJS/archive/master.zip'.
-	gitZip := ZipArchive new.
-	gitZip readFrom: gitResponse entity readStream.
-	gitZip extractAllTo: Smalltalk imageDirectory.
-	
+	self externalFilesZipUrl: 'https://github.com/bouraqadi/PharoJS/archive/master.zip'.
 
 ]
 
