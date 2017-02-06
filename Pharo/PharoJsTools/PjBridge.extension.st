@@ -7,6 +7,11 @@ PjBridge >> playground [
 ]
 
 { #category : #'*PharoJsTools-Playground' }
+PjBridge >> playgroundInitialContent [
+	^ self client playgroundInitialContent
+]
+
+{ #category : #'*PharoJsTools-Playground' }
 PjBridge >> playgroundWithoutLaunch [
 	self launchJavascriptInterpreter: false.
 	^ self playground

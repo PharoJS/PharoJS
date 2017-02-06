@@ -14,7 +14,13 @@ Class {
 	#category : #'PharoJsTools-Playground'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #opening }
+PjPlayground class >> open [
+	"self open"
+	^self new openPage
+]
+
+{ #category : #opening }
 PjPlayground class >> openFor: aPjBridge [
 	^ self basicNew initializeWithBridge: aPjBridge
 ]
@@ -25,7 +31,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	(aBuilder item: #PharoJsPlayground)
 		label: 'PharoJs Playground';
 		target: PjPlayground;
-		action: [ self new ];
+		action: [ self open];
 		withSeparatorAfter; 
 		icon: Smalltalk tools workspace taskbarIcon
 ]
@@ -50,7 +56,7 @@ PjPlayground >> addBinding: anAssociation [
 { #category : #accessing }
 PjPlayground >> allJavascriptGlobals [
 	^ allJavascriptGlobals ifNil: [
-		allJavascriptGlobals := PjProxyGlobal allJavascriptGlobals
+		allJavascriptGlobals := PjProxyForGlobal allJavascriptGlobals
 	]
 ]
 
@@ -60,24 +66,29 @@ PjPlayground >> bridge [
 ]
 
 { #category : #accessing }
-PjPlayground >> bridge: anObject [
+PjPlayground >> bridge: aBridge [
 	bridge ifNotNil: [
 		bridge stop .
 		self allJavascriptGlobals do: [ :name |
 			self removeBinding: name -> nil ]].
-	bridge := anObject.
-	anObject ifNil: [
+	bridge := aBridge.
+	aBridge ifNil: [
 		self label: '...disconnected...'.
 		^ self].
-	page saveContent: page content,bridge playgroundInitialContent.
+	self page saveContent: self page content, bridge playgroundInitialContent.
 	self
-		label: 'PharoJS Playground: ',anObject clientTitle;
+		label: 'PharoJS Playground: ', aBridge clientTitle;
 		setupProxies
 ]
 
 { #category : #accessing }
 PjPlayground >> bridgeVar [
 	^ bridgeVar
+]
+
+{ #category : #accessing }
+PjPlayground >> bridgeVarValue: aBridge [
+	self bridgeVar value: aBridge
 ]
 
 { #category : #building }
@@ -96,27 +107,18 @@ PjPlayground >> codePresentationIn: composite [
 ]
 
 { #category : #initialization }
-PjPlayground >> initPage [
-	| bindings |
-	self openOn: page.
-	bridgeVar := (PjWorkspaceBridgeVariable key: #bridge value: nil)
-		playground: self.
-	bindings := Dictionary newFrom: {bridgeVar}.
-	self setBindings: bindings.
-
-]
-
-{ #category : #initialization }
 PjPlayground >> initialize [
 	super initialize.
-	page := GTPlayPage new saveContent:
-		'" cmd-D on the following line will open a bridge and globals will be defined"', String cr
-		,'bridge := ' , PjBrowserApplication name, ' bridge start.' , String cr
-		;
+	bridgeVar := (PjWorkspaceBridgeVariable key: #bridge value: nil)
+		playground: self;
 		yourself.
+	self page: (GTPlayPage new saveContent:
+		'" cmd-D on the following line will open a bridge and globals will be defined"', String cr
+		,'bridge := ' , PjBrowserApplication name, ' bridge start.' , String cr;
+		yourself).
 	pageTitle := ''.
-	self initPage.
 	self label: 'PharoJS Playground'.
+
 
 ]
 
@@ -128,12 +130,12 @@ PjPlayground >> initializeWithBridge: aPjBridge [
 	bridge := aPjBridge.
 	waitTime := 60 seconds.
 	pageTitle := 'waiting for connection'.
-	page := GTPlayPage new
+	self page: (GTPlayPage new
 		title: pageTitle;
 		saveContent: '"  listening on:', String cr, String cr,
 			'     ',aPjBridge serverUrl asString, String cr, String cr,'"';
-		yourself.
-	self initPage.
+		yourself).
+	self openPage.
 	self label: 'PharoJS Playground: ',aPjBridge clientTitle.
 	endTime := DateAndTime now + waitTime.
 	aPjBridge waitForClientToStartFor: waitTime doing: [
@@ -141,11 +143,11 @@ PjPlayground >> initializeWithBridge: aPjBridge [
 		World doOneCycle
 	].
 	pageTitle := 'bridge connected on port ',aPjBridge port asString.
-	page
+	self page
 		saveContent: '" a bridge is now open and globals are defined"', String cr.
-	self startOn: page.
+	self startOn: self page.
 	bridge := nil.
-	bridgeVar value: aPjBridge
+	self bridgeVarValue: aPjBridge
 ]
 
 { #category : #proxies }
@@ -153,6 +155,25 @@ PjPlayground >> makeJsGlobal: jsGlobalName [
 	^ (PjWorkspaceGlobalVariable key: jsGlobalName)
 		bridge: bridge;
 		yourself
+]
+
+{ #category : #initialization }
+PjPlayground >> openPage [
+	| window bindings |
+	window := self openOn: self page.
+	bindings := Dictionary newFrom: {self bridgeVar}.
+	self setBindings: bindings.
+	^window
+]
+
+{ #category : #accessing }
+PjPlayground >> page [
+	^ page
+]
+
+{ #category : #accessing }
+PjPlayground >> page: anObject [
+	page := anObject
 ]
 
 { #category : #proxies }
