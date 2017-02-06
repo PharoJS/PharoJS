@@ -421,11 +421,6 @@ PjBridge >> openOn: portNumber title: title [
 	self port: portNumber
 ]
 
-{ #category : #playground }
-PjBridge >> playgroundInitialContent [
-	^ self client playgroundInitialContent
-]
-
 { #category : #public }
 PjBridge >> pollFor: aTime orUntil: aBlock [
 	self
