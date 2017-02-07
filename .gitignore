@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *~
 
 PharoJsTestFramework-Test/MinimalApp/index.js
@@ -7,3 +8,7 @@ PharoJsTestFramework-Test/MinimalApp/index.js
 PharoJsExamples/Counter/js/index.js
 
 GameScoreExampleApp/Web/temp
+=======
+
+gitCommitAndPush
+>>>>>>> origin/master
