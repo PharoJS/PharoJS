@@ -108,26 +108,31 @@ PjPlayground >> codePresentationIn: composite [
 
 { #category : #initialization }
 PjPlayground >> initialize [
-	super initialize.
-	bridgeVar := (PjWorkspaceBridgeVariable key: #bridge value: nil)
-		playground: self;
-		yourself.
-	self page: (GTPlayPage new saveContent:
-		'" cmd-D on the following line will open a bridge and globals will be defined"', String cr
-		,'bridge := ' , PjBrowserApplication name, ' bridge start.' , String cr;
-		yourself).
+	self initializeCommonBridge: nil.
+	self page:
+		(GTPlayPage new
+			saveContent:
+				'" cmd-D on the following line will open a bridge and globals will be defined"'
+				, String cr , 'bridge := ' , PjBrowserApplication name
+				, ' bridge start.' , String cr;
+			yourself).
 	pageTitle := ''.
-	self label: 'PharoJS Playground'.
+	self label: 'PharoJS Playground'
+]
 
-
+{ #category : #initialization }
+PjPlayground >> initializeCommonBridge: aPjBridgeOrNil [
+	super initialize.
+	bridge := aPjBridgeOrNil.
+	bridgeVar := (PjWorkspaceBridgeVariable key: #bridge value: bridge)
+		playground: self;
+		yourself
 ]
 
 { #category : #initialization }
 PjPlayground >> initializeWithBridge: aPjBridge [
 	| waitTime endTime |
-	super initialize.
-	aPjBridge startWithoutWaitingForClient.
-	bridge := aPjBridge.
+	self initializeCommonBridge: aPjBridge startWithoutWaitingForClient.
 	waitTime := 60 seconds.
 	pageTitle := 'waiting for connection'.
 	self page: (GTPlayPage new
