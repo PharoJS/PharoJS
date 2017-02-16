@@ -158,7 +158,7 @@ PjFunction >> new: arg1 with: arg2 with: arg3 with: arg4 with: arg5 [
 PjFunction >> on: exception do: handlerAction [
 	<javascript: '
 	try{
-		this()
+		return this()
 	}catch(ex){
 		if(ex._isKindOf_(exception)){return handlerAction(ex)}
 		throw ex

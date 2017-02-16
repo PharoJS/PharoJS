@@ -95,12 +95,12 @@ PjNumber >> - anObject [
 
 { #category : #arithmetics }
 PjNumber >> / anObject [
-	<javascript: 'return this / anObject;'>
+	<javascript: 'if(anObject==0) return ZeroDivide._signal();return this / anObject;'>
 ]
 
 { #category : #arithmetics }
 PjNumber >> // anObject [
-	<javascript: 'return Math.floor(this / anObject)'>
+	^ Math floor: self / anObject
 ]
 
 { #category : #comparing }

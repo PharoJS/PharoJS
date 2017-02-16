@@ -78,11 +78,14 @@ PjObject >> == other [
 
 { #category : #'dictionary emulation' }
 PjObject >> add: assoc [
+	" this strange code is to install add: for objects that already have an add field or to do at:put: "
 
-" this strange code is to install _value for objects that already have a value field or to return self "
-	^ PjCore installDNU: nil arguments: {assoc} selector: #add js: #_add_ for: self else: [
-		self js_at: assoc key put: assoc value
-	]
+	^ PjCore
+		installDnuArgs: {assoc}
+		selector: #add
+		js: #_add_
+		for: self
+		else: [ self js_at: assoc key put: assoc value ]
 ]
 
 { #category : #converting }
@@ -282,11 +285,14 @@ PjObject >> typeof: anObject [
 
 { #category : #testing }
 PjObject >> value [
+	" this strange code is to install _value for objects that already have a value field or to return self "
 
-" this strange code is to install _value for objects that already have a value field or to return self "
-	^ PjCore installDNU: nil arguments: #() selector: #value js: #_value for: self else: [
-		self
-	]
+	^ PjCore
+		installDnuArgs: #()
+		selector: #value
+		js: #_value
+		for: self
+		else: [ self ]
 ]
 
 { #category : #'dictionary emulation' }
