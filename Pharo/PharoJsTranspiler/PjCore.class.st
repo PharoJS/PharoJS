@@ -29,21 +29,29 @@ PjCore class >> emptyJavascriptObject [
 	'>
 ]
 
+{ #category : #globals }
+PjCore class >> globalNamed: jsName [
+	"Get the value of an object in the Smalltalk global space.
+	For now, we use the JS global, but this is likely to evolve once we have environments."
+	^ global js_at: jsName
+]
+
 { #category : #'doesNotUnderstand support' }
 PjCore class >> handleDNU: aMessage for: anObject [
 	" this could be a smalltalk object or a native JS object "
+
 	| selector type |
 	selector := (aMessage selector js_split: ':') js_at: 0.
 	type := selector js_split: '_'.
 	^ self
-			installDNU: type
-			arguments: aMessage arguments
-			selector: selector
-			js: (self makeJavascriptSelector: aMessage selector)
-			for: anObject
-			else: [
-				self error: 'Message not understood: ',anObject className,'>>#',aMessage selector
-	]
+		installDnuArgs: aMessage arguments
+		selector: selector
+		js: (self makeJavascriptSelector: aMessage selector)
+		for: anObject
+		else: [ self
+				error:
+					'Message not understood: ' , anObject className , '>>#'
+						, aMessage selector ]
 ]
 
 { #category : #'nil support' }
@@ -85,14 +93,10 @@ PjCore class >> install: anObject asGlobalNamed: jsName [
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjCore class >> installDNU: aType arguments: args selector: selector js: jsSelector for: anObject else: aBlock [
+PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anObject else: aBlock [
 	" this could be a smalltalk object or a native JS object "
-	| type  func functionName |
-	type := aType.
-	(0 ~= type and: [
-		1 ~= type and: [
-			2 ~= type and: [
-				(type := anObject js_at: selector) notNil]]]) ifTrue: [
+	| type func functionName |
+	(type := anObject js_at: selector) ifNotNil: [
 		'function' = type typeof ifTrue: [
 			functionName := type js_at: #name.
 			'' = functionName ifTrue: [
@@ -105,20 +109,17 @@ PjCore class >> installDNU: aType arguments: args selector: selector js: jsSelec
 		] ifFalse: [
 			type := args js_at: #length
 	]].
-	0 = type ifTrue: [
-		func := self makeGetter: selector.
+	2 > type ifTrue: [
+		0 = type ifTrue: [
+			func := self makeGetter: selector
+		] ifFalse: [
+			func := self makeSetter: selector.
+		].
 		(Object js_defineProperty: (anObject js_at:'__proto__')
 				field: jsSelector
 				properties: (self propertySet: func)).
-		^ func js_call: anObject
-	].
-	1 = type ifTrue: [
-		func := self makeSetter: selector.
-		(Object js_defineProperty: (anObject js_at:'__proto__')
-				field: jsSelector
-				properties: (self propertySet: func)).
-		^ func js_call: anObject with: (args js_at: 0) ].
-	2 <= type ifTrue: [
+		^ func js_apply: anObject args: args 
+	] ifFalse: [
 		type := anObject.
 		[ type notNil ] whileTrue: [
 			((type js_hasOwnProperty: selector) and: [
@@ -132,6 +133,21 @@ PjCore class >> installDNU: aType arguments: args selector: selector js: jsSelec
 			type := type instVarNamed:'__proto__'
 	]].
 	^ aBlock value
+]
+
+{ #category : #'nil support' }
+PjCore class >> isBrowserPlatform [
+	^ (self globalNamed: #navigator) isNotNil
+]
+
+{ #category : #'nil support' }
+PjCore class >> isDomPlatform [
+	^ (self globalNamed: #document) isNotNil
+]
+
+{ #category : #'nil support' }
+PjCore class >> isNodePlatform [
+	^ (self globalNamed: #navigator) isNil
 ]
 
 { #category : #accessing }
@@ -157,51 +173,19 @@ PjCore class >> log: message [
 { #category : #'doesNotUnderstand support' }
 PjCore class >> makeDNU: aSelector [
 	<javascript:
-	'var pjCore=this;
-	return function __DNU() {
-		return this._doesNotUnderstand_(
-			pjCore._selector_arguments_(pjCore._makeSmalltalkSelector_(aSelector),
-										[].slice.call(arguments)))}'>
-										" call to slice may prevent optimization of this function
-										   but most DNUs will only be called once or twice anyway "
-]
-
-{ #category : #'doesNotUnderstand support' }
-PjCore class >> makeDnu0: aSelector [
-	<javascript:
-	'var pjCore=this;
-	return function __DNU() {
-		return this._doesNotUnderstand_(
-			pjCore._selector_arguments_(pjCore._makeSmalltalkSelector_(aSelector),[]))}'>
-]
-
-{ #category : #'doesNotUnderstand support' }
-PjCore class >> makeDnu1: aSelector [
-	<javascript:
-	'var pjCore=this;
-	return function __DNU(arg1) {
-		return this._doesNotUnderstand_(
-			pjCore._selector_arguments_(pjCore._makeSmalltalkSelector_(aSelector),[arg1]))}'>
-]
-
-{ #category : #'doesNotUnderstand support' }
-PjCore class >> makeDnu2: aSelector [
-	<javascript:
-	'var pjCore=this;
-	return function __DNU(arg1,arg2) {
-		return this._doesNotUnderstand_(
-			pjCore._selector_arguments_(pjCore._makeSmalltalkSelector_(aSelector),[arg1,arg2]))}'>
-]
-
-{ #category : #'doesNotUnderstand support' }
-PjCore class >> makeDnuN: aSelector [
-	<javascript:
-	'var pjCore=this;
-	return function __DNU() {
-		var args=new Array(arguments.length);
+	'var pjCore=this,ss=this._makeSmalltalkSelector_(aSelector);
+	switch (ss.split(":").length) {
+		case 1: return function _DNU(){
+			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[]))};
+		case 2: return function __DNU(arg1) {
+			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[arg1]))};
+		case 3: return function __DNU(arg1,arg2) {
+			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[arg1,arg2]))};
+		default: return function __DNU() {
+			var args=new Array(arguments.length);
 			for(var i=0;i<arguments.length;++i) args[i]=arguments[i]
-		return this._doesNotUnderstand_(
-			pjCore._selector_arguments_(pjCore._makeSmalltalkSelector_(aSelector),args))}'>
+			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,args))};
+	}'>
 ]
 
 { #category : #'doesNotUnderstand support' }

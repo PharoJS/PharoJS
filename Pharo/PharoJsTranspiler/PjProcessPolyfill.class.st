@@ -13,6 +13,7 @@ Class {
 { #category : #polyfill }
 PjProcessPolyfill class >> browserPolyfill: aStream [
 	<pharoJsSkip>
+	super browserPolyfill: aStream.
 	aStream
 		nextPutAll: 'var process=process||{exit:function(){window.close()}};';cr
 ]
