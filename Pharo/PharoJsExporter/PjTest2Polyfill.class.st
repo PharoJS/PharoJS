@@ -13,6 +13,7 @@ Class {
 { #category : #polyfill }
 PjTest2Polyfill class >> nodePolyfill: aStream [
 	<pharoJsSkip>
+	super nodePolyfill: aStream.
 	aStream
 		nextPutAll: 'var Bar=Foobar.Bar;';cr
 ]
