@@ -187,6 +187,7 @@ PjBasicTest >> testMultilineConstants [
 
 { #category : #testing }
 PjBasicTest >> testNumber [
+	| x |
 	self assertEquivalent: [ 1 ].
 	self assertEquivalent: [ 2 asInteger ].
 	self assertEquivalent: [ 2.5 asInteger ].
@@ -196,6 +197,18 @@ PjBasicTest >> testNumber [
 	self assertEquivalent: [ 2.5 asNumber ].
 	self assertEquivalent: [ '2' asNumber ].
 	self assertEquivalent: [ '2.5' asNumber ].
+	self assertEquivalent: [ [ 3 / 1 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3 / 0 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3.0 / 0 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3.0 / 2 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3 // 0 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3 // 1 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3.0 // 0 ] on: ZeroDivide do: [ 42 ] ].
+	self assertEquivalent: [ [ 3.0 // 2 ] on: ZeroDivide do: [ 42 ] ].
+	x := 1.5e300.
+	self assertEquivalent: [ x * x  ]. " Infinity "
+	self assertEquivalent: [ x negated * x ]. " -Infinity "
+	self assertEquivalent: [ x * x * 0 ]. " NaN "
 
 ]
 

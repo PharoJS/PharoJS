@@ -254,12 +254,13 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 { #category : #evaluating }
 PjBridge >> evalResult: aString [
 	self server logSocketRead: aString.
-	^ self evalResult: aString parsed: (STON fromString: aString)
+	^ self evalResult: aString parsed: (PjSTONReader from: aString)
 ]
 
 { #category : #evaluating }
 PjBridge >> evalResult: aString parsed: value [
 	value isLiteral ifTrue: [ ^ value ].
+	value isNumber ifTrue: [ ^ value ].
 	value at: #remove ifPresent: [ 
 		| proxy |
 		proxy := PjProxy nilOrProxyNamed: (value at: #proxy) asSymbol onBridge: self.

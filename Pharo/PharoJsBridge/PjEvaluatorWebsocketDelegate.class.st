@@ -142,7 +142,9 @@ PjEvaluatorWebsocketDelegate >> eval: aString [
 		result={exception:exception.message};
 	}
 	try{
-		return JSON.stringify(result);
+		aString=JSON.stringify(result);
+		if(result!=null&&aString=="null") aString=result.toString(); 
+		return aString;
 	}catch(stringifyException){
 		return JSON.stringify({exception:stringifyException.message});
 	}'>

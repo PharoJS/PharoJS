@@ -36,6 +36,7 @@ PjBridgeTestCase >> addToDOM: html [
 PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
 	| actualResult |
 	actualResult := bridge evalBlock: aBlock.
+	expectedResult isNumber ifTrue: [expectedResult isNaN ifTrue: [ ^ self assert: actualResult isNaN ]].
 	self assert: actualResult equals: expectedResult.
 ]
 
