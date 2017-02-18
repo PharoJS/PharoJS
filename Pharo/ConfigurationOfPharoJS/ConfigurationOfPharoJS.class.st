@@ -189,7 +189,7 @@ ConfigurationOfPharoJS >> project [
 ConfigurationOfPharoJS >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.1'.
+	spec for: #'common' version: '1.2'.
 
 ]
 
@@ -244,5 +244,32 @@ ConfigurationOfPharoJS >> version11: spec [
 			package: 'PharoJsTools' with: 'PharoJsTools-NouryBouraqadi.32';
 			package: 'PharoJsTranspiler' with: 'PharoJsTranspiler-NouryBouraqadi.246';
 			package: #PharoJsTranspilerOptimization with: 'PharoJsTranspilerOptimization-DaveMason.35'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPharoJS >> version12: spec [
+	<version: '1.2' imports: #('0.1-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.2'.
+		spec author: 'NouryBouraqadi'.
+		spec timestamp: '2/18/2017 20:29'.
+		spec 
+			project: 'ReusableBricks' with: '1.2';
+			project: 'WebBrowser' with: '0.2.0';
+			project: 'ZincHTTPComponents' with: '2.8.3'.
+		spec 
+			package: 'PharoJsApp' with: 'PharoJsApp-NouryBouraqadi.25';
+			package: 'PharoJsBridge' with: 'PharoJsBridge-DaveMason.111';
+			package: #PharoJsCoreLibraries with: 'PharoJsCoreLibraries-DaveMason.79';
+			package: 'PharoJsExamples' with: 'PharoJsExamples-NouryBouraqadi.22';
+			package: #PharoJsExporter with: 'PharoJsExporter-DaveMason.65';
+			package: 'PharoJsTestFramework' with: 'PharoJsTestFramework-NouryBouraqadi.38';
+			package: #PharoJsTiming with: 'PharoJsTiming-DaveMason.20';
+			package: 'PharoJsTools' with: 'PharoJsTools-DaveMason.33';
+			package: 'PharoJsTranspiler' with: 'PharoJsTranspiler-DaveMason.248';
+			package: #PharoJsTranspilerOptimization with: 'PharoJsTranspilerOptimization-DaveMason.36'. ].
 
 ]
