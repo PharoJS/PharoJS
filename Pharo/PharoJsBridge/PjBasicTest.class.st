@@ -209,6 +209,7 @@ PjBasicTest >> testNumber [
 	self assertEquivalent: [ x * x  ]. " Infinity "
 	self assertEquivalent: [ x negated * x ]. " -Infinity "
 	self assertEquivalent: [ x * x * 0 ]. " NaN "
+	self assertEquivalent: [ (x * x * 0) isNaN ]. " NaN "
 
 ]
 
