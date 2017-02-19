@@ -64,7 +64,7 @@ PjNumber class >> jsTranspilationImportMethods [
 		,
 			{(Number 
 				->
-					#(#floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isNaN #isZero)).
+					#(#floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isZero)).
 			(Integer -> #(#asCharacter)).
 			(SmallInteger -> #(#highBit #basicIdentityHash #identityHash #hashMultiply #hash)).
 			(Float -> #(#isInfinite #rounded)).
@@ -237,6 +237,11 @@ PjNumber >> isFloat [
 { #category : #testing }
 PjNumber >> isInteger [
 	<javascript: 'return (this|0)==this'>
+]
+
+{ #category : #testing }
+PjNumber >> isNaN [
+	<javascript: 'return isNaN(this)'>
 ]
 
 { #category : #'mathematical functions' }
