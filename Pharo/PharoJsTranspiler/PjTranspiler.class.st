@@ -489,16 +489,22 @@ PjTranspiler >> writeMethodsOf: aClass [
 
 { #category : #transpiling }
 PjTranspiler >> writeMethodsOf: aClass named: aName with: reference [
+	"Use JS Object.defineProperty() to ensure that methods are not enumeratable. 
+	This is typically required by some third party libraries that create instances of Object, 
+	and expect that no property is available for enumeration. 
+	We set the writable attribute to true to enable reflection (e.g. replacing the method)."
 	converter classForConversion: aClass.
 	self withMethodsOf: aClass do: [ :method |
 		(self shouldSkipMethodNode: method) ifFalse: [
 			self 
+				nextPutAll: 'Object.defineProperty(';
 				nextPutAll: aName;
 				nextPutAll: reference;
-				nextPut: $. ;
+				nextPutAll: ', "' ;
 				writeJsSelector: method selector onStream: jsStream;
-				nextPutAll: ' = ';
+				nextPutAll: '", {writable: true, value: '; "By default enumeratable is set to false"
 				transpileMethod: method;
+				nextPutAll: '})';
 				cr
 	]]
 ]
