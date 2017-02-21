@@ -38,7 +38,7 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 	exporter addClass: PjClassExtensionForTest.
 	jsCode := exporter javascriptCode.
 	self assertInstanceMethod: #isLiteral equals: '(){return 42}'.
-	self assert: (jsCode splitOn: 'prototype._isLiteral = ') size equals: 2.
+	self assert: (jsCode splitOn: 'prototype, "_isLiteral"') size equals: 2. "We use defineProperty. See PjTranspiler>>#writeMethodsOf:named:with:"
 ]
 
 { #category : #testing }
@@ -54,7 +54,7 @@ PjExporterTest >> testCoreClassedLoaded [
 	jsCode := exporter javascriptCode.
 	self assert: (jsCode includesSubstring: 'function PjApplication(){}' ).
 	self deny: (jsCode includesSubstring: 'function Object()' ).
-	self assert: (jsCode includes: 'Object.__proto__._new =' before: 'PjApplication' ).
+	self assert: (jsCode includes: 'Object.__proto__, "_new"' before: 'PjApplication' ). "We use defineProperty. See PjTranspiler>>#writeMethodsOf:named:with:"
 	self deny: (jsCode includes: 'PjApplication' before: 'Object.__proto__._new =' ).
 
 ]
