@@ -1,6 +1,6 @@
 Class {
 	#name : #PjCounterBrowserAppTest,
-	#superclass : #PjAppTestCase,
+	#superclass : #PjWebAppTestCase,
 	#instVars : [
 		'application',
 		'countDisplay',
