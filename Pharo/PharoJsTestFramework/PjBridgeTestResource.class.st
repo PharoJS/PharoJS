@@ -25,11 +25,6 @@ PjBridgeTestResource >> bridge: aBridge [
 
 ]
 
-{ #category : #running }
-PjBridgeTestResource >> bridgePort [
-	^2222
-]
-
 { #category : #testing }
 PjBridgeTestResource >> defaultTimeOutActionBlock [
 	^[ self fail ]
@@ -74,7 +69,7 @@ PjBridgeTestResource >> setUpBridge [
 
 { #category : #running }
 PjBridgeTestResource >> startBridge [
-	self bridge	startOn: self bridgePort title: nil.
+	self bridge	start
 ]
 
 { #category : #testing }

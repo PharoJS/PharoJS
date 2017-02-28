@@ -112,28 +112,9 @@ PjAppTestCase >> cleanUpInstanceVariables [
 		self instVarNamed: name put: nil ].
 ]
 
-{ #category : #'UI handling' }
-PjAppTestCase >> clickButton: aString [ 
-	self dispatchEvent: 'click' to: (document getElementById: aString).
-]
-
-{ #category : #'UI handling' }
-PjAppTestCase >> dispatchEvent: eventName to: htmlElement [
-	htmlElement dispatchEvent: (self newEvent: eventName)
-]
-
 { #category : #testing }
 PjAppTestCase >> evalBlock: aBlock [
 	^self bridge evalBlock: aBlock
-]
-
-{ #category : #'UI handling' }
-PjAppTestCase >> newEvent: eventName [
-	| event |
-	event := document createEvent: 'HTMLEvents'.
-   event initEvent: eventName with: true with: true.
-	^event
-
 ]
 
 { #category : #testing }

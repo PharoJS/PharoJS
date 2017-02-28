@@ -17,3 +17,22 @@ PjWebAppTestCase class >> isAbstract [
 PjWebAppTestCase class >> targetPlatforms [
 	^ { PjSafari. PjFireFox. PjGoogleChrome }
 ]
+
+{ #category : #'UI handling' }
+PjWebAppTestCase >> clickButton: aString [ 
+	self dispatchEvent: 'click' to: (document getElementById: aString).
+]
+
+{ #category : #'UI handling' }
+PjWebAppTestCase >> dispatchEvent: eventName to: htmlElement [
+	htmlElement dispatchEvent: (self newEvent: eventName)
+]
+
+{ #category : #'UI handling' }
+PjWebAppTestCase >> newEvent: eventName [
+	| event |
+	event := document createEvent: 'HTMLEvents'.
+   event initEvent: eventName with: true with: true.
+	^event
+
+]
