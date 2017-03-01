@@ -17,6 +17,12 @@ Class {
 }
 
 { #category : #description }
+PjDOMApplication class >> appClasses [
+	<pharoJsSkip>
+	^super appClasses, { PjHTMLCollection. PjNodeList}
+]
+
+{ #category : #description }
 PjDOMApplication class >> setupCode [
 	<pharoJsSkip>
 	^'var global=global||this'
