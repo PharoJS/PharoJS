@@ -19,8 +19,13 @@ PjWebAppTestCase class >> targetPlatforms [
 ]
 
 { #category : #'UI handling' }
-PjWebAppTestCase >> clickButton: aString [ 
-	self dispatchEvent: 'click' to: (document getElementById: aString).
+PjWebAppTestCase >> clickElement: domElement [ 
+	self dispatchEvent: 'click' to: domElement.
+]
+
+{ #category : #'UI handling' }
+PjWebAppTestCase >> clickElementById: aString [ 
+	self clickElement: (document getElementById: aString).
 ]
 
 { #category : #'UI handling' }
