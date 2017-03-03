@@ -57,6 +57,11 @@ PjTArray >> indexOf: x [
 	<javascript: 'return this.indexOf(x)+1'>
 ]
 
+{ #category : #accessing }
+PjTArray >> insert: anObject before: spot [
+	<javascript: 'this.splice(spot-1, 0, anObject)	'>
+]
+
 { #category : #testing }
 PjTArray >> isEmpty [
 	^ self size = 0
