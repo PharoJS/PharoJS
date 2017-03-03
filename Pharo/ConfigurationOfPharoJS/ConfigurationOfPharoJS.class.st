@@ -157,6 +157,57 @@ ConfigurationOfPharoJS >> baseline01: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfPharoJS >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/noury/PharoJS/main/'.
+		spec 
+			project: 'ReusableBricks' with: [
+				spec
+					className: #ConfigurationOfReusableBricks;
+					versionString: #'stable';
+					loads: #('Equals' );
+					repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main/' ];
+			project: 'WebBrowser' with: [
+				spec
+					className: #ConfigurationOfWebBrowser;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WebBrowser/main/' ];
+			project: 'ZincHTTPComponents' with: [
+				spec
+					className: #ConfigurationOfZincHTTPComponents;
+					versionString: #'stable';
+					loads: #('Zinc-WebSocket-Core' );
+					repository: 'http://mc.stfx.eu/ZincHTTPComponents' ].
+		spec 
+			package: 'PharoJsApp' with: [
+				spec requires: #('PharoJsTranspiler' ). ];
+			package: 'PharoJsBridge' with: [
+				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'WebBrowser' 'ZincHTTPComponents' ). ];
+			package: #PharoJsCoreLibraries with: [
+				spec requires: #('PharoJsTranspiler' ). ];
+			package: #PharoJsCoreLibrariesTest with: [
+				spec requires: #(#PharoJsCoreLibraries 'PharoJsBridge' ). ];
+			package: 'PharoJsExamples' with: [
+				spec requires: #('PharoJsApp' 'PharoJsTranspiler' 'PharoJsTestFramework' ). ];
+			package: #PharoJsExporter with: [
+				spec requires: #('PharoJsTranspiler' 'PharoJsApp' ). ];
+			package: 'PharoJsTestFramework' with: [
+				spec requires: #(#PharoJsExporter 'PharoJsBridge' 'PharoJsApp' ). ];
+			package: #PharoJsTiming with: [
+				spec requires: #(#PharoJsTranspilerOptimization 'PharoJsBridge' ). ];
+			package: 'PharoJsTools' with: [
+				spec requires: #('PharoJsBridge' ). ];
+			package: 'PharoJsTranspiler' with: [
+				spec requires: #('ReusableBricks' ). ];
+			package: #PharoJsTranspilerOptimization with: [
+				spec requires: #('PharoJsTranspiler' ). ]. ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfPharoJS >> customProjectAttributes [
     "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -169,7 +220,7 @@ ConfigurationOfPharoJS >> customProjectAttributes [
 ConfigurationOfPharoJS >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.1-baseline'.
+	spec for: #'common' version: '0.2-baseline'.
 
 ]
 
