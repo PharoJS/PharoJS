@@ -79,6 +79,11 @@ PjBridgeTestCase >> debug [
 ]
 
 { #category : #testing }
+PjBridgeTestCase >> evalBlock: aBlock [
+	^bridge evalBlock: aBlock
+]
+
+{ #category : #testing }
 PjBridgeTestCase >> initialize [
 	super initialize.
 	debugging := false
