@@ -19,8 +19,19 @@ PjWebAppTestCase class >> targetPlatforms [
 ]
 
 { #category : #'UI handling' }
+PjWebAppTestCase >> changeElement: domElement value: newValue [
+	domElement value: newValue.
+	self dispatchEvent: #change to: domElement.
+]
+
+{ #category : #'UI handling' }
+PjWebAppTestCase >> changeElementById: anId value: newValue [
+	self changeElement: (document getElementById: anId) value: newValue
+]
+
+{ #category : #'UI handling' }
 PjWebAppTestCase >> clickElement: domElement [ 
-	self dispatchEvent: 'click' to: domElement.
+	self dispatchEvent: #click to: domElement.
 ]
 
 { #category : #'UI handling' }
@@ -36,7 +47,7 @@ PjWebAppTestCase >> dispatchEvent: eventName to: htmlElement [
 { #category : #'UI handling' }
 PjWebAppTestCase >> newEvent: eventName [
 	| event |
-	event := document createEvent: 'HTMLEvents'.
+	event := document createEvent: #HTMLEvents.
    event initEvent: eventName with: true with: true.
 	^event
 
