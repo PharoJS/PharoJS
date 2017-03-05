@@ -34,6 +34,8 @@ PjReflectionTest >> testReflection [
 	self assertEquivalent: [42 respondsTo: #ifTrue:].
 	self assertEquivalent: [42 respondsTo: #abs].
 	self assertEquivalent: [true respondsTo: #ifTrue:].
+	self assertEquivalent: [Object new respondsTo: #neverDefined].
+	self assert: [ document respondsTo: #neverDefined ] evaluatesTo: false.
 	self assertEquivalent: [3 isKindOf: Number].
 	self assertEquivalent: [3 isKindOf: Object].
 	self assertEquivalent: [3 isMemberOf: SmallInteger].
