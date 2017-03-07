@@ -175,7 +175,7 @@ PjCore class >> makeDNU: aSelector [
 	<javascript:
 	'var pjCore=this,ss=this._makeSmalltalkSelector_(aSelector);
 	switch (ss.split(":").length) {
-		case 1: return function _DNU(){
+		case 1: return function __DNU(){
 			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[]))};
 		case 2: return function __DNU(arg1) {
 			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[arg1]))};

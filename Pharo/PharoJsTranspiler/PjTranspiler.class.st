@@ -497,14 +497,11 @@ PjTranspiler >> writeMethodsOf: aClass named: aName with: reference [
 	self withMethodsOf: aClass do: [ :method |
 		(self shouldSkipMethodNode: method) ifFalse: [
 			self 
-				nextPutAll: 'Object.defineProperty(';
 				nextPutAll: aName;
 				nextPutAll: reference;
-				nextPutAll: ', "' ;
-				writeJsSelector: method selector onStream: jsStream;
-				nextPutAll: '", {writable: true, value: '; "By default enumeratable is set to false"
+				nextPutAll: '.$def(';
 				transpileMethod: method;
-				nextPutAll: '})';
+				nextPutAll: ')';
 				cr
 	]]
 ]

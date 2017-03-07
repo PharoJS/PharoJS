@@ -186,7 +186,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function(a,$for){var d,$in;$in=$for;return a}'.
+		asStringEquals: 'function _foo(a,$for){var d,$in;$in=$for;return a}'.
 	self
 		assert:
 			(PjMethodNode
@@ -208,7 +208,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function(a){var d;d=[function(){1;2}];return a}'
+		asStringEquals: 'function _foo(a){var d;d=[function(){1;2}];return a}'
 ]
 
 { #category : #testing }

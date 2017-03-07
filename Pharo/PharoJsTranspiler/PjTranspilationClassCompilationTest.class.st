@@ -17,6 +17,18 @@ PjTranspilationClassCompilationTest >> assert: codeString1 appearsBefore: codeSt
 ]
 
 { #category : #testing }
+PjTranspilationClassCompilationTest >> assert: aString includes: mName then: mString [
+	| pName pString pEnd |
+	pName := aString findString: mName startingAt: 1.
+	self assert: pName>0.
+	pString := aString findString: mString startingAt: pName.
+	self assert: pString > pName.
+	pEnd := aString findString: '}' startingAt: pName.
+	self assert: pString < pEnd.
+
+]
+
+{ #category : #testing }
 PjTranspilationClassCompilationTest >> convertAllClasses: classes [
 	^transpiler convertAllClasses: classes;jsCode
 ]

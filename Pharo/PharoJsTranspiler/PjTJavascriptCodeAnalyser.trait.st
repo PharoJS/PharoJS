@@ -80,17 +80,16 @@ PjTJavascriptCodeAnalyser >> jsStream [
 PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 	| start aString end |
 	aString := String streamContents: [: aStream |
-		aStream nextPutAll: 'Object.defineProperty('.
 		aStream nextPutAll: self classToTranspile nameToUseForJsConversion; nextPut: $..
 		aStream nextPutAll: methodOwner.
-		aStream nextPutAll: ', "'.
+		aStream nextPutAll: '.$def(function '.
 		self writeJsSelector: aSymbol onStream: aStream.
-		aStream nextPutAll: '", {writable: true, value: function(' 
+		aStream nextPut: $( 
 	].
 	start := self jsCode findString: aString.
 	start = 0 ifTrue: [ ^ nil ].
 	end := self jsCode findString: (String with: self lineEnding) startingAt: start.
 	end = 0 ifTrue: [ end := self jsCode size + 1 ].
-	^ self jsCode copyFrom: start-1+aString size to: end-3
+	^ self jsCode copyFrom: start-1+aString size to: end-2
 
 ]

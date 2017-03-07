@@ -387,9 +387,14 @@ PjStringGenerator >> visitFieldNodeWithId: fieldId [
 
 { #category : #visiting }
 PjStringGenerator >> visitFunctionNode: aPjFunctionNode [
+	self visitFunctionNode: aPjFunctionNode includeName: false
+]
+
+{ #category : #visiting }
+PjStringGenerator >> visitFunctionNode: aPjFunctionNode includeName: aBoolean [
 	self atPrecedence: FunctionDefnPrecedence do: [
-		self writeFunctionHeader: aPjFunctionNode.
-		self writeFunctionBody: aPjFunctionNode.
+		self writeFunctionHeader: aPjFunctionNode includeName: aBoolean.
+		self writeFunctionBody: aPjFunctionNode
 	]
 ]
 
@@ -422,7 +427,7 @@ PjStringGenerator >> visitMethodNode: aPjMethodNode [
 	savedClass := currentClass.
 	currentClass := aPjMethodNode myClass.
 	[
-		self visitFunctionNode: aPjMethodNode
+		self visitFunctionNode: aPjMethodNode includeName: true
 	] ensure: [ currentClass := savedClass ]
 ]
 
@@ -584,11 +589,18 @@ PjStringGenerator >> writeFunctionBody: aPjFunctionNode [
 ]
 
 { #category : #writing }
-PjStringGenerator >> writeFunctionHeader: aPjFunctionNode [
+PjStringGenerator >> writeFunctionHeader: aPjFunctionNode includeName: aBoolean [
+	self
+		nextPutAll: 'function'.
+	aBoolean ifTrue: [
 		self
-			nextPutAll: 'function(';
-			writeSafeNames: aPjFunctionNode parameters;
-			nextPut: $).
+			nextPut: $ ;
+			writeJsSelector: aPjFunctionNode methodName onStream: self
+	].
+	self
+		nextPut: $(;
+		writeSafeNames: aPjFunctionNode parameters;
+		nextPut: $).
 
 ]
 
