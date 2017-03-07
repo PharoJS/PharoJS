@@ -25,7 +25,7 @@ PjDOMApplication class >> appClasses [
 { #category : #description }
 PjDOMApplication class >> setupCode [
 	<pharoJsSkip>
-	^'var global=global||this'
+	^super setupCode, 'var global=global||this'
 ]
 
 { #category : #'manipulating DOM' }
