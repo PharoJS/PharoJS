@@ -13,11 +13,6 @@ PjWebAppTestCase class >> isAbstract [
 	^self == PjWebAppTestCase or: [ ^super isAbstract ].
 ]
 
-{ #category : #'suite parameters' }
-PjWebAppTestCase class >> targetPlatforms [
-	^ { PjSafari. PjFireFox. PjGoogleChrome }
-]
-
 { #category : #'UI handling' }
 PjWebAppTestCase >> changeElement: domElement value: newValue [
 	domElement value: newValue.

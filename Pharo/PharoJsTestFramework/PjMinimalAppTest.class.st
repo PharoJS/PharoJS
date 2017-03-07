@@ -9,6 +9,11 @@ PjMinimalAppTest class >> appClass [
 	^PjMinimalApp.
 ]
 
+{ #category : #'suite parameters' }
+PjMinimalAppTest class >> targetPlatforms [
+	^ { PjSafari. PjFireFox. PjGoogleChrome }
+]
+
 { #category : #testing }
 PjMinimalAppTest >> testAppReady [
 	self assert: [1+2] evaluatesTo: 3
