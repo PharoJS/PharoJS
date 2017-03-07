@@ -130,7 +130,7 @@ PjDependentTranspiler >> importMethodsAll: aCollection forClass: aClass [
 { #category : #'initailize-release' }
 PjDependentTranspiler >> initialize [
 	super initialize.
-	convertedMethods := Dictionary new.
+	convertedMethods := IdentityDictionary new.
 	classesToConvert := Set new.
 	convertedClasses := Set new.
 	alreadyDefinedClasses := Set new.

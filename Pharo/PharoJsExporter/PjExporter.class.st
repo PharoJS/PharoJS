@@ -215,6 +215,9 @@ PjExporter >> writeCoreObject [
 		nextPutAll: '=global.';
 		nextPutAll: coreName;
 		nextPutAll: '||{}';cr;
+		nextPutAll: 'Object.defineProperty(Object.prototype,"$def",{value:';cr;
+		nextPutAll: ' function $def(aFunc){';cr;
+		nextPutAll: '	Object.defineProperty(this,aFunc.name,{writable:true,value:aFunc})}})';cr;
 		nextPutAll: 'var require';cr;
 		nextPutAll: 'global.';
 		nextPutAll: coreName;
