@@ -16,3 +16,12 @@ PjHTMLCollection class >> jsTranspilationImportMethods [
 		Collection ->#( isCollection ).
 	}
 ]
+
+{ #category : #accessing }
+PjHTMLCollection >> indexOf: x [
+	<javascript: 'for(var i = 0; i < this.length; i++){
+		if(x == this[i]){return i + 1}
+	}
+	return 0;
+	'>
+]

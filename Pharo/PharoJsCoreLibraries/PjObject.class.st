@@ -239,6 +239,15 @@ PjObject >> perform: selector withArguments: argArray inSuperclass: lookupClass 
 	^ (lookupClass prototype js_at: (PjCore registerDnu: selector)) apply: self with: argArray
 ]
 
+{ #category : #printing }
+PjObject >> printString [
+	| jsResponse |
+	jsResponse := self js_toString.
+	(jsResponse isEmpty or: [jsResponse beginsWith: $[ ]) ifFalse: [ ^jsResponse ]. 
+	self className first isVowel ifTrue: [ ^'an ', self className ].
+	^'a ', self className
+]
+
 { #category : #proxy }
 PjObject >> proxyResponse [
 	<javascript:

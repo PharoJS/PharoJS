@@ -8,3 +8,11 @@ Class {
 	#superclass : #PjCollection,
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
+
+{ #category : #'pharojs support' }
+PjDictionary class >> jsTranspilationImportMethods [
+	<pharoJsSkip>
+	^{Dictionary -> #(at:ifAbsentPut:).
+	}
+
+]

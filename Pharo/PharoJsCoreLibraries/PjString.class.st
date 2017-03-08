@@ -4,8 +4,8 @@ strings in Javascript world
 Class {
 	#name : #PjString,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass',
-	#classTraits : 'PjTExtensionClass classTrait',
+	#traits : 'PjTExtensionClass + PjTArray',
+	#classTraits : 'PjTExtensionClass classTrait + PjTArray classTrait',
 	#pools : [
 		'PjDomGlobals'
 	],
@@ -23,6 +23,7 @@ PjString class >> jsTranspilationImportMethods [
 	^ {String class -> #(
 				stringHash:initialHash: 
 			).
+		Character -> #(isVowel)
 		}
 ]
 
@@ -108,7 +109,7 @@ PjString >> asElementSelector [
 
 { #category : #converting }
 PjString >> asInteger [
-	^ self js_charCodeAt: 0
+	<javascript: 'return parseInt(this)'>
 ]
 
 { #category : #converting }
@@ -118,7 +119,7 @@ PjString >> asLowercase [
 
 { #category : #converting }
 PjString >> asNumber [
-	<javascript: 'return Number(this)'>
+	<javascript: 'return parseFloat(this)'>
 ]
 
 { #category : #converting }
