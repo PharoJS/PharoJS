@@ -4,7 +4,24 @@ Class {
 	#category : #PharoJsCoreLibrariesTest
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
+PjDictionaryTest >> testAtIfAbsent [
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d at: #x ifAbsent: [42]].
+
+]
+
+{ #category : #testing }
+PjDictionaryTest >> testAtIfAbsentPut [
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d at: #x ifAbsentPut: 42.
+		d at: #x].
+
+]
+
+{ #category : #testing }
 PjDictionaryTest >> testAtPut [
 	self assertEquivalent: [|d|
 		d := Dictionary new.
@@ -16,7 +33,7 @@ PjDictionaryTest >> testAtPut [
 		d] evaluatesToRaw: '{"x":42}'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjDictionaryTest >> testBridgeConstructor [
 	| eg |
 	eg := bridge evalBlock: [{#a -> 3 . #b -> 5 } asDictionary].
@@ -26,7 +43,7 @@ PjDictionaryTest >> testBridgeConstructor [
 	self assert: [eg keys] evaluatesToRaw: '["a","b","c"]'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjDictionaryTest >> testBridgeConstructorSimple [
 	| eg |
 	eg := bridge evalBlock: [{#a -> 3 } asDictionary].
@@ -34,7 +51,7 @@ PjDictionaryTest >> testBridgeConstructorSimple [
 	self assert: [eg keys] evaluatesToRaw: '["a"]'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjDictionaryTest >> testKeysAndValuesDo [
 	| eg |
 	eg := bridge evalBlock: [{#a -> 3 . #b -> 5 . #c -> 42 } asDictionary].
@@ -45,14 +62,14 @@ PjDictionaryTest >> testKeysAndValuesDo [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjDictionaryTest >> testNewFromPairs [
 	| d |
 	d := bridge evalBlock: [Dictionary newFromPairs: #(x 17 y 42)].
 	self assert: d asRawJSONString equals: '{"x":17,"y":42}'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjDictionaryTest >> testNonInterference [
 	" make sure dictionary emulation doesn't interfere "
 	self assert: [document body classList add: 'hello'] evaluatesTo: nil.

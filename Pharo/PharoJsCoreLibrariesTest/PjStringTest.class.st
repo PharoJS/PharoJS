@@ -13,6 +13,16 @@ PjStringTest >> testConversion [
 ]
 
 { #category : #testing }
+PjStringTest >> testConversionToNumbers [
+	self assertEquivalent: ['07' asInteger].
+	self assertEquivalent: ['3.14' asInteger].
+	self assertEquivalent: ['3.14' asNumber].
+	self assertEquivalent: ['2xyz' asNumber].
+	self assertEquivalent: ['1.41xyz' asNumber].
+
+]
+
+{ #category : #testing }
 PjStringTest >> testFirst [
 	self assert: ['abc' first] evaluatesTo: 'a'.
 	self assert: ['CBA' first] evaluatesTo: 'C'.
