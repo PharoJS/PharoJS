@@ -20,6 +20,11 @@ PjCounterBrowserAppTest class >> isAbstract [
 	^self == PjCounterBrowserAppTest
 ]
 
+{ #category : #'suite parameters' }
+PjCounterBrowserAppTest class >> targetPlatforms [
+	^{PjSafari . PjGoogleChrome. PjFireFox. }
+]
+
 { #category : #testing }
 PjCounterBrowserAppTest >> currentApp [
 	self subclassResponsibility
