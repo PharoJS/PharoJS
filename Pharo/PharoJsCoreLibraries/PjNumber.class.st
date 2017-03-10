@@ -64,7 +64,7 @@ PjNumber class >> jsTranspilationImportMethods [
 		,
 			{(Number 
 				->
-					#(#floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isZero)).
+					#(#floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isZero #quo: #rem:)).
 			(Integer -> #(#asCharacter)).
 			(SmallInteger -> #(#highBit #basicIdentityHash #identityHash #hashMultiply #hash)).
 			(Float -> #(#isInfinite #rounded)).
