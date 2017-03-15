@@ -20,10 +20,16 @@ PjString class >> defaultSize [
 { #category : #'pharoJs support' }
 PjString class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^ {String class -> #(
+	^ {
+			String class -> #(
 				stringHash:initialHash: 
 			).
-		Character -> #(isVowel)
+			String -> #(
+				findTokens: 
+			).
+			Character -> #(
+				isVowel isCharacter to:
+			).
 		}
 ]
 
@@ -273,12 +279,6 @@ PjString >> proxyResponse [
 { #category : #accessing }
 PjString >> size [
 	^self js_at:#length
-]
-
-{ #category : #converting }
-PjString >> to: other [
-	^ (self asciiValue to: other asciiValue) collect:
-				[:ascii | ascii asCharacter]
 ]
 
 { #category : #converting }
