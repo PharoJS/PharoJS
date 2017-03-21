@@ -3,8 +3,24 @@ I implement operations for array-like things in Javascript
 "
 Trait {
 	#name : #PjTArray,
+	#traits : 'PjTCollection',
+	#classTraits : 'PjTCollection classTrait',
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
+
+{ #category : #'pharoJs support' }
+PjTArray classSide >> jsTranspilationImportMethods [
+	<pharoJsSkip>
+	^ self jsTranspilationImportMethodsCollection,
+	{
+		Array -> #( isArray ).
+		SequenceableCollection -> #(
+			doWithIndex: withIndexDo: 
+			allButFirst allButFirst: allButLast allButLast:
+			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with:
+		).
+	} 
+]
 
 { #category : #copying }
 PjTArray >> , other [

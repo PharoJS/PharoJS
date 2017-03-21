@@ -4,24 +4,10 @@ I represent the Javascript Array type.  I am the implementation for Arrays and O
 Class {
 	#name : #PjArray,
 	#superclass : #PjObject,
-	#traits : 'PjTArray + PjTExtensionClass + PjTCollection',
-	#classTraits : 'PjTArray classTrait + PjTExtensionClass classTrait + PjTCollection classTrait',
+	#traits : 'PjTArray + PjTExtensionClass',
+	#classTraits : 'PjTArray classTrait + PjTExtensionClass classTrait',
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
-
-{ #category : #'pharoJs support' }
-PjArray class >> jsTranspilationImportMethods [
-	<pharoJsSkip>
-	^ self jsTranspilationImportMethodsCollection,
-	{
-		Array -> #( isArray ).
-		SequenceableCollection -> #(
-			doWithIndex: withIndexDo: 
-			allButFirst allButFirst: allButLast allButLast:
-			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with:
-		).
-	} 
-]
 
 { #category : #enumerating }
 PjArray >> add: x [
