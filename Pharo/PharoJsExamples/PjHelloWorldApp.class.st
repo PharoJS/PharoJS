@@ -23,11 +23,12 @@ PjHelloWorldApp class >> appClasses [
 
 { #category : #'initialize-release' }
 PjHelloWorldApp >> start [
-	| nameInput sayHelloButton |
+	| nameInput sayHelloButton greetingMessageContainer |
 	super start.
 	user := PjUser new.
-	nameInput := document getElementById: 'nameTextInput'.
-	sayHelloButton := document getElementById: 'sayHelloButton'.
+	nameInput := document getElementById: #nameTextInput.
+	sayHelloButton := document getElementById: #sayHelloButton.
 	nameInput addEventListener: #change block: [ user name: nameInput value ].
-	sayHelloButton addEventListener: #click block: [ window alert: 'Hello ' , user name ]
+	greetingMessageContainer := document getElementById: #greetingMessageContainer.
+	sayHelloButton addEventListener: #click block: [ greetingMessageContainer innerHTML: 'Hello ' , user name ]
 ]
