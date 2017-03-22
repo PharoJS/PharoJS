@@ -4,15 +4,7 @@ I provide Smalltalk method to the NodeList ""class"" in web browsers. Should not
 Class {
 	#name : #PjNodeList,
 	#superclass : #PjObject,
-	#traits : 'PjTArray + PjTExtensionClass',
-	#classTraits : 'PjTArray classTrait + PjTExtensionClass classTrait',
+	#traits : 'PjTArrayLike + PjTExtensionClass',
+	#classTraits : 'PjTArrayLike classTrait + PjTExtensionClass classTrait',
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
-
-{ #category : #'pharoJs support' }
-PjNodeList class >> jsTranspilationImportMethods [
-	<pharoJsSkip>
-	^ {
-		Collection ->#( isCollection ).
-	}
-]
