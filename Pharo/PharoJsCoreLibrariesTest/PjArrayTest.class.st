@@ -5,6 +5,14 @@ Class {
 }
 
 { #category : #testing }
+PjArrayTest >> testAllButFirst [
+	| array |
+	array := bridge evalBlock: [#(10 20 30 40)].
+	self assert: array allButFirst size equals: array size - 1.
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testArrayClassDoesNotOverlapWithArrayFunction [
 	self assertJavascript: 'typeof Array' evaluatesTo: 'function'.
 	self assertJavascript: 'typeof PjArray' evaluatesTo: 'undefined'.
