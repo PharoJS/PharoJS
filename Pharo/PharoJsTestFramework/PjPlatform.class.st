@@ -72,7 +72,7 @@ PjPlatform >> resetApp [
 { #category : #running }
 PjPlatform >> setUp [
 	super setUp.
-	self waitUntilClientReady "useless?"
+	self waitUntilClientReady
 ]
 
 { #category : #running }

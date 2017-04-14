@@ -69,7 +69,7 @@ PjBridgeTestResource >> setUpBridge [
 
 { #category : #running }
 PjBridgeTestResource >> startBridge [
-	self bridge	start
+	self bridge	startWithoutWaitingForClient
 ]
 
 { #category : #testing }
