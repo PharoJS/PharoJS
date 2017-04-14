@@ -36,6 +36,11 @@ PjPlatform >> bridgeIp [
 ]
 
 { #category : #running }
+PjPlatform >> clientClass [
+	^ PjPlatformBoundFileBasedBrowserBridgeClient
+]
+
+{ #category : #running }
 PjPlatform >> ensureAppFolderValid [
 	[self appFolder] 
 		on: Error 
@@ -74,12 +79,8 @@ PjPlatform >> setUp [
 PjPlatform >> setUpBridge [
 	| client |
 	self ensureAppFolderValid.
-	client := PjBrowserSpecificFileBasedBridgeClient newFor: self.
-	self bridge: (PjBridge 
-						bridgeForApp: self appClass
-						client: client).
-
-
+	client := self clientClass newFor: self.
+	self bridge: (PjBridge bridgeForApp: self appClass client: client)
 ]
 
 { #category : #running }

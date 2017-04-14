@@ -93,6 +93,11 @@ PjAppTestCase >> assert: aBlock evaluatesTo: expectedResult [
 ]
 
 { #category : #testing }
+PjAppTestCase >> assertBlock: aBlock [ 
+	self assert: aBlock evaluatesTo: true
+]
+
+{ #category : #testing }
 PjAppTestCase >> assertSmalltalk: smalltalkExpressionString resultsInto: expected [
 	| actual | 
 	actual := self eval: smalltalkExpressionString.
