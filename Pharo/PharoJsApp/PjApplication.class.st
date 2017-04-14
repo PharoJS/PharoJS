@@ -79,3 +79,11 @@ PjApplication class >> stop [
 	self currentInstance stop.
 
 ]
+
+{ #category : #'as yet unclassified' }
+PjApplication >> start [
+]
+
+{ #category : #'start-stop' }
+PjApplication >> stop [
+]
