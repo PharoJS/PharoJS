@@ -75,8 +75,13 @@ PjBridge class >> bridge: aBridge [
 
 { #category : #'instance creation' }
 PjBridge class >> bridgeForApp: app [
+	^ self bridgeForApp: app client: app bridgeClientClass new
+]
+
+{ #category : #'instance creation' }
+PjBridge class >> bridgeForApp: app client: bridgeClient [
 	^ self new
-			client: app bridgeClientClass new;
+			client: bridgeClient;
 			appClass: app;
 			yourself
 ]
