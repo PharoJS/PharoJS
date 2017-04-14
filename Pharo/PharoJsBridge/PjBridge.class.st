@@ -654,7 +654,7 @@ PjBridge >> websocketDelegateClassName [
 
 { #category : #activity }
 PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock [
-	^self when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeOutDuration: 5 seconds 
+	^self when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeOutDuration: self timeout
 ]
 
 { #category : #activity }
