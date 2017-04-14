@@ -72,12 +72,8 @@ PjPlatform >> setUp [
 
 { #category : #running }
 PjPlatform >> setUpBridge [
-	| client |
 	self ensureAppFolderValid.
 	super setUpBridge.
-	client := PjBrowserSpecificFileBasedBridgeClient newFor: self.
-	self bridge client: client.
-	self bridge appClass: self appClass.
 
 
 ]
