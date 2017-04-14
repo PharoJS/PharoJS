@@ -1,5 +1,11 @@
 Extension { #name : #PjBrowserApplication }
 
+{ #category : #'*PharoJsExporter-App' }
+PjBrowserApplication classSide >> appHtmlUrlString [
+	<pharoJsSkip>
+	^'file:', self appFullHtmlFileName pathString
+]
+
 { #category : #'*PharoJsExporter' }
 PjBrowserApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	<pharoJsSkip>

@@ -31,12 +31,6 @@ PjDOMApplication classSide >> appHtmlSubFolder [
 	^ nil
 ]
 
-{ #category : #'*PharoJsExporter-App' }
-PjDOMApplication classSide >> appHtmlUrlString [
-	<pharoJsSkip>
-	^'file:', self appFullHtmlFileName pathString
-]
-
 { #category : #'*PharoJsExporter' }
 PjDOMApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	<pharoJsSkip>
