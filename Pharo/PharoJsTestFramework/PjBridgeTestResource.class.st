@@ -25,16 +25,6 @@ PjBridgeTestResource >> bridge: aBridge [
 
 ]
 
-{ #category : #testing }
-PjBridgeTestResource >> defaultTimeOutActionBlock [
-	^[ self fail ]
-]
-
-{ #category : #testing }
-PjBridgeTestResource >> defaultWaitTimeOutDuration [ 
-	^2 seconds
-]
-
 { #category : #'initialize-release' }
 PjBridgeTestResource >> initialize [
 	super initialize.
@@ -48,7 +38,7 @@ PjBridgeTestResource >> isAvailable [
 ]
 
 { #category : #running }
-PjBridgeTestResource >> maxWaitDuration [
+PjBridgeTestResource >> maxWaitClientReadyDuration [
 	^2 seconds
 ]
 
@@ -72,11 +62,6 @@ PjBridgeTestResource >> startBridge [
 	self bridge	startWithoutWaitingForClient
 ]
 
-{ #category : #testing }
-PjBridgeTestResource >> stepDuration [
-	^50 milliSeconds
-]
-
 { #category : #running }
 PjBridgeTestResource >> tearDown [
 	super tearDown.
@@ -87,27 +72,4 @@ PjBridgeTestResource >> tearDown [
 PjBridgeTestResource >> waitUntilBridgeReady [
 	self waitWhile: [bridge isListening not]
 
-]
-
-{ #category : #testing }
-PjBridgeTestResource >> waitWhile: conditionBlock [
-	self waitWhile: conditionBlock timeOut: self defaultWaitTimeOutDuration 
-]
-
-{ #category : #testing }
-PjBridgeTestResource >> waitWhile: conditionBlock timeOut: maxToWait [ 
-	self
-		waitWhile: conditionBlock 
-		timeOut: maxToWait 
-		ifTimeOutDo: self defaultTimeOutActionBlock
-]
-
-{ #category : #testing }
-PjBridgeTestResource >> waitWhile: conditionBlock timeOut: maxToWait ifTimeOutDo: timeOutBlock [
-	| totalWaited |
-	totalWaited := 0 second.
-	[totalWaited < maxToWait and: conditionBlock] whileTrue: [
-		self stepDuration wait.
-		totalWaited := totalWaited + self stepDuration].
-	totalWaited >= maxToWait ifTrue: timeOutBlock
 ]

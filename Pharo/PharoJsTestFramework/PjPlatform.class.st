@@ -53,7 +53,7 @@ PjPlatform >> isAvailable [
 ]
 
 { #category : #running }
-PjPlatform >> maxWaitDuration [
+PjPlatform >> maxWaitClientReadyDuration [
 	^10 seconds
 ]
 
@@ -87,7 +87,7 @@ PjPlatform >> setUpBridge [
 PjPlatform >> waitUntilClientReady [
 	self 
 		waitWhile: [self isUnavailable]
-		timeOut: self maxWaitDuration
+		timeOut: self maxWaitClientReadyDuration
 		ifTimeOutDo: [
 			|retry|
 			retry := self confirm: 'Client unavailable yet. Continue waiting?'.

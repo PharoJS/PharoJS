@@ -15,7 +15,7 @@ PjTWaitUntilReady >> defaultWaitTimeOutDuration [
 
 { #category : #waiting }
 PjTWaitUntilReady >> stepDuration [
-	^50 milliSeconds
+	^100 milliSeconds
 ]
 
 { #category : #waiting }
