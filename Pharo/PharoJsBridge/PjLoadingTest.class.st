@@ -20,6 +20,44 @@ PjLoadingTest >> testEvalBlock [
 ]
 
 { #category : #testing }
+PjLoadingTest >> testLoad2ExtensionsOfTheSameClassWithSameSuperclassAndOverrides [
+	| extension1 extension2 |
+	extension1 := classFactory newClass.
+	{'instMethod1
+	^true'.
+	'instMethod2
+	^200'} do: [: methodString | extension1 compile: methodString].
+	{'classMethod1
+	^true'.
+	'classMethod2
+	^200'.
+	'javascriptName
+	<pharoJsSkip>
+	^#Number'
+	} do: [: methodString | extension1 class compile: methodString].
+	extension2 := classFactory newClass.
+	{'instMethod1
+	^false'.
+	'instMethod3
+	^300'} do: [: methodString | extension2 compile: methodString].
+	{'classMethod1
+	^false'.
+	'classMethod3
+	^300'.
+	'javascriptName
+	<pharoJsSkip>
+	^#Number'} do: [: methodString | extension2 class compile: methodString].	
+	bridge loadAllClasses: {extension1. extension2}.
+	self assert: [ 1 instMethod1 ] evaluatesTo: false. "Overriden instance method"
+	self assert: [ Number classMethod1 ] evaluatesTo: false.  "Overriden class method"
+	self assert: [ 100 instMethod2 ] evaluatesTo: 200. "instance method from extension 1"
+	self assert: [ Number classMethod2 ] evaluatesTo: 200.  "class method from extension 1"
+	self assert: [ 3.14 instMethod3 ] evaluatesTo: 300. "instance method from extension 2"
+	self assert: [ Number classMethod3 ] evaluatesTo: 300.  "class method from extension 2"
+
+]
+
+{ #category : #testing }
 PjLoadingTest >> testLoadClass [
 	PjLoadForTest reset.
 	bridge loadClass: PjLoadForTest.
