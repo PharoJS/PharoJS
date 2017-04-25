@@ -249,6 +249,7 @@ PjCore class >> makeSubclass [
 			aClassName=(new Function("return function "+aClassName+"(){}"))()}
 		if(this[aClassName.name]==aClassName)return aClassName;
 		return this[aClassName.name]=aClassName})();
+	if(subclass.__proto__.__proto__ == this.__proto__){return;}
 	subclass.subclasses=[];
 	if(subclass==this) {
 		this.__proto__ = {__proto__ : pjCore.theClassClass.prototype};
@@ -341,24 +342,6 @@ PjCore class >> selector: selector arguments: args [
 			arguments: args,
 			_arguments: function(){return this.arguments}
 		}'>
-]
-
-{ #category : #'reflection support' }
-PjCore class >> subclass: aClassName [
-	<javascript: '
-	var subclass = (function(){
-		if(typeof aClassName == "string"){
-			if(this[aClassName])return this[aClassName];
-			aClassName=(new Function("return function "+aClassName+"(){}"))()}
-		if(this[aClassName.name]==aClassName)return aClassName;
-		return this[aClassName.name]=aClassName})();
-	subclass.__proto__ = {__proto__ : this.__proto__};
-	subclass.subclasses=[];
-	if(subclass!=this) { 
-		subclass.prototype.__proto__ = this.prototype;
-		this.subclasses.push(subclass);
-	}
-	'>
 ]
 
 { #category : #'throw support' }
