@@ -152,7 +152,8 @@ PjEvaluatorWebsocketDelegate >> eval: aString [
 
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> initialize [
-	(Object js_at: #prototype) js_at: #_inspect put: self makeInspect.
+	super initialize.
+	Object prototype instVarNamed: #_inspect putHidden: self makeInspect.
 
 ]
 
