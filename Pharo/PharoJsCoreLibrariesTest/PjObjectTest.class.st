@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #testing }
+PjObjectTest >> testNewObjectHasNoEnumeratableKeys [
+	"This is important for many JS third party libraries"
+	self assertBlock: [ Object new allEnumeratableKeys isEmpty ] .
+
+]
+
+{ #category : #testing }
 PjObjectTest >> testPrintString [
 	self assert: [ Object new printString ] evaluatesTo: 'an Object'.
 	self assert: [ PjSet new printString ] evaluatesTo: 'a PjSet'.
