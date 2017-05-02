@@ -88,6 +88,21 @@ PjObject >> add: assoc [
 		else: [ self js_at: assoc key put: assoc value ]
 ]
 
+{ #category : #reflection }
+PjObject >> allEnumeratableKeys [
+	| allKeys |
+	allKeys := Set new.
+	self allEnumeratableKeysDo: [ : each | allKeys add: each ].
+	^allKeys
+]
+
+{ #category : #reflection }
+PjObject >> allEnumeratableKeysDo: aBlock [
+	<javascript:
+	'for (var i in this){aBlock._value_(i)};
+	return this;'>
+]
+
 { #category : #converting }
 PjObject >> asJSON [
 	^ JSON stringify: self value
