@@ -10,10 +10,8 @@ WBWindowsWebBrowser class >> openBrowser: browserName on: anURLString inBackgrou
 	The backgroundFlag is true when the window of the browser should open behind the Pharo window.
 	"
 
-	self flag: #todo.
 	(browserName isNil or: [ backgroundFlag not ])
-		ifTrue: [ ^ self
-				error: 'TODO: handle when the browserName is nil or when backgroundFlag is false' ].
+		ifTrue: [ ^ self openOn: anURLString  ].
 	^ self
 		shellExecute: 'open'
 		file: browserName asLowercase
