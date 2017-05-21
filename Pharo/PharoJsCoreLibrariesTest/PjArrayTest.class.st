@@ -163,6 +163,17 @@ PjArrayTest >> testNotEmpty [
 ]
 
 { #category : #testing }
+PjArrayTest >> testShallowCopy [
+	| clone |
+	clone := self evalBlock: [ #(11 22 33) copy].
+	self assert: clone size equals: 3.
+	#(11 22 33) withIndexDo: [ : each : index |
+		self assert: (clone at: index) equals: each
+		 ].
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testSize [
 	self assertEquivalent: [#() size].
 	self assertEquivalent: [#(11 ) size].

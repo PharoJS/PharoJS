@@ -21,3 +21,14 @@ PjObjectTest >> testPrintString [
 	
 
 ]
+
+{ #category : #testing }
+PjObjectTest >> testShallowCopy [
+	self assertBlock: [
+		|original clone|
+		original := Object new.
+		original instVarNamed: #a put: 1. 
+		clone := original copy.
+		clone class == Object and: [ (clone instVarNamed: #a) = 1 ]
+		 ]
+]
