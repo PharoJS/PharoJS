@@ -148,6 +148,11 @@ PjObject >> class [
 	^ self js_at: #constructor
 ]
 
+{ #category : #copying }
+PjObject >> copy [
+	^self shallowCopy postCopy
+]
+
 { #category : #reflection }
 PjObject >> doesNotUnderstand: aMessage [
 	^ PjCore handleDNU: aMessage for: self
@@ -254,6 +259,11 @@ PjObject >> perform: selector withArguments: argArray inSuperclass: lookupClass 
 	^ (lookupClass prototype js_at: (PjCore registerDnu: selector)) apply: self with: argArray
 ]
 
+{ #category : #copying }
+PjObject >> postCopy [
+	^self
+]
+
 { #category : #printing }
 PjObject >> printString [
 	| jsResponse |
@@ -280,6 +290,15 @@ PjObject >> proxyResponse [
 { #category : #'dictionary emulation' }
 PjObject >> removeKey: key [
 	<javascript: 'var result=this[key];delete this[key];return result'>
+]
+
+{ #category : #copying }
+PjObject >> shallowCopy [
+	| copy |
+	copy := self class basicNew.
+	self keysAndValuesDo: [ : key : value |
+		copy instVarNamed: key put: value ].
+	^copy
 ]
 
 { #category : #'dictionary emulation' }
