@@ -19,7 +19,7 @@ PjArithmeticOptimization >> convertReceiver: receiver args: args [
 
 { #category : #converting }
 PjArithmeticOptimization >> isOkWith: receiver and: arg [
-	^ receiver isLiteralNode or: [ arg isLiteralNode ]
+	^ "receiver isLiteralNode or: [ arg isLiteralNode ]" true
 ]
 
 { #category : #converting }
