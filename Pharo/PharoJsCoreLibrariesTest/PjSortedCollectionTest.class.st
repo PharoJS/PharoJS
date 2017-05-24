@@ -40,9 +40,15 @@ PjSortedCollectionTest >> testShallowCopy [
 
 { #category : #testing }
 PjSortedCollectionTest >> testSortingNumbers [
-	(1 to: 3) reverseDo: [: each | collection add: each].
-	self assert: collection size equals: 3.
-	self assert: collection first equals: 1.
-	self assert: collection last equals: 3.
-	
+	| numbersToInsert |
+	numbersToInsert := (1 to: 10) asSet.
+ 	numbersToInsert size timesRepeat: [
+		|inserted|
+		inserted := numbersToInsert atRandom.
+		collection add: inserted.
+		console log: 'Adding: ', inserted asString.
+		numbersToInsert remove: inserted].
+	(1 to: 10) do: [ : index |
+		self assert: (collection at: index) equals: index ]
+
 ]
