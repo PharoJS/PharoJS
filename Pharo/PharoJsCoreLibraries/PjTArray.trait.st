@@ -17,7 +17,7 @@ PjTArray classSide >> jsTranspilationImportMethods [
 		SequenceableCollection -> #(
 			doWithIndex: withIndexDo: 
 			allButFirst allButFirst: allButLast allButLast:
-			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with:
+			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with: reverseDo:
 		).
 	} 
 ]

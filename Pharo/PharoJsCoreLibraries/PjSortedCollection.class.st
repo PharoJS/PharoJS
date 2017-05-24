@@ -7,7 +7,7 @@ Class {
 { #category : #'pharoJs support' }
 PjSortedCollection class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^{SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect:))}
+	^{SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting:))}
 ]
 
 { #category : #enumerating }
@@ -23,9 +23,21 @@ PjSortedCollection >> collect: aBlock [
 	^ newCollection
 ]
 
+{ #category : #private }
+PjSortedCollection >> indexForInserting: newObject [
+	self ifEmpty: [ ^1 ].
+	self withIndexDo: [ : element : index | newObject < element ifTrue: [ ^index ] ].
+	^self size + 1
+]
+
 { #category : #'initialize-release' }
 PjSortedCollection >> initialize [
 	super initialize.
 	self instVarNamed: #firstIndex put: 1.
 	self instVarNamed: #lastIndex put: 0
+]
+
+{ #category : #accessing }
+PjSortedCollection >> insert: newObject before: index [
+	self splice: index - 1 remove: 0 element: newObject
 ]

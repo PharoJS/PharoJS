@@ -308,6 +308,14 @@ PjNumber >> timesRepeat: aBlock [
 ]
 
 { #category : #looping }
+PjNumber >> to: end [
+	| interval |
+	interval := OrderedCollection new.
+	self to: end by: 1 do: [ : each | interval add: each ].
+	^interval
+]
+
+{ #category : #looping }
 PjNumber >> to: end by: step do: aBlock [
 	<javascript: 'for(var i=this; i <= end; i += step){aBlock(i);}'>
 ]
