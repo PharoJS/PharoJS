@@ -41,3 +41,12 @@ PjSortedCollection >> initialize [
 PjSortedCollection >> insert: newObject before: index [
 	self splice: index - 1 remove: 0 element: newObject
 ]
+
+{ #category : #'as yet unclassified' }
+PjSortedCollection >> replaceFrom: start to: stop with: replacement startingAt: repStart [
+	| repStop |
+	repStop := repStart + stop - start.
+	repStart to: repStop do: [ : otherIndex |
+		self add: (replacement at: otherIndex)  ]
+
+]
