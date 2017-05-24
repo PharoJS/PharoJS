@@ -14,6 +14,19 @@ PjSortedCollectionTest >> setUp [
 ]
 
 { #category : #testing }
+PjSortedCollectionTest >> testAllButLast [
+	| allButLast |
+	1 to: 4 do: [:each|
+		collection add: each].
+	allButLast := collection allButLast.
+	self assert: allButLast size equals: 3.
+	1 to: 3 do: [ : each |
+		self assert: (allButLast at: each) equals: each.
+	].
+
+]
+
+{ #category : #testing }
 PjSortedCollectionTest >> testCollect [
 	collection := self evalBlock: [ 
 		|s|
@@ -46,7 +59,6 @@ PjSortedCollectionTest >> testSortingNumbers [
 		|inserted|
 		inserted := numbersToInsert atRandom.
 		collection add: inserted.
-		console log: 'Adding: ', inserted asString.
 		numbersToInsert remove: inserted].
 	(1 to: 10) do: [ : index |
 		self assert: (collection at: index) equals: index ]
