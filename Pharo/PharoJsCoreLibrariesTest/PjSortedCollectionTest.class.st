@@ -8,6 +8,18 @@ Class {
 }
 
 { #category : #testing }
+PjSortedCollectionTest >> atRandomAddAll: elements [
+	| toInsert |
+	toInsert := Set withAll: elements.
+ 	toInsert size timesRepeat: [
+		|inserted|
+		inserted := toInsert atRandom.
+		collection add: inserted.
+		toInsert remove: inserted].
+
+]
+
+{ #category : #testing }
 PjSortedCollectionTest >> setUp [
 	super setUp.
 	collection := self evalBlock: [ SortedCollection new ]
@@ -42,24 +54,17 @@ PjSortedCollectionTest >> testCollect [
 { #category : #testing }
 PjSortedCollectionTest >> testShallowCopy [
 	| clone |
-	#(33 22 11) do: [: each | collection add: each].
+	self atRandomAddAll: (1 to: 10).
 	clone := collection copy.
-	self assert: clone size equals: 3.
-	#(11 22 33) withIndexDo: [ : each : index |
-		self assert: (clone at: index) equals: each
-		 ].
+	self assert: clone size equals: 10.
+	(1 to: 10) do: [ : index |
+		self assert: (clone at: index) equals: index ]
 
 ]
 
 { #category : #testing }
 PjSortedCollectionTest >> testSortingNumbers [
-	| numbersToInsert |
-	numbersToInsert := (1 to: 10) asSet.
- 	numbersToInsert size timesRepeat: [
-		|inserted|
-		inserted := numbersToInsert atRandom.
-		collection add: inserted.
-		numbersToInsert remove: inserted].
+	self atRandomAddAll: (1 to: 10).
 	(1 to: 10) do: [ : index |
 		self assert: (collection at: index) equals: index ]
 
