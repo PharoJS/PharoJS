@@ -24,7 +24,7 @@ Class {
 	#category : #'PharoJsBridge-Tests'
 }
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> addToDOM: html [
 	bridge evalBlock: [| div |
 		div := document createElement: 'div'.
@@ -32,7 +32,7 @@ PjBridgeTestCase >> addToDOM: html [
 		document body appendChild: div]
 ]
 
-{ #category : #testing }
+{ #category : #asserting }
 PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
 	| actualResult |
 	actualResult := bridge evalBlock: aBlock.
@@ -40,56 +40,56 @@ PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
 	self assert: actualResult equals: expectedResult.
 ]
 
-{ #category : #testing }
+{ #category : #asserting }
 PjBridgeTestCase >> assert: aBlock evaluatesToRaw: expectedJsonString [
 	| actualResult |
 	actualResult := bridge evalBlock: aBlock.
 	self assert: actualResult asRawJSONString equals: expectedJsonString
 ]
 
-{ #category : #testing }
+{ #category : #asserting }
 PjBridgeTestCase >> assertBlock: aBlock [ 
 	self assert: aBlock evaluatesTo: true
 ]
 
-{ #category : #testing }
+{ #category : #asserting }
 PjBridgeTestCase >> assertEquivalent: aBlock [
 	self assert: aBlock evaluatesTo: aBlock value
 ]
 
-{ #category : #testing }
+{ #category : #asserting }
 PjBridgeTestCase >> assertJavascript: expressionString evaluatesTo: expectedResultString [ 
 	self assert: (bridge evalJavascript: expressionString) equals: expectedResultString.
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> checkBasic: value [
 	self assert: (bridge evalResult: value asJSON) equals: value
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> checkProxy: value [
 	self assert: (bridge evalResult: '{"proxy":"',value asJSON,'"}') equals: value
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> debug [
 	[ self copy setToDebug runCase ]
 		ensure: [ self classForTestResource resetResources: self resources ]
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> evalBlock: aBlock [
 	^bridge evalBlock: aBlock
 ]
 
-{ #category : #testing }
+{ #category : #initialization }
 PjBridgeTestCase >> initialize [
 	super initialize.
 	debugging := false
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> newBridgeForDebug [
 	| newBridge |
 	newBridge := self newBridgeForRun.
@@ -97,17 +97,17 @@ PjBridgeTestCase >> newBridgeForDebug [
 	^newBridge
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjBridgeTestCase >> newBridgeForRun [
 	^PjBridge new
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjBridgeTestCase >> setToDebug [
 	debugging := true
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjBridgeTestCase >> setUp [
 	super setUp.
 	debugging ifNil: [ debugging := false ].
@@ -125,7 +125,7 @@ PjBridgeTestCase >> setUp [
 
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjBridgeTestCase >> tearDown [
 	super tearDown.
 	bridge stop.

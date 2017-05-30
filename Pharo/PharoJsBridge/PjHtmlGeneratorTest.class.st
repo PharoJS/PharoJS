@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJsBridge-Tests'
 }
 
-{ #category : #'test support' }
+{ #category : #asserting }
 PjHtmlGeneratorTest >> assert: aString equalsIgnoringLineEndings: aString2 [ 
 	self assert: (aString withLineEndings: '') equals: (aString2 withLineEndings: '')
 ]

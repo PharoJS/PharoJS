@@ -53,7 +53,8 @@ Class {
 		'proxies',
 		'blockClosures',
 		'client',
-		'launchJavascriptInterpreter'
+		'launchJavascriptInterpreter',
+		'runOnPharo'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -328,6 +329,7 @@ PjBridge >> handOffResult: aBlock [
 PjBridge >> initialize [
 	super initialize.
 	executingCallbacks := false.
+	runOnPharo := false.
 	launchJavascriptInterpreter := true.
 	callbacks := OrderedCollection new.
 	self server: self serverClass new.

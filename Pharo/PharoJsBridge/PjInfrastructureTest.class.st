@@ -4,12 +4,12 @@ Class {
 	#category : #'PharoJsBridge-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testCallGetsTrampolined [
 	self assert: (bridge evalBlock: [nil~=(document getElementsByTagName: 'script')])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testDNUSetup [
 	self assert: (bridge evalJavascript: 'undefined === document._children').
 	self assert: (bridge evalBlock: [document children ~= nil]).
@@ -19,12 +19,12 @@ PjInfrastructureTest >> testDNUSetup [
 	self assert: (bridge evalJavascript: 'HTMLDocument.prototype._children === document._children')
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testGetterGetsTrampolined [
 	self assert: (bridge evalBlock: [document body ~= nil])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testIs [
 	self assertEquivalent: [Object isBlock].
 	self assertEquivalent: [Object new isBlock].
@@ -37,7 +37,7 @@ PjInfrastructureTest >> testIs [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testJSSelector [
 	self assert: [PjCore makeJavascriptSelector: #foo] evaluatesTo: '_foo'.
 	self assert: [PjCore makeJavascriptSelector: #foo:] evaluatesTo: '_foo_'.
@@ -48,7 +48,7 @@ PjInfrastructureTest >> testJSSelector [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testSTSelector [
 	self assert: [PjCore makeSmalltalkSelector: #foo] evaluatesTo: 'foo'.
 	self assert: [PjCore makeSmalltalkSelector: #foo:] evaluatesTo: 'foo:'.
@@ -59,14 +59,14 @@ PjInfrastructureTest >> testSTSelector [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testSetterGetsTrampolined [
 	bridge evalBlock: [document js_at: 'foo' put: 17].
 	bridge evalBlock: [document foo: 42].
 	self assert: (bridge evalBlock: [document foo = 42])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 PjInfrastructureTest >> testValueNonInterference [
 	self addToDOM: '<input id="theInput" type="text" value="Name:">'.
 	self assert: [|t| t:=document getElementById: #theInput.t value=t defaultValue] evaluatesTo: true.

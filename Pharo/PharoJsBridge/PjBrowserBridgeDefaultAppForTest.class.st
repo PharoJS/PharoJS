@@ -4,7 +4,7 @@ I am the default app loaded for bridge tests.
 Class {
 	#name : #PjBrowserBridgeDefaultAppForTest,
 	#superclass : #PjBrowserApplication,
-	#category : #'PharoJsBridge-Tests'
+	#category : #'PharoJsBridge-Tests-Support'
 }
 
 { #category : #description }

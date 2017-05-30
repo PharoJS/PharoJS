@@ -57,7 +57,7 @@ PjReflectionTest >> testTemporaries [
 	self assert: [class new tryTemporaries] evaluatesTo: self tryTemporaries.
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjReflectionTest >> tryNestedRepeats [
 		| x |
 		x := 1.
@@ -69,7 +69,7 @@ PjReflectionTest >> tryNestedRepeats [
 		^ x
 ]
 
-{ #category : #testing }
+{ #category : #'test support' }
 PjReflectionTest >> tryTemporaries [ 
 		| x b |
 		b := [ : a | | y |

@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'X'
 	],
-	#category : #'PharoJsBridge-Tests'
+	#category : #'PharoJsBridge-Tests-Support'
 }
 
 { #category : #any }
