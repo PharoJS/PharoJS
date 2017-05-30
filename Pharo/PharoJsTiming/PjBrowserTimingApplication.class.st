@@ -21,6 +21,11 @@ PjBrowserTimingApplication class >> appClasses [
 ]
 
 { #category : #'as yet unclassified' }
+PjBrowserTimingApplication class >> playgroundDoNotList [
+	< pharoJsSkip >
+]
+
+{ #category : #'as yet unclassified' }
 PjBrowserTimingApplication class >> start [
 	PjTimingApplication runTimings: self new
 ]

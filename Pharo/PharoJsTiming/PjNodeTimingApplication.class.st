@@ -27,6 +27,11 @@ PjNodeTimingApplication class >> appJsFileName [
 ]
 
 { #category : #'as yet unclassified' }
+PjNodeTimingApplication class >> playgroundDoNotList [
+	< pharoJsSkip >
+]
+
+{ #category : #'as yet unclassified' }
 PjNodeTimingApplication class >> start [
 	| instance |
 	instance := self new.

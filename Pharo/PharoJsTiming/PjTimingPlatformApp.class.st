@@ -62,6 +62,11 @@ PjTimingPlatformApp class >> ifTrueExample: arg [
 	arg >= 10 ifTrue: [ ^ arg ]
 ]
 
+{ #category : #public }
+PjTimingPlatformApp class >> playgroundDoNotList [
+	< pharoJsSkip >
+]
+
 { #category : #'start-stop application' }
 PjTimingPlatformApp class >> start [
 
