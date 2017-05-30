@@ -208,7 +208,7 @@ PjTranspiler >> does: last reference: first [
 	classesReferencingFirst := classesReferencingCache
 			at: first
 			ifAbsentPut: [| methodsReferencingFirst |
-				methodsReferencingFirst := SystemNavigation default classRefsToClassName: first classToUseForJsConversion name.
+				methodsReferencingFirst := SystemNavigation globalRefsForPharoJS: first classToUseForJsConversion name.
 				methodsReferencingFirst asSet collect: [ : each | each actualClass theNonMetaClass]].
 	(classesReferencingFirst includes: last) ifTrue: [ ^true ].
 	classesReferencingFirst detect: [ : each | last inheritsFrom: each ] ifFound: [^true].

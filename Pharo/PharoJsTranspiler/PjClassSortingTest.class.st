@@ -46,7 +46,7 @@ PjClassSortingTest >> checkInitializationOrdered: sorted [
 PjClassSortingTest >> does: classB reference: classA [
 		| classesReferencingA |
 	classesReferencingA := cache at: classA ifAbsentPut: [ | methodsReferencingA |
-		methodsReferencingA := SystemNavigation default classRefsToClassName: classA nameToUseForJsConversion.
+		methodsReferencingA := SystemNavigation globalRefsForPharoJS: classA nameToUseForJsConversion.
 		methodsReferencingA asSet collect: [ : each | each actualClass theNonMetaClass]].
 	^(classesReferencingA includes: classB) or: [ classB sharedPools includes: classA ]
 

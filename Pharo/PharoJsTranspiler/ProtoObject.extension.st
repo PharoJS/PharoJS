@@ -12,6 +12,11 @@ ProtoObject class >> hasClassMethod: selector [
 ]
 
 { #category : #'*PharoJsTranspiler' }
+ProtoObject class >> hasInstanceMethod: selector [
+	^self includesSelector: selector
+]
+
+{ #category : #'*PharoJsTranspiler' }
 ProtoObject class >> hasJavascriptPlaceholder [
 	^self hasClassMethod: #javascriptPlaceholder
 ]
