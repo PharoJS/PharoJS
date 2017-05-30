@@ -8,51 +8,33 @@ Class {
 }
 
 { #category : #lessons }
-PharoJSTutorial >> pjExporter [
-	^ Lesson
-		title: 'PharoJS Exporter'
-		lesson:
-'"To generate javascript code from an application, simply"
-	PjDrawRectangleUseDnuApp exportApp
-"and an index.js file will be produced in the directory specified
-for the application.
-
-The file name and many other parameters are controlled by class-side
-methods of the application."'
-]
-
-{ #category : #lessons }
-PharoJSTutorial >> pjInspector [
-	^ Lesson
-		title: 'PharoJS Inspector'
-		lesson:
-'"The Inspector understands PjProxy values and communicates with the
-relevant Javascript engine (browser or NodeJS) to examine programmatic values.
-
-For example by selecting and Cmd-I the following:"
-	document fonts
-"you would get an inspector showing all the fields of the object
--- if document were defined in this scope, which it''s not.
-
-However this works fine in a PharoJS Playground, or in
-methods of a class that specify the poolDictionary PjDomGlobals"'
-]
-
-{ #category : #lessons }
 PharoJSTutorial >> pjPlayground [
 	^ Lesson
 		title: 'PharoJS Playground'
 		lesson:
 '"The Playground lets you explore the browser side of an app.
 
-"'
+You can access it from the world menu or do the following:
+"
+	PjPlayground popUpMenu' 
+]
+
+{ #category : #lessons }
+PharoJSTutorial >> pjUseHelp [
+	^ Lesson
+		title: 'Use PharoJS Help instead'
+		lesson:
+'"It is very hard to do a tutorial, as most of the interactions are only available inside a PharoJS Playground.
+
+So all the information is currently in the Help menu available from the World menu, or doing the following:"
+
+	HelpBrowser openOn: PharoJsHelp'
 ]
 
 { #category : #tutorial }
 PharoJSTutorial >> tutorial [
 	^ #(
-	#pjPlayground
-	#pjInspector
-	#pjExporter
+	pjUseHelp
+	pjPlayground
 	)
 ]

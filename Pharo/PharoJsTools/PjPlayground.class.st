@@ -9,15 +9,32 @@ Class {
 		'bridgeVar',
 		'allJavascriptGlobals',
 		'page',
-		'pageTitle'
+		'pageTitle',
+		'demo'
 	],
 	#category : #'PharoJsTools-Playground'
 }
+
+{ #category : #'world menu' }
+PjPlayground class >> applicationList [
+	^ (PjApplication allSubclasses select: [ :class |
+				class isAbstract not and: [
+					((class hasClassMethod: #start) or: [
+						class hasInstanceMethod: #start
+					 ]) and: [ (class hasClassMethod: #playgroundDoNotList) not ]
+		]]) sort: [ : l : r | l name <= r name ]
+]
 
 { #category : #opening }
 PjPlayground class >> open [
 	"self open"
 	^self new openPage
+]
+
+{ #category : #opening }
+PjPlayground class >> openDemo [
+	"self openDemo"
+	^self new openDemoPage
 ]
 
 { #category : #opening }
@@ -30,10 +47,45 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PharoJsPlayground)
 		label: 'PharoJs Playground';
-		target: PjPlayground;
-		action: [ self open];
-		withSeparatorAfter; 
-		icon: Smalltalk tools workspace taskbarIcon
+		withSeparatorAfter;
+		icon: Smalltalk tools workspace taskbarIcon;
+		with: [
+			(aBuilder item: #simple)
+				action: [ self open ].
+			self applicationList do: [ :class |
+				| n |
+				n := class name.
+				(aBuilder item: n asSymbol)
+					label: n;
+					with: [
+						(aBuilder item: (n,':pharo') asSymbol)
+							label: 'launch on Pharo';
+							action: [ class pharoPlayground ].
+						(aBuilder item: (n,':js') asSymbol)
+							label: 'launch on remote';
+							action: [ class playground ].
+						(aBuilder item: (n,':browse') asSymbol)
+							label: 'export app';
+							action: [ class exportApp ].
+						(aBuilder item: (n,':browse') asSymbol)
+							label: 'browse';
+							action: [ class browse ].
+			]].
+			(aBuilder item: #Help)
+				icon: Smalltalk ui icons smallHelpIcon;
+				action: [ HelpBrowser openOn: PharoJsHelp ].
+		]
+]
+
+{ #category : #'world menu' }
+PjPlayground class >> popUpMenu [
+	" self popUpMenu "
+	| builder |
+	builder := PragmaMenuBuilder new pragmaKeyword: #worldMenu.
+	builder pragmaCollector filter: [ : prg | prg selector = #pharoJsMenuOn:];reset.
+	self pharoJsMenuOn: builder.
+	builder menu popUpInWorld.
+
 ]
 
 { #category : #actions }
@@ -107,6 +159,16 @@ PjPlayground >> codePresentationIn: composite [
 ]
 
 { #category : #initialization }
+PjPlayground >> demo [
+	^ true==demo
+]
+
+{ #category : #initialization }
+PjPlayground >> demo: aBoolean [
+	demo := aBoolean
+]
+
+{ #category : #initialization }
 PjPlayground >> initialize [
 	self initializeCommonBridge: nil.
 	self page:
@@ -160,6 +222,12 @@ PjPlayground >> makeJsGlobal: jsGlobalName [
 	^ (PjWorkspaceGlobalVariable key: jsGlobalName)
 		bridge: bridge;
 		yourself
+]
+
+{ #category : #initialization }
+PjPlayground >> openDemoPage [
+	demo := true.
+	^ self openPage
 ]
 
 { #category : #initialization }

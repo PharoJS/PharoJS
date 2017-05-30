@@ -1,6 +1,33 @@
 Extension { #name : #PjApplication }
 
 { #category : #'*PharoJsTools-Playground' }
+PjApplication classSide >> classSubclassResponsibilitySet [
+	| set |
+	set := self == PjApplication ifTrue: [ Set new ] ifFalse: [ self superclass classSubclassResponsibilitySet ].
+	self class methods do: [:cm | | selector |
+		selector := cm selector.
+		(cm sendsSelector: #subclassResponsibility) ifTrue: [
+				set add: selector
+			] ifFalse: [
+				set remove: selector ifAbsent: [ ]
+			]]..
+	^ set
+]
+
+{ #category : #'*PharoJsTools-Playground' }
+PjApplication classSide >> isAbstract [
+	^ self subclassResponsibilitySet isNotEmpty or: [
+			self classSubclassResponsibilitySet isNotEmpty
+		]
+]
+
+{ #category : #'*PharoJsTools-Playground' }
+PjApplication classSide >> pharoPlayground [
+	<pharoJsSkip>
+	^ self bridge pharoPlayground
+]
+
+{ #category : #'*PharoJsTools-Playground' }
 PjApplication classSide >> playground [
 	<pharoJsSkip>
 	^ self bridge playground
@@ -37,6 +64,20 @@ PjApplication classSide >> playgroundWithoutLaunch [
 PjApplication classSide >> playgroundWithoutLaunchOnUrl: aString [
 	<pharoJsSkip>
 	^ self bridge playgroundWithoutLaunchOnUrl: aString
+]
+
+{ #category : #'*PharoJsTools-Playground' }
+PjApplication classSide >> subclassResponsibilitySet [
+	| set |
+	set := self == PjApplication ifTrue: [ Set new ] ifFalse: [ self superclass subclassResponsibilitySet ].
+	self methods do: [:cm | | selector |
+		selector := cm selector.
+		(cm sendsSelector: #subclassResponsibility) ifTrue: [
+				set add: selector
+			] ifFalse: [
+				set remove: selector ifAbsent: [ ]
+			]]..
+	^ set
 ]
 
 { #category : #'*PharoJsTools-Playground' }
