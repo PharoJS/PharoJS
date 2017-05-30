@@ -16,11 +16,3 @@ PjNodeApplication class >> headerLine [
 	<pharoJsSkip>
 	^ '#! /usr/bin/env node'
 ]
-
-{ #category : #accessing }
-PjNodeApplication >> start [
-]
-
-{ #category : #accessing }
-PjNodeApplication >> stop [
-]

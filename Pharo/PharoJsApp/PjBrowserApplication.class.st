@@ -10,13 +10,3 @@ Class {
 	],
 	#category : #PharoJsApp
 }
-
-{ #category : #'initialize-release' }
-PjBrowserApplication >> start [
-	self subscribeToDeviceEvents
-]
-
-{ #category : #'initialize-release' }
-PjBrowserApplication >> stop [
-	^self
-]

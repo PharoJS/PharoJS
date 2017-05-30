@@ -59,6 +59,12 @@ PjDOMApplication >> showDomElementAt: elementId [
 ]
 
 { #category : #'initialize-release' }
+PjDOMApplication >> start [
+	super start.
+	self subscribeToDeviceEvents
+]
+
+{ #category : #'initialize-release' }
 PjDOMApplication >> subscribeToDeviceEvents [
 	^self
 ]
