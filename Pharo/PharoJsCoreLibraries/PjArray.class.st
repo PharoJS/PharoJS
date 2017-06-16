@@ -38,6 +38,11 @@ PjArray >> remove: oldObject ifAbsent: absentBlock [
 ]
 
 { #category : #removing }
+PjArray >> removeAll [
+	self size timesRepeat: [ self removeFirst ]
+]
+
+{ #category : #removing }
 PjArray >> removeAt: aNumber [
 	<javascript: 'var result=this[aNumber-1];this.splice(aNumber - 1,1);return result'>
 

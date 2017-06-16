@@ -15,7 +15,7 @@ PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 		Collection ->#(
 			allSatisfy: anySatisfy:
 			detect:ifFound:ifNone: detect:ifNone: detect:ifFound: remove: isCollection 
-			asDictionary associationsDo: addAll: isEmptyOrNil
+			asDictionary associationsDo: addAll: isEmptyOrNil removeAll: 
 		).
 		OrderedCollection class -> #( newFrom: ).
 	}
