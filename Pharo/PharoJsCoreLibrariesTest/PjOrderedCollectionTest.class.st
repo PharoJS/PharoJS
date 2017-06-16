@@ -22,3 +22,15 @@ PjOrderedCollectionTest >> testInsertElementBeforeFirstOne [
 		self assert: (collection at: index) equals: expectedElement
 	]
 ]
+
+{ #category : #testing }
+PjOrderedCollectionTest >> testRemoveAll [
+	collection addAll: #(1 2 3 4 5).
+	collection removeAll: #(1 5).
+	self assert: collection size equals: 3.
+	#(2 3 4) withIndexDo: [ : expectedElement : index |
+		self assert: (collection at: index) equals: expectedElement
+	].
+	collection removeAll.
+	self assert: collection isEmpty.
+]
