@@ -52,6 +52,20 @@ PjArrayTest >> testAt [
 ]
 
 { #category : #testing }
+PjArrayTest >> testAtIfAbsent [
+	| array actualValue |
+	array := bridge evalBlock: [#(10 20 30)].
+	#(10 20 30)  withIndexDo: [ : expectedValue : index  | 
+		actualValue := bridge evalBlock: [array at: index ifAbsent: [nil]].
+		self assert: actualValue equals: expectedValue.
+	].
+	actualValue := bridge evalBlock: [array at: 10 ifAbsent: [100]].
+	self assert: actualValue equals: 100.
+	
+	
+]
+
+{ #category : #testing }
 PjArrayTest >> testAtPut [
 	| array |
 	array := bridge evalBlock: [#(10 20 30 40)].
