@@ -92,6 +92,18 @@ PjFunction >> cull: arg1 cull: arg2 [
 	^self value: arg1 value: arg2
 ]
 
+{ #category : #evaluating }
+PjFunction >> cull: arg1 cull: arg2 cull: arg3 [
+	"In javascript a function always uses only required arguments"
+	^self value: arg1 value: arg2 value: arg3
+]
+
+{ #category : #evaluating }
+PjFunction >> cull: arg1 cull: arg2 cull: arg3 cul: arg4 [
+	"In javascript a function always uses only required arguments"
+	^self value: arg1 value: arg2 value: arg3 value: arg4
+]
+
 { #category : #exceptions }
 PjFunction >> ensure: aBlock [
 	<javascript: '
@@ -187,7 +199,24 @@ PjFunction >> value: arg1 value: arg2 [
 ]
 
 { #category : #evaluating }
+PjFunction >> value: arg1 value: arg2 value: arg3 [
+	<javascript: 'return this(arg1, arg2, arg3);'>
+]
+
+{ #category : #evaluating }
+PjFunction >> value: arg1 value: arg2 value: arg3 value: arg4 [
+	<javascript: 'return this(arg1, arg2, arg3, arg4);'>
+]
+
+{ #category : #evaluating }
 PjFunction >> valueWithArguments: anArray [
+	<javascript: 'return this.apply(this,anArray)'>
+]
+
+{ #category : #evaluating }
+PjFunction >> valueWithEnoughArguments: anArray [
+	"call me with enough arguments from anArray"
+	"In javascript a function always uses only required arguments"
 	<javascript: 'return this.apply(this,anArray)'>
 ]
 

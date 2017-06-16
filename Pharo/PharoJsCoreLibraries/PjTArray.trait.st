@@ -32,9 +32,15 @@ PjTArray >> = anArray [
 	<javascript: 'if(this.length!=anArray.length)return false;for(var i=0,max=this.length;i<max;++i)if(this[i]!=anArray[i])return false;return true'>
 ]
 
-{ #category : #enumerating }
+{ #category : #accessing }
 PjTArray >> at: i [
 	<javascript: 'return this[i-1]'>
+]
+
+{ #category : #accessing }
+PjTArray >> at: index ifAbsent: aBlock [
+	(index > 0 and: [index > self size]) ifTrue: [ ^aBlock value ].
+	^self at: index
 ]
 
 { #category : #enumerating }
