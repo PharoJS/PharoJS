@@ -84,8 +84,9 @@ PjStringGenerator >> visitIfTrueIfFalseNode: aPjIfTrueIfFalseNode [
 		writeNonBrace: $);
 		visit: aPjIfTrueIfFalseNode whenTrue;
 		maybeWriteSemicolon;
-		nextPutAll: 'else ';
-		visit: aPjIfTrueIfFalseNode whenFalse
+		nextPutAll: 'else '.
+	wroteCloseBrace :=false.
+	self visit: aPjIfTrueIfFalseNode whenFalse
 ]
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }
