@@ -287,6 +287,11 @@ PjObject >> proxyResponse [
 	'>
 ]
 
+{ #category : #'initialize-release' }
+PjObject >> release [
+	
+]
+
 { #category : #'dictionary emulation' }
 PjObject >> removeKey: key [
 	<javascript: 'var result=this[key];delete this[key];return result'>

@@ -11,9 +11,16 @@ Trait {
 { #category : #'pharoJs support' }
 PjTArray classSide >> jsTranspilationImportMethods [
 	<pharoJsSkip>
+	^ self jsTranspilationImportMethodsArray
+]
+
+{ #category : #'pharoJs support' }
+PjTArray classSide >> jsTranspilationImportMethodsArray [
+	<pharoJsSkip>
 	^ self jsTranspilationImportMethodsCollection,
 	{
 		Array -> #( isArray ).
+		ByteArray -> #( asString).
 		SequenceableCollection -> #(
 			doWithIndex: withIndexDo: 
 			allButFirst allButFirst: allButLast allButLast:
@@ -81,7 +88,7 @@ PjTArray >> indexOf: x [
 
 { #category : #accessing }
 PjTArray >> insert: anObject before: spot [
-	<javascript: 'this.splice(spot-1, 0, anObject)	'>
+	<javascript: 'this.splice(spot-1, 0, anObject);return anObject'>
 ]
 
 { #category : #testing }

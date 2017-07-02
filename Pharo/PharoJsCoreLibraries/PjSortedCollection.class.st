@@ -7,7 +7,10 @@ Class {
 { #category : #'pharoJs support' }
 PjSortedCollection class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^{SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting:))}
+	^{
+		SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting:)).
+		SortedCollection class -> #( sortBlock: ).
+		}
 ]
 
 { #category : #enumerating }

@@ -20,9 +20,10 @@ PjString class >> defaultSize [
 { #category : #'pharoJs support' }
 PjString class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^ {
+	^ self jsTranspilationImportMethodsArray,
+	{
 			String class -> #(
-				stringHash:initialHash: 
+				stringHash:initialHash: fromByteArray:
 			).
 			String -> #(
 				findTokens: 
@@ -40,7 +41,7 @@ PjString class >> new [
 
 { #category : #'instance creation' }
 PjString class >> new: size [
-	^ ''
+	<javascript: 'var str=String.fromCharCode(0);if("".repeat) return str.repeat(size);else return new Array(size+1).join(str)'>
 ]
 
 { #category : #'instance creation' }
@@ -274,6 +275,17 @@ PjString >> notEmpty [
 { #category : #proxy }
 PjString >> proxyResponse [
 	<javascript: 'return ""+this'>
+]
+
+{ #category : #accessing }
+PjString >> replaceFrom: start to: stop with: replacement startingAt: repStart [
+	<javascript: '
+	var repl=[],isString=typeof replacement=="string";
+	for(var mine=stop-1,other=mine+repStart-start;
+		mine>=start-1;
+		--other,--mine
+		)repl[other]=isString?replacement[other]:String.fromCharCode(replacement[other]);
+		return this.substring(0,start-1)+repl.join("")+this.substr(stop)'>
 ]
 
 { #category : #accessing }

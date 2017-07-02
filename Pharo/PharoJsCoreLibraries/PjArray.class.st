@@ -9,6 +9,23 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #'instance creation' }
+PjArray class >> new: ignored [
+	^ self new
+]
+
+{ #category : #'instance creation' }
+PjArray class >> with: anObject [ 
+	"Answer a new instance of me, containing only anObject."
+	<javascript: 'return [anObject]'>
+]
+
+{ #category : #'instance creation' }
+PjArray class >> with: firstObject with: secondObject [ 
+	"Answer a new instance of me, containing firstObject and secondObject."
+	<javascript: 'return [firstObject,secondObject]'>
+]
+
 { #category : #enumerating }
 PjArray >> add: x [
 	^ self addLast: x
