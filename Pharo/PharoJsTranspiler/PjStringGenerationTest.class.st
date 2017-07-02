@@ -212,6 +212,47 @@ PjStringGenerationTest >> testMethod [
 ]
 
 { #category : #testing }
+PjStringGenerationTest >> testMethodWithConditional [
+	| expectedAst |
+	expectedAst := PjMethodNode parameters:{} locals:{#bar} body:{
+		PjIfTrueIfFalseNode
+			test:(PjApplyNode func:(PjFieldNode target:PjSelfNode new selectorNode:(PjMessageSelectorNode identifier:#foo) isNonNil:true) args:{})
+			whenTrue:(
+				PjSequenceNode expressions:{
+					PjAssignNode
+						target:(PjTempVariableNode identifier:#bar)
+						expression:(PjLiteralValueNode value:4).
+					PjIfTrueIfFalseNode
+						test:(
+							PjApplyNode
+								func:(PjFieldNode target:(PjTempVariableNode identifier:#bar) selectorNode:(PjMessageSelectorNode identifier:#isNil) isNonNil:false)
+								args:{})
+						whenTrue:(
+							PjApplyNode
+								func:(PjFieldNode target:PjSelfNode new selectorNode:(PjMessageSelectorNode identifier:#foo) isNonNil:true)
+								args:{})
+						whenFalse:(
+							PjApplyNode
+								func:(PjFieldNode
+									target:PjSelfNode new selectorNode:(PjMessageSelectorNode identifier:#bar) isNonNil:true) args:{})})
+			whenFalse:(
+				PjAssignNode
+					target:(
+						PjTempVariableNode identifier:#bar)
+					expression:PjNilNode new).
+		PjReturnNode expression:(
+			PjApplyNode
+				func:(PjFieldNode target:(PjTempVariableNode identifier:#bar) selectorNode:(PjMessageSelectorNode identifier:#value:) isNonNil:false)
+				args:{PjLiteralValueNode value:2})
+		} methodName:#cond1 needsSelf:false isClassMethod:false.
+
+	self
+		assert: expectedAst
+		asStringEquals: 'function _cond1(){var bar;if(true==this._foo()){bar=4;if(true==$asNil$(bar)._isNil())this._foo();else this._bar()}else bar=undefined;return $asNil$(bar)._value_(2)}'
+
+]
+
+{ #category : #testing }
 PjStringGenerationTest >> testObject [
 	self
 		assert: (PjObjectNode dictionary: { #a -> selfNode. #* -> nilNode } asDictionary)

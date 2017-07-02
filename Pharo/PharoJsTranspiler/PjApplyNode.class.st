@@ -13,7 +13,7 @@ Class {
 
 { #category : #creating }
 PjApplyNode class >> func: func args: args [
-	^ self new func: func; args: args; yourself
+	^ self new func: func; args: (args ifNotNil: [ args asArray]); yourself
 ]
 
 { #category : #creating }

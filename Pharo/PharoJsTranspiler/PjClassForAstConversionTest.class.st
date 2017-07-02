@@ -42,6 +42,18 @@ PjClassForAstConversionTest >> basic6 [
 ]
 
 { #category : #'test method' }
+PjClassForAstConversionTest >> cond1 [
+    | bar |
+    self foo ifTrue: [
+		bar := 4.
+		bar isNil ifTrue: [self foo] ifFalse: [self bar]
+	] ifFalse: [
+		bar := nil
+	].
+    ^bar value: 2
+]
+
+{ #category : #'test method' }
 PjClassForAstConversionTest >> return1 [
 	3.
 	2.
