@@ -8,7 +8,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'iterations',
-		'prefix'
+		'prefix',
+		'printedIterations'
 	],
 	#category : #'PharoJsTiming-Application'
 }
@@ -22,7 +23,7 @@ PjPharoTimingApplication class >> time [
 
 { #category : #'as yet unclassified' }
 PjPharoTimingApplication >> initialize [
-	iterations := 1000000
+	printedIterations := iterations := 1000000
 ]
 
 { #category : #'as yet unclassified' }
@@ -52,12 +53,19 @@ PjPharoTimingApplication >> time [
 ]
 
 { #category : #'as yet unclassified' }
-PjPharoTimingApplication >> time: aString with: aBlock [
+PjPharoTimingApplication >> time: aString with: aBlock ratio: ratio [
+	| iters |
+	iters := (iterations * ratio) asInteger.
+	iters isZero ifTrue: [ iters := 1 ].
+	printedIterations = iters ifFalse: [
+		Transcript show: 'Running ';show: iters;show: ' iterations';cr.
+		printedIterations := iters
+	].
 	Transcript
 		show: prefix;
 		show: aString;
 		show: ': ';
-		show: 	(([ iterations timesRepeat: aBlock ] timeToRunWithoutGC ) printShowingDecimalPlaces: 3);
+		show:  (([ iters timesRepeat: aBlock ] timeToRunWithoutGC) printShowingDecimalPlaces: 3);
 		show: 'ms';
 		cr
 ]

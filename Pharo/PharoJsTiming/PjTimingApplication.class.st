@@ -16,7 +16,7 @@ Class {
 	#category : #'PharoJsTiming-Application'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #timings }
 PjTimingApplication class >> allTimingOn: timer [
 	| x y instance |
 	x := 0.
@@ -38,15 +38,20 @@ PjTimingApplication class >> allTimingOn: timer [
 	self on: timer time: 'toDoLoop' with: [ instance toDoLoop ].
 	self on: timer time: 'whileLoop' with: [ instance whileLoop ].
 	self on: timer time: 'unoptLoop' with: [ instance whileRemoteLoop ].
+	self on: timer time: 'DeltaBlue' with: [
+		PjDbPlanner chainTest: 100. 
+		PjDbPlanner projectionTest: 100
+	] ratio: 0.0003.
+	self on: timer time: 'Richards' with: [ PjRbBenchmark start ] ratio: 0.00005.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #timings }
 PjTimingApplication class >> browserTimingOn: timer [
 	self on: timer time: 'docBody' with: [ document body ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #timings }
 PjTimingApplication class >> jsTimingOn: timer top: top [
 	| x y |
 	x := self makeObject.
@@ -59,27 +64,32 @@ PjTimingApplication class >> jsTimingOn: timer top: top [
 	self on: timer time: 'fieldGetX' with: [ y := x instVarNamed:#index ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'js support' }
 PjTimingApplication class >> makeObject [
 	"just here so we can create it the PharoJS and the Amber way"
 	<javascript:	'var x={};x.index=42;return x'>
 	<amberJSCode:	'var x={};x.index=42;return $globals.JSObjectProxy._on_(x)'>
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #timings }
 PjTimingApplication class >> nodeTimingOn: timer [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PjTimingApplication class >> on: aTimingApp time: desc with: block [
-	aTimingApp prefix: '(warmup)'.
-	aTimingApp warmups timesRepeat: [aTimingApp time: desc with: block].
-	aTimingApp prefix: ''.
-	aTimingApp runs timesRepeat: [aTimingApp time: desc with: block]
+	self on: aTimingApp time: desc with: block ratio: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
+PjTimingApplication class >> on: aTimingApp time: desc with: block ratio: ratio [
+	aTimingApp prefix: '(warmup)'.
+	aTimingApp warmups timesRepeat: [aTimingApp time: desc with: block ratio: ratio].
+	aTimingApp prefix: ''.
+	aTimingApp runs timesRepeat: [aTimingApp time: desc with: block ratio: ratio]
+]
+
+{ #category : #running }
 PjTimingApplication class >> runTimings: aTimingApp [
 	aTimingApp log: 'Running ', aTimingApp iterations asString,' iterations'.
 	aTimingApp time.

@@ -8,7 +8,8 @@ Class {
 	#superclass : #PjBrowserApplication,
 	#instVars : [
 		'iterations',
-		'prefix'
+		'prefix',
+		'printedIterations'
 	],
 	#category : #'PharoJsTiming-Application'
 }
@@ -32,7 +33,7 @@ PjBrowserTimingApplication class >> start [
 
 { #category : #'as yet unclassified' }
 PjBrowserTimingApplication >> initialize [
-	iterations := 1000000
+	printedIterations := iterations := 1000000
 ]
 
 { #category : #'as yet unclassified' }
@@ -42,7 +43,8 @@ PjBrowserTimingApplication >> iterations [
 
 { #category : #'as yet unclassified' }
 PjBrowserTimingApplication >> log: aString [
-	console log: aString
+	console log: aString.
+	(document getElementById: #log) ifNotNil: [ : log | log innerHTML: log innerHTML, aString ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -63,9 +65,16 @@ PjBrowserTimingApplication >> time [
 ]
 
 { #category : #'as yet unclassified' }
-PjBrowserTimingApplication >> time: aString with: aBlock [
+PjBrowserTimingApplication >> time: aString with: aBlock ratio: ratio [
+	| iters |
+	iters := (iterations * ratio) asInteger.
+	iters isZero ifTrue: [ iters := 1 ].
+	printedIterations = iters ifFalse: [
+		Transcript show: 'Running ';show: iters;show: ' iterations';cr.
+		printedIterations := iters
+	].
 	console time: prefix,aString.
-	iterations timesRepeat: aBlock.
+	iters timesRepeat: aBlock.
 	console timeEnd: prefix,aString
 ]
 

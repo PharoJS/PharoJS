@@ -8,7 +8,8 @@ Class {
 	#superclass : #PjNodeApplication,
 	#instVars : [
 		'iterations',
-		'prefix'
+		'prefix',
+		'printedIterations'
 	],
 	#category : #'PharoJsTiming-Application'
 }
@@ -40,7 +41,7 @@ PjNodeTimingApplication class >> start [
 
 { #category : #'as yet unclassified' }
 PjNodeTimingApplication >> initialize [
-	iterations := 1000000
+	printedIterations := iterations := 1000000
 ]
 
 { #category : #'as yet unclassified' }
@@ -71,9 +72,16 @@ PjNodeTimingApplication >> time [
 ]
 
 { #category : #'as yet unclassified' }
-PjNodeTimingApplication >> time: aString with: aBlock [
+PjNodeTimingApplication >> time: aString with: aBlock ratio: ratio [
+	| iters |
+	iters := (iterations * ratio) asInteger.
+	iters isZero ifTrue: [ iters := 1 ].
+	printedIterations = iters ifFalse: [
+		Transcript show: 'Running ';show: iters;show: ' iterations';cr.
+		printedIterations := iters
+	].
 	console time: prefix,aString.
-	iterations timesRepeat: [aBlock value].
+	iters timesRepeat: [aBlock value].
 	console timeEnd: prefix,aString
 ]
 
