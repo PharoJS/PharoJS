@@ -26,8 +26,16 @@ PjFileExporter >> createFileNamed: fName startingWith: beginning and: string ifE
 			self
 				nextPutAll: match;
 				nextPutAll: ' on ';
-				nextPutAll: DateAndTime now asString;
-				cr.
+				nextPutAll: DateAndTime now asString.
+			OSPlatform current environment at: 'LOGNAME' ifPresent: [: name |
+				self nextPutAll: ' by ';nextPutAll: name
+			] ifAbsent: [
+				OSPlatform current environment at: 'USER' ifPresent: [: name |
+					self nextPutAll: ' by ';nextPutAll: name
+				] ifAbsent: [
+					OSPlatform current environment at: 'USERNAME' ifPresent: [: name |
+						self nextPutAll: ' by ';nextPutAll: name]]].
+			self cr.
 			aBlock value: f ] ].
 	[ ^ self fileStreamClass newFileNamed: fName do: header ]
 		on: FileExistsException
