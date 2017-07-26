@@ -190,6 +190,11 @@ PjProxy >> javascriptValid [
 	^ true
 ]
 
+{ #category : #'force proxy' }
+PjProxy >> join: aCollection [
+	^self doesNotUnderstand: (Message selector: #join: argument: aCollection).
+]
+
 { #category : #accessing }
 PjProxy >> jsBridge [
 	^ proxySpecificBridge
