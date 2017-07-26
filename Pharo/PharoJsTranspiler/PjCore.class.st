@@ -21,19 +21,51 @@ Class {
 	#category : #'PharoJsTranspiler-Globals'
 }
 
+{ #category : #globals }
+PjCore class >> at: jsName [
+	"Get the value of an object in the Smalltalk global space.
+	For now, we use the JS global, but this is likely to evolve once we have environments."
+	^ global js_at: jsName
+]
+
+{ #category : #globals }
+PjCore class >> at: key ifAbsent: aBlock [
+	"Answer the global associated with the key or, if key isn't found,
+	answer the result of evaluating aBlock."
+
+	^global at: key ifAbsent: aBlock
+]
+
+{ #category : #globals }
+PjCore class >> at: aKey ifAbsentPut: aBlock [ 
+	"Return the global at the given key. 
+	If key is not included in the receiver store the result 
+	of evaluating aBlock as new value."
+
+	^global at: aKey ifAbsentPut: aBlock
+]
+
+{ #category : #globals }
+PjCore class >> at: key ifPresent: aBlock [
+	"Lookup the given key in the globals. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer nil."
+
+	^global at: key ifPresent: aBlock
+]
+
+{ #category : #globals }
+PjCore class >> at: jsName put: anObject [ 
+	"Set the global at key to be anObject.  If key is not found, create a
+	new entry for key and set is value to anObject. Answer anObject.
+	For now, we use the JS global, but this is likely to evolve once we have environments."
+	^ global js_at: jsName put: anObject
+]
+
 { #category : #accessing }
 PjCore class >> emptyJavascriptObject [
 	"Object.create(null) creates an even emptier JS object, but it isn't an Object (i.e. has no methods)."
 	<javascript: '
 		return {}
 	'>
-]
-
-{ #category : #globals }
-PjCore class >> globalNamed: jsName [
-	"Get the value of an object in the Smalltalk global space.
-	For now, we use the JS global, but this is likely to evolve once we have environments."
-	^ global js_at: jsName
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -85,19 +117,12 @@ PjCore class >> initializeCore [
 
 ]
 
-{ #category : #globals }
-PjCore class >> install: anObject asGlobalNamed: jsName [
-	"Install an object in the Smalltalk global space.
-	For now, we use the JS global, but this is likely to evolve once we have environments."
-	global js_at: jsName put: anObject
-]
-
 { #category : #'doesNotUnderstand support' }
 PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anObject else: aBlock [
 	" this could be a smalltalk object or a native JS object "
 	| type func functionName |
 	(type := anObject js_at: selector) ifNotNil: [
-		'function' = type typeof ifTrue: [
+		(self isFunction: type) ifTrue: [
 			functionName := type js_at: #name.
 			'' = functionName ifTrue: [
 				type := 2
@@ -137,17 +162,22 @@ PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anOb
 
 { #category : #'nil support' }
 PjCore class >> isBrowserPlatform [
-	^ (self globalNamed: #navigator) isNotNil
+	^ (self at: #navigator) isNotNil
 ]
 
 { #category : #'nil support' }
 PjCore class >> isDomPlatform [
-	^ (self globalNamed: #document) isNotNil
+	^ (self at: #document) isNotNil
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> isFunction: type [
+	<javascript: 'return "function" == typeof type'>
 ]
 
 { #category : #'nil support' }
 PjCore class >> isNodePlatform [
-	^ (self globalNamed: #navigator) isNil
+	^ (self at: #navigator) isNil
 ]
 
 { #category : #accessing }

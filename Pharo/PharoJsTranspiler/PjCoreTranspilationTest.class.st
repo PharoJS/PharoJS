@@ -11,7 +11,7 @@ PjCoreTranspilationTest >> classToTranspile [
 
 { #category : #testing }
 PjCoreTranspilationTest >> testClassSideMethods [
-	self assertClassMethod: #install:asGlobalNamed: equals: '(anObject,jsName){global[jsName]=anObject;return this}'.
+	self assertClassMethod: #at:put: equals: '(jsName,anObject){return global[jsName]=anObject}'.
 ]
 
 { #category : #testing }

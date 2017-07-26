@@ -229,19 +229,6 @@ PjBasicConverterTest >> testReadWriteClassVariables [
 		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
 		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
 	self assertContentsOf: [ ClassVarForTest := ClassVarForTest ] convertsTo: astAssignment.
-	astAssignment := PjApplyNode
-		func:(
-			PjFieldNode
-				target:(PjArrayNode expressions:{PjLiteralValueNode value:3})
-				selectorNode:(PjMessageSelectorNode identifier:#do:)
-				isNonNil:true)
-		args:{
-			PjBlockNode parameters:{#x} locals:{} body:{
-				PjReturnNode expression:(
-					PjAssignNode
-						target:(PjFieldNode target: (PjSelfNode inBlock: true) selectorNode: classVar isNonNil:true)
-						expression:(PjFieldNode target: (PjSelfNode inBlock: true) selectorNode: classVar isNonNil:true))}} asOrderedCollection.
-	self assertContentsOf: [ #(3) do: [:x| ClassVarForTest := ClassVarForTest ]] convertsTo: astAssignment.
 ]
 
 { #category : #testing }
