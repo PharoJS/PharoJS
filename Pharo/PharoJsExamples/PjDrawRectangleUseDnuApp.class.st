@@ -16,12 +16,12 @@ PjDrawRectangleUseDnuApp >> setupDOM [
 	colour := 'green'.
 	rectangle style 
 		backgroundColor: colour;
-		height: '3cm';
-		width: '3cm';
-		margin: '-1.5cm';
+		height: 3cm;
+		width: 3cm;
+		margin: -1.5cm;
 		position: #absolute;
-		left: '100px';
-		top: '150px'.
+		left: 100px;
+		top: 150px.
 	rectangle innerHTML: 'Clck to change colour'.
 	rectangle addEventListener: #click block: [ : ev |
 		colour = 'green' ifTrue: [
@@ -44,8 +44,8 @@ PjDrawRectangleUseDnuApp >> setupDOM [
 			x := ev pageX.
 			y := ev pageY.
 			rectangle style
-				left: x asString,'px';
-				top: y asString,'px'
+				left: x px;
+				top: y px
 		]
 ]
 
