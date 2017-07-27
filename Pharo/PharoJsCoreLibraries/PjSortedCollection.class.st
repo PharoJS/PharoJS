@@ -38,7 +38,8 @@ PjSortedCollection >> indexForInserting: newObject [
 PjSortedCollection >> initialize [
 	super initialize.
 	self instVarNamed: #firstIndex put: 1.
-	self instVarNamed: #lastIndex put: 0
+	self instVarNamed: #lastIndex put: 0.
+	self sortBlock: [ : a : b | a <= b ].
 ]
 
 { #category : #accessing }
