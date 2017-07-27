@@ -92,8 +92,9 @@ PjArrayTest >> testCollect [
 { #category : #testing }
 PjArrayTest >> testCollectPerform [
 	| double |
-	double := bridge evalBlock: [|array| array := #(10 -20 -30 40).
-	array collect: #abs].
+	double := bridge evalBlock: [|array| 
+			array := #(10 -20 -30 40).
+			array collect: [: each | each abs]].
 	#(10 20 30 40)  doWithIndex: [ : expectedValue : index  | 
 		self assert: [(double at: index) = expectedValue] evaluatesTo: true
 	].
