@@ -29,7 +29,8 @@ PjSortedCollection >> collect: aBlock [
 { #category : #private }
 PjSortedCollection >> indexForInserting: newObject [
 	self ifEmpty: [ ^1 ].
-	self withIndexDo: [ : element : index | newObject < element ifTrue: [ ^index ] ].
+	self withIndexDo: [ : element : index | 
+		(self sortBlock value: newObject value: element) ifTrue: [ ^index ] ].
 	^self size + 1
 ]
 

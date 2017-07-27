@@ -153,9 +153,9 @@ PjNumber >> asFloat [
 	<javascript: 'return +this'>
 ]
 
-{ #category : #arithmetics }
+{ #category : #converting }
 PjNumber >> asString [
-	<javascript: 'return this + "";'>
+	<javascript: 'return this + ""'>
 ]
 
 { #category : #'bit manipulation' }
@@ -183,6 +183,16 @@ PjNumber >> bitXor: arg [
 	<javascript: 'return this^arg'>
 ]
 
+{ #category : #converting }
+PjNumber >> ch [
+	<javascript: 'return this + "ch"'>
+]
+
+{ #category : #converting }
+PjNumber >> cm [
+	<javascript: 'return this + "cm"'>
+]
+
 { #category : #'mathematical functions' }
 PjNumber >> cos [
 	<javascript: 'return Math.cos(this);'>
@@ -192,6 +202,16 @@ PjNumber >> cos [
 PjNumber >> degreesToRadians [
 	^ self * RadiansPerDegree
 
+]
+
+{ #category : #converting }
+PjNumber >> em [
+	<javascript: 'return this + "em"'>
+]
+
+{ #category : #converting }
+PjNumber >> ex [
+	<javascript: 'return this + "ex"'>
 ]
 
 { #category : #'mathematical functions' }
@@ -227,6 +247,11 @@ PjNumber >> highBitOfPositiveReceiver [
 			[shifted := shifted bitShift: -1.
 			bitNo := bitNo +1].
 	^ shifted+bitNo
+]
+
+{ #category : #converting }
+PjNumber >> in [
+	<javascript: 'return this + "in"'>
 ]
 
 { #category : #testing }
@@ -277,9 +302,39 @@ PjNumber >> lowBit [
 	^ result
 ]
 
+{ #category : #converting }
+PjNumber >> mm [
+	<javascript: 'return this + "mm"'>
+]
+
+{ #category : #converting }
+PjNumber >> pc [
+	<javascript: 'return this + "pc"'>
+]
+
+{ #category : #converting }
+PjNumber >> percnt [
+	<javascript: 'return this + "%"'>
+]
+
 { #category : #proxy }
 PjNumber >> proxyResponse [
 	<javascript: 'return 0+this'>
+]
+
+{ #category : #converting }
+PjNumber >> pt [
+	<javascript: 'return this + "pt"'>
+]
+
+{ #category : #converting }
+PjNumber >> px [
+	<javascript: 'return this + "px"'>
+]
+
+{ #category : #converting }
+PjNumber >> rem [
+	<javascript: 'return this + "rem"'>
 ]
 
 { #category : #'mathematical functions' }
@@ -333,6 +388,26 @@ PjNumber >> truncated [
 { #category : #converting }
 PjNumber >> value [
 	<javascript: 'return 0+this'>
+]
+
+{ #category : #converting }
+PjNumber >> vh [
+	<javascript: 'return this + "vh"'>
+]
+
+{ #category : #converting }
+PjNumber >> vmax [
+	<javascript: 'return this + "vmax"'>
+]
+
+{ #category : #converting }
+PjNumber >> vmin [
+	<javascript: 'return this + "vmin"'>
+]
+
+{ #category : #converting }
+PjNumber >> vw [
+	<javascript: 'return this + "vw"'>
 ]
 
 { #category : #arithmetics }
