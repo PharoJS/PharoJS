@@ -9,8 +9,6 @@ PjStringTest >> testConversion [
 	self assertEquivalent: ['the Eiffel Tower' asUppercase].
 	self assertEquivalent: ['the Eiffel Tower' asLowercase].
 	self assertEquivalent: ['the Eiffel Tower' capitalized].
-	self assertEquivalent: ['the Eiffel Tower' asString].
-	self assertEquivalent: [String fromByteArray: #[ 65 66 67 ]].
 
 ]
 
@@ -53,10 +51,4 @@ PjStringTest >> testIsLetter [
 PjStringTest >> testLast [
 	self assert: ['abc' last] evaluatesTo: 'c'.
 	self assert: ['CBA' last] evaluatesTo: 'A'.
-]
-
-{ #category : #testing }
-PjStringTest >> testReplace [
-	self assertEquivalent: ['the Eiffel Tower' replaceFrom: 4 to: 7 with: 'abcdefghijkl' startingAt: 4].
-	self assertEquivalent: ['the Eiffel Tower' replaceFrom: 4 to: 7 with: #[32 33 34 35 36 37] startingAt: 2].
 ]

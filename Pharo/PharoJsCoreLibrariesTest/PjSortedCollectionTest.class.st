@@ -63,7 +63,16 @@ PjSortedCollectionTest >> testShallowCopy [
 ]
 
 { #category : #testing }
-PjSortedCollectionTest >> testSortingNumbers [
+PjSortedCollectionTest >> testSortingNumbersGreaterFirst [
+	self evalBlock: [ collection sortBlock: [ : a : b | a >=b ] ].
+	self atRandomAddAll: (1 to: 10).
+	(1 to: 10) with: (1 to: 10) reversed do: [ : index : expectedValue |
+		self assert: (collection at: index) equals: expectedValue ]
+
+]
+
+{ #category : #testing }
+PjSortedCollectionTest >> testSortingNumbersSmallerFirst [
 	self atRandomAddAll: (1 to: 10).
 	(1 to: 10) do: [ : index |
 		self assert: (collection at: index) equals: index ]

@@ -24,6 +24,18 @@ PjOrderedCollectionTest >> testInsertElementBeforeFirstOne [
 ]
 
 { #category : #testing }
+PjOrderedCollectionTest >> testJoin [
+	| temp |
+	collection addAll: #(4 5).
+	temp := collection join: #((1 2 3) (6 7) (3 2)).
+	self assert: collection size equals: 2.
+	self assert: temp size equals: 11.
+	#(1 2 3 4 5 6 7 4 5 3 2) withIndexDo: [ : expectedElement : index |
+		self assert: (temp at: index) equals: expectedElement
+	]
+]
+
+{ #category : #testing }
 PjOrderedCollectionTest >> testRemoveAll [
 	collection addAll: #(1 2 3 4 5).
 	collection removeAll: #(1 5).
