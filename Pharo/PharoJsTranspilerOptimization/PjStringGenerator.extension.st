@@ -84,8 +84,7 @@ PjStringGenerator >> visitIfTrueIfFalseNode: aPjIfTrueIfFalseNode [
 		writeNonBrace: $);
 		visit: aPjIfTrueIfFalseNode whenTrue;
 		maybeWriteSemicolon;
-		nextPutAll: 'else '.
-	wroteCloseBrace :=false.
+		writeNonBrace: 'else '.
 	self visit: aPjIfTrueIfFalseNode whenFalse
 ]
 
@@ -193,8 +192,7 @@ PjStringGenerator >> writeIfNilExpression: test then: thenAst else: elseAst [
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }
 PjStringGenerator >> writeLoopBody: body [
-	self nextPutAll: '){'.
-	wroteCloseBrace := false.
+	self writeNonBrace: '){'.
 	body asOrderedCollection
 		do: [ :statement | statement acceptVisitor: self ]
 		separatedBy: [ self maybeWriteSemicolon ].
