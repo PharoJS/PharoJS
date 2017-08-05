@@ -8,9 +8,14 @@ Class {
 PjSortedCollection class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
-		SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting:)).
+		SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting: addAll: reSort sort:to:)).
 		SortedCollection class -> #( sortBlock: ).
 		}
+]
+
+{ #category : #adding }
+PjSortedCollection >> addAll: otherCollection [
+	otherCollection do: [ : each | self add: each ]
 ]
 
 { #category : #enumerating }
@@ -45,6 +50,15 @@ PjSortedCollection >> initialize [
 { #category : #accessing }
 PjSortedCollection >> insert: newObject before: index [
 	self splice: index - 1 remove: 0 element: newObject
+]
+
+{ #category : #private }
+PjSortedCollection >> reSort [
+	| copy |
+	copy := self species sortBlock: self sortBlock.
+	copy addAll: self.
+	copy withIndexDo: [ : each : index |
+		super at: index put: each ]
 ]
 
 { #category : #accessing }

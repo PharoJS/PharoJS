@@ -28,6 +28,9 @@ PjString class >> jsTranspilationImportMethods [
 			String -> #(
 				findTokens: 
 			).
+			Character class -> #(
+				cr escape lf linefeed space tab
+			).
 			Character -> #(
 				isVowel isCharacter to:
 			).
