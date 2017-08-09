@@ -296,7 +296,8 @@ PjStringGenerator >> visitAssignNode: aPjAssignNode [
 		self
 			visit: aPjAssignNode target;
 			nextPut: $=;
-			visit: aPjAssignNode expression
+			visit: aPjAssignNode expression.
+			wroteCloseBrace := false
 	]
 ]
 
@@ -466,7 +467,7 @@ PjStringGenerator >> visitObjectNode: aPjObjectNode [
 	] separatedBy: [
 		self nextPut: $,
 	].
-	self writeCloseBrace
+	self writeNonBrace: $} " even though this is a brace, it isn't an end-of-statement brace "
 ]
 
 { #category : #visiting }
@@ -495,8 +496,7 @@ PjStringGenerator >> visitSelfNode: aPjASelf [
 PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
 	| bracket |
 	bracket := aPjSequenceNode expressions size ~= 1.
-	bracket ifTrue: [self nextPut: (self isAtStatementPrecedence ifTrue: ${ ifFalse: $()].
-	wroteCloseBrace := false.
+	bracket ifTrue: [self writeNonBrace: (self isAtStatementPrecedence ifTrue: ${ ifFalse: $()].
 	aPjSequenceNode expressions do: [: expr |
 		wroteCloseBrace := false..
 		expr acceptVisitor: self
@@ -622,8 +622,12 @@ PjStringGenerator >> writeFunctionLocals: aPjFunctionNode [
 ]
 
 { #category : #writing }
-PjStringGenerator >> writeNonBrace: aCharacter [
-	self nextPut: aCharacter.
+PjStringGenerator >> writeNonBrace: aCharacterOrString [
+	aCharacterOrString isString ifTrue: [
+		self nextPutAll: aCharacterOrString
+	] ifFalse:  [
+		self nextPut: aCharacterOrString
+	].
 	wroteCloseBrace := false.
 
 ]

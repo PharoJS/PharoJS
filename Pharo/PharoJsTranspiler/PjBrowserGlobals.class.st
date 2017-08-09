@@ -7,6 +7,7 @@ Class {
 	#name : #PjBrowserGlobals,
 	#superclass : #PjJavascriptGlobals,
 	#classVars : [
+		'XMLHttpRequest',
 		'localStorage'
 	],
 	#pools : [

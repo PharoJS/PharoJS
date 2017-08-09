@@ -228,7 +228,8 @@ PjCore class >> makeGetter: selector [
 PjCore class >> makeJavascriptSelector: aSelector [
 	| result |
 	(aSelector js_at: 0)='_' ifTrue: [ ^ aSelector ].
-	(selectorCache js_at: aSelector) ifNotNil: [ : sel | ^ sel ].
+	(selectorCache js_hasOwnProperty: aSelector) ifTrue: [
+		^ (selectorCache js_at: aSelector)].
 	aSelector ifNotNil: [:sel |
 		sel isLetter ifTrue: [
 			result := (':',sel) js_split: ':'
@@ -256,7 +257,8 @@ PjCore class >> makeSetter: selector [
 PjCore class >> makeSmalltalkSelector: aSelector [
 	| result |
 	(aSelector js_at: 0) = '_' ifFalse: [ ^ aSelector ].
-	(selectorCache js_at: aSelector) ifNotNil: [ : sel | ^ sel ].
+	(selectorCache js_hasOwnProperty: aSelector) ifTrue: [
+		^ selectorCache js_at: aSelector ].
 	result := aSelector js_split: '_'.
 	result js_shift.
 	((result js_at: 0) js_at: 0) > '9' ifTrue: [ ^ result js_join: ':' ].

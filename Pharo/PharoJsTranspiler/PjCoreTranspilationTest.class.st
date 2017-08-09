@@ -25,6 +25,6 @@ PjCoreTranspilationTest >> testOptimizedJsAt [
 	asNil := PjStringGenerator nilTestFunctionName.
 	method := self classMethod: #makeJavascriptSelector:.
 	self assert: (method indexOfSubCollection: asNil,'(',asNil,'(aSelector[0])._61_(')>0.
-	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache[aSelector])._ifNotNil_(')>0.
+	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache.hasOwnProperty(aSelector))._ifTrue_(')>0.
 
 ]
