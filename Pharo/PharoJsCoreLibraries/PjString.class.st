@@ -139,10 +139,12 @@ PjString >> asRegex [
 
 { #category : #converting }
 PjString >> asString [
+	<javascript: 'return ""+this'>
 ]
 
 { #category : #converting }
 PjString >> asSymbol [
+	<javascript: 'return ""+this'>
 ]
 
 { #category : #converting }
