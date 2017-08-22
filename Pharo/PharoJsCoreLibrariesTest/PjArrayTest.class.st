@@ -176,6 +176,17 @@ PjArrayTest >> testEquality [
 ]
 
 { #category : #testing }
+PjArrayTest >> testIncludes [
+	self assertEquivalent: [#() includes: 4].
+	self assertEquivalent: [#(2 3 4 5) includes: 4].
+	self assertEquivalent: [#() includes: 'hello'].
+	self assertEquivalent: [#(2 'hello' 5) includes: 'hello'].
+	self assertEquivalent: [ #(2 3 (4 5) 6) includes: #(4 5) ].
+	self assertEquivalent: [ #(2 3 (4 5) 6) includes: #(5 6) ].
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testInserElement [
 	
 ]
