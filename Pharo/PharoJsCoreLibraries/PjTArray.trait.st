@@ -128,6 +128,11 @@ PjTArray >> third [
 ]
 
 { #category : #enumerating }
+PjTArray >> with: otherCollection do: aBlock [ 
+	<javascript: 'for(var i=0,max=this.length;i<max;++i)aBlock(this[i],otherCollection[i]);return this'>
+]
+
+{ #category : #enumerating }
 PjTArray >> withIndexDo: aBlock [ 
 	<javascript: 'for(var i=0,max=this.length;i<max;++i)aBlock(this[i],i+1);return this'>
 ]

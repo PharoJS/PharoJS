@@ -13,7 +13,7 @@ PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 	<pharoJsSkip>
 	^ {
 		Collection ->#(
-			allSatisfy: anySatisfy: inject:into:
+			allSatisfy: anySatisfy: noneSatisfy: inject:into:
 			detect:ifFound:ifNone: detect:ifNone: detect:ifFound: remove: isCollection 
 			asDictionary associationsDo: addAll: isEmptyOrNil removeAll: 
 		).
