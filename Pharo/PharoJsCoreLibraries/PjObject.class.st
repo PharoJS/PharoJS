@@ -206,6 +206,11 @@ PjObject >> isEmpty [
 	^ true
 ]
 
+{ #category : #testing }
+PjObject >> isJSPrimitiveType [
+	^ false
+]
+
 { #category : #'dictionary emulation' }
 PjObject >> keys [
 	"Answer an Array containing the receiver's keys."

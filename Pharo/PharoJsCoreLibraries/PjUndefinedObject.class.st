@@ -48,6 +48,11 @@ PjUndefinedObject >> identityHash [
 	^ 256
 ]
 
+{ #category : #accessing }
+PjUndefinedObject >> isJSPrimitiveType [
+	^ true
+]
+
 { #category : #converting }
 PjUndefinedObject >> value [
 	^ nil

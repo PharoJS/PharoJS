@@ -250,6 +250,11 @@ PjString >> isEmpty [
 ]
 
 { #category : #testing }
+PjString >> isJSPrimitiveType [
+	^ true
+]
+
+{ #category : #testing }
 PjString >> isLetter [
 	| first |
 	first := ((self js_charAt: 0) js_toUpperCase) js_charCodeAt: 0.

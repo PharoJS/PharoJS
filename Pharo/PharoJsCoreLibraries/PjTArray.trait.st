@@ -79,7 +79,12 @@ PjTArray >> ifEmpty: aBlock [
 
 { #category : #testing }
 PjTArray >> includes: x [
-	^ 0<(self indexOf: x)
+	<javascript: 'if (x._isJSPrimitiveType()) {
+		if (this.includes(x)) return true;
+		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
+		return false}		
+	for(var i=this.length-1;i>=0;--i) if (x._61_(this[i])) return true;
+	return false'>
 ]
 
 { #category : #accessing }

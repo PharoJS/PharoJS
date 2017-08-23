@@ -9,6 +9,16 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #'pharoJs support' }
+PjBoolean class >> jsTranspilationImportMethods [
+	<pharoJsSkip>
+	^ {
+			Boolean -> #(
+				==> eqv: 
+			).
+		}
+]
+
 { #category : #'logical operations' }
 PjBoolean >> & aBoolean [
 	^ self ifTrue: [ ^ aBoolean ] ifFalse: [ ^ false ]
@@ -63,6 +73,11 @@ PjBoolean >> ifTrue: aBlock [
 { #category : #controlling }
 PjBoolean >> ifTrue: trueBlock ifFalse: falseBlock [
 	<javascript: 'if(this==true){return typeof trueBlock=="function"?trueBlock():trueBlock}else{return typeof falseBlock=="function"?falseBlock():falseBlock}'>
+]
+
+{ #category : #testing }
+PjBoolean >> isJSPrimitiveType [
+	^ true
 ]
 
 { #category : #'logical operations' }

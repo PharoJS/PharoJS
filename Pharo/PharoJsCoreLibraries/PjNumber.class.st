@@ -265,6 +265,11 @@ PjNumber >> isInteger [
 ]
 
 { #category : #testing }
+PjNumber >> isJSPrimitiveType [
+	^ true
+]
+
+{ #category : #testing }
 PjNumber >> isNaN [
 	<javascript: 'return isNaN(this)'>
 ]
