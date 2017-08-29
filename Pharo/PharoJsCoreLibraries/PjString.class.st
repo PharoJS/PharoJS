@@ -277,6 +277,11 @@ PjString >> last [
 	^self at: self size
 ]
 
+{ #category : #accessing }
+PjString >> lastIndexOf: x [
+	<javascript: 'return this.lastIndexOf(x)+1'>
+]
+
 { #category : #testing }
 PjString >> notEmpty [
 	^self ~= ''

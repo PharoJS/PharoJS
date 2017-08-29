@@ -53,7 +53,7 @@ PjTArray >> at: index ifAbsent: aBlock [
 
 { #category : #enumerating }
 PjTArray >> collect: aBlock [
-	<javascript: 'var result=[];for(var i=0,max=this.length;i<max;++i)result.push(typeof aBlock=="string"?this[i]._perform_(aBlock):aBlock(this[i]));return result'>
+	<javascript: 'var result=[];for(var i=0,max=this.length;i<max;++i)result.push(typeof aBlock=="string"?$asNil$(this[i])._perform_(aBlock):aBlock(this[i]));return result'>
 ]
 
 { #category : #enumerating }
@@ -119,7 +119,7 @@ PjTArray >> second [
 
 { #category : #enumerating }
 PjTArray >> select: aBlock [
-	<javascript: 'var result=[];for(var i=0,max=this.length;i<max;++i){if(true==aBlock(this[i]))result.push(this[i])}return result'>
+	<javascript: 'var result=[];for(var i=0,max=this.length;i<max;++i){if(true==(typeof aBlock=="string"?$asNil$(this[i])._perform_(aBlock):aBlock(this[i])))result.push(this[i])}return result'>
 ]
 
 { #category : #enumerating }
