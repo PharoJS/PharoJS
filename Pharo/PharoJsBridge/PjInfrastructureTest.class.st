@@ -45,6 +45,7 @@ PjInfrastructureTest >> testJSSelector [
 	self assert: [PjCore makeJavascriptSelector: #_44_] evaluatesTo: '_44_'.
 	self assert: [PjCore makeJavascriptSelector: #_foo] evaluatesTo: '_foo'.
 	self assert: [PjCore makeJavascriptSelector: #_foo_] evaluatesTo: '_foo_'.
+	self assert: [PjCore makeJavascriptSelector: #'$foo:'] evaluatesTo: '_$foo_'.
 
 ]
 

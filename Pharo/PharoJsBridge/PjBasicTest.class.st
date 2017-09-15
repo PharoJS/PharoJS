@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #testing }
-PjBasicTest >> expectedFailures [
-^ #(testClosedBlocks)
-]
-
-{ #category : #testing }
 PjBasicTest >> testBooleanMethods [
 	self assertEquivalent: [true asBit].
 	self assertEquivalent: [false asBit].
@@ -37,12 +32,25 @@ PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
 
 { #category : #testing }
 PjBasicTest >> testClosedBlocks [
+	<expectedFailure>
 	| x |
 	self fail: 'Fix error'.
 	x := 3.
 	self assertEquivalent: [ [ x + 39 ] value ] asClosedBlock.
 	x := 5.
 	self assertEquivalent: [ x + 39 ] asClosedBlock
+]
+
+{ #category : #testing }
+PjBasicTest >> testClosure [
+	self assertEquivalent: [| tot coll |
+		tot := 0.
+		coll := OrderedCollection new.
+		1 to: 5 do: [ : each | coll add: [ each ] ].
+		coll do: [  : each | tot := tot + each value ].
+		tot
+	].
+
 ]
 
 { #category : #testing }
