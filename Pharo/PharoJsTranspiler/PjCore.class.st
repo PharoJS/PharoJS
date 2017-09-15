@@ -60,7 +60,7 @@ PjCore class >> at: jsName put: anObject [
 	^ global js_at: jsName put: anObject
 ]
 
-{ #category : #accessing }
+{ #category : #initalize }
 PjCore class >> emptyJavascriptObject [
 	"Object.create(null) creates an even emptier JS object, but it isn't an Object (i.e. has no methods)."
 	<javascript: '
@@ -231,7 +231,7 @@ PjCore class >> makeJavascriptSelector: aSelector [
 	(selectorCache js_hasOwnProperty: aSelector) ifTrue: [
 		^ (selectorCache js_at: aSelector)].
 	aSelector ifNotNil: [:sel |
-		sel isLetter ifTrue: [
+		(sel isLetter or: [(aSelector js_at: 0)='$']) ifTrue: [
 			result := (':',sel) js_split: ':'
 		] ifFalse: [
 			result := #(nil).

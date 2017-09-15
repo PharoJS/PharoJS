@@ -26,11 +26,6 @@ PjBlockTranspilationTest >> closedBlock: x [
 	^  [:v| |w| {v.w.x.y.instVar.123}] asClosedBlock
 ]
 
-{ #category : #tests }
-PjBlockTranspilationTest >> expectedFailures [
-	^#(testBlockWithNestedScopesToFix) 
-]
-
 { #category : #testing }
 PjBlockTranspilationTest >> openBlock: x [
 	| y |
@@ -161,6 +156,7 @@ PjBlockTranspilationTest >> testBlockWithNestedScopes [
 
 { #category : #testing }
 PjBlockTranspilationTest >> testBlockWithNestedScopesToFix [
+	<expectedFailure>
 	self 
 		assertStBlock: ([ :y| [ |w| w:=17. [ { w.y.2} ] ] ] value: 4) value asClosedBlock
 		convertsTo: '(function(w,y){return function(){return [w,y,2]}})(17,4)'.
