@@ -451,6 +451,7 @@ PjConversionOptimizationTest >> testTimesRepeat [
 
 { #category : #testing }
 PjConversionOptimizationTest >> testToDo [
+	<expectedFailure> " temporarily disabled optimization "
 	| in a xNode temp1 temp2 |
 	a := PjTempVariableNode identifier: #a.
 	in := PjTempVariableNode identifier: #in.

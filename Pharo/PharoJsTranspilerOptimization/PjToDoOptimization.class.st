@@ -7,9 +7,10 @@ Class {
 { #category : #converting }
 PjToDoOptimization >> convertReceiver: receiver args: args [
 	| from to by body toName byName |
+	true ifTrue: [ ^ nil ].
 	self astConverter isInExpression ifTrue: [ ^ nil ].
 	args last isBlock ifFalse: [ ^ nil ].
-	args last arguments size = 1ifFalse: [ ^ nil ].
+	args last arguments size = 1 ifFalse: [ ^ nil ].
 	self inExpressionDo: [
 		from := PjAssignNode
 			target: (PjArgumentNode identifier: args last arguments first name)
