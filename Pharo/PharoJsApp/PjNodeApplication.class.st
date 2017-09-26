@@ -16,3 +16,8 @@ PjNodeApplication class >> headerLine [
 	<pharoJsSkip>
 	^ '#! /usr/bin/env node'
 ]
+
+{ #category : #'start-stop application' }
+PjNodeApplication class >> whenJsReady: aBlock [
+	aBlock value
+]

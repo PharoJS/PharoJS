@@ -69,8 +69,13 @@ PjApplication class >> setupCode [
 
 { #category : #'start-stop application' }
 PjApplication class >> start [
+	self whenJsReady: [ self startInstance ]
+]
+
+{ #category : #'start-stop application' }
+PjApplication class >> startInstance [
 	self currentInstance ifNil: [ currentInstance := self new ].
-	^self currentInstance start; yourself
+	self currentInstance start
 ]
 
 { #category : #'start-stop application' }
@@ -80,7 +85,12 @@ PjApplication class >> stop [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'start-stop application' }
+PjApplication class >> whenJsReady: aBlock [
+	self subclassResponsibility
+]
+
+{ #category : #'start-stop' }
 PjApplication >> start [
 ]
 
