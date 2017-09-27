@@ -1,11 +1,7 @@
 Class {
 	#name : #PjPharoCounterBrowserAppTest,
 	#superclass : #PjCounterBrowserAppTest,
+	#traits : 'PjTAppRunsInPharo',
+	#classTraits : 'PjTAppRunsInPharo classTrait',
 	#category : #'PharoJsExamples-Counter'
 }
-
-{ #category : #testing }
-PjPharoCounterBrowserAppTest >> currentApp [
-	^PjCounterBrowserApp start.
-
-]

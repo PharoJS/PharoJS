@@ -1,10 +1,7 @@
 Class {
 	#name : #PjJavascriptHelloWorldAppTest,
 	#superclass : #PjHelloWorldAppTest,
+	#traits : 'PjTAppRunsInJS',
+	#classTraits : 'PjTAppRunsInJS classTrait',
 	#category : #'PharoJsExamples-HelloWorld'
 }
-
-{ #category : #testing }
-PjJavascriptHelloWorldAppTest >> currentApp [
-	^self evalBlock: [ PjHelloWorldApp currentInstance ]
-]

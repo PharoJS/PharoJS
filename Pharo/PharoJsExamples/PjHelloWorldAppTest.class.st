@@ -1,8 +1,9 @@
 Class {
 	#name : #PjHelloWorldAppTest,
 	#superclass : #PjWebAppTestCase,
+	#traits : 'PjTWaitUntilReady',
+	#classTraits : 'PjTWaitUntilReady classTrait',
 	#instVars : [
-		'app',
 		'nameInput',
 		'sayHelloButton',
 		'greetingMessageContainer'
@@ -21,14 +22,8 @@ PjHelloWorldAppTest class >> isAbstract [
 ]
 
 { #category : #testing }
-PjHelloWorldAppTest >> currentApp [
-	self subclassResponsibility
-]
-
-{ #category : #testing }
 PjHelloWorldAppTest >> setUp [
 	super setUp.
-	app := self currentApp.
 	nameInput := document getElementById: #nameTextInput.
 	sayHelloButton := document getElementById: #sayHelloButton.
 	greetingMessageContainer := document getElementById: #greetingMessageContainer.

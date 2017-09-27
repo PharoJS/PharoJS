@@ -2,7 +2,6 @@ Class {
 	#name : #PjCounterBrowserAppTest,
 	#superclass : #PjWebAppTestCase,
 	#instVars : [
-		'application',
 		'countDisplay',
 		'incrementButton',
 		'resetButton'
@@ -20,23 +19,12 @@ PjCounterBrowserAppTest class >> isAbstract [
 	^self == PjCounterBrowserAppTest
 ]
 
-{ #category : #'suite parameters' }
-PjCounterBrowserAppTest class >> targetPlatforms [
-	^{PjSafari . PjGoogleChrome. PjFireFox. }
-]
-
-{ #category : #testing }
-PjCounterBrowserAppTest >> currentApp [
-	self subclassResponsibility
-]
-
 { #category : #testing }
 PjCounterBrowserAppTest >> setUp [
 	super setUp.
-	application := self currentApp.
-	countDisplay := application countDisplay.
-	resetButton := application resetButton.
-	incrementButton := application incrementButton.
+	countDisplay := app countDisplay.
+	resetButton := app resetButton.
+	incrementButton := app incrementButton.
 	
 ]
 

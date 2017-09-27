@@ -1,10 +1,7 @@
 Class {
 	#name : #PjJavascriptCounterBrowserAppTest,
 	#superclass : #PjCounterBrowserAppTest,
+	#traits : 'PjTAppRunsInJS',
+	#classTraits : 'PjTAppRunsInJS classTrait',
 	#category : #'PharoJsExamples-Counter'
 }
-
-{ #category : #testing }
-PjJavascriptCounterBrowserAppTest >> currentApp [
-	^ self evalBlock: [PjCounterBrowserApp currentInstance]
-]
