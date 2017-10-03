@@ -7,9 +7,8 @@ Class {
 { #category : #testing }
 PjArrayTest >> testAllButFirst [
 	| array |
-	array := bridge evalBlock: [#(10 20 30 40)].
-	self assert: array allButFirst size equals: array size - 1.
-
+	array := self bridge evalBlock: [ #(10 20 30 40) ].
+	self assert: array allButFirst size equals: array size - 1
 ]
 
 { #category : #testing }
@@ -43,73 +42,70 @@ PjArrayTest >> testArrayWithMoreElements [
 { #category : #testing }
 PjArrayTest >> testAt [
 	| array |
-	array := bridge evalBlock: [#(10 20 30 40)].
-	#(10 20 30 40) doWithIndex: [ : expectedValue : index  | 
-		self assert: [array at: index] evaluatesTo:  expectedValue
-	].
-	
-	
+	array := self bridge evalBlock: [ #(10 20 30 40) ].
+	#(10 20 30 40)
+		doWithIndex:
+			[ :expectedValue :index | self assert: [ array at: index ] evaluatesTo: expectedValue ]
 ]
 
 { #category : #testing }
 PjArrayTest >> testAtIfAbsent [
 	| array actualValue |
-	array := bridge evalBlock: [#(10 20 30)].
-	#(10 20 30)  withIndexDo: [ : expectedValue : index  | 
-		actualValue := bridge evalBlock: [array at: index ifAbsent: [nil]].
-		self assert: actualValue equals: expectedValue.
-	].
-	actualValue := bridge evalBlock: [array at: 10 ifAbsent: [100]].
-	self assert: actualValue equals: 100.
-	
-	
+	array := self bridge evalBlock: [ #(10 20 30) ].
+	#(10 20 30)
+		withIndexDo: [ :expectedValue :index | 
+			actualValue := self bridge
+				evalBlock: [ array at: index ifAbsent: [ nil ] ].
+			self assert: actualValue equals: expectedValue ].
+	actualValue := self bridge
+		evalBlock: [ array at: 10 ifAbsent: [ 100 ] ].
+	self assert: actualValue equals: 100
 ]
 
 { #category : #testing }
 PjArrayTest >> testAtPut [
 	| array |
-	array := bridge evalBlock: [#(10 20 30 40)].
-	#(11 22  33 44)  doWithIndex: [ : newValue : index  | 
-		bridge evalBlock: [array at: index put: newValue]
-	].
-	self assert: [array] evaluatesToRaw: '[11,22,33,44]'
-	
-	
+	array := self bridge evalBlock: [ #(10 20 30 40) ].
+	#(11 22 33 44)
+		doWithIndex:
+			[ :newValue :index | self bridge evalBlock: [ array at: index put: newValue ] ].
+	self assert: [ array ] evaluatesToRaw: '[11,22,33,44]'
 ]
 
 { #category : #testing }
 PjArrayTest >> testCollect [
 	| double |
-	double := bridge evalBlock: [|array| array := #(10 20 30 40).
-	array collect: [ : element | 2 * element]].
-	#(20 40 60 80)  doWithIndex: [ : expectedValue : index  | 
-		self assert: [(double at: index) = expectedValue] evaluatesTo: true
-	].
-	
-	
+	double := self bridge
+		evalBlock: [ | array |
+			array := #(10 20 30 40).
+			array collect: [ :element | 2 * element ] ].
+	#(20 40 60 80)
+		doWithIndex:
+			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
 ]
 
 { #category : #testing }
 PjArrayTest >> testCollectPerform [
 	| double |
-	double := bridge evalBlock: [|array| 
+	double := self bridge
+		evalBlock: [ | array |
 			array := #(10 -20 -30 40).
-			array collect: [: each | each abs]].
-	#(10 20 30 40)  doWithIndex: [ : expectedValue : index  | 
-		self assert: [(double at: index) = expectedValue] evaluatesTo: true
-	].
-	
+			array collect: [ :each | each abs ] ].
+	#(10 20 30 40)
+		doWithIndex:
+			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
 ]
 
 { #category : #testing }
 PjArrayTest >> testCollectPerformSymbol [
 	| double |
-	double := bridge evalBlock: [|array| array := #(10 -20 -30 40).
-	array collect: #abs].
-	#(10 20 30 40)  doWithIndex: [ : expectedValue : index  | 
-		self assert: [(double at: index) = expectedValue] evaluatesTo: true
-	].
-	
+	double := self bridge
+		evalBlock: [ | array |
+			array := #(10 -20 -30 40).
+			array collect: #abs ].
+	#(10 20 30 40)
+		doWithIndex:
+			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
 ]
 
 { #category : #testing }

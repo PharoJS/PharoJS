@@ -7,7 +7,12 @@ Class {
 { #category : #testing }
 PjChronololgyTest >> setUp [
 	super setUp.
-	bridge loadAllClasses: { PjNumberForDuration. Time. Duration. DateAndTime  }
+	self bridge
+		loadAllClasses:
+			{PjNumberForDuration.
+			Time.
+			Duration.
+			DateAndTime}
 ]
 
 { #category : #testing }
