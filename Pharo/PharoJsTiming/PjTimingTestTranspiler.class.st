@@ -22,7 +22,8 @@ PjTimingTestTranspiler >> delayDNU: anObject [
 
 { #category : #transpiling }
 PjTimingTestTranspiler >> generateCodeStringFrom: jsAst [
-	self delayDNU ifFalse: [self convertAllClasses: #() writeDnu: true].
+	self delayDNU ifFalse: [
+		self enableWriteDnuDuring: [self writeDnuList]].
 	generator asString: jsAst on: self jsStream.
 
 ]
