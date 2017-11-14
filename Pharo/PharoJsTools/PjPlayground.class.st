@@ -18,11 +18,8 @@ Class {
 { #category : #'world menu' }
 PjPlayground class >> applicationList [
 	^ (PjApplication allSubclasses select: [ :class |
-				class isAbstract not and: [
-					((class hasClassMethod: #start) or: [
-						class hasInstanceMethod: #start
-					 ]) and: [ (class hasClassMethod: #playgroundDoNotList) not ]
-		]]) sort: [ : l : r | l name <= r name ]
+				class isAbstract not and: [ (class hasClassMethod: #playgroundDoNotList) not ]
+		]) sort: [ : l : r | l name <= r name ]
 ]
 
 { #category : #opening }
@@ -72,7 +69,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 							action: [ class browse ].
 			]].
 			(aBuilder item: #Help)
-				icon: Smalltalk ui icons smallHelpIcon;
+				icon: Smalltalk ui icons help;
 				action: [ HelpBrowser openOn: PharoJsHelp ].
 		]
 ]

@@ -20,13 +20,13 @@ PjBridge >> playgroundInitialContent [
 
 { #category : #'*PharoJsTools-Playground' }
 PjBridge >> playgroundWithoutLaunch [
-	self launchJavascriptInterpreter: false.
+	self shouldStartJsInterpreter: false.
 	^ self playground
 ]
 
 { #category : #'*PharoJsTools-Playground' }
 PjBridge >> playgroundWithoutLaunchOnUrl: aString [
 	self serverUrl: aString.
-	self launchJavascriptInterpreter: false.
+	self shouldStartJsInterpreter: false.
 	^ self playground
 ]

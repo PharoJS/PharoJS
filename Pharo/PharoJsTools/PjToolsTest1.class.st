@@ -1,6 +1,6 @@
 Class {
 	#name : #PjToolsTest1,
-	#superclass : #PjApplication,
+	#superclass : #PjBrowserApplication,
 	#category : #'PharoJsTools-Tests'
 }
 
