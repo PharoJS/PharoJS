@@ -39,7 +39,7 @@ PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
-	self assert: firstClass inCodeWithPrefix: '._subclass_(' before: lastClass.
+	self assert: firstClass inCodeWithPrefix: '._subclass_("' before: lastClass.
 
 ]
 

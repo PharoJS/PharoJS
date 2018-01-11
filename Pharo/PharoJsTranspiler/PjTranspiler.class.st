@@ -16,7 +16,8 @@ Class {
 		'neededDNUs',
 		'classesReferencingCache',
 		'writtenDNUs',
-		'beforeCodeOutputHook'
+		'beforeCodeOutputHook',
+		'shouldWriteDnu'
 	],
 	#category : #'PharoJsTranspiler-Kernel'
 }
@@ -82,28 +83,27 @@ PjTranspiler >> classVariablesHolderName [
 
 { #category : #transpiling }
 PjTranspiler >> convertAllClasses: classes [
-	self convertAllClasses: classes writeDnu: true
-]
-
-{ #category : #transpiling }
-PjTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
-	| actualClassesToConvert classesToInit sortedClassesToInit classesInWriteOrder |
+	| actualClassesToConvert classesInWriteOrder |
 	beforeCodeOutputHook ifNotNil: [ beforeCodeOutputHook value ].
 	actualClassesToConvert := classes collect: #classToUseForJsConversion.
-	actualClassesToConvert asIdentitySet do: [ :aClass | self writeClassDefinitionOf: aClass ].
-"	Transcript
-		nextPutAll: 'orderForInitialization for ';print: actualClassesToConvert size;
-		nextPutAll: ' classes takes: ';print: ["
+	actualClassesToConvert asIdentitySet
+		do: [ :aClass | self writeClassDefinitionOf: aClass ].
 	classesInWriteOrder := self orderForWriting: actualClassesToConvert.
-"	] timeToRun;cr;flush."
-	classesInWriteOrder do: [ :aClass | 
+	classesInWriteOrder
+		do: [ :aClass | 
 			self writeClassInheritanceLinksOf: aClass.
 			self writeClassAndPoolVariablesDeclarationOf: aClass.
 			self writeMethodsOf: aClass ].
-	shouldWriteDnu ifTrue: [ self writeDnuList ].
-	classesToInit := classesInWriteOrder select: #needsInitialization.
-	sortedClassesToInit := self orderForInitialization: classesToInit.
-	sortedClassesToInit do: [ :aClass | self writeClassInitializeOf: aClass ]
+	self writeDnuList.
+	self writeClassInitializeOfAll: classesInWriteOrder
+]
+
+{ #category : #transpiling }
+PjTranspiler >> convertAllClasses: classes writeDnu: aBoolean [
+	self 
+		enableWriteDnu: aBoolean
+		during: [self convertAllClasses: classes].
+	
 ]
 
 { #category : #transpiling }
@@ -123,9 +123,9 @@ PjTranspiler >> convertAndWriteClosedBlock: valuedBlock with: aBlock [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> convertBlock: closedBlock [ 
+PjTranspiler >> convertBlock: aBlock [ 
 	| jsAst |
-	jsAst := converter convertBlock: closedBlock.
+	jsAst := converter convertBlock: aBlock.
 	^self generateCodeStringFrom: jsAst.
 ]
 
@@ -185,6 +185,11 @@ PjTranspiler >> defaultMessageConversions [
 	^ { PjJsThisConversion. PjJsAtConversion. PjJsAtPutConversion }
 ]
 
+{ #category : #transpiling }
+PjTranspiler >> disableWriteDnuDuring: aBlockClosure [ 
+	^self enableWriteDnu: false during: aBlockClosure 
+]
+
 { #category : #loading }
 PjTranspiler >> discoveredGlobalsPool: aClass [
 	"To be used for loading polyfills"
@@ -202,6 +207,11 @@ PjTranspiler >> discoveredReferenceToClass: aClass [
 	^self
 ]
 
+{ #category : #transpiling }
+PjTranspiler >> dnuJsString [
+	^ self enableWriteDnuDuring: [self onTempStreamDo: [self writeDnuList]]
+]
+
 { #category : #ordering }
 PjTranspiler >> does: last reference: first [
 	| classesReferencingFirst |
@@ -217,6 +227,19 @@ PjTranspiler >> does: last reference: first [
    
 ]
 
+{ #category : #transpiling }
+PjTranspiler >> enableWriteDnu: aBoolean during: aBlockClosure [ 
+	| initialShouldWriteDnu |
+	initialShouldWriteDnu := self shouldWriteDnu.
+	self shouldWriteDnu: aBoolean.
+	^aBlockClosure ensure: [ self shouldWriteDnu: initialShouldWriteDnu ]
+]
+
+{ #category : #transpiling }
+PjTranspiler >> enableWriteDnuDuring: aBlockClosure [ 
+	^self enableWriteDnu: true during: aBlockClosure 
+]
+
 { #category : #loading }
 PjTranspiler >> findClassesFor: aClass [
 	^ { aClass }, aClass allSuperclasses
@@ -229,11 +252,13 @@ PjTranspiler >> generateCodeStringFrom: jsAst. [
 
 { #category : #initialization }
 PjTranspiler >> initialize [
+	super initialize.
 	generatedMethods := Dictionary new.
 	converter := self defaultConverterClass new.
 	converter transpiler: self.
 	converter addAllMessageConversions: self defaultMessageConversions.
 	generator := self defaultGeneratorClass new.
+	self shouldWriteDnu: true.
 	neededDNUs := Set new.
 	writtenDNUs := Set new.
 	classesReferencingCache := IdentityDictionary new.
@@ -357,6 +382,16 @@ PjTranspiler >> shouldSkipMethodNode: aRBMethodNode [
 ]
 
 { #category : #accessing }
+PjTranspiler >> shouldWriteDnu [
+	^ shouldWriteDnu
+]
+
+{ #category : #accessing }
+PjTranspiler >> shouldWriteDnu: anObject [
+	shouldWriteDnu := anObject
+]
+
+{ #category : #accessing }
 PjTranspiler >> skipMethodPragmaKeyword [
 	^self class skipMethodPragmaKeyword
 ]
@@ -440,9 +475,9 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 PjTranspiler >> writeClassInheritanceLinksOf: aClass [
 	self 
 		writeNameForClass: aClass superclass;
-		nextPutAll: '._subclass_(';
+		nextPutAll: '._subclass_("';
 		writeNameForClass: aClass;
-		nextPutAll: ');' ;
+		nextPutAll: '");' ;
 		cr.
 
 ]
@@ -457,8 +492,18 @@ PjTranspiler >> writeClassInitializeOf: aClass [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
+	| sortedClassesToInit classesToInit |
+	classesToInit := classesInWriteOrder select: #needsInitialization.
+	sortedClassesToInit := self orderForInitialization: classesToInit.
+	^ sortedClassesToInit
+		do: [ :aClass | self writeClassInitializeOf: aClass ]
+]
+
+{ #category : #transpiling }
 PjTranspiler >> writeDnuList [
 	| selectors |
+	self shouldWriteDnu ifFalse: [^self].
 	selectors := neededDNUs asSortedCollection reject: [ : selector | writtenDNUs includes: selector ].
 	selectors ifEmpty: [ ^ self ].
 	self 
@@ -469,9 +514,10 @@ PjTranspiler >> writeDnuList [
 			writtenDNUs add: selector.
 			selector printJsOn: self
 	] separatedBy: [ self nextPut: $, ].
-	self nextPutAll: ']);';cr.
+	self 
+		nextPutAll: ']);';
+		cr.
 	neededDNUs := Set new.
-
 ]
 
 { #category : #transpiling }
@@ -501,7 +547,7 @@ PjTranspiler >> writeMethodsOf: aClass named: aName with: reference [
 				nextPutAll: reference;
 				nextPutAll: '.$def(';
 				transpileMethod: method;
-				nextPutAll: ')';
+				nextPutAll: ');';
 				cr
 	]]
 ]
