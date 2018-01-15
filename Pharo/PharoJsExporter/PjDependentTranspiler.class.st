@@ -45,7 +45,7 @@ PjDependentTranspiler >> beforeCodeOutputHook: aBlock [
 ]
 
 { #category : #transpiling }
-PjDependentTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
+PjDependentTranspiler >> convertAllClasses: classes [
 	| newClasses |
 	self addClassesToConvert: (classes select: #javascriptIsExportableClass).
 	newClasses := OrderedCollection new.
@@ -57,19 +57,19 @@ PjDependentTranspiler >> convertAllClasses: classes writeDnu: shouldWriteDnu [
 				convertMethodAsts: aClass theNonMetaClass
 				newClasses: newClasses
 	]].
-	super convertAllClasses: newClasses writeDnu: shouldWriteDnu
+	super convertAllClasses: newClasses
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> convertAndWriteClosedBlock: valuedBlock [ 
 	self convertAndWriteClosedBlock: valuedBlock with: [
-		self convertAllClasses: #() writeDnu: true
+		self convertAllClasses: #() writeDnu: self shouldWriteDnu
 	]
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> convertClass: aClass [ 
-	self convertAllClasses: { aClass } writeDnu: false
+	self convertAllClasses: { aClass } writeDnu: self shouldWriteDnu
 ]
 
 { #category : #transpiling }
@@ -107,8 +107,9 @@ PjDependentTranspiler >> discoveredReferenceToClass: aClass [
 
 { #category : #transpiling }
 PjDependentTranspiler >> generateCodeStringFrom: jsAst. [
-	self convertAllClasses: #() writeDnu: true.
-	generator asString: jsAst on: self jsStream.
+	self convertAllClasses: classesToConvert.
+	super generateCodeStringFrom: jsAst.
+
 
 ]
 

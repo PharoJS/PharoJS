@@ -214,7 +214,9 @@ PjExporter >> writeCoreObject [
 		nextPutAll: coreName;
 		nextPutAll: '=global.';
 		nextPutAll: coreName;
-		nextPutAll: '||{}';cr;
+		nextPutAll: '||(function ';
+		nextPutAll: coreName;
+		nextPutAll: '(){});';cr;
 		nextPutAll: 'Object.defineProperty(Object.prototype,"$def",{value:';cr;
 		nextPutAll: ' function $def(aFunc){';cr;
 		nextPutAll: '	Object.defineProperty(this,aFunc.name,{writable:true,value:aFunc})}})';cr;
@@ -246,24 +248,9 @@ PjExporter >> writeGlobalsPolyfills: pools [
 
 { #category : #writing }
 PjExporter >> writeJsCode [
-	| time |
-	time := [
-	self writeJsCoreAndBootstrap.
-	self transpiler convertAllClasses: self nonBootstrapClasses writeDnu: true.
-	self writeLaunchCode.
-	] timeToRun.
-	self transpiler numberOfClasses ifNil: [ ^ self ]. 
-	Transcript cr;
-		nextPutAll: 'PharoJS took ';
-		print: time;
-		nextPutAll: ' to transpile ';
-		print: self transpiler numberOfClasses;
-		nextPutAll: ' classes and ';
-		print: self transpiler numberOfMethods;
-		nextPutAll: ' methods (';
-		print: jsStream size;
-		nextPutAll: ' bytes of Javascript)';
-		cr;flush
+		self writeJsCoreAndBootstrap.
+		self writeNonBootstrapClasses.
+		self writeLaunchCode
 ]
 
 { #category : #writing }
@@ -282,4 +269,11 @@ PjExporter >> writeJsCoreAndBootstrap [
 PjExporter >> writeLaunchCode [
 	self transpiler convertAndWriteClosedBlock: self launchBlock.
 
+]
+
+{ #category : #writing }
+PjExporter >> writeNonBootstrapClasses [
+	self transpiler
+		convertAllClasses: self nonBootstrapClasses
+		writeDnu: true
 ]
