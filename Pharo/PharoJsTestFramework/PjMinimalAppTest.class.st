@@ -1,17 +1,14 @@
 Class {
 	#name : #PjMinimalAppTest,
 	#superclass : #PjWebAppTestCase,
+	#traits : 'PjTAppRunsInJS',
+	#classTraits : 'PjTAppRunsInJS classTrait',
 	#category : #'PharoJsTestFramework-Test'
 }
 
 { #category : #'suite parameters' }
 PjMinimalAppTest class >> appClass [
 	^PjMinimalApp.
-]
-
-{ #category : #'suite parameters' }
-PjMinimalAppTest class >> targetPlatforms [
-	^ { PjSafari. PjFireFox. PjGoogleChrome }
 ]
 
 { #category : #testing }

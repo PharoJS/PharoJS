@@ -8,8 +8,3 @@ Class {
 PjServerAppTestCase class >> isAbstract [
 	^self == PjServerAppTestCase or: [ ^super isAbstract ].
 ]
-
-{ #category : #'suite parameters' }
-PjServerAppTestCase class >> targetPlatforms [
-	^ { PjNodeJS }
-]

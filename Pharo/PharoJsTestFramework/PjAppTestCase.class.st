@@ -1,8 +1,11 @@
 Class {
 	#name : #PjAppTestCase,
 	#superclass : #TestCase,
+	#traits : 'PjTWaitUntilReady',
+	#classTraits : 'PjTWaitUntilReady classTrait',
 	#instVars : [
-		'targetPlatform'
+		'app',
+		'bridgeResourceClass'
 	],
 	#pools : [
 		'PjUniversalGlobals'
@@ -12,31 +15,7 @@ Class {
 
 { #category : #'suite parameters' }
 PjAppTestCase class >> appClass [
-	^PjBrowserApplication 
-]
-
-{ #category : #'building suites' }
-PjAppTestCase class >> buildSuiteFromMethods: testSelectors [
-	| suite newSubSuite target |
-	suite := self compositeSuiteClass named: self name asString.
-	self targetPlatforms do: [ : aPlatform |
-		target := self targetForApp: self appClass from: aPlatform.
-		newSubSuite := super buildSuiteFromMethods: testSelectors.
-		newSubSuite targetPlatform: target.
-		suite addSubSuite: newSubSuite.
-	]. 
-	^suite
-
-]
-
-{ #category : #'building suites' }
-PjAppTestCase class >> compositeSuiteClass [
-	^PjCompositeTestSuite
-]
-
-{ #category : #'instance creation' }
-PjAppTestCase class >> debug: selector [
-	(self buildSuiteFromMethods: {selector}) debug.
+	^self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -44,45 +23,9 @@ PjAppTestCase class >> isAbstract [
 	^self == PjAppTestCase or: [ ^super isAbstract ].
 ]
 
-{ #category : #'instance creation' }
-PjAppTestCase class >> run: selector [
-	(self buildSuiteFromMethods: {selector}) run.
-]
-
-{ #category : #'building suites' }
-PjAppTestCase class >> suiteClass [
-	^ PjPlatformSpecificTestSuite
-]
-
-{ #category : #'building suites' }
-PjAppTestCase class >> targetForApp: appClass from: aPlatform [
-	| targetName target |
-	"Resources are singletons. Since platforms are resources and we want to use the same platform 
-	for testing different apps, we generate a new platform subclass for each app."
-	targetName := (aPlatform name , appClass name , 'GeneratedForPharoJsAppTest') asSymbol.
-	target := Smalltalk classNamed: targetName.
-	target ifNotNil: [ ^ target ].
-	target := aPlatform
-		subclass: targetName
-		instanceVariableNames: ''
-		classVariableNames: ''
-		poolDictionaries: ''
-		category: #CacheForPharoJsAppTest.
-	target currentAppClass: self appClass.
-	^ target
-]
-
-{ #category : #'suite parameters' }
-PjAppTestCase class >> targetPlatforms [
-	^{PjWebBrowser}
-]
-
-{ #category : #suites }
-PjAppTestCase >> asTestSuite [
-	| suite |
-	suite := super asTestSuite.
-	suite targetPlatform: self targetPlatform.
-	^suite. 
+{ #category : #accessing }
+PjAppTestCase >> appClass [
+	^self class appClass
 ]
 
 { #category : #testing }
@@ -106,15 +49,46 @@ PjAppTestCase >> assertSmalltalk: smalltalkExpressionString resultsInto: expecte
 
 { #category : #accessing }
 PjAppTestCase >> bridge [
-	^ self targetPlatform current bridge
+	^self bridgeResource bridge
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
+PjAppTestCase >> bridgeResource [
+	^ self bridgeResourceClass current
+]
+
+{ #category : #accessing }
+PjAppTestCase >> bridgeResourceClass [
+	^bridgeResourceClass ifNil: [ self defaultBridgeResourceClass ]
+]
+
+{ #category : #private }
 PjAppTestCase >> cleanUpInstanceVariables [
-	| ivsToCleanUp |
-	ivsToCleanUp := self class allInstVarNames copyWithoutAll: #('testSelector' 'targetPlatform').
-	ivsToCleanUp do: [ :name |
-		self instVarNamed: name put: nil ].
+	| ivsToReset |
+	ivsToReset := self class allInstVarNames copyWithoutAll: #(testSelector bridgeResourceClass).
+	ivsToReset do: [ :name |
+		self instVarNamed: name put: nil ]
+]
+
+{ #category : #accessing }
+PjAppTestCase >> currentApp [
+	self subclassResponsibility
+]
+
+{ #category : #running }
+PjAppTestCase >> debug [
+	bridgeResourceClass := self debugBridgeResourceClass.
+	super debug
+]
+
+{ #category : #running }
+PjAppTestCase >> debugBridgeResourceClass [
+	^PjDebugBridgeTestResource 
+]
+
+{ #category : #accessing }
+PjAppTestCase >> defaultBridgeResourceClass [
+	^PjBridgeTestResource
 ]
 
 { #category : #testing }
@@ -124,39 +98,29 @@ PjAppTestCase >> evalBlock: aBlock [
 
 { #category : #testing }
 PjAppTestCase >> resetApp [
-	self targetPlatform current resetApp.
+	self bridge resetClient.
+]
+
+{ #category : #accessing }
+PjAppTestCase >> resources [
+	^{self bridgeResourceClass}
+]
+
+{ #category : #running }
+PjAppTestCase >> runCaseAsFailure: aSemaphore [
+	"Used for debug purpose. See TestCase>>#debugAsFailure"
+	bridgeResourceClass := self debugBridgeResourceClass.
+	super runCaseAsFailure: aSemaphore
 ]
 
 { #category : #testing }
 PjAppTestCase >> setUp [
 	super setUp.
-	self bridge reset.
-	PjBridge bridge: self bridge
-
-
-]
-
-{ #category : #copying }
-PjAppTestCase >> shallowCopy [
-	^ super shallowCopy
-		targetPlatform: self targetPlatform;
-		yourself.
-]
-
-{ #category : #accessing }
-PjAppTestCase >> targetPlatform [
-	^ targetPlatform
-]
-
-{ #category : #accessing }
-PjAppTestCase >> targetPlatform: anObject [
-	targetPlatform := anObject
+	app := self currentApp. 
 ]
 
 { #category : #testing }
 PjAppTestCase >> tearDown [
 	super tearDown.
-	PjBridge bridge: nil.
-
-
+	"bridgeResourceClass := nil"
 ]
