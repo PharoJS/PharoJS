@@ -1,5 +1,5 @@
 "
-A PjClientCodeGenerator is generates the HTML that includes javascript code made available through the server to the client (typically on the browser).
+A PjClientCodeGenerator generates the HTML that includes javascript code made available through the server to the client (typically on the browser).
 
 Instance Variables
 	converter:		<PjSmalltalkToJavaScriptBasicConverer>
@@ -14,7 +14,8 @@ Class {
 	#instVars : [
 		'titleString',
 		'appClass',
-		'htmlGenerator'
+		'htmlGenerator',
+		'appClassDecorator'
 	],
 	#category : #'PharoJsBridge-Client-CodeGenerator'
 }
@@ -34,9 +35,19 @@ PjClientCodeGenerator class >> websocketDelegateClass [
 	^self bridgeAppClassDecoratorClass websocketDelegateClass
 ]
 
-{ #category : #public }
+{ #category : #accessing }
 PjClientCodeGenerator >> appClass [
 	^ appClass
+]
+
+{ #category : #accessing }
+PjClientCodeGenerator >> appClassDecorator [
+	^ appClassDecorator
+]
+
+{ #category : #accessing }
+PjClientCodeGenerator >> bridge: aBridge [
+	appClassDecorator bridge: aBridge
 ]
 
 { #category : #accessing }
@@ -58,9 +69,10 @@ PjClientCodeGenerator >> cssUsing: aHtmlGenerator [
 ]
 
 { #category : #generating }
-PjClientCodeGenerator >> decorateAppClass: anAppClass forBridge: aBridge [
+PjClientCodeGenerator >> decorateAppClass: anAppClass [
 	appClass := anAppClass.
-	^ self bridgeAppClassDecoratorClass rawAppClass: anAppClass bridge: aBridge
+	appClassDecorator := self bridgeAppClassDecoratorClass rawAppClass: anAppClass.
+	^appClassDecorator
 ]
 
 { #category : #generating }
@@ -117,5 +129,5 @@ PjClientCodeGenerator >> websocketDelegateClassName [
 
 { #category : #public }
 PjClientCodeGenerator >> withClientLogging [
-	^ PjLoggingClientCodeGenerator new
+	^PjLoggingClientCodeGenerator new
 ]

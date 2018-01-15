@@ -13,6 +13,9 @@ Class {
 		'timing',
 		'webSocket'
 	],
+	#classVars : [
+		'LastUsedPort'
+	],
 	#category : #'PharoJsBridge-Kernel'
 }
 
@@ -136,6 +139,24 @@ PjServer >> loggingOn [
 	logLevel := 4 " extended for websocket tracking "
 ]
 
+{ #category : #accessing }
+PjServer >> maxPortNumber [
+	^65535
+]
+
+{ #category : #accessing }
+PjServer >> minPortNumber [
+	^1024
+]
+
+{ #category : #accessing }
+PjServer >> nextPortNumber [
+	LastUsedPort ifNil: [ ^LastUsedPort := self minPortNumber ].
+	LastUsedPort = self maxPortNumber ifTrue: [^LastUsedPort := self minPortNumber].
+	LastUsedPort := LastUsedPort + 1.
+	^LastUsedPort
+]
+
 { #category : #'request handling' }
 PjServer >> responseHeadersForKey: key [
 	"Return the headers for a WebSocket setup response, given key"
@@ -166,11 +187,11 @@ PjServer >> serveConnectionOn: listeningSocket [
 
 { #category : #public }
 PjServer >> start [
-	| usePort active |
-	usePort := self port max: 3210.
-	active := (self class allInstances select: #isRunning thenCollect: #port) asSet.
-	[ active includes: usePort ] whileTrue: [ usePort := usePort + 1 ].
-	self port: usePort.
+	| candidatePort usedPorts |
+	candidatePort := self nextPortNumber.
+	usedPorts := (self class allInstances select: #isRunning thenCollect: #port) asSet.
+	[ usedPorts includes: candidatePort ] whileTrue: [candidatePort := self nextPortNumber].
+	self port: candidatePort.
 	super start
 ]
 

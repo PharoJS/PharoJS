@@ -18,6 +18,6 @@ PjFileBasedBrowserBridgeClient >> openWebBrowserOn: appHtmlFileUrlString [
 ]
 
 { #category : #activity }
-PjFileBasedBrowserBridgeClient >> startJavascriptInterpreter [
+PjFileBasedBrowserBridgeClient >> startJsInterpreter [
 	self openWebBrowserOn: self appClass appHtmlUrlString
 ]

@@ -54,7 +54,15 @@ PjBrowserBridgeClient >> serverUrlString [
 { #category : #activity }
 PjBrowserBridgeClient >> start [
 	self bridge server
-		javascript: (String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ]).
-	self launchJavascriptInterpreter ifTrue: [
-		WebBrowser openOn: self serverUrlString inBackground: self openBrowserInBackground].
+		javascript:
+			(String
+				streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ]).
+	super start
+]
+
+{ #category : #activity }
+PjBrowserBridgeClient >> startJsInterpreter [
+	WebBrowser
+		openOn: self serverUrlString
+		inBackground: self openBrowserInBackground
 ]

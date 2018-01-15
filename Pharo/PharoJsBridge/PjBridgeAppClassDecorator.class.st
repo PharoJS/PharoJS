@@ -9,10 +9,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjBridgeAppClassDecorator class >> rawAppClass: anAppClass bridge: aBridge [
+PjBridgeAppClassDecorator class >> rawAppClass: anAppClass [ 
 	^ self new
 		rawAppClass: anAppClass;
-		bridge: aBridge;
 		yourself
 ]
 

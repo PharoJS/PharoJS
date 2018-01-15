@@ -66,6 +66,16 @@ PjEvaluatorWebsocketDelegate class >> reload [
 	
 ]
 
+{ #category : #'defaut instance' }
+PjEvaluatorWebsocketDelegate class >> reload: aBoolean [
+	self closeDefault.
+	"Reload parameter specifies the type of reloading:
+false - Default. Reloads the current page from the cache.
+true - Reloads the current page from the server."
+	location reload: aBoolean.
+	
+]
+
 { #category : #'proxy support' }
 PjEvaluatorWebsocketDelegate class >> set: anObject callback: aString to: callback [
 	<javascript:

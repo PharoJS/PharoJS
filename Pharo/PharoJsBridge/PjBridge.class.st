@@ -53,8 +53,8 @@ Class {
 		'proxies',
 		'blockClosures',
 		'client',
-		'launchJavascriptInterpreter',
-		'runOnPharo'
+		'runOnPharo',
+		'shouldStartJsInterpreter'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -76,7 +76,7 @@ PjBridge class >> bridge: aBridge [
 
 { #category : #'instance creation' }
 PjBridge class >> bridgeForApp: app [
-	^ self bridgeForApp: app client: app bridgeClientClass new
+	^ self bridgeForApp: app client: app newBridgeClient
 ]
 
 { #category : #'instance creation' }
@@ -219,6 +219,16 @@ PjBridge >> deleteJsValue: jsName [
 	^ proxies
 ]
 
+{ #category : #evaluating }
+PjBridge >> disableWriteDnuDuring: aBlockClosure [ 
+	^self transpiler disableWriteDnuDuring: aBlockClosure 
+]
+
+{ #category : #evaluating }
+PjBridge >> dnuJsString [
+	^self transpiler dnuJsString
+]
+
 { #category : #public }
 PjBridge >> evalBlock: aBlock [
 	^self evalJavascript: (self convertToJs: aBlock asValuedBlock)
@@ -244,8 +254,17 @@ PjBridge >> evalJavascript: javaScriptString [
 ]
 
 { #category : #public }
+PjBridge >> evalJavascriptWithDnuFrom: aBlock [
+	| jsBlockCode jsDnuCode |
+	jsBlockCode := self disableWriteDnuDuring: aBlock.
+	jsDnuCode := self dnuJsString.
+	^self evalJavascript: jsDnuCode, jsBlockCode
+
+]
+
+{ #category : #public }
 PjBridge >> evalMessage: jsMessage [
-	^self evalJavascript: (self convertToJs: jsMessage)
+	^self evalJavascriptWithDnuFrom: [self convertToJs: jsMessage].
 
 ]
 
@@ -330,7 +349,7 @@ PjBridge >> initialize [
 	super initialize.
 	executingCallbacks := false.
 	runOnPharo := false.
-	launchJavascriptInterpreter := true.
+	shouldStartJsInterpreter := true.
 	callbacks := OrderedCollection new.
 	self server: self serverClass new.
 	self finalizationRegistry add: self executor:
@@ -340,7 +359,6 @@ PjBridge >> initialize [
 			yourself).
 	communicationTrialsCount := self defaultCommunicationTrialsCount.
 	result := self.
-	self client: self defaultClientClass new
 
 ]
 
@@ -378,16 +396,6 @@ PjBridge >> isSyncDataAvailable [
 	].
 	self executeAnyCallbacks.
 	^ result ~~ self
-]
-
-{ #category : #accessing }
-PjBridge >> launchJavascriptInterpreter [
-	^ launchJavascriptInterpreter
-]
-
-{ #category : #accessing }
-PjBridge >> launchJavascriptInterpreter: aBoolean [
-	launchJavascriptInterpreter := aBoolean
 ]
 
 { #category : #public }
@@ -454,27 +462,30 @@ PjBridge >> proxies [
 ]
 
 { #category : #public }
-PjBridge >> reset [
-	self resetProxies.
-]
-
-{ #category : #public }
 PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
-	self sendMessage: self websocketDelegateClassName, '._reload()'.
-	self reset.
+	self sendMessage: self websocketDelegateClassName, '._reload_(true)'.
+	self resetProxies.
+	self client reset.
 	self 
 		when: [self webSocket ~~ oldWebSocket] 
-		do: [oldWebSocket close] 
-		onTimeOutDo: [self error: 'Client did NOT reconnect!'].
-	self waitForClientToStart.
+		do: [
+			oldWebSocket close.
+		] 
+		onTimeOutDo: [
+			self error: 'Client did NOT reconnect!']
+		timeOutDuration: self client startTimeout.
 
 ]
 
 { #category : #'initialize-release' }
 PjBridge >> resetProxies [
 	proxies := nil.
+	"Ensure that proxies are actually suppressed which lead to releasing the objects on the JS side"
+	"This is achieved by calling BjBridge>>#cleanUpJsSide"
+	Smalltalk garbageCollect. 
+
 ]
 
 { #category : #public }
@@ -540,11 +551,27 @@ PjBridge >> setExtraBindings: aDictionary [
 	^self exporter setExtraBindings: aDictionary
 ]
 
+{ #category : #accessing }
+PjBridge >> shouldStartJsInterpreter [
+	^ shouldStartJsInterpreter
+]
+
+{ #category : #accessing }
+PjBridge >> shouldStartJsInterpreter: aBoolean [
+	shouldStartJsInterpreter := aBoolean
+]
+
 { #category : #public }
 PjBridge >> start [
 	self startWithoutWaitingForClient.
 	self waitForClientToStart.
 
+]
+
+{ #category : #public }
+PjBridge >> startJsInterpreter [
+	self client startJsInterpreter.
+	self waitForClientToStart.
 ]
 
 { #category : #activity }
@@ -560,11 +587,11 @@ PjBridge >> startServer [
 
 { #category : #public }
 PjBridge >> startWithoutWaitingForClient [
-	self isStarted ifTrue: [ ^self ].
+	self isStarted
+		ifTrue: [ ^ self ].
 	self startServer.
 	self waitForServerToStart.
-	self client start.
-
+	self client start
 ]
 
 { #category : #public }
@@ -603,13 +630,23 @@ PjBridge >> titleForTest: aTest [
 	^ aTest className , '>>#' , aTest selector
 ]
 
+{ #category : #accessing }
+PjBridge >> transpiler [
+	^self exporter transpiler
+]
+
 { #category : #activity }
 PjBridge >> waitForClientToStart [
+	self waitForClientToStartFor: self client startTimeout
+]
+
+{ #category : #activity }
+PjBridge >> waitForClientToStartFor: time [
 	self 
 		when: [self isConnected] 
 		do: [^self] 
 		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
-
+		timeOutDuration: time
 ]
 
 { #category : #activity }

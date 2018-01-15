@@ -162,9 +162,8 @@ PjProxy >> instVarNamed: aString [
 
 { #category : #introspection }
 PjProxy >> instVarNamed: aString put: aValue [
-	^ self jsBridge: [ : bridge | | selector |
-		selector := jsName,'.',aString,'=',(bridge convertToJs: aValue).
-		bridge evalJavascript: selector
+	^ self jsBridge: [ : bridge | 
+		bridge evalJavascriptWithDnuFrom: [jsName,'.',aString,'=',(bridge convertToJs: aValue)].
 	]
 ]
 

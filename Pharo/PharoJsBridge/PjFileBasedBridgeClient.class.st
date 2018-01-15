@@ -25,13 +25,7 @@ PjFileBasedBridgeClient >> fileName [
 { #category : #activity }
 PjFileBasedBridgeClient >> start [
 	self writeFiles.
-	self launchJavascriptInterpreter ifTrue: [
-		self startJavascriptInterpreter]
-]
-
-{ #category : #activity }
-PjFileBasedBridgeClient >> startJavascriptInterpreter [
-	self subclassResponsibility
+	super start
 ]
 
 { #category : #files }

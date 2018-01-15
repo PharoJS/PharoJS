@@ -18,8 +18,8 @@ PjNodeBridgeClient >> runNodeOn: aFileName inFolder: aFolder [
 ]
 
 { #category : #activity }
-PjNodeBridgeClient >> start [
-	super start.
-	self launchJavascriptInterpreter ifTrue: [
-		self runNodeOn: self fileName fullName inFolder: self appFolder fullName]
+PjNodeBridgeClient >> startJsInterpreter [
+	self
+		runNodeOn: self fileName fullName
+		inFolder: self appFolder fullName
 ]

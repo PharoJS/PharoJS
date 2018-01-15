@@ -2,7 +2,8 @@ Extension { #name : #PjExporter }
 
 { #category : #'*PharoJsBridge' }
 PjExporter >> convertToJs: anObject [
-	^ self transpiler convertToJs: anObject
+		self transpiler enableWriteDnuDuring: [
+			^ self transpiler convertToJs: anObject]
 ]
 
 { #category : #'*PharoJsBridge' }

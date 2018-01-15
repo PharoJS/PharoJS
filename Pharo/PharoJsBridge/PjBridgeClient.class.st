@@ -13,14 +13,24 @@ Class {
 	#category : #'PharoJsBridge-Kernel'
 }
 
+{ #category : #'instance creation' }
+PjBridgeClient class >> appClass: pjAppClass [
+	^self new
+		appClass: pjAppClass;
+		yourself
+]
+
 { #category : #accessing }
 PjBridgeClient >> appClass [
-	^ appClass
+	^ appClass ifNil: [self defaultAppClass ]
 ]
 
 { #category : #accessing }
 PjBridgeClient >> appClass: aPharoJsAppClass [
-	self exporter: self exporter codeGenerator: self codeGenerator appClass: aPharoJsAppClass
+	appClass := aPharoJsAppClass.
+	exporter := self exporterClass new.
+	self codeGenerator: self codeGeneratorClass new.
+
 ]
 
 { #category : #accessing }
@@ -31,12 +41,8 @@ PjBridgeClient >> bridge [
 { #category : #accessing }
 PjBridgeClient >> bridge: aBridge [
 	bridge := aBridge.
+	self codeGenerator bridge: self bridge
 
-]
-
-{ #category : #'initialization-release' }
-PjBridgeClient >> clientGeneratorClass [
-	^PjClientCodeGenerator
 ]
 
 { #category : #accessing }
@@ -45,8 +51,18 @@ PjBridgeClient >> codeGenerator [
 ]
 
 { #category : #accessing }
-PjBridgeClient >> codeGenerator: aGenerator [
-	self exporter: self exporter codeGenerator: aGenerator appClass: self appClass
+PjBridgeClient >> codeGenerator: aCodeGenerator [
+	| decoratedAppClass |
+	codeGenerator := aCodeGenerator.
+	decoratedAppClass := codeGenerator decorateAppClass: appClass.
+	exporter appClass: decoratedAppClass.
+]
+
+{ #category : #'initialization-release' }
+PjBridgeClient >> codeGeneratorClass [
+	self codeGenerator ifNil: [^PjClientCodeGenerator].
+	^self codeGenerator species 
+	"Allows keeping the behavior upon reseting the client in the bridge. See PjBridge>>#resetClient"
 ]
 
 { #category : #'initialization-release' }
@@ -59,29 +75,9 @@ PjBridgeClient >> exporter [
 	^ exporter
 ]
 
-{ #category : #accessing }
-PjBridgeClient >> exporter: anExporter codeGenerator: aGenerator appClass: aPharoJsAppClass [
-	| decoratedAppClass |
-	appClass := aPharoJsAppClass.
-	codeGenerator := aGenerator.
-	exporter := anExporter.
-	decoratedAppClass := codeGenerator decorateAppClass: appClass forBridge: self bridge.
-	exporter appClass: decoratedAppClass.
-
-]
-
 { #category : #'initialization-release' }
 PjBridgeClient >> exporterClass [
 	self subclassResponsibility
-]
-
-{ #category : #'initialization-release' }
-PjBridgeClient >> initialize [
-	super initialize.
-	self 
-		exporter: self exporterClass new 
-		codeGenerator: self clientGeneratorClass new
-		appClass: self defaultAppClass.
 ]
 
 { #category : #accessing }
@@ -90,10 +86,13 @@ PjBridgeClient >> jsGlobalNames [
 			flatCollectAsSet: #classVarNames
 ]
 
-{ #category : #accessing }
-PjBridgeClient >> launchJavascriptInterpreter [
-	^ self bridge launchJavascriptInterpreter
-		
+{ #category : #'initialization-release' }
+PjBridgeClient >> reset [
+	self appClass: self appClass.
+	self bridge: self bridge.
+	"Ensure transpiler is reset correctly.
+	Transpiler is driven by exporter"
+	String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ] 
 ]
 
 { #category : #accessing }
@@ -101,10 +100,26 @@ PjBridgeClient >> server [
 	^self bridge server
 ]
 
+{ #category : #accessing }
+PjBridgeClient >> shouldStartJsInterpreter [
+	^ self bridge shouldStartJsInterpreter
+		
+]
+
 { #category : #activity }
 PjBridgeClient >> start [
+	self shouldStartJsInterpreter ifTrue: [ self startJsInterpreter ]
+]
+
+{ #category : #activity }
+PjBridgeClient >> startJsInterpreter [
 	"start javascript interpreter"
 	self subclassResponsibility
+]
+
+{ #category : #activity }
+PjBridgeClient >> startTimeout [
+	^2 seconds
 ]
 
 { #category : #activity }
@@ -127,5 +142,6 @@ PjBridgeClient >> websocketDelegateClassName [
 
 { #category : #accessing }
 PjBridgeClient >> withClientLogging [
-	^ self codeGenerator: self codeGenerator withClientLogging
+	self codeGenerator: self codeGenerator withClientLogging.
+
 ]
