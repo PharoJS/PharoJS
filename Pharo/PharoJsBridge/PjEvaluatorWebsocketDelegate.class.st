@@ -203,7 +203,7 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation:
 ]
 
 { #category : #'initialize-release' }
-PjEvaluatorWebsocketDelegate >> makeInspect. [
+PjEvaluatorWebsocketDelegate >> makeInspect [
 	<javascript: 'var wsd=this;
 	return function(){
 		wsd._doCallBack_(JSON.stringify({inspect:Object._resultObject_(this)}));
