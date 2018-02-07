@@ -70,6 +70,8 @@ PjFileExporter >> writeFiles [
 
 { #category : #files }
 PjFileExporter >> writeJavascriptFileNamed: aFileName [
+	"Delete file first, because Windows can't open it for writing later when the file is open."
+	aFileName ifNotNil: [aFileName resolve deleteIfAbsent: [ ]].
 	self
 		createFileNamed: aFileName
 		startingWith: self headerLine
