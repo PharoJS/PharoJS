@@ -116,11 +116,17 @@ PjAppTestCase >> runCaseAsFailure: aSemaphore [
 { #category : #testing }
 PjAppTestCase >> setUp [
 	super setUp.
-	app := self currentApp. 
+	self waitWhile: [ (app := self currentApp) isNil ] timeOut: self timeOutForAppStartUp.
+
 ]
 
 { #category : #testing }
 PjAppTestCase >> tearDown [
 	super tearDown.
 	"bridgeResourceClass := nil"
+]
+
+{ #category : #testing }
+PjAppTestCase >> timeOutForAppStartUp [
+	^3 seconds
 ]
