@@ -10,7 +10,7 @@ Class {
 { #category : #testing }
 PjIncrementalJavascriptTest >> testPolyfillLoad [
 	| contents |
-	bridge := PjTestBridge bridgeForApp: PjMinimalNodeApplication.
+	bridge := PjTestBridge bridgeForAppClass: PjMinimalNodeApplication.
 	bridge loadAllClasses: #().
 	contents := bridge lastJavascript.
 	self assert: (contents includesSubstring: ' WebSocket=Smalltalk.require("ws")').
