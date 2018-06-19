@@ -21,12 +21,12 @@ PjCounterBrowserApp class >> appJsSubFolder [
 
 { #category : #accessing }
 PjCounterBrowserApp >> countDisplay [
-	^ self domElementAt: 'countDisplay'
+	^ self elementAt: 'countDisplay'
 ]
 
 { #category : #accessing }
 PjCounterBrowserApp >> incrementButton [
-	^ self domElementAt: 'incrementButton'
+	^ self elementAt: 'incrementButton'
 ]
 
 { #category : #'initialize-release' }
@@ -42,5 +42,5 @@ PjCounterBrowserApp >> initialize [
 
 { #category : #accessing }
 PjCounterBrowserApp >> resetButton [
-	^ self domElementAt: 'resetButton'
+	^ self elementAt: 'resetButton'
 ]
