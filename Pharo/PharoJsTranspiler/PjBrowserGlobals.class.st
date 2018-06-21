@@ -11,7 +11,8 @@ Class {
 		'localStorage'
 	],
 	#pools : [
-		'PjDomGlobals'
+		'PjDomGlobals',
+		'PjUniversalGlobals'
 	],
 	#category : #'PharoJsTranspiler-Globals'
 }
