@@ -75,15 +75,15 @@ PjBridge class >> bridge: aBridge [
 ]
 
 { #category : #'instance creation' }
-PjBridge class >> bridgeForApp: app [
-	^ self bridgeForApp: app client: app newBridgeClient
+PjBridge class >> bridgeForAppClass: appClass [
+	^ self bridgeForAppClass: appClass client: appClass newBridgeClient
 ]
 
 { #category : #'instance creation' }
-PjBridge class >> bridgeForApp: app client: bridgeClient [
+PjBridge class >> bridgeForAppClass: appClass client: bridgeClient [
 	^ self new
 			client: bridgeClient;
-			appClass: app;
+			appClass: appClass;
 			yourself
 ]
 
@@ -116,7 +116,7 @@ PjBridge class >> pollFor: aTime orUntil: aBlock [
 
 { #category : #'instance creation' }
 PjBridge class >> startOn: portNumber title: title [
-	^  (self bridgeForApp: self defaultApp)
+	^  (self bridgeForAppClass: self defaultApp)
 		startOn: portNumber title: title;
 		yourself
 ]

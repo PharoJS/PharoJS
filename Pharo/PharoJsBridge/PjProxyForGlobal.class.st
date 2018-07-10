@@ -18,8 +18,13 @@ PjProxyForGlobal class >> initialize [
 	PjJavascriptGlobals withAllSubclassesDo: [ : pool |
 		pool classVarNames do: [ : varName |
 			pool classVarNamed: varName put: (
-				self newProxyNamed: varName onBridge: nil) ]
+				self newProxyNamed: varName) ]
 	 ]
+]
+
+{ #category : #'instance creation' }
+PjProxyForGlobal class >> newProxyNamed: globalName [
+	^self newProxyNamed: globalName onBridge: nil
 ]
 
 { #category : #printing }

@@ -3,7 +3,7 @@ Extension { #name : #PjApplication }
 { #category : #'*PharoJsBridge-App' }
 PjApplication classSide >> bridge [
 	<pharoJsSkip>
-	^ PjBridge bridgeForApp: self
+	^ PjBridge bridgeForAppClass: self
 
 ]
 

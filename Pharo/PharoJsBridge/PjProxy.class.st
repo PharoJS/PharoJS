@@ -106,6 +106,11 @@ PjProxy >> asJSON [
 ]
 
 { #category : #converting }
+PjProxy >> asJsObjectUsing: converter [
+	^self
+]
+
+{ #category : #converting }
 PjProxy >> asRawJSONString [
 	^ self jsBridge: [ : bridge |
 		bridge evalJavascript: 'JSON.stringify(',jsName,')'
@@ -229,6 +234,11 @@ PjProxy >> log: aString [
 { #category : #'force proxy' }
 PjProxy >> name [
 	^ self doesNotUnderstand: (Message selector: #name)
+]
+
+{ #category : #'javascript generation' }
+PjProxy >> printJsOn: aStream [
+	aStream nextPutAll: jsName
 ]
 
 { #category : #'reflective operations' }
