@@ -1,7 +1,7 @@
 Class {
 	#name : #PjHtmlCollectionTest,
 	#superclass : #PjArrayLikeCollectionTest,
-	#category : #PharoJsCoreLibrariesTest
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
 { #category : #testing }

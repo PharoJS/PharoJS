@@ -1,8 +1,19 @@
 Class {
 	#name : #PjDictionaryTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #PharoJsCoreLibrariesTest
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
+
+{ #category : #testing }
+PjDictionaryTest >> testAsDictionary [
+	| original asDictResult |
+	original := self bridge evalBlock: [ Dictionary new].
+	original 
+		at: #a put: 1;
+		at: #b put: 2.
+	asDictResult := original asDictionary.
+	self assert: original == asDictResult
+]
 
 { #category : #testing }
 PjDictionaryTest >> testAtIfAbsent [
@@ -55,6 +66,16 @@ PjDictionaryTest >> testBridgeConstructorSimple [
 	eg := self bridge evalBlock: [ {(#a -> 3)} asDictionary ].
 	self assert: [ eg at: #a ] evaluatesTo: 3.
 	self assert: [ eg keys ] evaluatesToRaw: '["a"]'
+]
+
+{ #category : #testing }
+PjDictionaryTest >> testDictionaryWithProxies [
+	| proxy dictionaryWithProxy |
+	proxy := self evalBlock: [ Object new ].
+	dictionaryWithProxy := { #someId -> proxy } asDictionary.
+	self 
+		shouldnt: [window instVarNamed: #dict put:  dictionaryWithProxy ]
+		raise: Error
 ]
 
 { #category : #testing }

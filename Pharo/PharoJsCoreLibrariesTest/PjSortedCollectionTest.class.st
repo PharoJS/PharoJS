@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'collection'
 	],
-	#category : #PharoJsCoreLibrariesTest
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
 { #category : #testing }

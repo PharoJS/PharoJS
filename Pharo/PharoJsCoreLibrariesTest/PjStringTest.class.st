@@ -1,7 +1,7 @@
 Class {
 	#name : #PjStringTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #PharoJsCoreLibrariesTest
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
 { #category : #testing }
@@ -51,4 +51,13 @@ PjStringTest >> testIsLetter [
 PjStringTest >> testLast [
 	self assert: ['abc' last] evaluatesTo: 'c'.
 	self assert: ['CBA' last] evaluatesTo: 'A'.
+]
+
+{ #category : #testing }
+PjStringTest >> testSplit [
+	| splited |
+	splited := self evalBlock: ['.' split: 'a.b.c'].
+	self assert: splited size equals: 3.
+	#(a b c) withIndexDo: [ : expected : index | 
+		self assert: (splited at: index) equals: expected]
 ]

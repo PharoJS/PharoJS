@@ -1,7 +1,7 @@
 Class {
 	#name : #PjArrayTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #PharoJsCoreLibrariesTest
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
 { #category : #testing }
@@ -37,6 +37,13 @@ PjArrayTest >> testArrayWithMoreElements [
 	self assert: [{1. 2}] evaluatesToRaw: '[1,2]'.
 	self assert: [#(1 2)] evaluatesToRaw: '[1,2]'.
 	self assert: [#(1 true 'id' 'x\y"z')] evaluatesToRaw: '[1,true,"id","x\\y\"z"]'. 
+]
+
+{ #category : #testing }
+PjArrayTest >> testAsOrderedCollection [
+	| orderedCollection |
+	orderedCollection := self evalBlock: [#(1 2 3 4) asOrderedCollection].
+	self assert: orderedCollection size equals: 4.
 ]
 
 { #category : #testing }
@@ -106,6 +113,21 @@ PjArrayTest >> testCollectPerformSymbol [
 	#(10 20 30 40)
 		doWithIndex:
 			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
+]
+
+{ #category : #testing }
+PjArrayTest >> testConverstionToSet [
+	| setFromArray |
+	setFromArray := self bridge evalBlock: [ #(10 20 30 40) asSet ].
+	setFromArray addAll: #(10 20 30 40).
+	self assert: setFromArray size equals: 4.
+	setFromArray add: 30.
+	self assert: setFromArray size equals: 4.
+	setFromArray add: 50.
+	self assert: setFromArray size equals: 5.
+	#(10 20 30 40 50) do: [ :each |
+		self assert: (setFromArray includes: each) ]
+	
 ]
 
 { #category : #testing }
@@ -204,6 +226,15 @@ PjArrayTest >> testNotEmpty [
 	
 	
 	
+]
+
+{ #category : #testing }
+PjArrayTest >> testReject [
+	| filtered |
+	filtered := self bridge evalBlock: [ #(10 20 30 40) reject: [ : each | each > 35 or: [ each < 15 ] ]].
+	self assert: filtered size equals: 2.
+	self assert: filtered first equals: 20.
+	self assert: filtered last equals: 30.
 ]
 
 { #category : #testing }

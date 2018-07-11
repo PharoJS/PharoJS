@@ -4,13 +4,18 @@ Class {
 	#instVars : [
 		'set'
 	],
-	#category : #PharoJsCoreLibrariesTest
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
 { #category : #testing }
 PjSetTest >> setUp [
 	super setUp.
 	set := self evalBlock: [ Set new ]
+]
+
+{ #category : #testing }
+PjSetTest >> testConverstionToSet [
+	self assert: set asSet == set
 ]
 
 { #category : #testing }
