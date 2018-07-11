@@ -45,6 +45,12 @@ PjBoolean >> asBit [
 ]
 
 { #category : #converting }
+PjBoolean >> asJsObject [
+	"We want primitive booleans and not boxed ones!"
+	<javascript: 'return this == true'>
+]
+
+{ #category : #converting }
 PjBoolean >> asString [
 	<javascript: 'return this + ""'>
 ]

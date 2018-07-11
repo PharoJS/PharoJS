@@ -12,8 +12,8 @@ Trait {
 PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 	<pharoJsSkip>
 	^ {
-		Collection ->#(
-			allSatisfy: anySatisfy: noneSatisfy: inject:into:
+		Collection ->#(asSet reject: asOrderedCollection
+			allSatisfy: anySatisfy: noneSatisfy: inject:into: 
 			detect:ifFound:ifNone: detect:ifNone: detect:ifFound: remove: isCollection 
 			asDictionary associationsDo: addAll: isEmptyOrNil removeAll: 
 		).
@@ -27,4 +27,10 @@ PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 { #category : #testing }
 PjTCollection >> = aMagnitude [
 	^self explicitRequirement
+]
+
+{ #category : #random }
+PjTCollection >> atRandom [
+	<javascript: 'var randomIndex = Math.floor((Math.random() * this._size()) + 1);
+	return this._at_(randomIndex);'>
 ]

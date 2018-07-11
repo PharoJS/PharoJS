@@ -31,6 +31,13 @@ PjFunction class >> jsTranspilationImportMethods [
 	}
 ]
 
+{ #category : #exceptions }
+PjFunction >> assert [
+
+	self value ifFalse: [AssertionFailure signal: 'Assertion failed']
+
+]
+
 { #category : #'instance creation' }
 PjFunction >> basicNew [
 " here so that ordinary Javascript 'classes' will respond to the message"

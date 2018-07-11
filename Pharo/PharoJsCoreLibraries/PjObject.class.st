@@ -36,7 +36,7 @@ PjObject class >> jsTranspilationImportMethods [
 				isNil ifNil: ifNotNil: ifNil:ifNotNil: ifNotNil:ifNil:
 			).
 		Object -> #(
-				-> as: asOrderedCollection 
+				-> as: asOrderedCollection
 				isKindOf: error: respondsTo: isMemberOf: className
 				isNotNil notNil isString isClass isBlock isNumber isBehavior 
 				isCollection isArray isFloat isInteger isCharacter isSymbol isStream
@@ -106,6 +106,11 @@ PjObject >> allEnumeratableKeysDo: aBlock [
 { #category : #converting }
 PjObject >> asJSON [
 	^ JSON stringify: self value
+]
+
+{ #category : #converting }
+PjObject >> asJsObject [
+	^self
 ]
 
 { #category : #'dictionary emulation' }

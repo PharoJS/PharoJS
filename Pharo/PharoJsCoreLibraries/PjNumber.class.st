@@ -118,6 +118,11 @@ PjNumber >> == other [
 	<javascript: 'return this == other'>
 ]
 
+{ #category : #converting }
+PjNumber >> @ y [ 
+	^Point x: self y: y
+]
+
 { #category : #arithmetics }
 PjNumber >> \\ anObject [
 	^ self % anObject

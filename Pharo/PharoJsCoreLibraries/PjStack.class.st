@@ -8,7 +8,8 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
-{ #category : #accessing }
-PjStack >> top [
-	^self last
+{ #category : #'pharoJs support' }
+PjStack class >> jsTranspilationImportMethods [
+	<pharoJsSkip>
+	^{Stack -> #(top pop push:)}
 ]

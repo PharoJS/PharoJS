@@ -27,6 +27,8 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 			allButFirst allButFirst: allButLast allButLast:
 			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with: reverseDo: appendTo:
 		).
+	 	ArrayedCollection class -> #(with: with:with: with:with:with: with:with:with:with:).
+
 	} 
 ]
 
@@ -38,6 +40,18 @@ PjTArray >> , other [
 { #category : #enumerating }
 PjTArray >> = anArray [
 	<javascript: 'if(this.length!=anArray.length)return false;for(var i=0,max=this.length;i<max;++i)if(this[i]!=anArray[i])return false;return true'>
+]
+
+{ #category : #converting }
+PjTArray >> asJsObject [
+	| jsObject |
+	(self notEmpty and: [(self first isKindOf: Association) not]) ifTrue: [ 
+		^self
+	].
+	jsObject := Object new.
+	self do: [ : association |
+		jsObject at: association key put: association value asJsObject].
+	^jsObject
 ]
 
 { #category : #accessing }

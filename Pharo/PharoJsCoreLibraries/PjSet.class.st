@@ -4,14 +4,20 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'pharoJs support' }
+PjSet class >> jsTranspilationImportMethods [
+	<pharoJsSkip>
+	^{Set -> #(asSet)}
+]
+
+{ #category : #enumerating }
 PjSet >> addFirst: element [
 	(self includes: element) ifTrue: [ ^element ].
 	^super addFirst: element
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #enumerating }
 PjSet >> addLast: element [
 	(self includes: element) ifTrue: [ ^element ].
 	^super addLast: element

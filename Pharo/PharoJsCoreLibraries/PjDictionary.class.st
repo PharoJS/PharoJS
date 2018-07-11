@@ -12,7 +12,32 @@ Class {
 { #category : #'pharojs support' }
 PjDictionary class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^{Dictionary -> #(at:ifAbsentPut:).
+	^{
+		Dictionary -> #(at:ifAbsentPut:).
 	}
 
+]
+
+{ #category : #converting }
+PjDictionary >> asDictionary [
+	^self
+]
+
+{ #category : #converting }
+PjDictionary >> asJsObject [
+	| jsObject |
+	jsObject := Object new.
+	self keysAndValuesDo: [ : key : value |
+		jsObject at: key put: value asJsObject].
+	^jsObject
+]
+
+{ #category : #enumerating }
+PjDictionary >> collect: aBlock [
+	| resultDict |
+	resultDict := self class new.
+	self keysAndValuesDo: [: key : value |
+		resultDict at: key put: (aBlock value: value)
+	].
+	^resultDict
 ]

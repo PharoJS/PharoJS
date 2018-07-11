@@ -308,6 +308,11 @@ PjString >> size [
 	^self js_at:#length
 ]
 
+{ #category : #splitjoin }
+PjString >> split: anArray [
+	^ anArray js_split: self
+]
+
 { #category : #converting }
 PjString >> value [
 	<javascript: 'return ""+this'>
