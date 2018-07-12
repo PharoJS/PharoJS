@@ -20,7 +20,9 @@ PjAppTestCase class >> appClass [
 
 { #category : #testing }
 PjAppTestCase class >> isAbstract [
-	^self == PjAppTestCase or: [ ^super isAbstract ].
+	^self == PjAppTestCase or: [
+		#(currentApp appClassToExport) anySatisfy: [: selector |
+			(self canUnderstand: selector) not] ].
 ]
 
 { #category : #accessing }
@@ -123,6 +125,7 @@ PjAppTestCase >> setUp [
 { #category : #testing }
 PjAppTestCase >> tearDown [
 	super tearDown.
+	self appClass resetCurrentInstance.
 	"bridgeResourceClass := nil"
 ]
 

@@ -30,8 +30,8 @@ PjBridgeTestResource class >> currentAppClass: aClass [
 
 { #category : #running }
 PjBridgeTestResource class >> ensureAppClassFor: aTestAsserter [
-	self current appClass == aTestAsserter appClass ifTrue: [ ^self ].
-	self currentAppClass: aTestAsserter appClass
+	self current appClass == aTestAsserter appClassToExport ifTrue: [ ^self ].
+	self currentAppClass: aTestAsserter appClassToExport
 ]
 
 { #category : #running }

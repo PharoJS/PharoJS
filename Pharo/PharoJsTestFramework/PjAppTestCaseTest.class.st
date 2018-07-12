@@ -38,6 +38,30 @@ PjAppTestCaseTest >> testDebug [
 ]
 
 { #category : #testing }
+PjAppTestCaseTest >> testExportedCodeOfAppRunningJsSideIsComplete [
+	| remoteAppClass bridge jsMessage |
+	PjBridgeTestResource availableFor: PjNonMinmialAppRunningOnJsTest suite tests anyOne.
+	bridge := PjBridgeTestResource current bridge.
+	self assert: PjNonMinmialAppRunningOnJsTest appClass == PjHtmlGeneratingCounterApp.
+	jsMessage := PjJavascriptMessage receiverId: #Smalltalk selector: #at: arguments: {PjNonMinmialAppRunningOnJsTest appClass name}.
+	remoteAppClass := bridge evalMessage: jsMessage.
+	self deny: remoteAppClass isNil.
+	self deny: remoteAppClass currentInstance isNil 
+]
+
+{ #category : #testing }
+PjAppTestCaseTest >> testExportedCodeOfAppRunningPharoSideIsMinimal [
+	| remoteAppClass bridge jsMessage |
+	PjBridgeTestResource availableFor: PjNonMinmialAppRunningOnPharoTest suite tests anyOne.
+	bridge := PjBridgeTestResource current bridge.
+	self assert: PjNonMinmialAppRunningOnPharoTest appClass == PjHtmlGeneratingCounterApp.
+	jsMessage := PjJavascriptMessage receiverId: #Smalltalk selector: #at: arguments: {PjNonMinmialAppRunningOnPharoTest appClass name}.
+	remoteAppClass := bridge evalMessage: jsMessage.
+	self assert: remoteAppClass isNil.
+
+]
+
+{ #category : #testing }
 PjAppTestCaseTest >> testPlainRun [
 	| result suite |
 	3 timesRepeat: [

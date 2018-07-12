@@ -2,15 +2,29 @@ Class {
 	#name : #PjWebAppTestCase,
 	#superclass : #PjAppTestCase,
 	#pools : [
-		'PjBrowserGlobals',
-		'PjDomGlobals'
+		'PjBrowserGlobals'
 	],
 	#category : #'PharoJsTestFramework-Kernel'
 }
 
-{ #category : #testing }
-PjWebAppTestCase class >> isAbstract [
-	^self == PjWebAppTestCase or: [ ^super isAbstract ].
+{ #category : #asserting }
+PjWebAppTestCase >> assertInnerHtmlOfElement: domElement equals: expectedValue [
+	self assert: domElement innerHTML equals: expectedValue
+]
+
+{ #category : #asserting }
+PjWebAppTestCase >> assertInnerHtmlOfElementById: id equals: expectedValue [
+	self assertInnerHtmlOfElement: (document getElementById: id) equals: expectedValue
+]
+
+{ #category : #asserting }
+PjWebAppTestCase >> assertValueOfElement: domElement equals: expectedValue [
+	self assert: domElement value equals: expectedValue
+]
+
+{ #category : #asserting }
+PjWebAppTestCase >> assertValueOfElementById: id equals: expectedValue [
+	self assertValueOfElement: (document getElementById: id) equals: expectedValue
 ]
 
 { #category : #'UI handling' }
