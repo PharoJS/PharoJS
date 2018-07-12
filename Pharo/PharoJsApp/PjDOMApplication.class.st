@@ -6,6 +6,8 @@ I contain methods that Browser and PhoneGap applications have in common.
 Class {
 	#name : #PjDOMApplication,
 	#superclass : #PjApplication,
+	#traits : 'PjTDomController',
+	#classTraits : 'PjTDomController classTrait',
 	#pools : [
 		'PjDomGlobals'
 	],
@@ -28,37 +30,12 @@ PjDOMApplication class >> setupCode [
 	^super setupCode, 'var global=global||this'
 ]
 
-{ #category : #'manipulating DOM' }
-PjDOMApplication >> domElementAt: elementId [
-	^document getElementById: elementId
+{ #category : #accessing }
+PjDOMApplication >> document [
+ ^document
 ]
 
-{ #category : #'manipulating DOM' }
-PjDOMApplication >> domElementAt: elementId setAttribute: attributeName to: attributeValue [
-	(self domElementAt: elementId) setAttribute: attributeName to: attributeValue
-]
-
-{ #category : #'manipulating DOM' }
-PjDOMApplication >> hideDomElementAt: elementId [
-	self domElementAt: elementId setAttribute: 'style' to: 'display:none;'
-]
-
-{ #category : #'manipulating DOM' }
-PjDOMApplication >> replaceContentsOf: elementId with: aString [
-	(self domElementAt: elementId) innerHTML: aString
-]
-
-{ #category : #'manipulating DOM' }
-PjDOMApplication >> setClassOf: elementId to: attributeValue [
-	^ self domElementAt: elementId setAttribute: 'class' to: attributeValue
-]
-
-{ #category : #'manipulating DOM' }
-PjDOMApplication >> showDomElementAt: elementId [
-	self domElementAt: elementId setAttribute: 'style' to: 'display:block;'
-]
-
-{ #category : #'initialize-release' }
+{ #category : #'start-stop' }
 PjDOMApplication >> start [
 	super start.
 	self subscribeToDeviceEvents
