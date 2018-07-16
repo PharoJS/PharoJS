@@ -3,7 +3,7 @@ Extension { #name : #PjBrowserApplication }
 { #category : #'*PharoJsExporter-App' }
 PjBrowserApplication classSide >> appHtmlUrlString [
 	<pharoJsSkip>
-	^'file:', self appFullHtmlFileName pathString
+	^'file:', self appFullHtmlFileName pathString asUrl asString
 ]
 
 { #category : #'*PharoJsExporter' }
