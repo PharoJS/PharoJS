@@ -1,18 +1,12 @@
 "
 I contain the globals for the NodeJS Javascript engine.
 
-Use PjUniversalGlobals too
 "
 Class {
 	#name : #PjNodeGlobals,
 	#superclass : #PjJavascriptGlobals,
-	#classVars : [
-		'module',
-		'require'
-	],
 	#pools : [
-		'PjProcessPolyfill',
-		'PjUniversalGlobals',
+		'PjNodeMinGlobals',
 		'PjWebSocketPolyfill'
 	],
 	#category : #'PharoJsTranspiler-Globals'
