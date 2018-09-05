@@ -1,6 +1,6 @@
 Class {
 	#name : #PjHtmlGeneratingCounterApp,
-	#superclass : #PjFileBasedBrowserApp,
+	#superclass : #PjFileBasedWebApp,
 	#instVars : [
 		'count',
 		'countDisplay'

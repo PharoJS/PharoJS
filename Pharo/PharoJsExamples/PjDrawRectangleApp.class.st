@@ -5,7 +5,7 @@ My subclasses are the actual implementions.
 "
 Class {
 	#name : #PjDrawRectangleApp,
-	#superclass : #PjBrowserApplication,
+	#superclass : #PjWebApplication,
 	#instVars : [
 		'rectangle',
 		'colour'

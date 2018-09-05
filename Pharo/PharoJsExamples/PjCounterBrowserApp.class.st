@@ -1,6 +1,6 @@
 Class {
 	#name : #PjCounterBrowserApp,
-	#superclass : #PjFileBasedBrowserApp,
+	#superclass : #PjFileBasedWebApp,
 	#instVars : [
 		'counter',
 		'controller'

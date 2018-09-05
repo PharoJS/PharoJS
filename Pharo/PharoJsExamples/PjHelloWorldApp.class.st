@@ -8,7 +8,7 @@ PjHelloWorldApp exportApp
 "
 Class {
 	#name : #PjHelloWorldApp,
-	#superclass : #PjFileBasedBrowserApp,
+	#superclass : #PjFileBasedWebApp,
 	#instVars : [
 		'user'
 	],

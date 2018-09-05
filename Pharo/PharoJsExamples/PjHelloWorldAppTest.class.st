@@ -17,11 +17,6 @@ PjHelloWorldAppTest class >> appClass [
 ]
 
 { #category : #testing }
-PjHelloWorldAppTest class >> isAbstract [
-	^self == PjHelloWorldAppTest
-]
-
-{ #category : #testing }
 PjHelloWorldAppTest >> setUp [
 	super setUp.
 	nameInput := document getElementById: #nameTextInput.

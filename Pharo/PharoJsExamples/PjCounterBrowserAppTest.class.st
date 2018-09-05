@@ -15,11 +15,6 @@ PjCounterBrowserAppTest class >> appClass [
 ]
 
 { #category : #testing }
-PjCounterBrowserAppTest class >> isAbstract [
-	^self == PjCounterBrowserAppTest
-]
-
-{ #category : #testing }
 PjCounterBrowserAppTest >> setUp [
 	super setUp.
 	countDisplay := app countDisplay.

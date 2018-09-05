@@ -5,7 +5,7 @@ I demonstrate overriding the default html and css, and log to the console.
 "
 Class {
 	#name : #PjMinimalBrowserApplication,
-	#superclass : #PjBrowserApplication,
+	#superclass : #PjWebApplication,
 	#traits : 'PjTMinimalpplication',
 	#classTraits : 'PjTMinimalpplication classTrait',
 	#category : #'PharoJsExamples-Minimal'
