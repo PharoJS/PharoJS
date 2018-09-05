@@ -5,7 +5,7 @@ I run tests that have no explicit reference to Javascript objects, tests that re
 "
 Class {
 	#name : #PjBrowserTimingApplication,
-	#superclass : #PjBrowserApplication,
+	#superclass : #PjWebApplication,
 	#instVars : [
 		'iterations',
 		'prefix',

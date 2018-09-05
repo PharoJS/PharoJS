@@ -5,7 +5,7 @@ This is used to justify optimizations
 "
 Class {
 	#name : #PjTimingPlatformApp,
-	#superclass : #PjBrowserApplication,
+	#superclass : #PjWebApplication,
 	#pools : [
 		'PjUniversalGlobals'
 	],
