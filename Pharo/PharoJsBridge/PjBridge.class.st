@@ -94,7 +94,7 @@ PjBridge class >> debugClass [
 
 { #category : #accessing }
 PjBridge class >> defaultApp [
-	^PjBrowserApplication
+	^PjWebApplication
 ]
 
 { #category : #accessing }

@@ -22,7 +22,7 @@ PjBrowserBridgeClient >> bridge: aBridge [
 
 { #category : #'initialization-release' }
 PjBrowserBridgeClient >> defaultAppClass [
-	^PjBrowserApplication
+	^PjWebApplication
 ]
 
 { #category : #accessing }

@@ -9,7 +9,7 @@ Class {
 
 { #category : #'initialization-release' }
 PjFileBasedBrowserBridgeClient >> defaultAppClass [
-	^PjFileBasedBrowserApp
+	^PjFileBasedWebApp
 ]
 
 { #category : #activity }
