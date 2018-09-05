@@ -1,6 +1,6 @@
 Class {
 	#name : #PjAppWithFolderNameIncludesSpace,
-	#superclass : #PjFileBasedBrowserApp,
+	#superclass : #PjFileBasedWebApp,
 	#category : #'PharoJsBridgeTest-Support'
 }
 
