@@ -7,8 +7,8 @@ Class {
 { #category : #testing }
 PjToolsTest >> testClassAbstract [
 	self assert: PjApplication isAbstract.
-	self deny: PjFileBasedBrowserApp isAbstract.
-	self deny: PjBrowserApplication isAbstract.
+	self deny: PjFileBasedWebApp isAbstract.
+	self deny: PjWebApplication isAbstract.
 	self deny: PjNodeApplication isAbstract.
 	self assert: PjToolsTest1 subclassResponsibilitySet equals: #(m1 m2) asSet.
 	self assert: PjToolsTest1 classSubclassResponsibilitySet equals: #(c1) asSet.

@@ -40,7 +40,7 @@ PjPlaygroundTest >> setUp [
 
 { #category : #testing }
 PjPlaygroundTest >> startBridge [
-	playground bridge: PjBrowserApplication bridge.
+	playground bridge: PjWebApplication bridge.
 	playground bridge start
 ]
 

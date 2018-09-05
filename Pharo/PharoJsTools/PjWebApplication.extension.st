@@ -1,7 +1,7 @@
-Extension { #name : #PjBrowserApplication }
+Extension { #name : #PjWebApplication }
 
 { #category : #'*PharoJsTools-Playground' }
-PjBrowserApplication classSide >> playgroundInitialContent [
+PjWebApplication classSide >> playgroundInitialContent [
 	<pharoJsSkip>
 	^	super playgroundInitialContent
 		,'console dir: document.', String cr

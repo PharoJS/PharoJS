@@ -172,7 +172,7 @@ PjPlayground >> initialize [
 		(GTPlayPage new
 			saveContent:
 				'" cmd-D on the following line will open a bridge and globals will be defined"'
-				, String cr , 'bridge := ' , PjBrowserApplication name
+				, String cr , 'bridge := ' , PjWebApplication name
 				, ' bridge start.' , String cr;
 			yourself).
 	pageTitle := ''.
