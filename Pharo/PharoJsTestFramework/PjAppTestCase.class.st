@@ -1,8 +1,8 @@
 Class {
 	#name : #PjAppTestCase,
 	#superclass : #TestCase,
-	#traits : 'PjTWaitUntilReady',
-	#classTraits : 'PjTWaitUntilReady classTrait',
+	#traits : 'PjTWaitUntilReady + PjTAppRunsInPharo',
+	#classTraits : 'PjTWaitUntilReady classTrait + PjTAppRunsInPharo classTrait',
 	#instVars : [
 		'app',
 		'bridgeResourceClass'
@@ -70,11 +70,6 @@ PjAppTestCase >> cleanUpInstanceVariables [
 	ivsToReset := self class allInstVarNames copyWithoutAll: #(testSelector bridgeResourceClass).
 	ivsToReset do: [ :name |
 		self instVarNamed: name put: nil ]
-]
-
-{ #category : #accessing }
-PjAppTestCase >> currentApp [
-	self subclassResponsibility
 ]
 
 { #category : #running }

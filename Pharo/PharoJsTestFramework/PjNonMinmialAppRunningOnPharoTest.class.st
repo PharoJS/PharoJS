@@ -1,7 +1,15 @@
 Class {
 	#name : #PjNonMinmialAppRunningOnPharoTest,
-	#superclass : #PjNonMinmialAppTest,
-	#traits : 'PjTAppRunsInPharo',
-	#classTraits : 'PjTAppRunsInPharo classTrait',
+	#superclass : #PjWebAppTestCase,
 	#category : #'PharoJsTestFramework-Test'
 }
+
+{ #category : #'suite parameters' }
+PjNonMinmialAppRunningOnPharoTest class >> appClass [
+	^PjHtmlGeneratingCounterApp
+]
+
+{ #category : #testing }
+PjNonMinmialAppRunningOnPharoTest >> testAlwaysSucceed [
+	self assert: true
+]

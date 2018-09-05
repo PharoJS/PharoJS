@@ -1,6 +1,6 @@
 Class {
 	#name : #PjNonMinmialAppRunningOnJsTest,
-	#superclass : #PjNonMinmialAppTest,
+	#superclass : #PjNonMinmialAppRunningOnPharoTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
 	#category : #'PharoJsTestFramework-Test'

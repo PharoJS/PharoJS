@@ -1,3 +1,8 @@
+"
+This trait makes a test case export the app under test to JS and control it remotely on the JS interpreter.
+
+
+"
 Trait {
 	#name : #PjTAppRunsInJS,
 	#category : #'PharoJsTestFramework-Kernel'

@@ -1,5 +1,5 @@
 Class {
 	#name : #PjMinimalApp,
-	#superclass : #PjFileBasedBrowserApp,
+	#superclass : #PjFileBasedWebApp,
 	#category : #'PharoJsTestFramework-Test'
 }
