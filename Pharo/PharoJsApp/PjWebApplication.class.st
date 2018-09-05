@@ -1,9 +1,9 @@
 "
-I am the class that all browser-based PharoJS applications should extend.
+I am the class that all web-based PharoJS applications should extend. Those are apps that rely on HTML and run in a web browser or a web view 
 
 "
 Class {
-	#name : #PjBrowserApplication,
+	#name : #PjWebApplication,
 	#superclass : #PjDOMApplication,
 	#pools : [
 		'PjBrowserGlobals'
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #'start-stop application' }
-PjBrowserApplication class >> whenJsReady: aBlock [
+PjWebApplication class >> whenJsReady: aBlock [
 	"The subscription to the load event is done in JS code only to allow running applications as pharo object. This is useful during development stages when all Pharo code runs on Pharo side, while a web browser provides JS objects."
 	<javascript: 'window.addEventListener("load", aBlock)'>
 	^aBlock value
