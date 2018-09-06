@@ -66,7 +66,8 @@ PjApplication classSide >> defaultAppFolderParent [
 { #category : #'*PharoJsExporter-App' }
 PjApplication classSide >> exportApp [
 	<pharoJsSkip>
-	self exporterClass exportApp: self appClass
+	self exporterClass exportApp: self appClass.
+	self inform: 'DONE exporting JS code for ', self name
 ]
 
 { #category : #'*PharoJsExporter-App' }

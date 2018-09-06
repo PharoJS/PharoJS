@@ -95,8 +95,8 @@ PjExporterTest >> testLaunchCodeAppearsAtTheEndOfExportedCode [
 
 { #category : #testing }
 PjExporterTest >> testMainClassIsAddedToClassesToExport [
-	exporter appClass: PjBrowserApplication.
-	self assert: (exporter classes includes: PjBrowserApplication).
+	exporter appClass: PjWebApplication.
+	self assert: (exporter classes includes: PjWebApplication).
 	self assert: exporter classes size > 1.
 
 ]
