@@ -1,7 +1,7 @@
 Extension { #name : #PjApplication }
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> appFolder [
+PjApplication class >> appFolder [
 	<pharoJsSkip>
 	appFolder ifNil: [ appFolder := self defaultAppFolder ].
 	self ifInvalidFolder: appFolder do:[self setUpAppFolder].
@@ -9,20 +9,20 @@ PjApplication classSide >> appFolder [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> appFolder: anObject [
+PjApplication class >> appFolder: anObject [
 	<pharoJsSkip>
 	appFolder := anObject
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> appFullJsFileName [
+PjApplication class >> appFullJsFileName [
 	<pharoJsSkip>
 	^self appFullJsFolderPath / self appJsFileName
 
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> appFullJsFolderPath [
+PjApplication class >> appFullJsFolderPath [
 	<pharoJsSkip>
 	self appJsSubFolder ifNotNil: [: subfolder|
 		^self appFolder / subfolder 
@@ -32,13 +32,13 @@ PjApplication classSide >> appFullJsFolderPath [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> appJsFileName [
+PjApplication class >> appJsFileName [
 	<pharoJsSkip>
 	^ 'index.js'
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> appJsSubFolder [
+PjApplication class >> appJsSubFolder [
 	<pharoJsSkip>
 	"Subclass might return, e.g. 'js' if you want the javascript to be in the js sub-directory. 
 	Useful, when you need to access the app/project folder that is different from the JS folder as with PhoneGap."
@@ -46,69 +46,50 @@ PjApplication classSide >> appJsSubFolder [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> defaultAppFolder [
+PjApplication class >> defaultAppFolder [
 	<pharoJsSkip>
 	^self defaultAppFolderParent / self defaultAppFolderName
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> defaultAppFolderName [
+PjApplication class >> defaultAppFolderName [
 	<pharoJsSkip>
 	^self name
 ]
 
-{ #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> defaultAppFolderParent [
+{ #category : #'*PharoJsExporter' }
+PjApplication class >> defaultAppFolderParent [
 	<pharoJsSkip>
-	^Smalltalk imageDirectory / 'PharoJS-master' / self package name
+	^self package iceRepository repositoryDirectory / 'HTML' / self package name
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> exportApp [
+PjApplication class >> exportApp [
 	<pharoJsSkip>
 	self exporterClass exportApp: self appClass.
 	self inform: 'DONE exporting JS code for ', self name
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> exporterClass [
+PjApplication class >> exporterClass [
 	<pharoJsSkip>
 	^ PjFileExporter
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> externalFilesZipUrl: zipUrl [
-	<pharoJsSkip>
-	| gitResponse gitZip |
-	gitResponse := ZnEasy get: zipUrl.
-	gitZip := ZipArchive new.
-	gitZip readFrom: gitResponse entity readStream.
-	gitZip extractAllTo: Smalltalk imageDirectory.
-	
-
-]
-
-{ #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> globalsPools [
+PjApplication class >> globalsPools [
 	<pharoJsSkip>
 	^ self allSharedPoolsRecursive select: #isJavascriptGlobalsPool
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> ifInvalidFolder: folder do: aBlock [
+PjApplication class >> ifInvalidFolder: folder do: aBlock [
 	<pharoJsSkip>
 	(folder isNil or: [folder exists not]) ifTrue: aBlock
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> initialize [
-	<pharoJsSkip>
-	self externalFilesZipUrl: 'https://github.com/bouraqadi/PharoJS/archive/master.zip'.
-
-]
-
-{ #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	<pharoJsSkip>
 	(aSet includes: aPolyfillClass) ifFalse: [
 		aSet add: aPolyfillClass.
@@ -122,7 +103,7 @@ PjApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: 
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> setUpAppFolder [
+PjApplication class >> setUpAppFolder [
 	<pharoJsSkip>
 	| folder |
 	folder := UIManager default chooseDirectory: self setUpAppFolderPrompt.
@@ -132,6 +113,6 @@ PjApplication classSide >> setUpAppFolder [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication classSide >> setUpAppFolderPrompt [
+PjApplication class >> setUpAppFolderPrompt [
 	^ 'PharoJS: Folder for app ', self name, ' please?'.
 ]

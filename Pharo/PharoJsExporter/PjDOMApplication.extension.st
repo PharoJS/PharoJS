@@ -1,14 +1,14 @@
 Extension { #name : #PjDOMApplication }
 
 { #category : #'*PharoJsExporter-App' }
-PjDOMApplication classSide >> appFullHtmlFileName [
+PjDOMApplication class >> appFullHtmlFileName [
 	<pharoJsSkip>
 	^self appFullHtmlFolderPath / self appHtmlFileName
 
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjDOMApplication classSide >> appFullHtmlFolderPath [
+PjDOMApplication class >> appFullHtmlFolderPath [
 	<pharoJsSkip>
 	self appHtmlSubFolder ifNotNil: [: subfolder|
 		^self appFolder / subfolder 
@@ -18,13 +18,13 @@ PjDOMApplication classSide >> appFullHtmlFolderPath [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjDOMApplication classSide >> appHtmlFileName [
+PjDOMApplication class >> appHtmlFileName [
 	<pharoJsSkip>
 	^ 'index.html'
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjDOMApplication classSide >> appHtmlSubFolder [
+PjDOMApplication class >> appHtmlSubFolder [
 	<pharoJsSkip>
 	"Subclass might return, e.g. 'www' if you want the html to be in the www sub-directory. 
 	Useful, when you need to access the app/project folder that is different from the JS folder as with PhoneGap."
@@ -32,7 +32,7 @@ PjDOMApplication classSide >> appHtmlSubFolder [
 ]
 
 { #category : #'*PharoJsExporter' }
-PjDOMApplication classSide >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjDOMApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	<pharoJsSkip>
 	^ (super polyfill: aPolyfillClass onStream: aStream unlessIn: aSet) and: [
 		aPolyfillClass domPolyfill: aStream.
