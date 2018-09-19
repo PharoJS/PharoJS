@@ -47,16 +47,16 @@ PjDependentTranspiler >> beforeCodeOutputHook: aBlock [
 { #category : #transpiling }
 PjDependentTranspiler >> convertAllClasses: classes [
 	| newClasses |
-	self addClassesToConvert: (classes select: #javascriptIsExportableClass).
+	self
+		addClassesToConvert: (classes select: #javascriptIsExportableClass).
 	newClasses := OrderedCollection new.
-	[ classesToConvert isEmpty ] whileFalse: [ | theseClasses |
-		theseClasses := classesToConvert.
-		classesToConvert := Set new.
-		theseClasses do: [: aClass |
-			self
-				convertMethodAsts: aClass theNonMetaClass
-				newClasses: newClasses
-	]].
+	[ classesToConvert isEmpty ]
+		whileFalse: [ | theseClasses |
+			theseClasses := classesToConvert.
+			classesToConvert := Set new.
+			theseClasses
+				do:
+					[ :aClass | self convertMethodAsts: aClass instanceSide newClasses: newClasses ] ].
 	super convertAllClasses: newClasses
 ]
 
@@ -84,15 +84,19 @@ PjDependentTranspiler >> convertMethodAst: aMethod [
 
 { #category : #transpiling }
 PjDependentTranspiler >> convertMethodAsts: aClass newClasses: newClasses [
-	(convertedClasses includes: aClass) ifFalse: [
-		aClass superclass ifNotNil: [self addClassToConvert: aClass superclass].
-		self addClassesToConvert: 	(aClass theNonMetaClass sharedPools reject: #isJavascriptGlobalsPool).
-		convertedClasses add: aClass.
-		newClasses add: aClass
-	].
-	self withMethodsOf: aClass do: [: aMethod | self convertMethodAst: aMethod].
-	self withMethodsOf: aClass class do: [: aMethod | self convertMethodAst: aMethod]
-
+	(convertedClasses includes: aClass)
+		ifFalse: [ aClass superclass
+				ifNotNil: [ self addClassToConvert: aClass superclass ].
+			self
+				addClassesToConvert: (aClass instanceSide sharedPools reject: #isJavascriptGlobalsPool).
+			convertedClasses add: aClass.
+			newClasses add: aClass ].
+	self
+		withMethodsOf: aClass
+		do: [ :aMethod | self convertMethodAst: aMethod ].
+	self
+		withMethodsOf: aClass class
+		do: [ :aMethod | self convertMethodAst: aMethod ]
 ]
 
 { #category : #loading }
@@ -117,14 +121,15 @@ PjDependentTranspiler >> generateCodeStringFrom: jsAst. [
 PjDependentTranspiler >> importMethodsAll: aCollection forClass: aClass [
 	| importMethods |
 	importMethods := Dictionary new.
-	aCollection do: [ : aSymbol |
-		(aClass theNonMetaClass hasClassMethod: aSymbol) ifTrue: [
-			(aClass theNonMetaClass perform: aSymbol) associationsDo: [ : assoc |
-				importMethods at: assoc key ifPresent: [: im |
-					im value addAll: assoc value
-				 ] ifAbsent: [
-					importMethods at: assoc key put: assoc value asSet
-	]]]].
+	aCollection
+		do: [ :aSymbol | 
+			(aClass instanceSide hasClassMethod: aSymbol)
+				ifTrue: [ (aClass instanceSide perform: aSymbol)
+						associationsDo: [ :assoc | 
+							importMethods
+								at: assoc key
+								ifPresent: [ :im | im value addAll: assoc value ]
+								ifAbsent: [ importMethods at: assoc key put: assoc value asSet ] ] ] ].
 	^ importMethods
 ]
 

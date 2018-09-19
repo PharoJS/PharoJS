@@ -2,7 +2,8 @@ Extension { #name : #Class }
 
 { #category : #'*PharoJsTranspiler' }
 Class >> asJsAstUsing: astConverter [
-	^astConverter visitGlobalNode: (RBGlobalNode named: self theNonMetaClass name)
+	^ astConverter
+		visitGlobalNode: (RBGlobalNode named: self instanceSide name)
 ]
 
 { #category : #'*PharoJsTranspiler' }

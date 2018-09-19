@@ -518,11 +518,11 @@ PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
 PjStringGenerator >> visitSuperNode: aPjSuperNode [
 	| class |
 	class := aPjSuperNode myClass superclass.
-	class isMeta ifTrue: [
-		self nextPutAll: class baseClass nameToUseForJsConversion
-	] ifFalse: [
-		self nextPutAll: class nameToUseForJsConversion; nextPutAll: '.prototype'
-	]
+	class isMeta
+		ifTrue: [ self nextPutAll: class instanceSide nameToUseForJsConversion ]
+		ifFalse: [ self
+				nextPutAll: class nameToUseForJsConversion;
+				nextPutAll: '.prototype' ]
 ]
 
 { #category : #visiting }

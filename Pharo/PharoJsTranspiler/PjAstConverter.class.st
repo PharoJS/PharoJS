@@ -439,21 +439,32 @@ PjAstConverter >> visitCascadeNode: aRBCascadeNode [
 
 { #category : #visiting }
 PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
-	| variableClass  |
+	| variableClass |
 	variableClass := aRBGlobalNode binding scope getClass.
-	(variableClass theNonMetaClass allClassVarNames includes: id) ifTrue: [
-		self signal: 'class variable' ifClosedBlockReferences: id.
-		[ variableClass isNil or: [ variableClass classVarNames includes: id ] ] whileFalse: [ variableClass := variableClass superclass ].
-		^ PjFieldNode target: PjSelfNode new selectorNode: ((PjClassVariableNode identifier: id) myClass: variableClass;yourself) isNonNil: true
-	].
-	(variableClass theNonMetaClass sharedPoolOfVarNamedRecursive: id) ifNotNil: [ :pool |
-			pool isJavascriptGlobalsPool ifTrue: [
-				self discoveredGlobalsPool: pool.
-				^ PjGlobalNode identifier: id].
+	(variableClass instanceSide allClassVarNames includes: id)
+		ifTrue: [ self signal: 'class variable' ifClosedBlockReferences: id.
+			[ variableClass isNil
+				or: [ variableClass classVarNames includes: id ] ]
+				whileFalse: [ variableClass := variableClass superclass ].
+			^ PjFieldNode
+				target: PjSelfNode new
+				selectorNode:
+					((PjClassVariableNode identifier: id)
+						myClass: variableClass;
+						yourself)
+				isNonNil: true ].
+	(variableClass instanceSide sharedPoolOfVarNamedRecursive: id)
+		ifNotNil: [ :pool | 
+			pool isJavascriptGlobalsPool
+				ifTrue: [ self discoveredGlobalsPool: pool.
+					^ PjGlobalNode identifier: id ].
 			self signal: 'pool' ifClosedBlockReferences: id.
-			^ PjFieldNode target: PjSelfNode new selectorNode: (PjPoolVariableNode identifier: id) isNonNil: true
-	].
-	PjJavascriptTranspilationError signal: 'pool or class variable isn''t: ',id
+			^ PjFieldNode
+				target: PjSelfNode new
+				selectorNode: (PjPoolVariableNode identifier: id)
+				isNonNil: true ].
+	PjJavascriptTranspilationError
+		signal: 'pool or class variable isn''t: ' , id
 ]
 
 { #category : #visiting }

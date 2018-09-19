@@ -20,5 +20,5 @@ PjClassVariableNode >> isLiteralSelector [
 { #category : #testing }
 PjClassVariableNode >> isNonlocalClassOrPoolVariableReference: aClass [
 	myClass ifNil: [ ^ true ].
-	^ aClass ~= myClass theMetaClass
+	^ aClass ~= myClass classSide
 ]
