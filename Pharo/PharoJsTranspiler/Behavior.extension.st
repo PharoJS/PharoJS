@@ -1,7 +1,7 @@
-Extension { #name : #TBehavior }
+Extension { #name : #Behavior }
 
 { #category : #'*PharoJsTranspiler' }
-TBehavior >> javescriptInheritsFrom: aClass [ 
+Behavior >> javascriptInheritsFrom: aClass [ 
 	"Answer whether the argument, aClass, is on the receiver's superclass 
 	chain."
 

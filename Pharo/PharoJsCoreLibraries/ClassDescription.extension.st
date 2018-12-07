@@ -1,7 +1,7 @@
-Extension { #name : #TClassDescription }
+Extension { #name : #ClassDescription }
 
 { #category : #'*PharoJsCoreLibraries' }
-TClassDescription >> selectorsInProtocols: protocols [
+ClassDescription >> selectorsInProtocols: protocols [
 	<pharoJsSkip>
 	| selectors |
 	selectors := Set new.
@@ -11,7 +11,7 @@ TClassDescription >> selectorsInProtocols: protocols [
 ]
 
 { #category : #'*PharoJsCoreLibraries' }
-TClassDescription >> selectorsInProtocols: protocols exclude: excludedSelectors [
+ClassDescription >> selectorsInProtocols: protocols exclude: excludedSelectors [
 	<pharoJsSkip>
 	| selectors |
 	selectors := self selectorsInProtocols: protocols. 

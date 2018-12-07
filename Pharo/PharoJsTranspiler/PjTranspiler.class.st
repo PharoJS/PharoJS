@@ -216,15 +216,20 @@ PjTranspiler >> dnuJsString [
 PjTranspiler >> does: last reference: first [
 	| classesReferencingFirst |
 	classesReferencingFirst := classesReferencingCache
-			at: first
-			ifAbsentPut: [| methodsReferencingFirst |
-				methodsReferencingFirst := SystemNavigation globalRefsForPharoJS: first classToUseForJsConversion name.
-				methodsReferencingFirst asSet collect: [ : each | each actualClass theNonMetaClass]].
-	(classesReferencingFirst includes: last) ifTrue: [ ^true ].
-	classesReferencingFirst detect: [ : each | last inheritsFrom: each ] ifFound: [^true].
-	(last sharedPools includes: first) ifTrue: [ ^true ].
-	^false
-   
+		at: first
+		ifAbsentPut: [ | methodsReferencingFirst |
+			methodsReferencingFirst := SystemNavigation
+				globalRefsForPharoJS: first classToUseForJsConversion name.
+			methodsReferencingFirst asSet
+				collect: [ :each | each actualClass instanceSide ] ].
+	(classesReferencingFirst includes: last)
+		ifTrue: [ ^ true ].
+	classesReferencingFirst
+		detect: [ :each | last inheritsFrom: each ]
+		ifFound: [ ^ true ].
+	(last sharedPools includes: first)
+		ifTrue: [ ^ true ].
+	^ false
 ]
 
 { #category : #transpiling }
@@ -370,8 +375,8 @@ PjTranspiler >> setExtraBindings: aDictionary [
 { #category : #ordering }
 PjTranspiler >> should: first occurBefore: last with: doesReferenceBlock [
 	first=last ifTrue: [ ^false ].
-	(last javescriptInheritsFrom: first) ifTrue: [ ^true ].
-	(first javescriptInheritsFrom: last) ifTrue: [ ^false ].
+	(last javascriptInheritsFrom: first) ifTrue: [ ^true ].
+	(first javascriptInheritsFrom: last) ifTrue: [ ^false ].
 	^ doesReferenceBlock value: first value: last
 
 ]
@@ -405,7 +410,9 @@ PjTranspiler >> transpileMethod: aMethod [
 
 { #category : #transpiling }
 PjTranspiler >> withMethodsOf: aClass do: aBlock [
-	aClass methodsDo: aBlock
+	aClass selectorsWithExplicitOrigin do: [ : selector |
+		 aBlock value: (aClass compiledMethodAt: selector) ]
+
 ]
 
 { #category : #transpiling }
