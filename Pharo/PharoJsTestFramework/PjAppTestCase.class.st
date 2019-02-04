@@ -75,7 +75,7 @@ PjAppTestCase >> cleanUpInstanceVariables [
 { #category : #running }
 PjAppTestCase >> debug [
 	bridgeResourceClass := self debugBridgeResourceClass.
-	super debug
+	^super debug
 ]
 
 { #category : #running }

@@ -60,7 +60,9 @@ PjApplication class >> defaultAppFolderName [
 { #category : #'*PharoJsExporter' }
 PjApplication class >> defaultAppFolderParent [
 	<pharoJsSkip>
-	^self package iceRepository repositoryDirectory / 'HTML' / self package name
+	| repository |
+	repository := IceTipRepositoriesModel new repositories detect: [: repo | repo name = #PharoJS].
+	^repository location / 'HTML' / self package name
 ]
 
 { #category : #'*PharoJsExporter-App' }
