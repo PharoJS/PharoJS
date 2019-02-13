@@ -40,7 +40,7 @@ PjClosedBlockClosure >> externalVariable: name fromContext: context [
 	|value scope|
 	scope := context sourceNode scope.
 	value := scope lookupVar: name inContext: context.
-	^[value ifNil: [ scope outerScopeLookupVar: name inContext: context ]]on: Error do: [nil].
+	^[value ifNil: [ scope outerScopeLookupVar: name inContext: context ]] on: Error do: [nil].
 
 ]
 

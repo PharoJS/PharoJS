@@ -141,7 +141,7 @@ PjBlockTranspilationTest >> testBlockWithNestedScopes [
 		convertsTo: '(function(x,instVar){return function(){var z;z=this;return function(v){var w;return [v,w,x,z,instVar,123]}}})(1337,1492)'.
 	self 
 		assertStBlock: closedBlock
-		convertsTo: '(function(a,x,y,instVar){return function(v){var w;return [a,v,w,x,y,instVar,123]}})(42,1337,73,1066)'.
+		convertsTo: '(function(a,x,y,instVar){return function(v){var w;return [a,v,w,x,y,instVar,123]}})(42,1337,73,1066)'. 
 	self 
 		assertStBlock: openBlock asClosedBlock
 		convertsTo: '(function(a,x,y,instVar){return function(v){var w;return [a,v,w,x,y,instVar,123]}})(107,1337,91,1492)'.
