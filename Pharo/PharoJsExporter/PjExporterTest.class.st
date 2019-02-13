@@ -78,7 +78,7 @@ PjExporterTest >> testImportMethodsFromPharo [
 	exporter appClass: PjApplication.
 	exporter addClass: PjClassExtensionForTest.
 	jsCode := exporter javascriptCode.
-	#(yourself name isLiteral eqv:) do: [ : selector |
+	#(yourself isArray isLiteral eqv:) do: [ : selector |
 		self assertHasInstanceMethod: selector ].
 	#(allInstances allInstancesDo: new) do: [ : selector |
 		self assertHasClassMethod: selector ].

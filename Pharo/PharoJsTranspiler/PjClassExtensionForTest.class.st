@@ -23,7 +23,7 @@ PjClassExtensionForTest class >> javascriptName [
 { #category : #importing }
 PjClassExtensionForTest class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^{Object ->#(yourself name).
+	^{Object ->#(yourself isArray).
 		Boolean ->#(isLiteral eqv:).
 		UndefinedObject class -> #(allInstances allInstancesDo: new).
 	} asDictionary
