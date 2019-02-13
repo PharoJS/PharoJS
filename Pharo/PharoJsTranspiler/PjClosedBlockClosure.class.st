@@ -37,7 +37,11 @@ PjClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 
 { #category : #public }
 PjClosedBlockClosure >> externalVariable: name fromContext: context [
-	^ context tempNamed: name
+	|value scope|
+	scope := context sourceNode scope.
+	value := scope lookupVar: name inContext: context.
+	^[value ifNil: [ scope outerScopeLookupVar: name inContext: context ]]on: Error do: [nil].
+
 ]
 
 { #category : #public }

@@ -65,17 +65,12 @@ BlockClosure >> externalVariables [
 
 { #category : #'*PharoJsTranspiler' }
 BlockClosure >> externalVariablesOf: aBlock [
-	| context method variables |
+	| context method variables tempValue|
 	variables := Dictionary new.
 	context := aBlock outerContext.
-	[ context isNil ] whileFalse: [
-		context tempNames do: [ : name |
-			[
-				variables at: name put: (self externalVariable: name fromContext: context)
-			] on: Error do: [ nil ]
-		].
-		context := context outerContext
-	].
+	context sourceNode scope allTempNames do: [ : name |
+		tempValue := self externalVariable: name fromContext: context.
+		variables at: name put: tempValue].
 	method := aBlock home receiver.
 	method class allInstVarNames do: [ : name |
 		variables at: name put: (self externalVariable: name fromMethod: method)
