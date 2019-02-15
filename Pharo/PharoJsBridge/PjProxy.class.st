@@ -70,14 +70,14 @@ PjProxy class >> nilOrProxyNamed: proxyName onBridge: aBridge [
 
 { #category : #'instance creation' }
 PjProxy class >> proxyNamed: proxyName onBridge: aBridge [
+	|proxy|
 	aBridge ifNotNil: [
-		aBridge proxies at: proxyName ifPresent: [: proxy |
-			proxy ifNotNil: [
-				^ proxy
-		]].
-		^ aBridge proxies at: proxyName put: (PjProxy newProxyNamed: proxyName onBridge: aBridge)
-	].
-	^ PjProxy newProxyNamed: proxyName onBridge: aBridge
+		proxy := aBridge proxies at: proxyName ifAbsent: [nil].
+		proxy ifNotNil: [^ proxy].
+		proxy := PjProxy newProxyNamed: proxyName onBridge: aBridge.
+		^aBridge proxies at: proxyName put: proxy.
+	]
+
 ]
 
 { #category : #comparing }
