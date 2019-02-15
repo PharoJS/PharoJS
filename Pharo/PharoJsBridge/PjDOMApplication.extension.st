@@ -1,7 +1,7 @@
 Extension { #name : #PjDOMApplication }
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> css [
+PjDOMApplication class >> css [
 	<pharoJsSkip>
 	" might want to override with:
 	^ self cssFromFile
@@ -10,33 +10,33 @@ PjDOMApplication classSide >> css [
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> cssFile [
+PjDOMApplication class >> cssFile [
 	<pharoJsSkip>
 	self ifInvalidFile: cssFile do:[self setUpCssFile].
 	^cssFile	
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> cssFile: anObject [
+PjDOMApplication class >> cssFile: anObject [
 	<pharoJsSkip>
 	cssFile := anObject
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> cssFromFile [
+PjDOMApplication class >> cssFromFile [
 	<pharoJsSkip>
 	^ (FileStream fileNamed: self cssFile) contentsOfEntireFile
 
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> favicon [
+PjDOMApplication class >> favicon [
 	<pharoJsSkip>
 	^ nil
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> generateHtmlFromFileUsing: aHtmlGenerator [
+PjDOMApplication class >> generateHtmlFromFileUsing: aHtmlGenerator [
 	<pharoJsSkip>
 	aHtmlGenerator loadFrom: (FileStream fileNamed: self htmlFile) contentsOfEntireFile.
 	^ true
@@ -44,33 +44,33 @@ PjDOMApplication classSide >> generateHtmlFromFileUsing: aHtmlGenerator [
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> generateHtmlUsing: aPjHtmlGenerator [
+PjDOMApplication class >> generateHtmlUsing: aPjHtmlGenerator [
 	<pharoJsSkip>
 	^ false
 	" consider overriding with '^ self generateHtmlFromFileUsing: aPjHtmlGenerator' "
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> htmlFile [
+PjDOMApplication class >> htmlFile [
 	<pharoJsSkip>
 	self ifInvalidFile: htmlFile do:[self setUpHtmlFile].
 	^htmlFile
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> htmlFile: anObject [
+PjDOMApplication class >> htmlFile: anObject [
 	<pharoJsSkip>
 	htmlFile := anObject
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> ifInvalidFile: file do: aBlock [
+PjDOMApplication class >> ifInvalidFile: file do: aBlock [
 	<pharoJsSkip>
 	(file isNil or: [(FileStream fileNamed: file) isNil]) ifTrue: aBlock
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> setUpCssFile [
+PjDOMApplication class >> setUpCssFile [
 	<pharoJsSkip>
 	| fileName |
 	fileName := UIManager default chooseFullFileNameMatching: #('*.css') label:  'PharoJS: CSS file for app ', self name, ' please?'.
@@ -80,7 +80,7 @@ PjDOMApplication classSide >> setUpCssFile [
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjDOMApplication classSide >> setUpHtmlFile [
+PjDOMApplication class >> setUpHtmlFile [
 	<pharoJsSkip>
 	| fileName |
 	fileName := UIManager default chooseFullFileNameMatching: #('*.html') label:  'PharoJS: HTML file for app ', self name, ' please?'.

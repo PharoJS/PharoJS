@@ -68,6 +68,7 @@ PjBridgeTestResource >> bridge: aBridge [
 
 { #category : #running }
 PjBridgeTestResource >> ensureFreshClient [
+	self bridge ensureServerProcessAlive.
 	self bridge isConnected ifTrue: [^self bridge resetClient].
 	self bridge startJsInterpreter
 ]

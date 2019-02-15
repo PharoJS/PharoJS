@@ -1,7 +1,7 @@
 Extension { #name : #PjFileBasedWebApp }
 
 { #category : #'*PharoJsBridge-App' }
-PjFileBasedWebApp classSide >> bridgeClientClass [
+PjFileBasedWebApp class >> bridgeClientClass [
 	<pharoJsSkip>
 	^ PjFileBasedBrowserBridgeClient
 ]

@@ -1,7 +1,7 @@
 Extension { #name : #PjNodeApplication }
 
 { #category : #'*PharoJsBridge-App' }
-PjNodeApplication classSide >> bridgeClientClass [
+PjNodeApplication class >> bridgeClientClass [
 	<pharoJsSkip>
 	^ PjNodeBridgeClient
 ]

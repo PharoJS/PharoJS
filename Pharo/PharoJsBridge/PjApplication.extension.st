@@ -1,39 +1,39 @@
 Extension { #name : #PjApplication }
 
 { #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> bridge [
+PjApplication class >> bridge [
 	<pharoJsSkip>
 	^ PjBridge bridgeForAppClass: self
 
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> bridgeAddress [
+PjApplication class >> bridgeAddress [
 	<pharoJsSkip>
 	^ '127.0.0.1'
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> bridgeClass [
+PjApplication class >> bridgeClass [
 	<pharoJsSkip>
 	^ PjBridge
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> bridgeClientClass [
+PjApplication class >> bridgeClientClass [
 	<pharoJsSkip>
 	self subclassResponsibility
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> bridgeForDebug [
+PjApplication class >> bridgeForDebug [
 	<pharoJsSkip>
 	^ self bridge withClientLogging
 
 ]
 
 { #category : #'*PharoJsBridge-App' }
-PjApplication classSide >> newBridgeClient [
+PjApplication class >> newBridgeClient [
 	<pharoJsSkip>
 	^self bridgeClientClass appClass: self
 ]

@@ -64,7 +64,7 @@ PjBridge class >> bridge [
 	^ PjProxyLocalBridge value
 	" the following is a hack to make debugging workable if there is only 1 bridge in existence "
 		ifNil: [ | instances |
-			instances := self allInstances select: #isStarted.
+			instances := self allInstances select: #isServerStarted.
 			instances size = 1 ifTrue: [ instances first ] ifFalse: [ nil ]
 		]
 ]
@@ -214,7 +214,7 @@ PjBridge >> deleteBlockClosure: aBlockClosure [
 PjBridge >> deleteJsValue: jsName [
 	"Called by proxy finalizer see methode PjProxy>>jsName:onBridge:"
 	self proxies removeKey: jsName ifAbsent: [ ].
-	self isStopped ifTrue: [ ^self ].
+	self isServerStopped ifTrue: [ ^self ].
 	self sendMessage: ':-',jsName.
 	^ proxies
 ]
@@ -227,6 +227,11 @@ PjBridge >> disableWriteDnuDuring: aBlockClosure [
 { #category : #evaluating }
 PjBridge >> dnuJsString [
 	^self transpiler dnuJsString
+]
+
+{ #category : #public }
+PjBridge >> ensureServerProcessAlive [
+	self server ensureProcessAlive
 ]
 
 { #category : #public }
@@ -380,13 +385,13 @@ PjBridge >> isListening [
 ]
 
 { #category : #public }
-PjBridge >> isStarted [
+PjBridge >> isServerStarted [
 	^self server isRunning
 ]
 
 { #category : #public }
-PjBridge >> isStopped [
-	^self isStarted not
+PjBridge >> isServerStopped [
+	^self isServerStarted not
 ]
 
 { #category : #evaluating }
@@ -580,31 +585,27 @@ PjBridge >> startOn: portNumber title: title [
 	self start
 ]
 
-{ #category : #activity }
-PjBridge >> startServer [
-	self server start
-]
-
 { #category : #public }
 PjBridge >> startWithoutWaitingForClient [
-	self isStarted
+	self isServerStarted
 		ifTrue: [ ^ self ].
-	self startServer.
+	self server start.
 	self waitForServerToStart.
 	self client start
 ]
 
 { #category : #public }
 PjBridge >> stop [
-	self isStopped ifTrue: [ ^self ].
 	self client stop.
 	self stopServer.
-	self waitForServerToStop 
+
 ]
 
 { #category : #activity }
 PjBridge >> stopServer [
-	self server stop
+	self isServerStopped ifTrue: [ ^self ].
+	self server stop.
+	self waitForServerToStop 
 ]
 
 { #category : #public }
@@ -661,7 +662,7 @@ PjBridge >> waitForClientToStartFor: time doing: aBlock [
 { #category : #activity }
 PjBridge >> waitForServerToStart [
 	self 
-		when: [self isStarted] 
+		when: [self isServerStarted] 
 		do: [^self] 
 		onTimeOutDo: [ self error: 'Server not ready' ]
 
@@ -670,7 +671,7 @@ PjBridge >> waitForServerToStart [
 { #category : #activity }
 PjBridge >> waitForServerToStop [
 	self 
-		when: [self isStopped] 
+		when: [self isServerStopped] 
 		do: [^self] 
 		onTimeOutDo: [ self error: 'Server not stopped yet' ]
 

@@ -50,6 +50,12 @@ PjServer >> delegateClass [
 	^PjParametrizableServerDelegate
 ]
 
+{ #category : #public }
+PjServer >> ensureProcessAlive [
+	self isProcessDead ifFalse: [ ^self ].
+	super start
+]
+
 { #category : #'request handling' }
 PjServer >> executePlainRequest: request sendReponseThrough: stream and: socket [
 [ 
@@ -102,6 +108,17 @@ PjServer >> initialize [
 	super initialize.
 	self delegate: self delegateClass new
 
+]
+
+{ #category : #testing }
+PjServer >> isProcessDead [
+	^self process isNil or: [ self process isTerminating or: [ self process isTerminated ]  ]
+]
+
+{ #category : #'initialize-release' }
+PjServer >> isWebSocketConnected [
+	self webSocket ifNil: [ ^self ].
+	^self webSocket isConnected
 ]
 
 { #category : #accessing }

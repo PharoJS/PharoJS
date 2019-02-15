@@ -1,7 +1,7 @@
 Extension { #name : #PjWebApplication }
 
 { #category : #'*PharoJsBridge-App' }
-PjWebApplication classSide >> bridgeClientClass [
+PjWebApplication class >> bridgeClientClass [
 	<pharoJsSkip>
 	^ PjBrowserBridgeClient
 ]
