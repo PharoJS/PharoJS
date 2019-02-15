@@ -1,7 +1,7 @@
 Extension { #name : #PjWebApplication }
 
 { #category : #'*PharoJsTools-Playground' }
-PjWebApplication classSide >> playgroundInitialContent [
+PjWebApplication class >> playgroundInitialContent [
 	<pharoJsSkip>
 	^	super playgroundInitialContent
 		,'console dir: document.', String cr

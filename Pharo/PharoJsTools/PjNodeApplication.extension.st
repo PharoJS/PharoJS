@@ -1,7 +1,7 @@
 Extension { #name : #PjNodeApplication }
 
 { #category : #'*PharoJsTools-Playground' }
-PjNodeApplication classSide >> playgroundInitialContent [
+PjNodeApplication class >> playgroundInitialContent [
 	<pharoJsSkip>
 	^	super playgroundInitialContent
 		,'console log: ''hello''.', String cr

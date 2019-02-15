@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #running }
+PjDebugBridgeTestResource >> ensureFreshClient [
+	self bridge startJsInterpreter
+]
+
+{ #category : #running }
+PjDebugBridgeTestResource >> resetClient [
+	self bridge resetClient
+]
+
+{ #category : #running }
 PjDebugBridgeTestResource >> setUpClient [
 	self bridge withClientLogging
 ]

@@ -68,8 +68,7 @@ PjBridgeTestResource >> bridge: aBridge [
 
 { #category : #running }
 PjBridgeTestResource >> ensureFreshClient [
-	self bridge ensureServerProcessAlive.
-	self bridge isConnected ifTrue: [^self bridge resetClient].
+	self bridge isConnected ifTrue: [^self resetClient].
 	self bridge startJsInterpreter
 ]
 
@@ -78,6 +77,15 @@ PjBridgeTestResource >> initialize [
 	super initialize.
 	self description: 'I manage a bridge dedicated to testing a PharoJS app'.
 	self name: 'PharoJS Bridge TestResource'.
+]
+
+{ #category : #running }
+PjBridgeTestResource >> resetClient [
+	"SUnit does terminate all threads forked while tests are run."
+	"See TestExecutionEnvironment>>#runTestCase:"
+	"So, first ensure server process is alive"
+	self bridge ensureServerProcessAlive.
+	self bridge resetClient
 ]
 
 { #category : #running }

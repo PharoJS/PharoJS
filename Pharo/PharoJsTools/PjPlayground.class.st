@@ -44,8 +44,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PharoJsPlayground)
 		label: 'PharoJs Playground';
-		withSeparatorAfter;
-		icon: Smalltalk tools workspace taskbarIcon;
+		icon: (self iconNamed: #smallWindowIcon);
 		with: [
 			(aBuilder item: #simple)
 				action: [ self open ].
@@ -68,8 +67,9 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 							label: 'browse';
 							action: [ class browse ].
 			]].
-			(aBuilder item: #Help)
-				icon: Smalltalk ui icons help;
+			(aBuilder item: #HelpPharoJs)
+				label: 'PharoJs Help';
+				icon: (self iconNamed: #smallHelp);
 				action: [ HelpBrowser openOn: PharoJsHelp ].
 		]
 ]
