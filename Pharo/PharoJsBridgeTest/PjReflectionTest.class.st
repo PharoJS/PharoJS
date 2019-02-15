@@ -24,11 +24,8 @@ PjReflectionTest >> testNestedRepeats [
 		instanceVariableNames: 'x y'
 		classVariableNames: ''.
 	tryNestedRepeatsSelector := #tryNestedRepeats.
-	tryNestedRepeatsMethod := self class
-		compiledMethodAt: tryNestedRepeatsSelector.
-	class methodDict
-		at: tryNestedRepeatsSelector
-		put: tryNestedRepeatsMethod.
+	tryNestedRepeatsMethod := self class compiledMethodAt: tryNestedRepeatsSelector.
+	class compile: tryNestedRepeatsMethod sourceCode.
 	self bridge loadClass: class.
 	self
 		assert: [ class new tryNestedRepeats ]
@@ -64,9 +61,8 @@ PjReflectionTest >> testTemporaries [
 		instanceVariableNames: 'x y'
 		classVariableNames: ''.
 	tryTemporariesSelector := #tryTemporaries.
-	tryTemporariesMethod := self class
-		compiledMethodAt: tryTemporariesSelector.
-	class methodDict at: tryTemporariesSelector put: tryTemporariesMethod.
+	tryTemporariesMethod := self class compiledMethodAt: tryTemporariesSelector.
+	class compile: tryTemporariesMethod sourceCode.
 	self bridge loadClass: class.
 	self
 		assert: [ class new tryTemporaries ]
