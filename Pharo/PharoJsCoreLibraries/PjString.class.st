@@ -256,9 +256,7 @@ PjString >> isJSPrimitiveType [
 
 { #category : #testing }
 PjString >> isLetter [
-	| charCode |
-	charCode := (self js_charAt: 0) js_charCodeAt: 0.
-	^self letterCharCodes includes: charCode
+	^self letterCharCodes includes: (self js_charCodeAt: 0)
 
 ]
 
