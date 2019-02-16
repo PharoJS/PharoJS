@@ -37,13 +37,10 @@ PjStringTest >> testIfEmpty [
 { #category : #testing }
 PjStringTest >> testIsLetter [
 	| letters nonLetters |
-	letters := ($a to: $z), ($A to: $Z).
-	letters := letters asArray.
-	self assertBlock: [letters detect: [: char |  char isLetter not] ifFound: [ false ] ifNone: [true]].
-	nonLetters := (Character characterTable reject: [: char | char isLetter]) asOrderedCollection.
-	nonLetters removeAll: { Character cr. Character lf. $'. $\}.
-	nonLetters := nonLetters asArray.
-	self assertBlock: [nonLetters detect: [: char |  char isLetter] ifFound: [ false ] ifNone: [true]].
+	letters := Character allByteCharacters select: [: each | each isLetter].
+	self assertBlock: [letters allSatisfy: [: char |char isLetter]].
+	nonLetters := Character allByteCharacters copyWithoutAll: letters.
+	self assertBlock: [nonLetters noneSatisfy: [: char |  char isLetter]].
 		
 ]
 

@@ -35,8 +35,10 @@ PjTime class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	| classSelectors instanceSelectors |
 	classSelectors := Time class 
-		selectorsInProtocols: #('instance creation' '*PharoExtra-instance creation')  
-		exclude: #(now nowLocal fromString: readFrom: hour:minute:second:nanoSecond: seconds:nanoSeconds: seconds: hour:minute:second:milliSecond:). 
+		selectorsInProtocols: #('instance creation' '*PharoExtra-instance creation' '*Kernel-Chronology-Extras')  
+		exclude: #(now nowLocal fromString: readFrom: seconds:nanoSeconds: seconds:  hour:minute:second:milliSecond: hour:minute:second:nanoSecond:
+		benchmarkMillisecondClock benchmarkPrimitiveResponseDelay dateAndTimeFromSeconds:
+		). 
 	instanceSelectors := Time 
 		selectorsInProtocols: #(accessing "adding comparing converting")
 		exclude: #(hour12 hour24 minute second).
