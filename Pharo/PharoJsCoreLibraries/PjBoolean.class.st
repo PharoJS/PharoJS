@@ -57,8 +57,8 @@ PjBoolean >> asString [
 
 { #category : #comparing }
 PjBoolean >> identityHash [
-	<javascript: 'if(this == true){return 433061888;}
-	return 1053132032;'>
+	<javascript: 'if(this == true){return 436941568;}
+	return 358212352;'>
 ]
 
 { #category : #controlling }

@@ -45,7 +45,7 @@ PjUndefinedObject >> asJSON [
 
 { #category : #comparing }
 PjUndefinedObject >> identityHash [
-	^ 489971712
+	^ 659139840
 ]
 
 { #category : #accessing }
