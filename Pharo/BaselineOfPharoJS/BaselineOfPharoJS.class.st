@@ -19,11 +19,6 @@ BaselineOfPharoJS >> baseline: spec [
 			baseline: 'Equals' with: [
 				spec
 					repository: 'github://bouraqadi/PharoMisc' ];
-			project: 'WebBrowser' with: [
-				spec
-					className: #ConfigurationOfWebBrowser;
-					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WebBrowser/main/' ];
 			baseline: 'ZincHTTPComponents' with: [
 				spec
 					loads: #('Zinc-WebSocket-Core');
