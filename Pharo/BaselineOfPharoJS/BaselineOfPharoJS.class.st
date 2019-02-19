@@ -19,9 +19,8 @@ BaselineOfPharoJS >> baseline: spec [
 			baseline: 'Equals' with: [
 				spec
 					repository: 'github://bouraqadi/PharoMisc' ];
-			baseline: 'ZincHTTPComponents' with: [
+			package: 'Zinc-WebSocket-Core' with: [
 				spec
-					loads: #('Zinc-WebSocket-Core');
 					repository: 'github://svenvc/zinc' ].
 		spec 
 			package: 'PharoJsApp' with: [
