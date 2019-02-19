@@ -26,7 +26,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsBridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'ZincHTTPComponents' ). ];
+				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'Zinc-WebSocket-Core' ). ];
 			package: #PharoJsBridgeTest with: [
 				spec requires: #('PharoJsTestFramework' 'PharoJsBridge' ). ];
 			package: #PharoJsCoreLibraries with: [
