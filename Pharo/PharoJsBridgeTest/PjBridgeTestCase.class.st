@@ -15,7 +15,8 @@ Class {
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
 	#instVars : [
-		'classFactory'
+		'classFactory',
+		'authorInitialName'
 	],
 	#pools : [
 		'PjDomGlobals',
@@ -92,11 +93,15 @@ PjBridgeTestCase >> evalBlock: aBlock [
 { #category : #running }
 PjBridgeTestCase >> setUp [
 	super setUp.
+	authorInitialName := Author uniqueInstance fullNamePerSe.
+	Author uniqueInstance fullName: 'PharoJS'.
 	classFactory := ClassFactoryForTestCase new
 ]
 
 { #category : #running }
 PjBridgeTestCase >> tearDown [
 	super tearDown.
-	classFactory ifNotNil: [ classFactory cleanUp ]
+	classFactory ifNotNil: [ classFactory cleanUp ].
+	Author uniqueInstance fullName: authorInitialName.
+
 ]
