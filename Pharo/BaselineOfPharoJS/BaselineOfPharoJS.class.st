@@ -12,36 +12,22 @@ BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
 	spec for: #'common' do: [
-		spec blessing: #'baseline'.
-		spec repository: 'github://bouraqadi/PharoJS'.
 		spec 
-			project: 'PharoExtra' with: [
+			baseline: 'PharoExtra' with: [
 				spec
-					className: #ConfigurationOfPharoExtra;
-					versionString: #'bleedingEdge';
-					repository: 'http://smalltalkhub.com/mc/noury/Misc/main/' ];
-			project: 'ReusableBricks' with: [
+					repository: 'github://bouraqadi/PharoMisc' ];
+			baseline: 'Equals' with: [
 				spec
-					className: #ConfigurationOfReusableBricks;
-					versionString: #'stable';
-					loads: #('Equals' );
-					repository: 'http://smalltalkhub.com/mc/CAR/ReusableBricks/main/' ];
-			project: 'WebBrowser' with: [
+					repository: 'github://bouraqadi/PharoMisc' ];
+			baseline: 'ZincHTTPComponents' with: [
 				spec
-					className: #ConfigurationOfWebBrowser;
-					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WebBrowser/main/' ];
-			project: 'ZincHTTPComponents' with: [
-				spec
-					className: #ConfigurationOfZincHTTPComponents;
-					versionString: #'stable';
-					loads: #('Zinc-WebSocket-Core' );
-					repository: 'http://mc.stfx.eu/ZincHTTPComponents' ].
+					loads: #('Zinc-WebSocket-Core');
+					repository: 'github://svenvc/zinc' ].
 		spec 
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsBridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'WebBrowser' 'ZincHTTPComponents' ). ];
+				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'ZincHTTPComponents' ). ];
 			package: #PharoJsBridgeTest with: [
 				spec requires: #('PharoJsTestFramework' 'PharoJsBridge' ). ];
 			package: #PharoJsCoreLibraries with: [
@@ -61,7 +47,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsTools' with: [
 				spec requires: #('PharoJsBridge' ). ];
 			package: 'PharoJsTranspiler' with: [
-				spec requires: #('ReusableBricks' ). ];
+				spec requires: #('Equals' ). ];
 			package: #PharoJsTranspilerOptimization with: [
 				spec requires: #('PharoJsTranspiler' ). ]. ].
 
