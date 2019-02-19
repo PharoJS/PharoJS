@@ -117,7 +117,7 @@ PjServer >> isProcessDead [
 
 { #category : #'initialize-release' }
 PjServer >> isWebSocketConnected [
-	self webSocket ifNil: [ ^self ].
+	self webSocket ifNil: [ ^ false ].
 	^self webSocket isConnected
 ]
 
