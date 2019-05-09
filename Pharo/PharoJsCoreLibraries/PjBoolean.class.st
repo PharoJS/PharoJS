@@ -9,6 +9,14 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #'class initialization' }
+PjBoolean class >> initialize [
+	<pharoJsSkip>
+	self compile: 'identityHash
+	self ifTrue: [^', true identityHash asString, '].
+	^', false identityHash asString
+]
+
 { #category : #'pharoJs support' }
 PjBoolean class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
@@ -57,8 +65,8 @@ PjBoolean >> asString [
 
 { #category : #comparing }
 PjBoolean >> identityHash [
-	<javascript: 'if(this == true){return 436941568;}
-	return 358212352;'>
+	self ifTrue: [^324909056].
+	^926932224
 ]
 
 { #category : #controlling }

@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #initialize }
+PjUndefinedObject class >> initialize [
+	<pharoJsSkip>
+	self compile: 'identityHash
+	^ ', nil identityHash asString
+]
+
+{ #category : #initialize }
 PjUndefinedObject class >> javascriptInitialize [
 	PjCore nilInJs: self basicNew
 ]
@@ -45,7 +52,7 @@ PjUndefinedObject >> asJSON [
 
 { #category : #comparing }
 PjUndefinedObject >> identityHash [
-	^ 659139840
+	^ 767591680
 ]
 
 { #category : #accessing }
