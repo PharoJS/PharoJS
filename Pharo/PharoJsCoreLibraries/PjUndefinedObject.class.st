@@ -10,7 +10,7 @@ Class {
 { #category : #initialize }
 PjUndefinedObject class >> initialize [
 	<pharoJsSkip>
-	self compile: 'identityHash
+	self compileNoPrompt: 'identityHash
 	^ ', nil identityHash asString
 ]
 
@@ -50,7 +50,7 @@ PjUndefinedObject >> asJSON [
 	^ 'null'
 ]
 
-{ #category : #comparing }
+{ #category : #'not defined category' }
 PjUndefinedObject >> identityHash [
 	^ 767591680
 ]

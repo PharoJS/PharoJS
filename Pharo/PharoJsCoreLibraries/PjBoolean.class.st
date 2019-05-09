@@ -12,7 +12,7 @@ Class {
 { #category : #'class initialization' }
 PjBoolean class >> initialize [
 	<pharoJsSkip>
-	self compile: 'identityHash
+	self compileNoPrompt: 'identityHash
 	self ifTrue: [^', true identityHash asString, '].
 	^', false identityHash asString
 ]
@@ -63,7 +63,7 @@ PjBoolean >> asString [
 	<javascript: 'return this + ""'>
 ]
 
-{ #category : #comparing }
+{ #category : #'not defined category' }
 PjBoolean >> identityHash [
 	self ifTrue: [^324909056].
 	^926932224
