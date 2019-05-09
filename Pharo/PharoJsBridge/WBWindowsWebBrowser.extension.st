@@ -11,7 +11,7 @@ WBWindowsWebBrowser class >> openBrowser: browserName on: anURLString inBackgrou
 	"
 
 	(browserName isNil or: [ backgroundFlag not ])
-		ifTrue: [ ^ self openOn: anURLString  ].
+		ifTrue: [ ^ WebBrowser openOn: anURLString  ].
 	^ self
 		shellExecute: 'open'
 		file: browserName asLowercase

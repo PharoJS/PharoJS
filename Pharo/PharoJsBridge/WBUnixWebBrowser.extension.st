@@ -12,7 +12,7 @@ WBUnixWebBrowser class >> openBrowser: browserName on: anURLString inBackground:
 
 	| openCommand |
 	(browserName isNil or: [ backgroundFlag not ])
-		ifTrue: [ ^ self openOn: anURLString ].
+		ifTrue: [ ^ WebBrowser openOn: anURLString ].
 	openCommand := '{1} {2} &'
 		format:
 			{browserName asLowercase.
