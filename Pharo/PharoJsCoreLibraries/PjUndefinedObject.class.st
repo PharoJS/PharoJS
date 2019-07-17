@@ -52,7 +52,7 @@ PjUndefinedObject >> asJSON [
 
 { #category : #'not defined category' }
 PjUndefinedObject >> identityHash [
-	^ 767591680
+	^ 276177664
 ]
 
 { #category : #accessing }

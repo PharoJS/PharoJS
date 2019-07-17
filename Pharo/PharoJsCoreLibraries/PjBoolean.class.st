@@ -65,8 +65,8 @@ PjBoolean >> asString [
 
 { #category : #'not defined category' }
 PjBoolean >> identityHash [
-	self ifTrue: [^324909056].
-	^926932224
+	self ifTrue: [^393540864].
+	^1065407232
 ]
 
 { #category : #controlling }
