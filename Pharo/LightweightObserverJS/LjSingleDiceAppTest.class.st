@@ -20,10 +20,9 @@ LjSingleDiceAppTest >> setUp [
 
 { #category : #testing }
 LjSingleDiceAppTest >> testClickingOnDisplayMakesDiceRoll [
-	| isFaceUpChanged faceUpDisplayHtml |
-	isFaceUpChanged := false.
-	faceUpDisplayHtml := faceUpDisplay innerHTML. 
+	| faceUpDisplayHtml |
 	100 timesRepeat: [
+		faceUpDisplayHtml := faceUpDisplay innerHTML. 
 		faceUpDisplay click.
 		faceUpDisplayHtml = faceUpDisplay innerHTML ifFalse: [ ^self ].
 		].

@@ -319,6 +319,12 @@ PjObject >> removeKey: key [
 	<javascript: 'var result=this[key];delete this[key];return result'>
 ]
 
+{ #category : #'process operations' }
+PjObject >> setTimeout: aBlock afterMilliseconds: anInteger [
+	<javascript: 'window.setTimeout(aBlock, anInteger)'>
+	super setTimeout: aBlock afterMilliseconds: anInteger
+]
+
 { #category : #copying }
 PjObject >> shallowCopy [
 	| copy |

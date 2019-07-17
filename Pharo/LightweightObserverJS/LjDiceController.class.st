@@ -33,7 +33,7 @@ LjDiceController >> diceFaceUp: newFaceUp [
 	This is usefull if the values are the same"
 	faceUpDisplay classList add: self diceFaceChangedCssClass.
 	faceUpDisplay innerHTML: newFaceUp.
-	window 
+	self 
 		setTimeout: [
 			faceUpDisplay classList remove: self diceFaceChangedCssClass] 
 		afterMilliseconds: 100

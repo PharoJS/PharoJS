@@ -19,3 +19,9 @@ Object >> asJsObjectUsing: converter [
 Object class >> javascriptPlaceholder [
 	^PjObject
 ]
+
+{ #category : #'*PharoJsCoreLibraries' }
+Object >> setTimeout: aBlock afterMilliseconds: anInteger [
+	anInteger milliSeconds wait.
+	aBlock value
+]
