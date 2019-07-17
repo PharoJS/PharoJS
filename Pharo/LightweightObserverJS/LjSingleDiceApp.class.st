@@ -9,6 +9,11 @@ Class {
 	#category : #'LightweightObserverJS-Example'
 }
 
+{ #category : #description }
+LjSingleDiceApp class >> appJsSubFolder [
+	^'js'
+]
+
 { #category : #initialization }
 LjSingleDiceApp >> initialize [
 	super initialize.
