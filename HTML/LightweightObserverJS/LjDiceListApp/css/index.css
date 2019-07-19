@@ -27,3 +27,28 @@ text-align: center;
 
 .diceList{
 }
+
+.basicButton, .wideButton{
+    background-color: #e7e7e7; /* Gray */ 
+    color: black;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	width: 130px;
+	margin: 5px;
+}
+
+.basicButton:active, .wideButton:active {
+  transform: translateY(4px);
+}
+
+
+.wideButton{
+    background-color: #008CBA; /* blue */
+	color: white;
+	width:80%;
+	font-size: 36px;
+}
