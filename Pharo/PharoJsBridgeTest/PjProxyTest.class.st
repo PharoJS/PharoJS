@@ -103,6 +103,19 @@ PjProxyTest >> testGetElementById [
 ]
 
 { #category : #testing }
+PjProxyTest >> testIterateOverChildren [
+	| container newChild |
+	container := document createElement: 'div'.
+	10 timesRepeat: [
+		newChild := document createElement: 'span'.
+		container appendChild: newChild].
+	self assert: container children size equals: 10.
+	container children withIndexDo: [ : each : index | 
+		each textContent: index].
+
+]
+
+{ #category : #testing }
 PjProxyTest >> testValueNonInterference [
 	| theInput |
 	self

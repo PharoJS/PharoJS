@@ -16,6 +16,11 @@ BlockClosure >> asClosedBlock [
 ]
 
 { #category : #'*PharoJsTranspiler' }
+BlockClosure >> asJsAstUsing: aConverter [
+	^aConverter convertBlock: self
+]
+
+{ #category : #'*PharoJsTranspiler' }
 BlockClosure >> asValuedBlock [
 	^PjValuedClosedBlockClosure newFrom: self
 ]
