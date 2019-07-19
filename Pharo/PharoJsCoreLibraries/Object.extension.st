@@ -22,6 +22,6 @@ Object class >> javascriptPlaceholder [
 
 { #category : #'*PharoJsCoreLibraries' }
 Object >> setTimeout: aBlock afterMilliseconds: anInteger [
-	anInteger milliSeconds wait.
-	aBlock value
+	[anInteger milliSeconds wait.
+	aBlock value] fork
 ]

@@ -1,0 +1,29 @@
+.container{
+text-align: center;
+}
+.diceFace{
+	font-size: 300%;
+    font-weight: bold;
+	background-color: yellow;
+	padding: 20px 30px 10px 30px;
+	border-radius: 15px;
+	border: solid 1px gray;
+	margin: 5px;
+	display: inline-block;
+}
+
+.diceFaceChanged{
+	 background-color: gray;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.diceList{
+}

@@ -43,9 +43,7 @@ LjDiceListAppTest >> setUp [
 
 { #category : #testing }
 LjDiceListAppTest >> testClickingOnDiceDisplayMakesDiceRoll [
-	| diceViews |
-	diceViews := self orderedCollectionFrom: diceListView children.
-	diceViews do: [ : singDiceView |
+	diceListView children do: [ : singDiceView |
 		self assertDiceRollsAfterClickOn: singDiceView
 	]
 
