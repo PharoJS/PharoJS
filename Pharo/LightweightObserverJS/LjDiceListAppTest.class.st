@@ -14,24 +14,17 @@ LjDiceListAppTest class >> appClass [
 ]
 
 { #category : #testing }
-LjDiceListAppTest >> assertDiceRollsAfterClickOn: singDiceView [
-	| faceUpDisplayHtml |
-	100 timesRepeat: [
-		faceUpDisplayHtml := singDiceView innerHTML. 
-		diceListView click.
-		faceUpDisplayHtml = singDiceView innerHTML ifFalse: [ ^self ].
-	].
-	self fail
+LjDiceListAppTest >> denyCollection: someCollection hasSameElements: otherCollection [
+	self deny: (someCollection includesAll: otherCollection)
 ]
 
 { #category : #testing }
-LjDiceListAppTest >> orderedCollectionFrom: jsCollection [
-	| elementsCount localCollection |
-	elementsCount := jsCollection size.
-	localCollection := OrderedCollection new: elementsCount.
-	0 to: elementsCount - 1 do: [ : index |
-		localCollection add: (jsCollection at: index) ].
-	^localCollection
+LjDiceListAppTest >> diceDisplayStrings [
+	^diceListView children collect: [ : singDiceView |
+		singDiceView textContent
+	].
+	
+
 ]
 
 { #category : #testing }
@@ -42,9 +35,35 @@ LjDiceListAppTest >> setUp [
 ]
 
 { #category : #testing }
-LjDiceListAppTest >> testClickingOnDiceDisplayMakesDiceRoll [
-	diceListView children do: [ : singDiceView |
-		self assertDiceRollsAfterClickOn: singDiceView
+LjDiceListAppTest >> testClickOnAddRemoveDiceButtons [
+	| addButton removeButton previousSize currentSize |
+	addButton := document getElementById: #addDiceButton.
+	previousSize := diceListView children size.
+	5 timesRepeat: [ 
+		addButton click. 
+		currentSize := diceListView children size.
+		self assert: currentSize equals: previousSize + 1.
+		previousSize := currentSize
+	].
+	removeButton := document getElementById: #removeDiceButton.
+	5 timesRepeat: [ 
+		removeButton click. 
+		currentSize := diceListView children size.
+		self assert: currentSize equals: previousSize - 1.
+		previousSize := currentSize
 	]
 
+	
+]
+
+{ #category : #testing }
+LjDiceListAppTest >> testClickOnRollButtonMakesDiceRoll [
+	| initialDiceStrings rollButton |
+	self deny: diceListView children isEmpty.
+	initialDiceStrings := self diceDisplayStrings.
+	rollButton := document getElementById: #rollDiceButton.
+	10 timesRepeat: [ 
+		rollButton click. 
+		(self diceDisplayStrings includesAll: initialDiceStrings) ifFalse: [^self]].
+	self fail
 ]

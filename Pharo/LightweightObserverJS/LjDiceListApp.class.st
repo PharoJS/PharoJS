@@ -23,6 +23,7 @@ LjDiceListApp >> initialize [
 	controller diceList: model diceListDisplay: view.
 	(self elementAt: #addDiceButton) addEventListener: #click block: [ model addDice ].
 	(self elementAt: #removeDiceButton) addEventListener: #click block: [ model removeDice ].
+	(self elementAt: #rollDiceButton) addEventListener: #click block: [ model roll ].
 	
 ]
 

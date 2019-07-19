@@ -16,6 +16,7 @@ PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 			allSatisfy: anySatisfy: noneSatisfy: inject:into: 
 			detect:ifFound:ifNone: detect:ifNone: detect:ifFound: remove: isCollection 
 			asDictionary associationsDo: addAll: isEmptyOrNil removeAll: 
+			includesAll:
 		).
 		Collection class ->#(
 			withAll: 

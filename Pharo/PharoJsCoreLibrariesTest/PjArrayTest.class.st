@@ -205,6 +205,17 @@ PjArrayTest >> testIncludes [
 ]
 
 { #category : #testing }
+PjArrayTest >> testIncludesAll [
+	self assertEquivalent: [#() includesAll: #(4)].
+	self assertEquivalent: [#(2 3 4 5) includesAll: #(4)].
+	self assertEquivalent: [#() includesAll: #('hello')].
+	self assertEquivalent: [#(2 'hello' 5) includesAll: #('hello')].
+	self assertEquivalent: [ #(2 3 4 5 6) includesAll: #(4 5) ].
+	self assertEquivalent: [ #(2 3 4 5 6) includesAll: #(6 2 6) ].
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testInserElement [
 	
 ]
