@@ -2,9 +2,9 @@ Class {
 	#name : #LjDiceListApp,
 	#superclass : #PjFileBasedWebApp,
 	#instVars : [
-		'model',
-		'view',
-		'controller'
+		'diceList',
+		'diceListDisplay',
+		'diceListController'
 	],
 	#category : #'LightweightObserverJS-Example'
 }
@@ -15,24 +15,40 @@ LjDiceListApp class >> appJsSubFolder [
 ]
 
 { #category : #initialization }
-LjDiceListApp >> initialize [
-	super initialize.
-	model := LoDiceList withDiceCount: 3. 
-	view := self elementAt: #diceListView.
-	controller := LjDiceListController new.
-	controller diceList: model diceListDisplay: view.
-	(self elementAt: #addDiceButton) addEventListener: #click block: [ model addDice ].
-	(self elementAt: #removeDiceButton) addEventListener: #click block: [ model removeDice ].
-	(self elementAt: #rollDiceButton) addEventListener: #click block: [ model roll ].
-	
+LjDiceListApp >> diceList [	
+	^diceList
 ]
 
 { #category : #initialization }
-LjDiceListApp >> model [	
-	^model
+LjDiceListApp >> diceListClass [
+	^ LoDiceList
+]
+
+{ #category : #initialization }
+LjDiceListApp >> initialize [
+	super initialize.
+	diceList := self diceListClass withDiceCount: 3.
+	diceListDisplay := self elementAt: #diceListView.
+	diceListController := LjDiceListController new.
+	diceListController diceList: diceList diceListDisplay: diceListDisplay.
+	(self elementAt: #addDiceButton)
+		addEventListener: #click
+		block: [ diceList addDice ].
+	(self elementAt: #removeDiceButton)
+		addEventListener: #click
+		block: [ self removeDice ].
+	(self elementAt: #rollDiceButton)
+		addEventListener: #click
+		block: [ diceList roll ]
+]
+
+{ #category : #initialization }
+LjDiceListApp >> removeDice [
+	diceList dice size > 2 ifFalse: [ ^self ].
+	diceList removeDice
 ]
 
 { #category : #initialization }
 LjDiceListApp >> view [	
-	^view
+	^diceListDisplay
 ]

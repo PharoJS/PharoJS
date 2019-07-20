@@ -32,7 +32,7 @@ LjDiceController >> diceFaceUp: newFaceUp [
 	"Change CSS style for about 100 milliseconds to give a visual cue of that the dice changed.
 	This is usefull if the values are the same"
 	faceUpDisplay classList add: self diceFaceChangedCssClass.
-	faceUpDisplay innerHTML: newFaceUp.
+	faceUpDisplay textContent: newFaceUp.
 	self 
 		setTimeout: [
 			faceUpDisplay classList remove: self diceFaceChangedCssClass] 
@@ -42,5 +42,5 @@ LjDiceController >> diceFaceUp: newFaceUp [
 
 { #category : #accessing }
 LjDiceController >> faceUpDisplay [
-	^ faceUpDisplay
+	^faceUpDisplay
 ]

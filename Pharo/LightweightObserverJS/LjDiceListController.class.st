@@ -39,7 +39,7 @@ LjDiceListController >> diceList: aDiceList diceListDisplay: htmlElement [
 LjDiceListController >> removeDiceControllerAt: index [
 	| diceView controller |
 	controller := diceControllers at: index.
-	diceView := controller view.
+	diceView := controller faceUpDisplay.
 	diceListDisplay removeChild: diceView.
 	diceControllers remove: controller.
 

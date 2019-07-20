@@ -31,7 +31,7 @@ LjDiceListAppTest >> diceDisplayStrings [
 LjDiceListAppTest >> setUp [
 	super setUp.
 	diceListView := app view.
-	diceList := app model.
+	diceList := app diceList.
 ]
 
 { #category : #testing }
@@ -57,6 +57,20 @@ LjDiceListAppTest >> testClickOnAddRemoveDiceButtons [
 ]
 
 { #category : #testing }
+LjDiceListAppTest >> testClickOnNewDiceMakesItRoll [
+	| addButton diceDisplay diceString |
+	addButton := document getElementById: #addDiceButton.
+	addButton click. 
+	diceDisplay := diceListView children last.
+	diceString := diceDisplay textContent.
+	100 timesRepeat: [
+		diceDisplay click.
+		diceString = diceDisplay textContent ifFalse: [ ^self ].
+		].
+	self fail
+]
+
+{ #category : #testing }
 LjDiceListAppTest >> testClickOnRollButtonMakesDiceRoll [
 	| initialDiceStrings rollButton |
 	self deny: diceListView children isEmpty.
@@ -66,4 +80,19 @@ LjDiceListAppTest >> testClickOnRollButtonMakesDiceRoll [
 		rollButton click. 
 		(self diceDisplayStrings includesAll: initialDiceStrings) ifFalse: [^self]].
 	self fail
+]
+
+{ #category : #testing }
+LjDiceListAppTest >> testRemoveEnsuresAlwaysOneDiceLeft [
+	| addButton removeButton |
+	addButton := document getElementById: #addDiceButton.
+	[diceListView children size < 10] whileTrue: [ 
+		addButton click. 
+	].
+	self assert: diceListView children size equals: 10.
+	removeButton := document getElementById: #removeDiceButton.
+	20 timesRepeat: [ removeButton click].
+	self assert: diceListView children size equals: 1.
+
+	
 ]
