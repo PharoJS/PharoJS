@@ -1,0 +1,68 @@
+.container{
+text-align: center;
+}
+
+.diceFace, .diceTotal{
+	font-size: 300%;
+    font-weight: bold;
+	padding: 20px 30px 10px 30px;
+	border-radius: 15px;
+	border: solid 1px gray;
+	display: inline-block;
+}
+
+.diceFace{
+	margin: 5px;
+	background-color: yellow;	
+}
+
+.diceTotal{
+	background-color: #4CAF50; /* Green */
+	width: 80%;
+	margin:auto;
+	box-sizing: border-box;
+	word-wrap: anywhere;
+}
+
+.diceFaceChanged, .diceTotalChanged{
+	 background-color: gray;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.diceList{
+}
+
+.basicButton, .wideButton{
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+	margin: 5px;
+}
+
+.basicButton:active, .wideButton:active {
+  transform: translateY(4px);
+}
+
+.basicButton{
+    background-color: #e7e7e7; /* Gray */ 
+    color: black;
+	width: 130px;	
+    font-size: 16px;
+}
+
+.wideButton{
+    background-color: #008CBA; /* blue */
+	color: white;
+	width:80%;
+	font-size: 36px;
+}
