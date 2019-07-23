@@ -62,7 +62,7 @@ PjApplication class >> defaultAppFolderParent [
 	<pharoJsSkip>
 	| repository packageName |
 	packageName := self package name.
-	repository := IceTipRepositoriesModel new repositories detect: [: repo | repo includesPackageNamed: packageName].
+	repository := IceRepository registry  detect: [: repo | repo includesPackageNamed: packageName].
 	^repository location / 'HTML' / self package name
 ]
 
