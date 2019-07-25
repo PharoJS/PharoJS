@@ -470,7 +470,7 @@ PjBridge >> proxies [
 PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
-	self sendMessage: self websocketDelegateClassName, '._reload_(true)'.
+	self sendMessage: self websocketDelegateClassName, '.', PjTranspiler pharoJsSelectorPrefix, 'reload_(true)'.
 	self resetProxies.
 	self client reset.
 	self 

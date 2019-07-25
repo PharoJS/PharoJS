@@ -25,11 +25,6 @@ PjExporterTest >> lineEnding [
 	^exporter transpiler lineEnding
 ]
 
-{ #category : #'as yet unclassified' }
-PjExporterTest >> selectorsPrefix [
-	^PjTranspiler pharoJsSelectorPrefix
-]
-
 { #category : #running }
 PjExporterTest >> setUp [
 	super setUp.

@@ -50,6 +50,24 @@ PjEvaluatorWebsocketDelegate class >> default: newInstance [
 
 ]
 
+{ #category : #'socket behavior' }
+PjEvaluatorWebsocketDelegate class >> eval_jsGenerator [
+	<pharoJsSkip>
+	^'var result;
+	try{
+		result = Object.', PjTranspiler pharoJsSelectorPrefix,'resultObject_((function(){return this.eval(aString)})());
+	}catch(exception){
+		result={exception:exception.message};
+	}
+	try{
+		aString=JSON.stringify(result);
+		if(result!=null&&aString=="null") aString=result.toString(); 
+		return aString;
+	}catch(stringifyException){
+		return JSON.stringify({exception:stringifyException.message});
+	}'
+]
+
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
 	<javascript:
@@ -174,20 +192,7 @@ PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> eval: aString [
-	<javascript:
-	'var result;
-	try{
-		result = Object._resultObject_((function(){return this.eval(aString)})());
-	}catch(exception){
-		result={exception:exception.message};
-	}
-	try{
-		aString=JSON.stringify(result);
-		if(result!=null&&aString=="null") aString=result.toString(); 
-		return aString;
-	}catch(stringifyException){
-		return JSON.stringify({exception:stringifyException.message});
-	}'>
+	<jsGenerator: #eval_jsGenerator>
 ]
 
 { #category : #'initialize-release' }

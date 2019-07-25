@@ -127,7 +127,7 @@ PjBridgeClient >> stop [
 	"stop javascript interpreter"
 	self server isWebSocketConnected ifFalse: [ ^self ].
 	self bridge websocketDelegateClassName ifNil: [ ^self ].
-	self bridge sendMessage: self bridge websocketDelegateClassName, '._terminate()'.
+	self bridge sendMessage: self bridge websocketDelegateClassName, '.', PjTranspiler pharoJsSelectorPrefix, 'terminate()'.
 
 ]
 
