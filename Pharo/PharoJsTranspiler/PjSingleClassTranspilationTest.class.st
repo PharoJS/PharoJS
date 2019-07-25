@@ -31,10 +31,10 @@ PjSingleClassTranspilationTest >> testBlockReferencingSelf [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCascade [
-	self assertInstanceMethod: #cascadeSelf equals: '(){return (this._m1(),this._m_(4),this._yourself())}'.
-	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype._isNil.call(this),',self classToTranspile superclass name,'.prototype._yourself.call(this))}'.
-	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x)._foo()),$1._bar(),$1._yourself())}'.
-	self assertInstanceMethod: #cascadeNested equals: '(){return (this._m1(),this._m_((this._m1(),this._m2())),this._yourself())}'.
+	self assertInstanceMethod: #cascadeSelf equals: '(){return (this.pj_m1(),this.pj_m_(4),this.pj_yourself())}'.
+	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype.pj_isNil.call(this),',self classToTranspile superclass name,'.prototype.pj_yourself.call(this))}'.
+	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x).pj_foo()),$1.pj_bar(),$1.pj_yourself())}'.
+	self assertInstanceMethod: #cascadeNested equals: '(){return (this.pj_m1(),this.pj_m_((this.pj_m1(),this.pj_m2())),this.pj_yourself())}'.
 
 ]
 
@@ -69,13 +69,14 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 		'this.',self classVariablesHolderName,'.C_(this.',self classVariablesHolderName,'.C$());',
 		'return this}'.
 	self assert: (self jsCode endsWith: className, '._initialize();').
-	self assertClassMethod: #javascriptName equals: nil
+	self assertClassMethod: #javascriptName equals: nil.
+	self assertClassMethod: #methodWithJsGenerator equals: '(){', self classToTranspile classMethodJsGenerator,'}'
 
 ]
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCompose [
-	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this._m1())._m_(4))._m2()}'.
+	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this.pj_m1()).pj_m_(4)).pj_m2()}'.
 
 ]
 
@@ -92,6 +93,7 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 	self deny: self jsCode includes: 'methodToSkip'.
 	self deny: self jsCode includes: 'ThisShouldBeSkipped'.
 	self assertInstanceMethod: #m: equals: '($in){console.log("abc")}'.
+	self assertInstanceMethod: #insanceMethodWithJsGenerator equals:  '(){', self classToTranspile instanceMethodJsGenerator, '}'.
 
 ]
 
@@ -109,5 +111,5 @@ PjSingleClassTranspilationTest >> testNative [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testToDoExpr [
-	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1)._to_do_(10,Object);return this}'
+	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1).pj_to_do_(10,Object);return this}'
 ]

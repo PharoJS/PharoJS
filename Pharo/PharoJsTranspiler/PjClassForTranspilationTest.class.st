@@ -24,6 +24,12 @@ PjClassForTranspilationTest class >> c1 [
 PjClassForTranspilationTest class >> c2 [
 ]
 
+{ #category : #'pharojs support' }
+PjClassForTranspilationTest class >> classMethodJsGenerator [
+	<pharoJsSkip>
+	^self name asJSON
+]
+
 { #category : #any }
 PjClassForTranspilationTest class >> click: ev [
 	| m |
@@ -33,6 +39,12 @@ PjClassForTranspilationTest class >> click: ev [
 
 { #category : #any }
 PjClassForTranspilationTest class >> initialize [
+]
+
+{ #category : #'pharojs support' }
+PjClassForTranspilationTest class >> instanceMethodJsGenerator [
+	<pharoJsSkip>
+	^'return 1', ' + ', '2;'
 ]
 
 { #category : #'pharojs support' }
@@ -65,6 +77,11 @@ PjClassForTranspilationTest class >> m1 [
 	S := S.
 	C := C.
 
+]
+
+{ #category : #any }
+PjClassForTranspilationTest class >> methodWithJsGenerator [
+	<jsGenerator: #classMethodJsGenerator>
 ]
 
 { #category : #any }
@@ -115,6 +132,12 @@ PjClassForTranspilationTest >> cascadeSuper [
 { #category : #any }
 PjClassForTranspilationTest >> composedCalls [
 	^ (self m1 m:4) m2
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> insanceMethodWithJsGenerator [
+		<jsGenerator: #instanceMethodJsGenerator>
+	^self
 ]
 
 { #category : #any }

@@ -46,6 +46,11 @@ PjTStreamWriter >> print: anObject [
 	anObject printJsOn: self jsStream
 ]
 
+{ #category : #writing }
+PjTStreamWriter >> selectorsPrefix [
+	^PjTranspiler selectorsPrefix
+]
+
 { #category : #'writing low-level' }
 PjTStreamWriter >> space [
 	self jsStream space 
@@ -57,7 +62,7 @@ PjTStreamWriter >> writeJsSelector: aSelector onStream: aStream [
 	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
 			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
 	isBinary := aSelector isBinary.
-	aStream nextPut: $_.
+	aStream nextPutAll: self selectorsPrefix.
 	aSelector do:[ :each | 
 			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]

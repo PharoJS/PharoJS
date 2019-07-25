@@ -202,20 +202,25 @@ PjCore class >> log: message [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> makeDNU: aSelector [
-	<javascript:
-	'var pjCore=this,ss=this._makeSmalltalkSelector_(aSelector);
+	<jsGenerator: #makeDNU_jsGenerator>
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> makeDNU_jsGenerator [
+	<pharoJsSkip>
+	^'var pjCore=this,ss=this._makeSmalltalkSelector_(aSelector);
 	switch (ss.split(":").length) {
 		case 1: return function __DNU(){
-			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[]))};
+			return this.', PjTranspiler selectorsPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler selectorsPrefix, 'selector_arguments_(ss,[]))};
 		case 2: return function __DNU(arg1) {
-			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[arg1]))};
+			return this.', PjTranspiler selectorsPrefix, 'doesNotUnderstand_(pjCore._selector_arguments_(ss,[arg1]))};
 		case 3: return function __DNU(arg1,arg2) {
-			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,[arg1,arg2]))};
+			return this.', PjTranspiler selectorsPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler selectorsPrefix, 'selector_arguments_(ss,[arg1,arg2]))};
 		default: return function __DNU() {
 			var args=new Array(arguments.length);
 			for(var i=0;i<arguments.length;++i) args[i]=arguments[i]
-			return this._doesNotUnderstand_(pjCore._selector_arguments_(ss,args))};
-	}'>
+			return this.', PjTranspiler selectorsPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler selectorsPrefix, 'selector_arguments_(ss,args))};
+	}'
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -366,15 +371,22 @@ PjCore class >> registerDnuForAll: anArray [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> selector: selector arguments: args [
-	<javascript:
-	'if(this.messageClass!==this)
+	<jsGenerator: #selector_arguments_jsGenerator>
+
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> selector_arguments_jsGenerator [
+	<pharoJsSkip>
+	^'if(this.messageClass!==this)
 		return this.messageClass._selector_arguments_(selector,arguments);
 	return {
 			selector: selector,
-			_selector: function(){return this.selector},
+			', PjTranspiler selectorsPrefix, 'selector: function(){return this.selector},
 			arguments: args,
-			_arguments: function(){return this.arguments}
-		}'>
+			', PjTranspiler selectorsPrefix, 'arguments: function(){return this.arguments}
+		}'
+
 ]
 
 { #category : #'throw support' }

@@ -20,7 +20,6 @@ Class {
 		'extraTempVariablesToDeclare',
 		'blockClosureAnalyser',
 		'nonNilIdentifiers',
-		'currentClass',
 		'methodPrimitive',
 		'currentConvertingMethod',
 		'extraBindings',
@@ -28,6 +27,14 @@ Class {
 	],
 	#category : #'PharoJsTranspiler-Kernel'
 }
+
+{ #category : #accessing }
+PjAstConverter class >> jsCodeGeneratorPragmaKeyword [
+	"The argument of the pragma is a selector for class side message that generates javascript code that is used as the body of the method.
+	The smalltalk code if any is simply ignored."
+	^#jsGenerator:
+
+]
 
 { #category : #accessing }
 PjAstConverter class >> jsCodePragmaKeyword [
@@ -51,6 +58,20 @@ PjAstConverter >> addAllMessageConversions: conversions [
 { #category : #accessing }
 PjAstConverter >> allowReturnsInBlocks [
 	self isReturnLegalInBlocks: true
+]
+
+{ #category : #visiting }
+PjAstConverter >> astForJsCode: jsCode [
+	^ {(PjUnparsedStringNode
+		string:
+			(String lf
+				join:
+					((jsCode
+						regex:
+							'[^
+	]*'
+						matchesCollect: #yourself)
+						reject: [ :each | each isEmpty or: [ each beginsWith: '//' ] ])))}
 ]
 
 { #category : #visiting }
@@ -128,6 +149,47 @@ PjAstConverter >> discoveredMessage: selector [
 PjAstConverter >> discoveredReferenceToClass: aClass [
 	self transpiler ifNil: [ ^self ].
 	self transpiler discoveredReferenceToClass: aClass
+]
+
+{ #category : #visiting }
+PjAstConverter >> handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode [
+	| jsGeneratorPragma generatorSelector jsCode |
+	jsGeneratorPragma := aRBMethodNode
+		pragmaNamed: self jsCodeGeneratorPragmaKeyword.
+	generatorSelector := jsGeneratorPragma arguments first.
+	jsCode := classForConversion instanceSide
+		perform: generatorSelector value.
+	^ self astForJsCode: jsCode
+]
+
+{ #category : #visiting }
+PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
+	| jsCodePragma jsCode |
+	jsCodePragma := aRBMethodNode pragmaNamed: self jsCodePragmaKeyword.
+	jsCode := jsCodePragma arguments first value.
+	^self astForJsCode: jsCode
+]
+
+{ #category : #visiting }
+PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
+	| body |
+	(aRBMethodNode hasPragmaNamed: self jsCodePragmaKeyword)
+		ifTrue: [ ^self handleJsCodePragmaInMethodNode: aRBMethodNode ].
+	(aRBMethodNode hasPragmaNamed: self jsCodeGeneratorPragmaKeyword)
+		ifTrue: [ ^self handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode ].
+	pushingReturnClass := nil.	"PjReturnNode"
+	needSelfReturn := false.
+	(methodPrimitive ~= 0
+		and: [ methodPrimitive ~= 256 and: [ aRBMethodNode statements isEmpty ] ])
+		ifTrue: [ PjJavascriptTranspilationError
+				signal: 'primitive method with no fallback code' ].
+	body := self visitAllNodes: aRBMethodNode statements.
+	(needSelfReturn
+		and: [ body isEmpty or: [ body expressions last isReturnOrThrow not ] ])
+		ifTrue: [ body addLast: (PjReturnNode expression: PjSelfNode new) ].
+	self hasNonLocalReturns
+		ifTrue: [ body := PjTryNode body: body ].
+	^ body
 ]
 
 { #category : #visiting }
@@ -212,6 +274,11 @@ PjAstConverter >> isReturnLegalInBlocks [
 { #category : #accessing }
 PjAstConverter >> isReturnLegalInBlocks: aBoolean [
 	isReturnLegalInBlocks := aBoolean
+]
+
+{ #category : #accessing }
+PjAstConverter >> jsCodeGeneratorPragmaKeyword [
+	^self class jsCodeGeneratorPragmaKeyword
 ]
 
 { #category : #accessing }
@@ -555,28 +622,12 @@ PjAstConverter >> visitMessageNode: aRBMessageNode isNonNil: isNonNil [
 
 { #category : #visiting }
 PjAstConverter >> visitMethodNode: aRBMethodNode [
-	| body jsCodePragma extraTempVars savedExtraTempVariablesToDeclare |
+	| body extraTempVars savedExtraTempVariablesToDeclare |
 	currentConvertingMethod := aRBMethodNode compiledMethod.
 	savedExtraTempVariablesToDeclare := extraTempVariablesToDeclare.
 	self resetExtraTempVariablesToDeclare.
 	self reset.
-	(aRBMethodNode hasPragmaNamed: self jsCodePragmaKeyword) ifTrue: [
-		jsCodePragma := aRBMethodNode pragmaNamed: self jsCodePragmaKeyword.
-		body := {(PjUnparsedStringNode string:
-			(String lf join:
-					((jsCodePragma arguments first value regex: '[^
-	]*'
-						matchesCollect: #yourself) reject: [: each |
-							each isEmpty or: [ each beginsWith: '//' ]])))}
-	] ifFalse: [
-		pushingReturnClass := nil.	"PjReturnNode"
-		needSelfReturn := false.
-		(methodPrimitive ~= 0 and: [ methodPrimitive ~= 256 and: [ aRBMethodNode statements isEmpty ]]) ifTrue: [ PjJavascriptTranspilationError signal: 'primitive method with no fallback code' ].
-		body := self visitAllNodes: aRBMethodNode statements.
-		(needSelfReturn and: [body isEmpty or: [body expressions last isReturnOrThrow not]]) ifTrue: [
-			body addLast: (PjReturnNode expression: PjSelfNode new) ].
-		self hasNonLocalReturns ifTrue: [ body := PjTryNode body: body ].
-	].
+	body := self handlePragmaInMethodNode: aRBMethodNode.
 	extraTempVars := extraTempVariablesToDeclare.
 	extraTempVariablesToDeclare := savedExtraTempVariablesToDeclare.
 	self resetExtraTempVariablesToDeclare.
@@ -587,7 +638,10 @@ PjAstConverter >> visitMethodNode: aRBMethodNode [
 		body: body
 		methodName: aRBMethodNode selector
 		needsSelf: self hasInBlockSelfReferences
-		isClassMethod: (classForConversion ifNil: [false] ifNotNil: [classForConversion isClassSide]))
+		isClassMethod:
+		(classForConversion
+				ifNil: [ false ]
+				ifNotNil: [ classForConversion isClassSide ]))
 		myClass: classForConversion;
 		yourself
 ]

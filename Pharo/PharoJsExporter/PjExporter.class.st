@@ -232,7 +232,9 @@ PjExporter >> writeCoreObject [
 		convertMethodAsts: self coreClass classToUseForJsConversion newClasses: OrderedCollection new;
 		writeMethodsOf: self coreClass class named: coreName with: '';
 		nextPutAll: coreName;
-		nextPutAll: '._initializeCore();';cr
+		nextPut: $.;
+		nextPutAll: PjTranspiler selectorsPrefix;
+		nextPutAll: 'initializeCore();';cr
 ]
 
 { #category : #writing }

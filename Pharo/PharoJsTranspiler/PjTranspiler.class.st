@@ -19,6 +19,9 @@ Class {
 		'beforeCodeOutputHook',
 		'shouldWriteDnu'
 	],
+	#classInstVars : [
+		'selectorsPrefix'
+	],
 	#category : #'PharoJsTranspiler-Kernel'
 }
 
@@ -37,9 +40,29 @@ PjTranspiler class >> coreClass [
 	^ PjCore
 ]
 
+{ #category : #'class initialization' }
+PjTranspiler class >> defaultSelectorsPrefix [
+	^'pj_'
+]
+
+{ #category : #'class initialization' }
+PjTranspiler class >> initialize [
+	self selectorsPrefix: self defaultSelectorsPrefix
+]
+
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
+]
+
+{ #category : #transpiling }
+PjTranspiler class >> selectorsPrefix [
+	^selectorsPrefix
+]
+
+{ #category : #transpiling }
+PjTranspiler class >> selectorsPrefix: newSelectorsPrefix [
+	selectorsPrefix := newSelectorsPrefix
 ]
 
 { #category : #accessing }

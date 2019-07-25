@@ -31,7 +31,7 @@ PjStringGenerationTest >> testArray [
 	x := PjTempVariableNode identifier: #x.
 	self
 		assert: (PjArrayNode expressions: { one. two. self apply: x selector: #foo })
-		asStringEquals: '[1,2,$asNil$(x)._foo()]'.
+		asStringEquals: '[1,2,$asNil$(x).pj_foo()]'.
 
 ]
 
@@ -52,7 +52,7 @@ PjStringGenerationTest >> testBlock [
 PjStringGenerationTest >> testClassCall [
 	self
 		assert: (self apply: (PjClassNode identifier: #Number) selector: #one)
-		asStringEquals: 'Number._one()'
+		asStringEquals: 'Number.pj_one()'
 ]
 
 { #category : #testing }
@@ -100,7 +100,7 @@ PjStringGenerationTest >> testField [
 		asStringEquals: 'this.foo'.
 	self
 		assert: (PjApplyNode func: (PjFieldNode target:  (PjFieldNode target: selfNode selectorNode: foo isNonNil: true)  selectorNode: bar isNonNil: false) args: #())
-		asStringEquals: self nilTestFunctionName,'(this.foo)._bar()'.
+		asStringEquals: self nilTestFunctionName,'(this.foo).pj_bar()'.
 	self
 		assert: (PjFieldNode target: x selectorNode: foo isNonNil: false)
 		asStringEquals: self nilTestFunctionName,'(x).foo'.
@@ -112,7 +112,7 @@ PjStringGenerationTest >> testField [
 		asStringEquals: '(3).foo'.
 	self
 		assert: (PjFieldNode target: foo selectorNode: bar isNonNil: true)
-		asStringEquals: '"foo"._bar'.
+		asStringEquals: '"foo".pj_bar'.
 	self
 		assert: (PjFieldNode target: (PjVariableNode identifier: #x) selectorNode: foo isNonNil: false)
 		asStringEquals: self nilTestFunctionName,'(x).foo'
@@ -124,22 +124,22 @@ PjStringGenerationTest >> testFieldForCall [
 	x := PjTempVariableNode identifier: #x.
 	self
 		assert: (self apply: selfNode selector: #foo) 
-		asStringEquals: 'this._foo()'.
+		asStringEquals: 'this.pj_foo()'.
 	self
 		assert: (self apply: three selector: #foo) 
-		asStringEquals: '(3)._foo()'.
+		asStringEquals: '(3).pj_foo()'.
 	self
 		assert: (self apply: pi selector: #foo) 
-		asStringEquals: '3.1415926._foo()'.
+		asStringEquals: '3.1415926.pj_foo()'.
 	self
 		assert: (self apply: selfNode selector: PjStringGenerator jsNativePrefix,#foo:)
 		asStringEquals: 'this.foo()'.
 	self
 		assert: (self apply: selfNode selector: #bar:)
-		asStringEquals: 'this._bar_()'.
+		asStringEquals: 'this.pj_bar_()'.
 	self
 		assert: (self apply: selfNode selector: #<=)
-		asStringEquals: 'this._60_61_()'.
+		asStringEquals: 'this.pj_60_61_()'.
 	self
 		assert: (PjApplyNode func: (PjFieldNode target: selfNode selectorNode: nil isNonNil: true) args: nil)
 		asStringEquals: 'this'.
@@ -155,7 +155,7 @@ PjStringGenerationTest >> testFieldForCall [
 PjStringGenerationTest >> testGlobalCall [
 	self
 		assert: (self apply: (PjGlobalNode identifier: #Number) selector: #one)
-		asStringEquals: self nilTestFunctionName,'(Number)._one()'
+		asStringEquals: self nilTestFunctionName,'(Number).pj_one()'
 ]
 
 { #category : #testing }
@@ -186,7 +186,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function _foo(a,$for){var d,$in;$in=$for;return a}'.
+		asStringEquals: 'function pj_foo(a,$for){var d,$in;$in=$for;return a}'.
 	self
 		assert:
 			(PjMethodNode
@@ -208,7 +208,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function _foo(a){var d;d=[function(){1;2}];return a}'
+		asStringEquals: 'function pj_foo(a){var d;d=[function(){1;2}];return a}'
 ]
 
 { #category : #testing }
@@ -341,20 +341,20 @@ PjStringGenerationTest >> testSelf [
 	self assert: selfNode asStringEquals: 'this'.
 	self
 		assert: (self apply: (PjSelfNode myClass: Integer) selector: #value)
-		asStringEquals: 'this._value()'.
+		asStringEquals: 'this.pj_value()'.
 	self
 		assert: (self apply: (PjSelfNode inBlock: true) selector: #value)
-		asStringEquals: PjStringGenerator selfName,'._value()'
+		asStringEquals: PjStringGenerator selfName,'.pj_value()'
 ]
 
 { #category : #testing }
 PjStringGenerationTest >> testSuperCall [
 	self
 		assert: (self apply: (PjSuperNode myClass: Integer) selector: #value)
-		asStringEquals: 'Number.prototype._value.call(this)'.
+		asStringEquals: 'Number.prototype.pj_value.call(this)'.
 	self
 		assert: (self apply: ((PjSuperNode myClass: Integer class) inBlock: true) selector: #value)
-		asStringEquals: 'Number._value.call(',PjStringGenerator selfName,')'
+		asStringEquals: 'Number.pj_value.call(',PjStringGenerator selfName,')'
 ]
 
 { #category : #testing }
