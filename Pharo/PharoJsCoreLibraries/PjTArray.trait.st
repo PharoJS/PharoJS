@@ -8,6 +8,17 @@ Trait {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #testing }
+PjTArray classSide >> includes_jsGenerator [
+	<pharoJsSkip>
+	^'if (x.', PjTranspiler selectorsPrefix, 'isJSPrimitiveType()) {
+		if (this.includes(x)) return true;
+		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
+		return false}		
+	for(var i=this.length-1;i>=0;--i) if (x._61_(this[i])) return true;
+	return false'
+]
+
 { #category : #'pharoJs support' }
 PjTArray classSide >> jsTranspilationImportMethods [
 	<pharoJsSkip>
@@ -93,12 +104,7 @@ PjTArray >> ifEmpty: aBlock [
 
 { #category : #testing }
 PjTArray >> includes: x [
-	<javascript: 'if (x._isJSPrimitiveType()) {
-		if (this.includes(x)) return true;
-		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
-		return false}		
-	for(var i=this.length-1;i>=0;--i) if (x._61_(this[i])) return true;
-	return false'>
+	<jsGenerator: #includes_jsGenerator>
 ]
 
 { #category : #accessing }

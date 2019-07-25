@@ -50,13 +50,13 @@ PjInfrastructureTest >> testIs [
 
 { #category : #testing }
 PjInfrastructureTest >> testJSSelector [
-	self assert: [PjCore makeJavascriptSelector: #foo] evaluatesTo: '_foo'.
-	self assert: [PjCore makeJavascriptSelector: #foo:] evaluatesTo: '_foo_'.
-	self assert: [PjCore makeJavascriptSelector: #,] evaluatesTo: '_44_'.
-	self assert: [PjCore makeJavascriptSelector: #_44_] evaluatesTo: '_44_'.
-	self assert: [PjCore makeJavascriptSelector: #_foo] evaluatesTo: '_foo'.
-	self assert: [PjCore makeJavascriptSelector: #_foo_] evaluatesTo: '_foo_'.
-	self assert: [PjCore makeJavascriptSelector: #'$foo:'] evaluatesTo: '_$foo_'.
+	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: PjTranspiler selectorsPrefix, 'foo'.
+	self assert: [PjCore makePharoJsSelector: #foo:] evaluatesTo: PjTranspiler selectorsPrefix, 'foo_'.
+	self assert: [PjCore makePharoJsSelector: #,] evaluatesTo: PjTranspiler selectorsPrefix, '44_'.
+	self assert: [PjCore makePharoJsSelector: #_44_] evaluatesTo: PjTranspiler selectorsPrefix, '44_'.
+	self assert: [PjCore makePharoJsSelector: #_foo] evaluatesTo: PjTranspiler selectorsPrefix, 'foo'.
+	self assert: [PjCore makePharoJsSelector: #_foo_] evaluatesTo: PjTranspiler selectorsPrefix, 'foo_'.
+	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: PjTranspiler selectorsPrefix, '$foo_'.
 
 ]
 
@@ -65,9 +65,9 @@ PjInfrastructureTest >> testSTSelector [
 	self assert: [PjCore makeSmalltalkSelector: #foo] evaluatesTo: 'foo'.
 	self assert: [PjCore makeSmalltalkSelector: #foo:] evaluatesTo: 'foo:'.
 	self assert: [PjCore makeSmalltalkSelector: #,] evaluatesTo: ','.
-	self assert: [PjCore makeSmalltalkSelector: #_44_] evaluatesTo: ','.
-	self assert: [PjCore makeSmalltalkSelector: #_foo] evaluatesTo: 'foo'.
-	self assert: [PjCore makeSmalltalkSelector: #_foo_] evaluatesTo: 'foo:'.
+	self assert: [PjCore makeSmalltalkSelector: PjTranspiler selectorsPrefix, '44_'] evaluatesTo: ','.
+	self assert: [PjCore makeSmalltalkSelector: PjTranspiler selectorsPrefix, 'foo'] evaluatesTo: 'foo'.
+	self assert: [PjCore makeSmalltalkSelector: PjTranspiler selectorsPrefix, 'foo_'] evaluatesTo: 'foo:'.
 
 ]
 

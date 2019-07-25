@@ -2,6 +2,8 @@
 I am a Transpiler from Smalltalk classes and objects to Javascript.
 
 I use the PjAstConerter to convert a Smalltalk method or block to a PjJavascriptAstNode and then PjAstTo StringGenerator to convert to Javascript code.
+
+To avoid collisions with existing JS code, we introduce a prefix for method selectors upon conversion to javascript. The prefix is defined in the class side selectorsPrefix. The default value can be changed on demand.
 "
 Class {
 	#name : #PjTranspiler,
@@ -517,7 +519,7 @@ PjTranspiler >> writeClassInitializeOf: aClass [
 	aClass needsInitialization ifFalse: [^self].  
 	self 
 		writeNameForClass: aClass;
-		nextPutAll: '._', aClass classInitializeSelector, '();';
+		nextPutAll: '.', PjTranspiler selectorsPrefix, aClass classInitializeSelector, '();';
 		cr
 ]
 
@@ -538,7 +540,9 @@ PjTranspiler >> writeDnuList [
 	selectors ifEmpty: [ ^ self ].
 	self 
 		writeNameForClass: self coreClass;
-		nextPutAll: '._registerDnuForAll_(['.
+		nextPut: $.;
+		nextPutAll: PjTranspiler selectorsPrefix;
+		nextPutAll: 'registerDnuForAll_(['.
 	selectors do: [
 		: selector |
 			writtenDNUs add: selector.

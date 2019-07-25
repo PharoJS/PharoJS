@@ -23,7 +23,7 @@ PjCoreTranspilationTest >> testInstanceSideMethods [
 PjCoreTranspilationTest >> testOptimizedJsAt [
 	| method asNil |
 	asNil := PjStringGenerator nilTestFunctionName.
-	method := self classMethod: #makeJavascriptSelector:.
+	method := self classMethod: #makePharoJsSelector:.
 	self assert: (method indexOfSubCollection: asNil,'(',asNil,'(aSelector[0]).pj_61_(')>0.
 	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache.hasOwnProperty(aSelector)).pj_ifTrue_(')>0.
 

@@ -32,6 +32,17 @@ PjFunction class >> jsTranspilationImportMethods [
 ]
 
 { #category : #exceptions }
+PjFunction class >> on_do_jsGenerator [
+	<pharoJsSkip>
+	^'try{
+		return this()
+	}catch(ex){
+		if(ex.', PjTranspiler selectorsPrefix, 'isKindOf_(exception)){return handlerAction(ex)}
+		throw ex
+	}'
+]
+
+{ #category : #exceptions }
 PjFunction >> assert [
 
 	self value ifFalse: [AssertionFailure signal: 'Assertion failed']
@@ -77,7 +88,7 @@ PjFunction >> basicNew: arg1 with: arg2 with: arg3 with: arg4 with: arg5 [
 { #category : #'Behavior: reflection' }
 PjFunction >> canUnderstand: selector [
 	| jsSelector |
-	jsSelector := PjCore makeJavascriptSelector: selector.
+	jsSelector := PjCore makePharoJsSelector: selector.
 	^ (self prototype js_at: jsSelector) ifNil: [ false ] ifNotNil: [: selct | '__DNU' ~= (selct js_at: #name)]
 ]
 
@@ -175,13 +186,7 @@ PjFunction >> new: arg1 with: arg2 with: arg3 with: arg4 with: arg5 [
 
 { #category : #exceptions }
 PjFunction >> on: exception do: handlerAction [
-	<javascript: '
-	try{
-		return this()
-	}catch(ex){
-		if(ex._isKindOf_(exception)){return handlerAction(ex)}
-		throw ex
-	}'>
+	<jsGenerator: #on_do_jsGenerator>
 ]
 
 { #category : #'Behavior: reflection' }
