@@ -235,6 +235,11 @@ PjStringGenerator >> nonLocalReturnVariableName [
 	^ self class nonLocalReturnVariableName
 ]
 
+{ #category : #'as yet unclassified' }
+PjStringGenerator >> selectorsPrefix [
+	^PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #visiting }
 PjStringGenerator >> visit: jsAstNode [ 
 	^jsAstNode acceptVisitor: self
@@ -619,6 +624,17 @@ PjStringGenerator >> writeFunctionLocals: aPjFunctionNode [
 		].
 		self nextPut: $;
 	
+]
+
+{ #category : #writing }
+PjStringGenerator >> writeJsSelector: aSelector onStream: aStream [
+	| isBinary |
+	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
+			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
+	isBinary := aSelector isBinary.
+	aStream nextPutAll: self pharoJsSelectorPrefix.
+	aSelector do:[ :each | 
+			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]
 
 { #category : #writing }

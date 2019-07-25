@@ -41,14 +41,14 @@ PjTStreamWriter >> nextPutAll: string [
 	self jsStream nextPutAll: string
 ]
 
+{ #category : #writing }
+PjTStreamWriter >> pharoJsSelectorPrefix [
+	^PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #'writing low-level' }
 PjTStreamWriter >> print: anObject [
 	anObject printJsOn: self jsStream
-]
-
-{ #category : #writing }
-PjTStreamWriter >> selectorsPrefix [
-	^PjTranspiler selectorsPrefix
 ]
 
 { #category : #'writing low-level' }
@@ -62,7 +62,7 @@ PjTStreamWriter >> writeJsSelector: aSelector onStream: aStream [
 	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
 			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
 	isBinary := aSelector isBinary.
-	aStream nextPutAll: self selectorsPrefix.
+	aStream nextPutAll: self pharoJsSelectorPrefix.
 	aSelector do:[ :each | 
 			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]

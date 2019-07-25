@@ -34,12 +34,12 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWithPrefix: codeString be
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
-	self assert: firstClass inCodeWith: '._initialize();' before: lastClass.
+	self assert: firstClass inCodeWith: '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();' before: lastClass.
 ]
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
-	self assert: firstClass inCodeWithPrefix: '._subclass_("' before: lastClass.
+	self assert: firstClass inCodeWithPrefix: '.', PjTranspiler pharoJsSelectorPrefix, 'subclass_("' before: lastClass.
 
 ]
 
@@ -68,7 +68,7 @@ PjPackageTranspilationTest >> testDnuSetup [
 	self generateJsCodeForClasses: {
 	PjClassBForCircularTranspilationTest.
 	}.
-	self assert: self jsCode includes: '._registerDnuForAll_(["isNil","javascriptName"]);'
+	self assert: self jsCode includes: '.', PjTranspiler pharoJsSelectorPrefix, 'registerDnuForAll_(["isNil","javascriptName"]);'
 ]
 
 { #category : #testing }
@@ -77,11 +77,11 @@ PjPackageTranspilationTest >> testJavascriptInitializeOverridesClassInitialize [
 	PjClientForJavascriptInitializationTest.
 	PjProviderForInitializationTest
 	}.
-	self assert: self jsCode includes: PjClientForJavascriptInitializationTest name, '._javascriptInitialize()'.
-	self deny: self jsCode includes: PjClientForJavascriptInitializationTest name, '._initialize()'.
+	self assert: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'javascriptInitialize()'.
+	self deny: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize()'.
 	self 
-		assert: PjProviderForInitializationTest name, '._initialize()'
-		appearsBefore: PjClientForJavascriptInitializationTest name, '._javascriptInitialize()'
+		assert: PjProviderForInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize()'
+		appearsBefore: PjClientForJavascriptInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'javascriptInitialize()'
 ]
 
 { #category : #testing }

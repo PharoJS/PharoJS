@@ -10,6 +10,17 @@ Trait {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #testing }
+PjTArrayLike classSide >> includes_jsGenerator [
+	<pharoJsSkip>
+	^'if (x.', PjTranspiler pharoJsSelectorPrefix, 'isJSPrimitiveType()) {
+		if (this.includes(x)) return true;
+		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
+		return false}		
+	for(var i=this.length-1;i>=0;--i) if (x._61_(this[i])) return true;
+	return false'
+]
+
 { #category : #accessing }
 PjTArrayLike >> indexOf: x [
 	<javascript: 'for(var i = 0; i < this.length; i++){

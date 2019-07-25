@@ -70,9 +70,9 @@ PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGe
 		};
 	function callback(name,ev,jsThis) {
 		if (stop) ev.stopPropagation();
-		self.', PjTranspiler selectorsPrefix, 'doCallBack_(JSON.stringify({cb : [name,
-								Object.', PjTranspiler selectorsPrefix, 'resultObject_(ev),
-								Object.', PjTranspiler selectorsPrefix, 'resultObject_(withThis?jsThis:undefined)]}));
+		self.', PjTranspiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({cb : [name,
+								Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(ev),
+								Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]}));
 	}
 	PjBlockClosureProxy.$PjRefCount=0;
 	return PjBlockClosureProxy;
@@ -84,7 +84,7 @@ PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator [
 	<pharoJsSkip>
 	^'var wsd=this;
 	return function(){
-		wsd.', PjTranspiler selectorsPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', PjTranspiler selectorsPrefix, 'resultObject_(this)}));
+		wsd.', PjTranspiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(this)}));
 		return this
 	}'
 ]

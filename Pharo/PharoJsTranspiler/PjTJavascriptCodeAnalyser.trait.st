@@ -93,3 +93,19 @@ PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 	^ self jsCode copyFrom: start-1+aString size to: end-3
 
 ]
+
+{ #category : #'as yet unclassified' }
+PjTJavascriptCodeAnalyser >> selectorsPrefix [
+	^PjTranspiler pharoJsSelectorPrefix
+]
+
+{ #category : #writing }
+PjTJavascriptCodeAnalyser >> writeJsSelector: aSelector onStream: aStream [
+	| isBinary |
+	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
+			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
+	isBinary := aSelector isBinary.
+	aStream nextPutAll: self pharoJsSelectorPrefix.
+	aSelector do:[ :each | 
+			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
+]

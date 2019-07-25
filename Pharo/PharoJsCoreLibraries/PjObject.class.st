@@ -72,10 +72,15 @@ PjObject class >> nextIdentityHash [
 
 { #category : #proxy }
 PjObject class >> resultObject: result [
-	<javascript: '
-		if (result != undefined) return result._proxyResponse();
-		return null;
-	'>
+	<jsGenerator: #resultObject_jsGenerator>
+	
+]
+
+{ #category : #proxy }
+PjObject class >> resultObject_jsGenerator [
+	<pharoJsSkip>
+	^'if (result != undefined) return result.', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse();
+		return null;'
 ]
 
 { #category : #comparing }

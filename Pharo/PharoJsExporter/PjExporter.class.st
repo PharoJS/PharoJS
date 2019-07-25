@@ -233,7 +233,7 @@ PjExporter >> writeCoreObject [
 		writeMethodsOf: self coreClass class named: coreName with: '';
 		nextPutAll: coreName;
 		nextPut: $.;
-		nextPutAll: PjTranspiler selectorsPrefix;
+		nextPutAll: PjTranspiler pharoJsSelectorPrefix;
 		nextPutAll: 'initializeCore();';cr
 ]
 

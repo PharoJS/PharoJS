@@ -17,6 +17,6 @@ PjClassDefinitionTranspilationTest >> expectedClassName [
 { #category : #testing }
 PjClassDefinitionTranspilationTest >> testClassDefinedAsConstructor [
 	self assert: self jsCode includes: 'function ', className, '(){}'.
-	self assert: self jsCode includes: 'Object._subclass_("',className, '");'.
+	self assert: self jsCode includes: 'Object.', PjTranspiler pharoJsSelectorPrefix, 'subclass_("',className, '");'.
 
 ]

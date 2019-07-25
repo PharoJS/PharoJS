@@ -25,6 +25,11 @@ PjExporterTest >> lineEnding [
 	^exporter transpiler lineEnding
 ]
 
+{ #category : #'as yet unclassified' }
+PjExporterTest >> selectorsPrefix [
+	^PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #running }
 PjExporterTest >> setUp [
 	super setUp.
@@ -46,7 +51,7 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 PjExporterTest >> testClassInheritanceOrder [
 	exporter appClass: PjApplication.
 	jsCode := exporter javascriptCode.
-	self assert: 'Object._subclass_(Error)' precedes: 'Error._subclass_'
+	self assert: 'Object.', PjTranspiler pharoJsSelectorPrefix, 'subclass_(Error)' precedes: 'Error.', PjTranspiler pharoJsSelectorPrefix, 'subclass_'
 ]
 
 { #category : #testing }
@@ -132,4 +137,15 @@ PjExporterTest >> testTestsAreIgnored [
 PjExporterTest >> testTraitsAreIgnored [
 	exporter addClass: TComparable.
 	self assert: exporter classes isEmpty.
+]
+
+{ #category : #writing }
+PjExporterTest >> writeJsSelector: aSelector onStream: aStream [
+	| isBinary |
+	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
+			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
+	isBinary := aSelector isBinary.
+	aStream nextPutAll: self pharoJsSelectorPrefix.
+	aSelector do:[ :each | 
+			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]

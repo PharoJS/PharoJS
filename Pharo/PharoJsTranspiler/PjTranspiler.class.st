@@ -22,7 +22,7 @@ Class {
 		'shouldWriteDnu'
 	],
 	#classInstVars : [
-		'selectorsPrefix'
+		'pharoJsSelectorPrefix'
 	],
 	#category : #'PharoJsTranspiler-Kernel'
 }
@@ -43,13 +43,13 @@ PjTranspiler class >> coreClass [
 ]
 
 { #category : #'class initialization' }
-PjTranspiler class >> defaultSelectorsPrefix [
+PjTranspiler class >> defaultPharoJsSelectorPrefix [
 	^'pj_'
 ]
 
 { #category : #'class initialization' }
 PjTranspiler class >> initialize [
-	self selectorsPrefix: self defaultSelectorsPrefix
+	self pharoJsSelectorPrefix: self defaultPharoJsSelectorPrefix
 ]
 
 { #category : #accessing }
@@ -58,13 +58,13 @@ PjTranspiler class >> lineEnding [
 ]
 
 { #category : #transpiling }
-PjTranspiler class >> selectorsPrefix [
-	^selectorsPrefix
+PjTranspiler class >> pharoJsSelectorPrefix [
+	^pharoJsSelectorPrefix
 ]
 
 { #category : #transpiling }
-PjTranspiler class >> selectorsPrefix: newSelectorsPrefix [
-	selectorsPrefix := newSelectorsPrefix
+PjTranspiler class >> pharoJsSelectorPrefix: newSelectorsPrefix [
+	pharoJsSelectorPrefix := newSelectorsPrefix
 ]
 
 { #category : #accessing }
@@ -392,6 +392,11 @@ PjTranspiler >> removeAllConversions: aCollection [
 	converter removeAllConversions: aCollection
 ]
 
+{ #category : #'as yet unclassified' }
+PjTranspiler >> selectorsPrefix [
+	^PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #conversions }
 PjTranspiler >> setExtraBindings: aDictionary [ 
 	converter setExtraBindings: aDictionary
@@ -507,7 +512,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 PjTranspiler >> writeClassInheritanceLinksOf: aClass [
 	self 
 		writeNameForClass: aClass superclass;
-		nextPutAll: '._subclass_("';
+		nextPutAll: '.', self pharoJsSelectorPrefix, 'subclass_("';
 		writeNameForClass: aClass;
 		nextPutAll: '");' ;
 		cr.
@@ -519,7 +524,7 @@ PjTranspiler >> writeClassInitializeOf: aClass [
 	aClass needsInitialization ifFalse: [^self].  
 	self 
 		writeNameForClass: aClass;
-		nextPutAll: '.', PjTranspiler selectorsPrefix, aClass classInitializeSelector, '();';
+		nextPutAll: '.', self pharoJsSelectorPrefix, aClass classInitializeSelector, '();';
 		cr
 ]
 
@@ -541,7 +546,7 @@ PjTranspiler >> writeDnuList [
 	self 
 		writeNameForClass: self coreClass;
 		nextPut: $.;
-		nextPutAll: PjTranspiler selectorsPrefix;
+		nextPutAll: PjTranspiler pharoJsSelectorPrefix;
 		nextPutAll: 'registerDnuForAll_(['.
 	selectors do: [
 		: selector |
@@ -557,6 +562,17 @@ PjTranspiler >> writeDnuList [
 { #category : #transpiling }
 PjTranspiler >> writeInstanceVariable: cvName [
 	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
+]
+
+{ #category : #writing }
+PjTranspiler >> writeJsSelector: aSelector onStream: aStream [
+	| isBinary |
+	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
+			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
+	isBinary := aSelector isBinary.
+	aStream nextPutAll: self pharoJsSelectorPrefix.
+	aSelector do:[ :each | 
+			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]
 
 { #category : #transpiling }

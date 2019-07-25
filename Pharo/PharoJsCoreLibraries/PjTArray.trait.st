@@ -11,7 +11,7 @@ Trait {
 { #category : #testing }
 PjTArray classSide >> includes_jsGenerator [
 	<pharoJsSkip>
-	^'if (x.', PjTranspiler selectorsPrefix, 'isJSPrimitiveType()) {
+	^'if (x.', PjTranspiler pharoJsSelectorPrefix, 'isJSPrimitiveType()) {
 		if (this.includes(x)) return true;
 		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
 		return false}		

@@ -68,7 +68,7 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 		'this.',self classVariablesHolderName,'.S_(this.',self classVariablesHolderName,'.S);',
 		'this.',self classVariablesHolderName,'.C_(this.',self classVariablesHolderName,'.C$());',
 		'return this}'.
-	self assert: (self jsCode endsWith: className, '._initialize();').
+	self assert: (self jsCode endsWith: className, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();').
 	self assertClassMethod: #javascriptName equals: nil.
 	self assertClassMethod: #methodWithJsGenerator equals: '(){', self classToTranspile classMethodJsGenerator,'}'
 

@@ -37,7 +37,7 @@ PjFunction class >> on_do_jsGenerator [
 	^'try{
 		return this()
 	}catch(ex){
-		if(ex.', PjTranspiler selectorsPrefix, 'isKindOf_(exception)){return handlerAction(ex)}
+		if(ex.', PjTranspiler pharoJsSelectorPrefix, 'isKindOf_(exception)){return handlerAction(ex)}
 		throw ex
 	}'
 ]
