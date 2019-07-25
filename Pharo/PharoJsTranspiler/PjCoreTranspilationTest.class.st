@@ -24,7 +24,7 @@ PjCoreTranspilationTest >> testOptimizedJsAt [
 	| method asNil |
 	asNil := PjStringGenerator nilTestFunctionName.
 	method := self classMethod: #makePharoJsSelector:.
-	self assert: (method indexOfSubCollection: asNil,'(',asNil,'(aSelector[0]).', PjTranspiler pharoJsSelectorPrefix, '61_(')>0.
-	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache.hasOwnProperty(aSelector)).', PjTranspiler pharoJsSelectorPrefix, 'ifTrue_(')>0.
+	self assert: (method indexOfSubCollection: asNil,'(aSelector[0]).', PjTranspiler pharoJsSelectorPrefix, '61_(') > 0.
+	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache.hasOwnProperty(aSelector)).', PjTranspiler pharoJsSelectorPrefix, 'ifTrue_(') > 0.
 
 ]
