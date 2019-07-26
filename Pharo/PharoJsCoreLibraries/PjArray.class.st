@@ -9,17 +9,6 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
-{ #category : #testing }
-PjArray class >> includes_jsGenerator [
-	<pharoJsSkip>
-	^'if (x.', PjTranspiler pharoJsSelectorPrefix, 'isJSPrimitiveType()) {
-		if (this.includes(x)) return true;
-		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
-		return false}		
-	for(var i=this.length-1;i>=0;--i) if (x._61_(this[i])) return true;
-	return false'
-]
-
 { #category : #'instance creation' }
 PjArray class >> new: ignored [
 	^ self new

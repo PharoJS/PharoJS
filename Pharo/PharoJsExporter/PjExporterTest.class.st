@@ -55,7 +55,7 @@ PjExporterTest >> testCoreClassedLoaded [
 	jsCode := exporter javascriptCode.
 	self assert: (jsCode includesSubstring: 'function PjApplication(){}' ).
 	self deny: (jsCode includesSubstring: 'function Object()' ).
-	self assert: (jsCode includes: 'Object.__proto__.$def(function pj_new' before: 'PjApplication' ).
+	self assert: (jsCode includes: 'Object.__proto__.$def(function ', PjTranspiler pharoJsSelectorPrefix, 'new' before: 'PjApplication' ).
 	self deny: (jsCode includes: 'PjApplication' before: 'Object.__proto__.$def(function pj_new' ).
 
 ]

@@ -15,19 +15,19 @@ PjInfrastructureTest >> testCallGetsTrampolined [
 { #category : #testing }
 PjInfrastructureTest >> testDNUSetup [
 	self
-		assert: (self bridge evalJavascript: 'undefined === document._children').
+		assert: (self bridge evalJavascript: 'undefined === document.', PjTranspiler pharoJsSelectorPrefix, 'children').
 	self assert: (self bridge evalBlock: [ document children ~= nil ]).
 	self
 		assert:
-			(self bridge evalJavascript: 'window._children !== document._children').
+			(self bridge evalJavascript: 'window.', PjTranspiler pharoJsSelectorPrefix, 'children !== document.', PjTranspiler pharoJsSelectorPrefix, 'children').
 	self
-		assert: (self bridge evalJavascript: 'window._children !== undefined').
+		assert: (self bridge evalJavascript: 'window.', PjTranspiler pharoJsSelectorPrefix, 'children !== undefined').
 	self
-		assert: (self bridge evalJavascript: 'window._children === console._children').
+		assert: (self bridge evalJavascript: 'window.', PjTranspiler pharoJsSelectorPrefix, 'children === console.', PjTranspiler pharoJsSelectorPrefix, 'children').
 	self
 		assert:
 			(self bridge
-				evalJavascript: 'HTMLDocument.prototype._children === document._children')
+				evalJavascript: 'HTMLDocument.prototype.', PjTranspiler pharoJsSelectorPrefix, 'children === document.', PjTranspiler pharoJsSelectorPrefix, 'children')
 ]
 
 { #category : #testing }
@@ -65,9 +65,9 @@ PjInfrastructureTest >> testSTSelector [
 	self assert: [PjCore makeSmalltalkSelector: #foo] evaluatesTo: 'foo'.
 	self assert: [PjCore makeSmalltalkSelector: #foo:] evaluatesTo: 'foo:'.
 	self assert: [PjCore makeSmalltalkSelector: #,] evaluatesTo: ','.
-	self assert: [PjCore makeSmalltalkSelector: PjTranspiler pharoJsSelectorPrefix, '44_'] evaluatesTo: ','.
-	self assert: [PjCore makeSmalltalkSelector: PjTranspiler pharoJsSelectorPrefix, 'foo'] evaluatesTo: 'foo'.
-	self assert: [PjCore makeSmalltalkSelector: PjTranspiler pharoJsSelectorPrefix, 'foo_'] evaluatesTo: 'foo:'.
+	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, '44_'] evaluatesTo: ','.
+	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo'] evaluatesTo: 'foo'.
+	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo_'] evaluatesTo: 'foo:'.
 
 ]
 

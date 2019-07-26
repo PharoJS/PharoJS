@@ -27,6 +27,12 @@ PjRbObject class >> initialize [
     WorkPacketKind := 2
 ]
 
+{ #category : #transcript }
+PjRbObject class >> show_jsGenerator [
+	<pharoJsSkip> 
+	^'console.log(aString.', PjTranspiler pharoJsSelectorPrefix, 'asString())'
+]
+
 { #category : #utilities }
 PjRbObject >> append: packet head: queueHead [
     | mouse link |
@@ -47,6 +53,6 @@ PjRbObject >> cr [
 
 { #category : #transcript }
 PjRbObject >> show: aString [
-	<javascript: 'console.log(aString._asString())'>
+	<jsGenerator: #show_jsGenerator>
 	Transcript show: aString
 ]

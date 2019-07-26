@@ -8,6 +8,13 @@ Trait {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #random }
+PjTCollection classSide >> atRandom_jsGenerator [
+	<pharoJsSkip>
+	^'var randomIndex = Math.floor((Math.random() * this.', PjTranspiler pharoJsSelectorPrefix, 'size()) + 1);
+	return this.', PjTranspiler pharoJsSelectorPrefix, 'at_(randomIndex);'
+]
+
 { #category : #'pharojs support' }
 PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 	<pharoJsSkip>
@@ -32,6 +39,5 @@ PjTCollection >> = aMagnitude [
 
 { #category : #random }
 PjTCollection >> atRandom [
-	<javascript: 'var randomIndex = Math.floor((Math.random() * this._size()) + 1);
-	return this._at_(randomIndex);'>
+	<jsGenerator: #atRandom_jsGenerator>
 ]

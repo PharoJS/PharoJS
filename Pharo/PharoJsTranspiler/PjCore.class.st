@@ -197,11 +197,17 @@ PjCore class >> javascriptName [
 
 { #category : #'reflection support' }
 PjCore class >> keys: anObject [
-	<javascript: '
+	<jsGenerator: #keys_jsGenerator>
+]
+
+{ #category : #'reflection support' }
+PjCore class >> keys_jsGenerator [
+	<pharoJsSkip>
+	^'
 	var result={};
-	for (var i in anObject) { if(typeof anObject[i]!="function" && anObject[i]!=null && anObject[i]._proxyResponse) result[i]=anObject[i]._proxyResponse()}
-	return {_proxyResponse:function(){return {keys:result}}}
-	'>
+	for (var i in anObject) { if(typeof anObject[i]!="function" && anObject[i]!=null && anObject[i].', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse) result[i]=anObject[i].', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse()}
+	return {', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse:function(){return {keys:result}}}
+	'
 ]
 
 { #category : #logging }
@@ -328,7 +334,7 @@ PjCore class >> metaclassOf_jsGenerator [
 	<pharoJsSkip>
 	^'if(this.metaclassClass!==this) return this.metaclassClass.', PjTranspiler pharoJsSelectorPrefix, 'metaclassOf_(aClass);
 	var theMetaClass={ prototype: aClass.__proto__,__proto__:this.theClassClass.prototype,
-		', PjTranspiler pharoJsSelectorPrefix, 'name: function(){return aClass._name()+" class"},
+		', PjTranspiler pharoJsSelectorPrefix, 'name: function(){return aClass.', PjTranspiler pharoJsSelectorPrefix, 'name()+" class"},
 		', PjTranspiler pharoJsSelectorPrefix, 'theNonMetaClass: function(){return aClass},
 		', PjTranspiler pharoJsSelectorPrefix, 'theMetaClass: function(){return theMetaClass},
 		};
@@ -405,7 +411,7 @@ PjCore class >> selector: selector arguments: args [
 PjCore class >> selector_arguments_jsGenerator [
 	<pharoJsSkip>
 	^'if(this.messageClass!==this)
-		return this.messageClass._selector_arguments_(selector,arguments);
+		return this.messageClass.', PjTranspiler pharoJsSelectorPrefix, 'selector_arguments_(selector,arguments);
 	return {
 			selector: selector,
 			', PjTranspiler pharoJsSelectorPrefix, 'selector: function(){return this.selector},

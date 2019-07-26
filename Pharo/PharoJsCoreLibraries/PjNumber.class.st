@@ -31,6 +31,12 @@ Class {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #arithmetics }
+PjNumber class >> divide_jsGenerator [
+	<pharoJsSkip> 
+	^'if(anObject==0) return ZeroDivide.', PjTranspiler pharoJsSelectorPrefix, 'signal();return this / anObject;'
+]
+
 { #category : #'class initialization' }
 PjNumber class >> javascriptInitialize [
 	Pi := Math instVarNamed: #PI.
@@ -95,7 +101,7 @@ PjNumber >> - anObject [
 
 { #category : #arithmetics }
 PjNumber >> / anObject [
-	<javascript: 'if(anObject==0) return ZeroDivide._signal();return this / anObject;'>
+	<jsGenerator: #divide_jsGenerator>
 ]
 
 { #category : #arithmetics }

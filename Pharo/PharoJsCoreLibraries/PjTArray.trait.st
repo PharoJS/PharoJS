@@ -8,6 +8,12 @@ Trait {
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 
+{ #category : #enumerating }
+PjTArray classSide >> collect_jsGenerator [
+	<pharoJsSkip> 
+	^'var result=[];for(var i=0,max=this.length;i<max;++i)result.push(typeof aBlock=="string"?$asNil$(this[i]).', PjTranspiler pharoJsSelectorPrefix, 'perform_(aBlock):aBlock(this[i]));return result'
+]
+
 { #category : #testing }
 PjTArray classSide >> includes_jsGenerator [
 	<pharoJsSkip>
@@ -15,7 +21,7 @@ PjTArray classSide >> includes_jsGenerator [
 		if (this.includes(x)) return true;
 		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
 		return false}		
-	for(var i=this.length-1;i>=0;--i) if (x._61_(this[i])) return true;
+	for(var i=this.length-1;i>=0;--i) if (x.', PjTranspiler pharoJsSelectorPrefix, '61_(this[i])) return true;
 	return false'
 ]
 
@@ -41,6 +47,12 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 	 	ArrayedCollection class -> #(with: with:with: with:with:with: with:with:with:with:).
 
 	} 
+]
+
+{ #category : #enumerating }
+PjTArray classSide >> select_jsGenerator [
+	<pharoJsSkip> 
+	^'var result=[];for(var i=0,max=this.length;i<max;++i){if(true==(typeof aBlock=="string"?$asNil$(this[i]).', PjTranspiler pharoJsSelectorPrefix, 'perform_(aBlock):aBlock(this[i])))result.push(this[i])}return result'
 ]
 
 { #category : #copying }
@@ -78,7 +90,7 @@ PjTArray >> at: index ifAbsent: aBlock [
 
 { #category : #enumerating }
 PjTArray >> collect: aBlock [
-	<javascript: 'var result=[];for(var i=0,max=this.length;i<max;++i)result.push(typeof aBlock=="string"?$asNil$(this[i])._perform_(aBlock):aBlock(this[i]));return result'>
+	<jsGenerator: #collect_jsGenerator>
 ]
 
 { #category : #enumerating }
@@ -139,7 +151,7 @@ PjTArray >> second [
 
 { #category : #enumerating }
 PjTArray >> select: aBlock [
-	<javascript: 'var result=[];for(var i=0,max=this.length;i<max;++i){if(true==(typeof aBlock=="string"?$asNil$(this[i])._perform_(aBlock):aBlock(this[i])))result.push(this[i])}return result'>
+	<jsGenerator: #select_jsGenerator>
 ]
 
 { #category : #enumerating }

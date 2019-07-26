@@ -50,7 +50,7 @@ PjLoadingTest >> testLoadClassContents [
 	PjLoadForTest reset.
 	first := self bridge convertToJs: PjLoadForTest.
 	self assert: (first beginsWith: 'function ' , className).
-	self assert: (first trim endsWith: className , '._initialize();').
+	self assert: (first trim endsWith: className , '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();').
 	firstBlock := self bridge
 		convertToJs: [ PjLoadForTest fortyTwo ] asValuedBlock.
 	self assert: ('*registerDnuForAll*' match: firstBlock).
@@ -63,5 +63,5 @@ PjLoadingTest >> testLoadClassContents [
 	third := self bridge convertToJs: PjLoadForTest.
 	self deny: third = ''.
 	self deny: (third beginsWith: 'function ' , className).
-	self deny: (third endsWith: className , '._initialize();')
+	self deny: (third endsWith: className , '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();')
 ]

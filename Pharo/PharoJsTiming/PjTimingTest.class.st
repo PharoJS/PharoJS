@@ -109,7 +109,7 @@ PjTimingTest >> assert: aBlock isFasterThan: bBlock with: someOptimizations [
 		PjUnparsedStringNode string: nullBlock.
 		PjUnparsedStringNode string: noOptim.
 		PjUnparsedStringNode string: optim }) .
-"	results := bridge evalJavascript: 'global.PjTimingPlatformApp._timeNull_nonOptimized_optimized_(', nullBlock,',', noOptim,',', optim,')'.
+"	results := bridge evalJavascript: 'global.PjTimingPlatformApp.', PjTranspiler pharoJsSelectorPrefix, 'timeNull_nonOptimized_optimized_(', nullBlock,',', noOptim,',', optim,')'.
 "	self assert: (self class ratio: results betterThan:  1.2 for: self)
 ]
 
