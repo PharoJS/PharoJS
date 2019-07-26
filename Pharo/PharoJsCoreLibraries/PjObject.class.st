@@ -29,6 +29,13 @@ PjObject class >> addDnuSupportFor: selector [
 
 ]
 
+{ #category : #reflection }
+PjObject class >> allEnumeratableKeysDo_jsGenerator [
+	<pharoJsSkip>
+	^'for (var i in this){aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_(i)};
+	return this;'
+]
+
 { #category : #initialize }
 PjObject class >> compileNoPrompt: aString [ 
 	"Compiles methods with default Author"
@@ -65,6 +72,20 @@ PjObject class >> jsTranspilationImportMethods [
 		}
 ]
 
+{ #category : #'dictionary emulation' }
+PjObject class >> keysAndValuesDo_jsGenerator [
+	<pharoJsSkip>
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_value_(i,this[i])};
+	return this;'
+]
+
+{ #category : #'dictionary emulation' }
+PjObject class >> keysDo_jsGenerator [
+	<pharoJsSkip>
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_(i)};
+	return this;'
+]
+
 { #category : #comparing }
 PjObject class >> nextIdentityHash [
 	^ nextIdentityHash := (nextIdentityHash ifNil: [12345]) hashMultiply
@@ -81,6 +102,13 @@ PjObject class >> resultObject_jsGenerator [
 	<pharoJsSkip>
 	^'if (result != undefined) return result.', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse();
 		return null;'
+]
+
+{ #category : #'dictionary emulation' }
+PjObject class >> valuesDo_jsGenerator [
+	<pharoJsSkip>
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, '_value_(this[i])};
+	return this;'
 ]
 
 { #category : #comparing }
@@ -115,9 +143,7 @@ PjObject >> allEnumeratableKeys [
 
 { #category : #reflection }
 PjObject >> allEnumeratableKeysDo: aBlock [
-	<javascript:
-	'for (var i in this){aBlock._value_(i)};
-	return this;'>
+	<jsGenerator: #allEnumeratableKeysDo_jsGenerator>
 ]
 
 { #category : #converting }
@@ -244,16 +270,12 @@ PjObject >> keys [
 
 { #category : #'dictionary emulation' }
 PjObject >> keysAndValuesDo: aBlock [
-	<javascript:
-	'for (var i in this){if(this.hasOwnProperty(i))aBlock._value_value_(i,this[i])};
-	return this;'>
+	<jsGenerator: #keysAndValuesDo_jsGenerator>
 ]
 
 { #category : #'dictionary emulation' }
 PjObject >> keysDo: aBlock [
-	<javascript:
-	'for (var i in this){if(this.hasOwnProperty(i))aBlock._value_(i)};
-	return this;'>
+	<jsGenerator: #keysDo_jsGenerator>
 ]
 
 { #category : #'message performing' }
@@ -371,16 +393,14 @@ PjObject >> value [
 	^ PjCore
 		installDnuArgs: #()
 		selector: #value
-		js: #_value
+		js: PjCore pharoJsSelectorPrefix, 'value'
 		for: self
 		else: [ self ]
 ]
 
 { #category : #'dictionary emulation' }
 PjObject >> valuesDo: aBlock [
-	<javascript:
-	'for (var i in this){if(this.hasOwnProperty(i))aBlock._value_(this[i])};
-	return this;'>
+	<jsGenerator: #valuesDo_jsGenerator>
 ]
 
 { #category : #accessing }

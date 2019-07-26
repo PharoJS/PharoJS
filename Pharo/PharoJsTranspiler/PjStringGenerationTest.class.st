@@ -341,20 +341,20 @@ PjStringGenerationTest >> testSelf [
 	self assert: selfNode asStringEquals: 'this'.
 	self
 		assert: (self apply: (PjSelfNode myClass: Integer) selector: #value)
-		asStringEquals: 'this.pj_value()'.
+		asStringEquals: 'this.', PjTranspiler pharoJsSelectorPrefix, 'value()'.
 	self
 		assert: (self apply: (PjSelfNode inBlock: true) selector: #value)
-		asStringEquals: PjStringGenerator selfName,'.pj_value()'
+		asStringEquals: PjStringGenerator selfName,'.', PjTranspiler pharoJsSelectorPrefix, 'value()'
 ]
 
 { #category : #testing }
 PjStringGenerationTest >> testSuperCall [
 	self
 		assert: (self apply: (PjSuperNode myClass: Integer) selector: #value)
-		asStringEquals: 'Number.prototype.pj_value.call(this)'.
+		asStringEquals: 'Number.prototype.', PjTranspiler pharoJsSelectorPrefix, 'value.call(this)'.
 	self
 		assert: (self apply: ((PjSuperNode myClass: Integer class) inBlock: true) selector: #value)
-		asStringEquals: 'Number.pj_value.call(',PjStringGenerator selfName,')'
+		asStringEquals: 'Number.', PjTranspiler pharoJsSelectorPrefix, 'value.call(',PjStringGenerator selfName,')'
 ]
 
 { #category : #testing }

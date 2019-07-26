@@ -163,7 +163,7 @@ PjBridge >> blockClosure: aBlockClosure [
 				^ PjJavascriptError signal: 'Block cannot have return' ].
 		thisArg := aBlockClosure argumentNames findFirst: [ : name | name='this' ].
 		proxy := self evalJavascript: self websocketDelegateClassName,
-			'._default()._makeBlockClosureProxy_(',thisArg asString,')'.
+			'.', PjTranspiler pharoJsSelectorPrefix, 'default().', PjTranspiler pharoJsSelectorPrefix, 'makeBlockClosureProxy_(',thisArg asString,')'.
 		proxy closure: aBlockClosure.
 		proxy
 	]
