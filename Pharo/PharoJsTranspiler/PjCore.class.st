@@ -72,9 +72,8 @@ PjCore class >> emptyJavascriptObject [
 PjCore class >> handleDNU: aMessage for: anObject [
 	" this could be a smalltalk object or a native JS object "
 
-	| selector type |
+	| selector |
 	selector := (aMessage selector js_split: ':') js_at: 0.
-	type := selector js_split: '_'.
 	^ self
 		installDnuArgs: aMessage arguments
 		selector: selector
@@ -256,12 +255,12 @@ PjCore class >> makePharoJsSelector: aSelector [
 	aSelector
 		ifNotNil: [ :sel | 
 			(sel isLetter or: [ (aSelector js_at: 0) = '$' ])
-				ifTrue: [ result := self pharoJsSelectorPrefix , sel js_split: ':' ]
-				ifFalse: [ result := #(nil).
+				ifTrue: [ result := sel js_split: ':' ]
+				ifFalse: [ result := #().
 					1 to: sel size do:
 						[ :idx | result js_push: (sel js_charCodeAt: idx - 1) js_toString ].
 					result js_push: nil ].
-			result := result js_join: '_' ].
+			result := self pharoJsSelectorPrefix , (result js_join: '_') ].
 	(selectorCache js_at: result)
 		ifNil: [ selectorCache js_at: result put: aSelector ].
 	(selectorCache js_at: aSelector)
