@@ -223,18 +223,20 @@ PjCore class >> makeDNU: aSelector [
 { #category : #'doesNotUnderstand support' }
 PjCore class >> makeDNU_jsGenerator [
 	<pharoJsSkip>
-	^'var pjCore=this,ss=this.', PjTranspiler pharoJsSelectorPrefix, 'makeSmalltalkSelector_(aSelector);
+	|prefix|
+	prefix := PjTranspiler pharoJsSelectorPrefix.
+	^'var pjCore=this,ss=this.', prefix, 'makeSmalltalkSelector_(aSelector);
 	switch (ss.split(":").length) {
 		case 1: return function __DNU(){
-			return this.', PjTranspiler pharoJsSelectorPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler pharoJsSelectorPrefix, 'selector_arguments_(ss,[]))};
+			return this.', prefix, 'doesNotUnderstand_(pjCore.', prefix, 'selector_arguments_(ss,[]))};
 		case 2: return function __DNU(arg1) {
-			return this.', PjTranspiler pharoJsSelectorPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler pharoJsSelectorPrefix, 'selector_arguments_(ss,[arg1]))};
+			return this.', prefix, 'doesNotUnderstand_(pjCore.', prefix, 'selector_arguments_(ss,[arg1]))};
 		case 3: return function __DNU(arg1,arg2) {
-			return this.', PjTranspiler pharoJsSelectorPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler pharoJsSelectorPrefix, 'selector_arguments_(ss,[arg1,arg2]))};
+			return this.', prefix, 'doesNotUnderstand_(pjCore.', prefix, 'selector_arguments_(ss,[arg1,arg2]))};
 		default: return function __DNU() {
 			var args=new Array(arguments.length);
 			for(var i=0;i<arguments.length;++i) args[i]=arguments[i]
-			return this.', PjTranspiler pharoJsSelectorPrefix, 'doesNotUnderstand_(pjCore.', PjTranspiler pharoJsSelectorPrefix, 'selector_arguments_(ss,args))};
+			return this.', prefix, 'doesNotUnderstand_(pjCore.', prefix, 'selector_arguments_(ss,args))};
 	}'
 ]
 

@@ -107,7 +107,7 @@ PjObject class >> resultObject_jsGenerator [
 { #category : #'dictionary emulation' }
 PjObject class >> valuesDo_jsGenerator [
 	<pharoJsSkip>
-	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, '_value_(this[i])};
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_(this[i])};
 	return this;'
 ]
 
