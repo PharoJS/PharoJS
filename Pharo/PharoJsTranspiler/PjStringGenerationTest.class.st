@@ -31,7 +31,7 @@ PjStringGenerationTest >> testArray [
 	x := PjTempVariableNode identifier: #x.
 	self
 		assert: (PjArrayNode expressions: { one. two. self apply: x selector: #foo })
-		asStringEquals: '[1,2,$asNil$(x).pj_foo()]'.
+		asStringEquals: '[1,2,$asNil$(x).', PjTranspiler pharoJsSelectorPrefix, 'foo()]'.
 
 ]
 
@@ -52,7 +52,7 @@ PjStringGenerationTest >> testBlock [
 PjStringGenerationTest >> testClassCall [
 	self
 		assert: (self apply: (PjClassNode identifier: #Number) selector: #one)
-		asStringEquals: 'Number.pj_one()'
+		asStringEquals: 'Number.', PjTranspiler pharoJsSelectorPrefix, 'one()'
 ]
 
 { #category : #testing }
@@ -92,15 +92,16 @@ PjStringGenerationTest >> testClassVariables [
 
 { #category : #testing }
 PjStringGenerationTest >> testField [
-	| x bar |
+	| x bar prefix |
+	prefix := PjTranspiler pharoJsSelectorPrefix.
 	x := PjTempVariableNode identifier: #x.
 	bar := PjMessageSelectorNode identifier: #bar.
 	self
 		assert: (PjFieldNode target: selfNode selectorNode: foo isNonNil: true)
 		asStringEquals: 'this.foo'.
 	self
-		assert: (PjApplyNode func: (PjFieldNode target:  (PjFieldNode target: selfNode selectorNode: foo isNonNil: true)  selectorNode: bar isNonNil: false) args: #())
-		asStringEquals: self nilTestFunctionName,'(this.foo).pj_bar()'.
+		assert: (PjApplyNode func: (PjFieldNode target: (PjFieldNode target: selfNode selectorNode: foo isNonNil: true)  selectorNode: bar isNonNil: false) args: #())
+		asStringEquals: self nilTestFunctionName,'(this.foo).', prefix, 'bar()'.
 	self
 		assert: (PjFieldNode target: x selectorNode: foo isNonNil: false)
 		asStringEquals: self nilTestFunctionName,'(x).foo'.
@@ -112,7 +113,7 @@ PjStringGenerationTest >> testField [
 		asStringEquals: '(3).foo'.
 	self
 		assert: (PjFieldNode target: foo selectorNode: bar isNonNil: true)
-		asStringEquals: '"foo".pj_bar'.
+		asStringEquals: '"foo".', prefix, 'bar'.
 	self
 		assert: (PjFieldNode target: (PjVariableNode identifier: #x) selectorNode: foo isNonNil: false)
 		asStringEquals: self nilTestFunctionName,'(x).foo'
@@ -120,26 +121,27 @@ PjStringGenerationTest >> testField [
 
 { #category : #testing }
 PjStringGenerationTest >> testFieldForCall [
-	| x |
+	| x prefix |
+	prefix := PjTranspiler pharoJsSelectorPrefix.
 	x := PjTempVariableNode identifier: #x.
 	self
 		assert: (self apply: selfNode selector: #foo) 
-		asStringEquals: 'this.pj_foo()'.
+		asStringEquals: 'this.', prefix, 'foo()'.
 	self
 		assert: (self apply: three selector: #foo) 
-		asStringEquals: '(3).pj_foo()'.
+		asStringEquals: '(3).', prefix, 'foo()'.
 	self
 		assert: (self apply: pi selector: #foo) 
-		asStringEquals: '3.1415926.pj_foo()'.
+		asStringEquals: '3.1415926.', prefix, 'foo()'.
 	self
 		assert: (self apply: selfNode selector: PjStringGenerator jsNativePrefix,#foo:)
 		asStringEquals: 'this.foo()'.
 	self
 		assert: (self apply: selfNode selector: #bar:)
-		asStringEquals: 'this.pj_bar_()'.
+		asStringEquals: 'this.', prefix, 'bar_()'.
 	self
 		assert: (self apply: selfNode selector: #<=)
-		asStringEquals: 'this.pj_60_61_()'.
+		asStringEquals: 'this.', prefix, '60_61_()'.
 	self
 		assert: (PjApplyNode func: (PjFieldNode target: selfNode selectorNode: nil isNonNil: true) args: nil)
 		asStringEquals: 'this'.
@@ -155,7 +157,7 @@ PjStringGenerationTest >> testFieldForCall [
 PjStringGenerationTest >> testGlobalCall [
 	self
 		assert: (self apply: (PjGlobalNode identifier: #Number) selector: #one)
-		asStringEquals: self nilTestFunctionName,'(Number).pj_one()'
+		asStringEquals: self nilTestFunctionName,'(Number).', PjTranspiler pharoJsSelectorPrefix, 'one()'
 ]
 
 { #category : #testing }
@@ -173,6 +175,8 @@ xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\000a\\
 
 { #category : #testing }
 PjStringGenerationTest >> testMethod [
+	| prefix |
+	prefix := PjTranspiler pharoJsSelectorPrefix.
 	self
 		assert:
 			(PjMethodNode
@@ -186,7 +190,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function pj_foo(a,$for){var d,$in;$in=$for;return a}'.
+		asStringEquals: 'function ', prefix, 'foo(a,$for){var d,$in;$in=$for;return a}'.
 	self
 		assert:
 			(PjMethodNode
@@ -208,7 +212,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function pj_foo(a){var d;d=[function(){1;2}];return a}'
+		asStringEquals: 'function ', prefix, 'foo(a){var d;d=[function(){1;2}];return a}'
 ]
 
 { #category : #testing }

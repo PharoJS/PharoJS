@@ -54,10 +54,10 @@ PjInfrastructureTest >> testJSSelector [
 	prefix := PjTranspiler pharoJsSelectorPrefix.
 	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: prefix, 'foo'.
 	self assert: [PjCore makePharoJsSelector: #foo:] evaluatesTo: prefix, 'foo_'.
-	self assert: [PjCore makePharoJsSelector: #,] evaluatesTo: prefix, '44_'.
-	self assert: [PjCore makePharoJsSelector: #pj_44_] evaluatesTo: prefix, '44_'.
-	self assert: [PjCore makePharoJsSelector: #pj_foo] evaluatesTo: prefix, 'foo'.
-	self assert: [PjCore makePharoJsSelector: #pj_foo_] evaluatesTo: prefix, 'foo_'.
+	self assert: [PjCore makePharoJsSelector: ','] evaluatesTo: prefix, '44_'.
+	self assert: [PjCore makePharoJsSelector: prefix, '44_'] evaluatesTo: prefix, '44_'.
+	self assert: [PjCore makePharoJsSelector: prefix, 'foo'] evaluatesTo: prefix, 'foo'.
+	self assert: [PjCore makePharoJsSelector: prefix, 'foo_'] evaluatesTo: prefix, 'foo_'.
 	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: prefix, '$foo_'.
 
 ]

@@ -19,5 +19,5 @@ PjPrimitiveTranspilationTest >> testPrimitiveWithFallback [
 	self generateJsCodeForClasses: {
 		PjClassForPrimitiveTest.
 	}.
-	self assertInstanceMethod: #+ equals: '(aNumber){return $asNil$(aNumber).pj_adaptToFloat_andSend_(this,"+")}'
+	self assertInstanceMethod: #+ equals: '(aNumber){return $asNil$(aNumber).',PjTranspiler pharoJsSelectorPrefix ,'adaptToFloat_andSend_(this,"+")}'
 ]

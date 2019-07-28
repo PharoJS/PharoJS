@@ -31,10 +31,12 @@ PjSingleClassTranspilationTest >> testBlockReferencingSelf [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCascade [
-	self assertInstanceMethod: #cascadeSelf equals: '(){return (this.pj_m1(),this.pj_m_(4),this.pj_yourself())}'.
-	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype.pj_isNil.call(this),',self classToTranspile superclass name,'.prototype.pj_yourself.call(this))}'.
-	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x).pj_foo()),$1.pj_bar(),$1.pj_yourself())}'.
-	self assertInstanceMethod: #cascadeNested equals: '(){return (this.pj_m1(),this.pj_m_((this.pj_m1(),this.pj_m2())),this.pj_yourself())}'.
+	| prefix |
+	prefix := PjTranspiler pharoJsSelectorPrefix.
+	self assertInstanceMethod: #cascadeSelf equals: '(){return (this.', prefix, 'm1(),this.', prefix, 'm_(4),this.', prefix, 'yourself())}'.
+	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype.', prefix, 'isNil.call(this),',self classToTranspile superclass name,'.prototype.', prefix, 'yourself.call(this))}'.
+	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x).', prefix, 'foo()),$1.', prefix, 'bar(),$1.', prefix, 'yourself())}'.
+	self assertInstanceMethod: #cascadeNested equals: '(){return (this.', prefix, 'm1(),this.', prefix, 'm_((this.', prefix, 'm1(),this.', prefix, 'm2())),this.', prefix, 'yourself())}'.
 
 ]
 
@@ -76,7 +78,9 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCompose [
-	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this.pj_m1()).pj_m_(4)).pj_m2()}'.
+	| prefix |
+	prefix := PjTranspiler pharoJsSelectorPrefix.
+	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this.', prefix, 'm1()).', prefix, 'm_(4)).', prefix, 'm2()}'.
 
 ]
 
@@ -111,5 +115,5 @@ PjSingleClassTranspilationTest >> testNative [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testToDoExpr [
-	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1).pj_to_do_(10,Object);return this}'
+	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1).', PjTranspiler pharoJsSelectorPrefix, 'to_do_(10,Object);return this}'
 ]
