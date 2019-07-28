@@ -50,13 +50,15 @@ PjInfrastructureTest >> testIs [
 
 { #category : #testing }
 PjInfrastructureTest >> testJSSelector [
-	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, 'foo'.
-	self assert: [PjCore makePharoJsSelector: #foo:] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, 'foo_'.
-	self assert: [PjCore makePharoJsSelector: #,] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, '44_'.
-	self assert: [PjCore makePharoJsSelector: #_44_] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, '44_'.
-	self assert: [PjCore makePharoJsSelector: #_foo] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, 'foo'.
-	self assert: [PjCore makePharoJsSelector: #_foo_] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, 'foo_'.
-	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: PjTranspiler pharoJsSelectorPrefix, '$foo_'.
+	|prefix|
+	prefix := PjTranspiler pharoJsSelectorPrefix.
+	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: prefix, 'foo'.
+	self assert: [PjCore makePharoJsSelector: #foo:] evaluatesTo: prefix, 'foo_'.
+	self assert: [PjCore makePharoJsSelector: #,] evaluatesTo: prefix, '44_'.
+	self assert: [PjCore makePharoJsSelector: #pj_44_] evaluatesTo: prefix, '44_'.
+	self assert: [PjCore makePharoJsSelector: #pj_foo] evaluatesTo: prefix, 'foo'.
+	self assert: [PjCore makePharoJsSelector: #pj_foo_] evaluatesTo: prefix, 'foo_'.
+	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: prefix, '$foo_'.
 
 ]
 

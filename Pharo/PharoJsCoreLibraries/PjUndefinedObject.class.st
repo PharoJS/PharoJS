@@ -8,10 +8,9 @@ Class {
 }
 
 { #category : #initialize }
-PjUndefinedObject class >> initialize [
+PjUndefinedObject class >> identityHash_jsGenerator [
 	<pharoJsSkip>
-	self compileNoPrompt: 'identityHash
-	^ ', nil identityHash asString
+	^'return ', nil identityHash asString
 ]
 
 { #category : #initialize }
@@ -52,7 +51,7 @@ PjUndefinedObject >> asJSON [
 
 { #category : #'not defined category' }
 PjUndefinedObject >> identityHash [
-	^ 276177664
+	<jsGenerator: #identityHash_jsGenerator>
 ]
 
 { #category : #accessing }

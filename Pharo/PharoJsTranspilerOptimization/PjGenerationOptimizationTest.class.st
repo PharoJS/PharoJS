@@ -15,7 +15,7 @@ PjGenerationOptimizationTest >> testAnd [
 			test: y
 			whenTrue: one
 			whenFalse: falseNode}.
-	self assert:  inputAst asStringEquals: 'this.', PjTranspiler pharoJsSelectorPrefix, '_foo_(true==y&&1)'.
+	self assert:  inputAst asStringEquals: 'this.', PjTranspiler pharoJsSelectorPrefix, 'foo_(true==y&&1)'.
 
 ]
 

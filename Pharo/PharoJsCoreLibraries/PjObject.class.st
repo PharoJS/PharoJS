@@ -36,18 +36,6 @@ PjObject class >> allEnumeratableKeysDo_jsGenerator [
 	return this;'
 ]
 
-{ #category : #initialize }
-PjObject class >> compileNoPrompt: aString [ 
-	"Compiles methods with default Author"
-	<pharoJsSkip>
-	|isAuthorMissing|
-	isAuthorMissing := Author fullNamePerSe isEmpty.
-	isAuthorMissing ifTrue: [
-		Author fullName: 'PharoJS'].
-	self compileSilently: aString.
-	isAuthorMissing ifTrue: [Author reset].
-]
-
 { #category : #'pharoJs support' }
 PjObject class >> jsTranspilationImportMethods [
 	<pharoJsSkip>

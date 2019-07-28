@@ -10,11 +10,11 @@ Class {
 }
 
 { #category : #'class initialization' }
-PjBoolean class >> initialize [
+PjBoolean class >> identityHash_jsGenerator [
 	<pharoJsSkip>
-	self compileNoPrompt: 'identityHash
-	self ifTrue: [^', true identityHash asString, '].
-	^', false identityHash asString
+	^'if(this == true){
+		return ', true identityHash asString,';}
+	return ', false identityHash asString
 ]
 
 { #category : #'pharoJs support' }
@@ -65,8 +65,7 @@ PjBoolean >> asString [
 
 { #category : #'not defined category' }
 PjBoolean >> identityHash [
-	self ifTrue: [^393540864].
-	^1065407232
+	<jsGenerator: #identityHash_jsGenerator>
 ]
 
 { #category : #controlling }
