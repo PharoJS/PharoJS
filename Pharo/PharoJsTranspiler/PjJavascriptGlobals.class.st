@@ -51,14 +51,3 @@ PjJavascriptGlobals class >> nodePolyfill: aStream [
 PjJavascriptGlobals class >> requiredPolyfills [
 	^ #()
 ]
-
-{ #category : #'subclass creation' }
-PjJavascriptGlobals class >> subclass: t instanceVariableNames: f classVariableNames: d poolDictionaries: s package: cat [
-	| newSubclass |
-	newSubclass := super subclass: t instanceVariableNames: f classVariableNames: d poolDictionaries: s package: cat.
-	newSubclass classVarNames do: [ : varName |
-			newSubclass classVarNamed: varName put: (
-				PjProxyForGlobal newProxyNamed: varName) ].
-	^newSubclass
-	
-]
