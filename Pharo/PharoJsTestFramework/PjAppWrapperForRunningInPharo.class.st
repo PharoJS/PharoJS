@@ -5,7 +5,7 @@ Class {
 	#name : #PjAppWrapperForRunningInPharo,
 	#superclass : #Object,
 	#classInstVars : [
-		'currentAppAcclass'
+		'currentAppClass'
 	],
 	#category : #'PharoJsTestFramework-Kernel'
 }
@@ -19,7 +19,7 @@ PjAppWrapperForRunningInPharo class >> appClass [
 { #category : #description }
 PjAppWrapperForRunningInPharo class >> appClasses [
 	<pharoJsSkip>
-	^#()
+	^currentAppClass appClasses copyWithout: currentAppClass.
 ]
 
 { #category : #description }
@@ -44,7 +44,7 @@ PjAppWrapperForRunningInPharo class >> bridge [
 { #category : #'reflective operations' }
 PjAppWrapperForRunningInPharo class >> doesNotUnderstand: aMessage [
 	<pharoJsSkip>
-	^aMessage sendTo: currentAppAcclass
+	^aMessage sendTo: currentAppClass
 ]
 
 { #category : #'bridge handling' }
@@ -56,7 +56,7 @@ PjAppWrapperForRunningInPharo class >> newBridgeClient [
 { #category : #'initialize - release' }
 PjAppWrapperForRunningInPharo class >> on: appClass [
 	<pharoJsSkip>
-	currentAppAcclass := appClass
+	currentAppClass := appClass
 ]
 
 { #category : #'start-stop' }
