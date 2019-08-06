@@ -26,11 +26,12 @@ PjProxyForGlobalsTest >> tearDown [
 
 { #category : #running }
 PjProxyForGlobalsTest >> testProxyForNewGlobalsCreated [
-	| globalsPool |
+	| globalsPool userClass |
 	globalsPool := classFactory silentlyNewSubclassOf: PjJavascriptGlobals instanceVariableNames: '' classVariableNames: 'A B'.
-	globalsPool class 
+	userClass := classFactory newSubclassOf: Object uses: #() instanceVariableNames: '' classVariableNames: '' poolDictionaries: globalsPool name category: classFactory defaultCategory.
+	userClass class 
 		compile: 'globals
 		^{A. B}'.
-	globalsPool globals do: [ : each |
+	userClass globals do: [ : each |
 		self assert: (each isKindOf: PjProxy) ]
 ]
