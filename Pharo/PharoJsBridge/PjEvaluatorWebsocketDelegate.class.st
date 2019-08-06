@@ -80,6 +80,8 @@ PjEvaluatorWebsocketDelegate class >> initialize [
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator [
 	<pharoJsSkip>
+	|prefix|
+	prefix := PjTranspiler pharoJsSelectorPrefix.
 	^'
 	var self=this;
 	function PjBlockClosureProxy(ev){
@@ -88,9 +90,9 @@ PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGe
 		};
 	function callback(name,ev,jsThis) {
 		if (stop) ev.stopPropagation();
-		self.', PjTranspiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({cb : [name,
-								Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(ev),
-								Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]}));
+		self.', prefix, 'doCallBack_(JSON.stringify({cb : [name,
+								Object.', prefix, 'resultObject_(ev),
+								Object.', prefix, 'resultObject_(withThis?jsThis:undefined)]}));
 	}
 	PjBlockClosureProxy.$PjRefCount=0;
 	return PjBlockClosureProxy;
