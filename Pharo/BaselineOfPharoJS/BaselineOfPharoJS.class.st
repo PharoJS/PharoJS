@@ -19,6 +19,9 @@ BaselineOfPharoJS >> baseline: spec [
 			baseline: 'Equals' with: [
 				spec
 					repository: 'github://bouraqadi/PharoMisc' ];
+			baseline: 'Concurrency' with: [
+				spec
+					repository: 'github://bouraqadi/PharoMisc' ];
 			package: 'Zinc-WebSocket-Core' with: [
 				spec
 					repository: 'github://svenvc/zinc' ].
@@ -26,7 +29,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsBridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'Zinc-WebSocket-Core' ). ];
+				spec requires: #(#Concurrency #PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'Zinc-WebSocket-Core' ). ];
 			package: #PharoJsBridgeTest with: [
 				spec requires: #('PharoJsTestFramework' 'PharoJsBridge' ). ];
 			package: #PharoJsCoreLibraries with: [

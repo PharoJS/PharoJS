@@ -241,14 +241,24 @@ PjEvaluatorWebsocketDelegate >> onError: event [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> onMessage: event [
-	| aString|
-	aString := event data.
-	self logReceived: aString.
-	aString first = ':' ifTrue: [ ^ self command: aString ].
+	| messageArray messageId messageContent result response |
+	messageArray := event data.
+	messageId := messageArray first.
+	messageContent := messageArray last.
+	self logReceived: messageArray.
+	messageContent first = ':' ifTrue: [
+			self command: messageContent.
+			^self timeout: [
+					response := Array with: messageId with: nil.
+					self isClosed ifFalse: [webSocket send: response].
+					self logSent: response  ] 
+				for: 0
+			].
 	self timeout: [
-		aString := self eval: aString.
-		self isClosed ifFalse: [webSocket send: aString].
-		self logSent: aString
+		result := self eval: messageContent.
+		response := Array with: messageId with: result.
+		self isClosed ifFalse: [webSocket send: response].
+		self logSent: response
 	] for: 0
 ]
 

@@ -54,7 +54,11 @@ Class {
 		'blockClosures',
 		'client',
 		'runOnPharo',
-		'shouldStartJsInterpreter'
+		'shouldStartJsInterpreter',
+		'communicationLock',
+		'receiver',
+		'futuresDict',
+		'futureLock'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -242,20 +246,21 @@ PjBridge >> evalBlock: aBlock [
 
 { #category : #evaluating }
 PjBridge >> evalGetResult [
-	self
-		when: [
-			self isConnected ifFalse: [ ^ self ].
-			self isSyncDataAvailable] 
-		do: [self handOffResult: [ : val | ^ val ]]
-		onTimeOutDo: [ ^ PjJavascriptError signal: 'no response after ',self timeout printString ]	
-		timeOutDuration: self timeout
+	self isDataAvailable ifFalse: [^100 milliSeconds wait].
+	self evalResult: self webSocket readMessage
 ]
 
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
+	| messageId futureResult |
 	self isConnected ifFalse: [ ^ nil ].
-	self sendMessage: javaScriptString.
-	^ self evalGetResult
+	futureLock critical: [
+		messageId := UUID new asString.
+		futureResult := CcFuture new.
+		futuresDict at: messageId put: futureResult
+	].
+	self sendMessage: '[', messageId, ', "',javaScriptString,'"]'.
+	^futureResult
 ]
 
 { #category : #public }
@@ -336,19 +341,6 @@ PjBridge >> exporter [
 	^self client exporter
 ]
 
-{ #category : #activity }
-PjBridge >> handOffResult: aBlock [
-	result ~~ self ifTrue: [ | temp |
-		temp := result.
-		result := self.
-		temp isClosure ifTrue: [
-			aBlock value: temp value
-		] ifFalse: [
-			aBlock value: temp
-		]
-	]
-]
-
 { #category : #'initialize-release' }
 PjBridge >> initialize [
 	super initialize.
@@ -364,6 +356,8 @@ PjBridge >> initialize [
 			yourself).
 	communicationTrialsCount := self defaultCommunicationTrialsCount.
 	result := self.
+	futureLock := Mutex new.
+	futuresDict := Dictionary new.
 
 ]
 
@@ -375,7 +369,9 @@ PjBridge >> isConnected [
 
 { #category : #activity }
 PjBridge >> isDataAvailable [
-	self isConnected ifFalse: [ ^false ].
+	self isConnected ifFalse: [
+		self logCr: 'No connection from JS client'. 
+		^false ].
 	^self webSocket stream isDataAvailable
 ]
 
@@ -586,19 +582,32 @@ PjBridge >> startOn: portNumber title: title [
 ]
 
 { #category : #public }
+PjBridge >> startReceiver [
+	receiver := ActiveObject repeat: [self evalGetResult]
+]
+
+{ #category : #public }
 PjBridge >> startWithoutWaitingForClient [
 	self isServerStarted
 		ifTrue: [ ^ self ].
 	self server start.
 	self waitForServerToStart.
+	self startReceiver.
 	self client start
 ]
 
 { #category : #public }
 PjBridge >> stop [
+	self stopReceiver.
 	self client stop.
 	self stopServer.
+	
 
+]
+
+{ #category : #public }
+PjBridge >> stopReceiver [
+	receiver stop
 ]
 
 { #category : #activity }
