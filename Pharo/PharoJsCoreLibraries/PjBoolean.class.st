@@ -55,6 +55,7 @@ PjBoolean >> asBit [
 { #category : #converting }
 PjBoolean >> asJsObject [
 	"We want primitive booleans and not boxed ones!"
+	"This is necessary because if a value like true is sent as a message, then it is wrapped, so returning this doesn’t do the right thing. so the block [ false not == true ] will return false."
 	<javascript: 'return this == true'>
 ]
 
