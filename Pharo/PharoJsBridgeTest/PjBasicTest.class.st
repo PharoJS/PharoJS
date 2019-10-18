@@ -129,6 +129,8 @@ PjBasicTest >> testIfNilIfNotNil [
 PjBasicTest >> testIfTrueIfFalse [
 	self assertEquivalent: [true ifTrue: [1]] .
 	self assertEquivalent: [false ifFalse: [2]].
+	self assertEquivalent: [false ifTrue: [1]] .
+	self assertEquivalent: [true ifFalse: [2]].
 	self assertEquivalent: [true ifTrue: [1] ifFalse: [2]].
 	self assertEquivalent: [false ifTrue: [1] ifFalse: [2]].
 	self assertEquivalent: [true ifFalse: [2] ifTrue: [1]].
@@ -259,6 +261,14 @@ PjBasicTest >> testTimesRepeat [
 			counter := 0.
 			5 timesRepeat: [counter := counter + 1].
 			counter].
+
+]
+
+{ #category : #tests }
+PjBasicTest >> testUnicode [
+	self assert: $€ asJSON equals: '"\u20AC"'.
+	self assert: 'ab€cd' asJSON equals: '"ab\u20ACcd"'.
+	self checkBasic: 'ab€cd'.
 
 ]
 
