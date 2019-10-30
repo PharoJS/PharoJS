@@ -168,9 +168,10 @@ PjStringGenerationTest >> testLiteral [
 	self assert: (PjLiteralValueNode value: nil) asStringEquals: 'undefined'.
 	self assert: (PjLiteralValueNode value: (String with: (Character value: 7)),'a\b"
 x',(String with: Character null)) asStringEquals: '"\007a\\b\"\rx\000"'.
-	self assert: (PjLiteralValueNode value: 'a\b"',(String with: (Character value:257)) ) asStringEquals: '"a\\b\"Ä"'.
+	self assert: (PjLiteralValueNode value: 'a\b"',(String with: (Character value:257)) ) asStringEquals: '"a\\b\"\u0101"'.
 	self assert: (PjLiteralValueNode value: (String with: Character null),'a\b"
-xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\000a\\b\"\rxããããyÄ"'
+xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\000a\\b\"\rx\u3088\u3046\u3053\u305Dy\u0101"'.
+
 ]
 
 { #category : #testing }
