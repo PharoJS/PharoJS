@@ -25,9 +25,9 @@ PjApplication class >> appFullJsFileName [
 PjApplication class >> appFullJsFolderPath [
 	<pharoJsSkip>
 	self appJsSubFolder ifNotNil: [: subfolder|
-		^self appFullHtmlFolderPath / subfolder 
+		^self appFolder / subfolder 
 	].
-	^self appFullHtmlFolderPath
+	^self appFolder
 
 ]
 
