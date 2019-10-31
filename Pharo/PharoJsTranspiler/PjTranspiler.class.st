@@ -111,8 +111,6 @@ PjTranspiler >> convertAllClasses: classes [
 	| actualClassesToConvert classesInWriteOrder |
 	beforeCodeOutputHook ifNotNil: [ beforeCodeOutputHook value ].
 	actualClassesToConvert := classes collect: #classToUseForJsConversion.
-	actualClassesToConvert asIdentitySet
-		do: [ :aClass | self writeClassDefinitionOf: aClass ].
 	classesInWriteOrder := self orderForWriting: actualClassesToConvert.
 	classesInWriteOrder
 		do: [ :aClass | 
