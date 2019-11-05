@@ -110,7 +110,7 @@ PjTranspiler >> classVariablesHolderName [
 PjTranspiler >> convertAllClasses: classes [
 	| actualClassesToConvert classesInWriteOrder |
 	beforeCodeOutputHook ifNotNil: [ beforeCodeOutputHook value ].
-	actualClassesToConvert := classes collect: #classToUseForJsConversion.
+	actualClassesToConvert := classes asIdentitySet collect: #classToUseForJsConversion.
 	classesInWriteOrder := self orderForWriting: actualClassesToConvert.
 	classesInWriteOrder
 		do: [ :aClass | 

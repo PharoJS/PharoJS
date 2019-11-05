@@ -73,18 +73,16 @@ PjPackageTranspilationTest >> testDnuSetup [
 
 { #category : #testing }
 PjPackageTranspilationTest >> testDuplicateClasses [
-	| uniqueClasses classesToConvert classDefintionString|
-	uniqueClasses := { 
-		PjClassCForPackageTranspilationTest.
-		PjClassBForPackageTranspilationTest.
-		PjClassAForPackageTranspilationTest.
-	 }.
+	| classesToConvert classDefintionString className classInitializationString|
 	classesToConvert := OrderedCollection new.
-	3 timesRepeat: [ classesToConvert addAll: uniqueClasses].
+	3 timesRepeat: [ classesToConvert add: PjClassAForPackageTranspilationTest].
 	self generateJsCodeForClasses: classesToConvert.
-	uniqueClasses do: [: each |
-		classDefintionString := 'subclass_("', each name,'")'.
-		self assert: (jsCode howManyMatch: classDefintionString) equals: 1] .
+	className := PjClassAForPackageTranspilationTest name.
+	classDefintionString := 'subclass_("', className,'")'.
+	classInitializationString := className, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();'.
+	{classDefintionString. classInitializationString} do: [:each |
+		self assert: (jsCode allRangesOfSubstring: each) size equals: 1] .
+
 ]
 
 { #category : #testing }
