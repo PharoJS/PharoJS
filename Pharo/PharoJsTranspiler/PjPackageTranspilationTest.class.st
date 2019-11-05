@@ -72,6 +72,22 @@ PjPackageTranspilationTest >> testDnuSetup [
 ]
 
 { #category : #testing }
+PjPackageTranspilationTest >> testDuplicateClasses [
+	| uniqueClasses classesToConvert classDefintionString|
+	uniqueClasses := { 
+		PjClassCForPackageTranspilationTest.
+		PjClassBForPackageTranspilationTest.
+		PjClassAForPackageTranspilationTest.
+	 }.
+	classesToConvert := OrderedCollection new.
+	3 timesRepeat: [ classesToConvert addAll: uniqueClasses].
+	self generateJsCodeForClasses: classesToConvert.
+	uniqueClasses do: [: each |
+		classDefintionString := 'subclass_("', each name,'")'.
+		self assert: (jsCode howManyMatch: classDefintionString) equals: 1] .
+]
+
+{ #category : #testing }
 PjPackageTranspilationTest >> testJavascriptInitializeOverridesClassInitialize [
 	self generateJsCodeForClasses: {
 	PjClientForJavascriptInitializationTest.

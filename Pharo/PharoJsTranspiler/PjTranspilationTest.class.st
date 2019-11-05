@@ -59,7 +59,7 @@ PjTranspilationTest >> nilTestFunctionName [
 	^PjStringGenerator nilTestFunctionName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjTranspilationTest >> selectorsPrefix [
 	^PjTranspiler pharoJsSelectorPrefix
 ]
