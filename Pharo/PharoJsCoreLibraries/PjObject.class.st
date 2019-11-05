@@ -198,6 +198,11 @@ PjObject >> doesNotUnderstand: aMessage [
 PjObject >> flag: aSymbol [
 ]
 
+{ #category : #reflection }
+PjObject >> halt [
+	<javascript: 'debugger'>
+]
+
 { #category : #comparing }
 PjObject >> hash [
 	^ self identityHash
