@@ -156,7 +156,6 @@ PjTranspiler >> convertBlock: aBlock [
 PjTranspiler >> convertClass: aClass [ 
 	| actualClassToConvert | 
 	actualClassToConvert := aClass classToUseForJsConversion.
-	self writeClassDefinitionOf: actualClassToConvert.
 	self writeClassInheritanceLinksOf: actualClassToConvert.
 	self writeClassAndPoolVariablesDeclarationOf: actualClassToConvert.
 	self writeMethodsOf: actualClassToConvert.
@@ -390,7 +389,7 @@ PjTranspiler >> removeAllConversions: aCollection [
 	converter removeAllConversions: aCollection
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjTranspiler >> selectorsPrefix [
 	^PjTranspiler pharoJsSelectorPrefix
 ]
