@@ -51,10 +51,13 @@ PjExporterTest >> testClassInheritanceOrder [
 
 { #category : #testing }
 PjExporterTest >> testCoreClassedLoaded [
+	|pjPrefix|
+	pjPrefix := PjTranspiler pharoJsSelectorPrefix.
 	exporter appClass: PjApplication.
 	jsCode := exporter javascriptCode.
+	self assert: (jsCode includesSubstring: 'Object.', pjPrefix, 'subclass_("PjApplication")' ).
 	self deny: (jsCode includesSubstring: 'function Object()' ).
-	self assert: (jsCode includes: 'Object.__proto__.$def(function ', PjTranspiler pharoJsSelectorPrefix, 'new' before: 'PjApplication' ).
+	self assert: (jsCode includes: 'Object.__proto__.$def(function ', pjPrefix, 'new' before: 'PjApplication' ).
 	self deny: (jsCode includes: 'PjApplication' before: 'Object.__proto__.$def(function pj_new' ).
 
 ]
