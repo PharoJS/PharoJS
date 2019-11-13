@@ -18,6 +18,16 @@ PjDOMApplication class >> appFullHtmlFolderPath [
 ]
 
 { #category : #'*PharoJsExporter-App' }
+PjDOMApplication class >> appFullJsFolderPath [
+	<pharoJsSkip>
+	self appJsSubFolder ifNotNil: [: subfolder|
+		^self appFullHtmlFolderPath / subfolder 
+	].
+	^self appFullHtmlFolderPath
+
+]
+
+{ #category : #'*PharoJsExporter-App' }
 PjDOMApplication class >> appHtmlFileName [
 	<pharoJsSkip>
 	^ 'index.html'
