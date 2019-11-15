@@ -63,7 +63,13 @@ PjApplication class >> defaultAppFolderParent [
 	| repository packageName |
 	packageName := self package name.
 	repository := IceRepository registry  detect: [: repo | repo includesPackageNamed: packageName].
-	^repository location / 'HTML' / self package name
+	^repository location / self defaultAppFolderParentName / self package name
+]
+
+{ #category : #'*PharoJsExporter' }
+PjApplication class >> defaultAppFolderParentName [
+	<pharoJsSkip>
+	^'HTML'
 ]
 
 { #category : #'*PharoJsExporter-App' }
