@@ -615,7 +615,7 @@ PjAstConverter >> visitMessageNode: aRBMessageNode isNonNil: isNonNil [
 				target: target
 				selectorNode: (PjMessageSelectorNode identifier: aRBMessageNode selector)
 				isNonNil: (isNonNil or: [target isNonNilNode or: [aRBMessageNode selector beginsWith: PjTranspiler jsNativePrefix]]))
-			args:  (aRBMessageNode arguments collect: [ : each | each acceptVisitor: self ])
+			args:  (aRBMessageNode arguments collect: [ : each | self inExpressionDo: [each acceptVisitor: self] ])
 	] ensure: [
 		pushingReturnClass := savedPushingReturnClass ]
 ]

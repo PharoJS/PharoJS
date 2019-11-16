@@ -90,6 +90,13 @@ PjAsJsObjectInJs >> testConvertingObjectWithNestedDictionaryAndArray [
 ]
 
 { #category : #tests }
+PjAsJsObjectInJs >> testIfnil [
+    self
+        assertBlock: [ PjDummyTestObject string: ('Hello' ifNil: [ 'World' ]).
+            PjDummyTestObject string = 'Hello' ]
+]
+
+{ #category : #tests }
 PjAsJsObjectInJs >> testIgnoreArrayOfNonAssociations [
 	self assertBlock: [#(1 2 3) asJsObject class == Array].
 
