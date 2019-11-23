@@ -48,6 +48,8 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsTranspiler' with: [
 				spec requires: #('Equals' ). ];
 			package: #PharoJsTranspilerOptimization with: [
-				spec requires: #('PharoJsTranspiler' ). ]. ].
+				spec requires: #('PharoJsTranspiler' ). ];
+			package: 'PharoJsSerialization' with: [
+				spec requires: #('PharoJsApp' 'PharoJsTranspiler' 'PharoJsTestFramework' ). ]. ].
 
 ]

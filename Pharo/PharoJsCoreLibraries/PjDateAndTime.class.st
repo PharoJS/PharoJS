@@ -21,12 +21,6 @@ PjDateAndTime class >> jsTranspilationImportMethods [
 	^{DateAndTime class-> #(todayHour:minute: tomorrowHour:minute:)}
 ]
 
-{ #category : #serialization }
-PjDateAndTime class >> newFromMaterialized: jsonString [
-	<javascript: 'return new Date(jsonString)'>
-	
-]
-
 { #category : #'instance creation' }
 PjDateAndTime class >> now [
 	<javascript: 'return new this()'>
@@ -118,11 +112,6 @@ PjDateAndTime >> monthIndex: anInteger [
 { #category : #accessing }
 PjDateAndTime >> second [
 	^self getSeconds
-]
-
-{ #category : #serialization }
-PjDateAndTime >> serializationContents [
-	^self
 ]
 
 { #category : #accessing }

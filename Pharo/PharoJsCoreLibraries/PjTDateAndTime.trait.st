@@ -11,12 +11,6 @@ PjTDateAndTime classSide >> javascriptName [
 	^ #Date
 ]
 
-{ #category : #serialization }
-PjTDateAndTime classSide >> newFromMaterialized: jsonString [
-	<javascript: 'return new Date(jsonString)'>
-	
-]
-
 { #category : #'instance creation' }
 PjTDateAndTime classSide >> now [
 	<javascript: 'return new this()'>
@@ -80,11 +74,6 @@ PjTDateAndTime >> monthIndex: anInteger [
 { #category : #accessing }
 PjTDateAndTime >> second [
 	^self getSeconds
-]
-
-{ #category : #serialization }
-PjTDateAndTime >> serializationContents [
-	^self
 ]
 
 { #category : #accessing }

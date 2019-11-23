@@ -54,12 +54,6 @@ return Date.now()'>
 
 ]
 
-{ #category : #serialization }
-PjTime class >> newFromMaterialized: jsonString [
-	<javascript: 'return new Date(jsonString)'>
-	
-]
-
 { #category : #'instance creation' }
 PjTime class >> now [
 	<javascript: 'return new this()'>
@@ -159,11 +153,6 @@ PjTime >> seconds: secondCount nanoSeconds: nanoCount [
 	self seconds: secondCount.
 	self setMilliseconds: nanoCount//1000000
 
-]
-
-{ #category : #serialization }
-PjTime >> serializationContents [
-	^self
 ]
 
 { #category : #private }

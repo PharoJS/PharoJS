@@ -12,12 +12,6 @@ PjTDate classSide >> javascriptName [
 	^ #Date
 ]
 
-{ #category : #serialization }
-PjTDate classSide >> newFromMaterialized: jsonString [
-	<javascript: 'return new Date(jsonString)'>
-	
-]
-
 { #category : #'instance creation' }
 PjTDate classSide >> now [
 	<javascript: 'return new this()'>
@@ -51,11 +45,6 @@ PjTDate >> monthIndex [
 { #category : #accessing }
 PjTDate >> monthIndex: anInteger [
 	^self month: anInteger - 1
-]
-
-{ #category : #serialization }
-PjTDate >> serializationContents [
-	^self
 ]
 
 { #category : #accessing }

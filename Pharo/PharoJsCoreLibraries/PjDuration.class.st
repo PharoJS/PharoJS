@@ -1,6 +1,6 @@
 Class {
 	#name : #PjDuration,
-	#superclass : #Magnitude,
+	#superclass : #PjMagnitude,
 	#pools : [
 		'ChronologyConstants'
 	],
