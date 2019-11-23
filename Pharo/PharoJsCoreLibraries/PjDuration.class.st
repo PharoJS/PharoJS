@@ -15,7 +15,7 @@ PjDuration class >> jsTranspilationImportMethods [
 		selectorsInProtocols: #('instance creation' 'instance creation simple' '*PharoExtra-Chronology')  
 		exclude: #(readFrom: fromString: month:).
 	instanceSelectors := Duration 
-		selectorsInProtocols: #(accessing arithmetic converting initialization private '*PharoExtra-Chronology')
+		selectorsInProtocols: #(accessing arithmetic comparing converting initialization private '*PharoExtra-Chronology')
 		exclude: #(asDelay storeOn:). "asDelay exclued because no support for Delay yet!"
 	^{Duration class -> creationSelectors.
 	Duration -> instanceSelectors }

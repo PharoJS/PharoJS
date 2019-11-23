@@ -9,7 +9,7 @@ PjChronololgyTest >> setUp [
 	super setUp.
 	self bridge
 		loadAllClasses:
-			{PjNumberForDuration.
+			{
 			Time.
 			Duration.
 			DateAndTime}
