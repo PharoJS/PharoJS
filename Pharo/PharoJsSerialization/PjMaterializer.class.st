@@ -8,20 +8,22 @@ Class {
 }
 
 { #category : #materializing }
-PjMaterializer class >> materializeFrom: anObject [
-	^anObject materialize
+PjMaterializer class >> materializeFrom: aString [
+	^self new materializeFrom: aString
 ]
 
 { #category : #materializing }
-PjMaterializer class >> materializeFromArray: array [
-	| class |
-	class := window instVarNamed: array first.
-	^class newFromMaterialized: array second
-]
-
-{ #category : #materializing }
-PjMaterializer class >> materializeFromString: aString [
-	| array |
-	array := JSON parse: aString.
-	^self materializeFromArray: array
+PjMaterializer >> materializeFrom: aString [
+	| serializedObjects class materializedObjects |
+	serializedObjects := JSON parse: aString.
+	materializedObjects := serializedObjects collect: [ : array |
+		class := window instVarNamed: array first.
+console log: 'materializationArray: '.
+console log: array second.
+		class newFromMaterialized: array second
+	].
+console log: 'Materialized objects:'.
+console log: materializedObjects.
+	materializedObjects do: [ : each | each initAfterMaterializationWith: materializedObjects ].
+	^materializedObjects first
 ]

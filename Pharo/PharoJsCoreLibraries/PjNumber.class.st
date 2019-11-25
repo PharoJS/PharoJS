@@ -69,7 +69,7 @@ PjNumber class >> jsTranspilationImportMethods [
 	| selectorsForChronology numberSelectors |
 	selectorsForChronology := #(year years week weeks day days hour hours minute minutes second seconds milliSecond milliSeconds),
 		(Number selectorsInProtocol: '*PharoExtra-Chronology').
-	numberSelectors := selectorsForChronology, #(#floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isZero #quo: #rem:).
+	numberSelectors := selectorsForChronology, #(#jsonSerializeWith: #floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isZero #quo: #rem:).
 	^ self jsTranspilationImportMethodsMagnitude,
 			{(Number -> numberSelectors).
 			Number class -> #(one).

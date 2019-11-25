@@ -4,7 +4,7 @@ strings in Javascript world
 Class {
 	#name : #PjString,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass + PjTArray',
+	#traits : 'PjTExtensionClass + (PjTArray - {#jsonSerializeWith:})',
 	#classTraits : 'PjTExtensionClass classTrait + PjTArray classTrait',
 	#pools : [
 		'PjDomGlobals'
@@ -26,7 +26,7 @@ PjString class >> jsTranspilationImportMethods [
 				stringHash:initialHash: fromByteArray:
 			).
 			String -> #(
-				findTokens: 
+				findTokens: jsonSerializeWith:
 			).
 			Character class -> #(
 				cr escape lf linefeed space tab

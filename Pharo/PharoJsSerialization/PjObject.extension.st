@@ -1,6 +1,17 @@
 Extension { #name : #PjObject }
 
 { #category : #'*PharoJsSerialization' }
+PjObject >> initAfterMaterializationWith: materializedObjects [
+	self keysAndValuesDo: [ : key : value | ]
+]
+
+{ #category : #'*PharoJsSerialization' }
+PjObject >> jsonSerializeWith: aSerializer [
+	aSerializer serializeObject: self
+
+]
+
+{ #category : #'*PharoJsSerialization' }
 PjObject class >> newFromMaterialized: serializationArray [
 	|restored ivIndex|
 	restored := self new. "Ensure initialize is performed in case there are new IVs"
@@ -34,5 +45,10 @@ PjObject >> serializationContents [
 
 { #category : #'*PharoJsSerialization' }
 PjObject >> serialize [
+	^ PjSerializer serialize: self
+]
+
+{ #category : #'*PharoJsSerialization' }
+PjObject >> serializeOLD [
 	^ self serializationArray asJSON
 ]

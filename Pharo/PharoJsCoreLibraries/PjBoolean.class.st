@@ -22,7 +22,7 @@ PjBoolean class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^ {
 			Boolean -> #(
-				==> eqv: 
+				==> eqv: jsonSerializeWith: 
 			).
 		}
 ]
