@@ -4,3 +4,8 @@ Extension { #name : #Number }
 Number >> jsonSerializeWith: aSerializer [
 	^aSerializer serializeLiteral: self
 ]
+
+{ #category : #'*PharoJsSerialization' }
+Number class >> newFromMaterialized: materializedObject [
+	^materializedObject
+]

@@ -5,7 +5,7 @@ Class {
 	#name : #PjString,
 	#superclass : #PjObject,
 	#traits : 'PjTExtensionClass + (PjTArray - {#jsonSerializeWith:})',
-	#classTraits : 'PjTExtensionClass classTrait + PjTArray classTrait',
+	#classTraits : 'PjTExtensionClass classTrait + (PjTArray classTrait - {#newFromMaterialized:})',
 	#pools : [
 		'PjDomGlobals'
 	],
@@ -23,7 +23,7 @@ PjString class >> jsTranspilationImportMethods [
 	^ self jsTranspilationImportMethodsArray,
 	{
 			String class -> #(
-				stringHash:initialHash: fromByteArray:
+				stringHash:initialHash: fromByteArray: newFromMaterialized:
 			).
 			String -> #(
 				findTokens: jsonSerializeWith:

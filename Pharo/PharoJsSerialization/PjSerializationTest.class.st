@@ -1,6 +1,10 @@
 Class {
 	#name : #PjSerializationTest,
 	#superclass : #PjWebAppTestCase,
+	#instVars : [
+		'serializerClass',
+		'materializerClass'
+	],
 	#category : #'PharoJsSerialization-Tests'
 }
 
@@ -11,30 +15,51 @@ PjSerializationTest class >> appClass [
 
 { #category : #tests }
 PjSerializationTest >> assertSerialize: anObject equals: expectedString [
-	| serializer actualString |
-	serializer := self newSerializer.
-	actualString := serializer serialize: anObject.
+	| actualString |
+	actualString := serializerClass serialize: anObject.
 	self assert: actualString equals: expectedString
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
+PjSerializationTest >> assertSerializeMaterialize: anObject [
+	| jsonString clone |
+	jsonString := serializerClass serialize: anObject.
+	clone := materializerClass materializeFrom: jsonString.
+	self assert: clone equals: anObject
+]
+
+{ #category : #testing }
 PjSerializationTest >> materializerClass [
 	^PjMaterializer
 ]
 
-{ #category : #'instance creation' }
-PjSerializationTest >> newMaterializer [
-	^self materializerClass new.
+{ #category : #tests }
+PjSerializationTest >> nilJsonSerialized [
+	^'["PjUndefined",undefined]'
 ]
 
-{ #category : #'instance creation' }
-PjSerializationTest >> newSerializer [
-	^self serializerClass new.
-]
-
-{ #category : #'instance creation' }
+{ #category : #testing }
 PjSerializationTest >> serializerClass [
 	^PjSerializer
+]
+
+{ #category : #testing }
+PjSerializationTest >> setUp [
+	super setUp.
+	materializerClass := self materializerClass.
+	serializerClass := self serializerClass.
+]
+
+{ #category : #tests }
+PjSerializationTest >> testLiteralMaterialize [
+	self assertSerializeMaterialize: 1024.
+	self assertSerializeMaterialize: 3.14.
+	self assertSerializeMaterialize: true.
+	self assertSerializeMaterialize: false.
+	self assertSerializeMaterialize: nil.
+	self assertSerializeMaterialize: 'hello'.
+	self assertSerializeMaterialize: 'I love PharoJS'.
+
 ]
 
 { #category : #tests }
@@ -43,7 +68,7 @@ PjSerializationTest >> testLiteralSerialization [
 	self assertSerialize: 3.14 equals: '[["PjSerializedLiteral",3.14]]'.
 	self assertSerialize: true equals: '[["PjSerializedLiteral",true]]'.
 	self assertSerialize: false equals: '[["PjSerializedLiteral",false]]'.
-	self assertSerialize: nil equals: '[["PjUndefined"]]'.
+	self assertSerialize: nil equals: '[', self nilJsonSerialized, ']'.
 	self assertSerialize: 'hello' equals: '[["PjSerializedLiteral","hello"]]'.
 	self assertSerialize: 'I love PharoJS' equals: '[["PjSerializedLiteral","I love PharoJS"]]'.
 

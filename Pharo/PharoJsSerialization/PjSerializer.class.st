@@ -54,7 +54,7 @@ PjSerializer >> serializeLiteral: aLiteral [
 
 { #category : #serializing }
 PjSerializer >> serializeNil [
-	serializationArray add: {'PjUndefined'}	
+	serializationArray add: {'PjUndefined'. nil}	
 ]
 
 { #category : #serializing }

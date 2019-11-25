@@ -72,7 +72,7 @@ PjNumber class >> jsTranspilationImportMethods [
 	numberSelectors := selectorsForChronology, #(#jsonSerializeWith: #floorLog: #negated #reciprocal #log: #asInteger #asNumber #squared #even #odd #fractionPart #integerPart #// #strictlyPositive #positive #negative #raisedToInteger: #raisedTo: #isNumber #isZero #quo: #rem:).
 	^ self jsTranspilationImportMethodsMagnitude,
 			{(Number -> numberSelectors).
-			Number class -> #(one).
+			Number class -> #(one newFromMaterialized:).
 			(Integer -> #(#asCharacter)).
 			(SmallInteger -> #(#highBit #basicIdentityHash #identityHash #hashMultiply #hash)).
 			(Float -> #(#isInfinite #rounded)).

@@ -31,6 +31,7 @@ PjUndefinedObject class >> jsTranspilationImportMethods [
 				isNil ifNil: ifNotNil: ifNil:ifNotNil: ifNotNil:ifNil:
 				isNotNil notNil isEmptyOrNil jsonSerializeWith:
 			).
+		UndefinedObject class -> #(newFromMaterialized:)
 		}
 ]
 

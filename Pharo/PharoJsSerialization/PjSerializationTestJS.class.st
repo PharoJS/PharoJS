@@ -3,10 +3,6 @@ Class {
 	#superclass : #PjSerializationTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#instVars : [
-		'serializerClass',
-		'materializerClass'
-	],
 	#category : #'PharoJsSerialization-Tests'
 }
 
@@ -22,21 +18,19 @@ PjSerializationTestJS >> assertEquivalent: aBlock [
 
 { #category : #'instance creation' }
 PjSerializationTestJS >> materializerClass [
-	^materializerClass
+	^self bridge evalBlock: [PjMaterializer]
 
+]
+
+{ #category : #tests }
+PjSerializationTestJS >> nilJsonSerialized [
+	^'["PjUndefined",null]'
 ]
 
 { #category : #'instance creation' }
 PjSerializationTestJS >> serializerClass [
-	^serializerClass
+	^self bridge evalBlock: [PjSerializer]
 
-]
-
-{ #category : #testing }
-PjSerializationTestJS >> setUp [
-	super setUp.
-	materializerClass := self bridge evalBlock: [PjMaterializer].
-	serializerClass := self bridge evalBlock: [PjSerializer].
 ]
 
 { #category : #tests }
@@ -45,7 +39,6 @@ PjSerializationTestJS >> testLiteralJsonSerialization [
 	self assertEquivalent: [3.14 jsonSerialize].
 	self assertEquivalent: [true jsonSerialize].
 	self assertEquivalent: [false jsonSerialize].
-	self assertEquivalent: [nil jsonSerialize].
 	self assertEquivalent: ['hello' jsonSerialize].
 	self assertEquivalent: ['I love PharoJS' jsonSerialize].
 

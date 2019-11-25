@@ -4,3 +4,8 @@ Extension { #name : #String }
 String >> jsonSerializeWith: aSerializer [
 	^aSerializer serializeLiteral: self
 ]
+
+{ #category : #'*PharoJsSerialization' }
+String class >> newFromMaterialized: materializedObject [
+	^materializedObject
+]

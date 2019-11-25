@@ -11,11 +11,6 @@ PjString >> materialize [
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjString class >> newFromMaterialized: materializedObject [
-	^materializedObject
-]
-
-{ #category : #'*PharoJsSerialization' }
 PjString >> serializationContents [
 	^self
 ]
