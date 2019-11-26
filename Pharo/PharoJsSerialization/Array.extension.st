@@ -2,7 +2,7 @@ Extension { #name : #Array }
 
 { #category : #'*PharoJsSerialization' }
 Array >> jsonSerializeWith: aSerializer [
-	aSerializer serializeArray: self
+	^aSerializer serializeArray: self
 
 ]
 

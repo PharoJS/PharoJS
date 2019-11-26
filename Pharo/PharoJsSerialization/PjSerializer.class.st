@@ -2,7 +2,6 @@ Class {
 	#name : #PjSerializer,
 	#superclass : #Object,
 	#instVars : [
-		'serializationArray',
 		'serializedObjects'
 	],
 	#pools : [
@@ -26,12 +25,16 @@ PjSerializer >> dateClass [
 	^DateAndTime
 ]
 
+{ #category : #initialization }
+PjSerializer >> initialize [
+	super initialize.
+	serializedObjects := OrderedCollection new
+]
+
 { #category : #serializing }
 PjSerializer >> serializationArrayFrom: anObject [
-	serializedObjects := OrderedCollection with: anObject.
-	serializationArray := OrderedCollection new.
-	anObject jsonSerializeWith: self.
-	^serializationArray asArray
+	serializedObjects addLast: anObject.
+	^anObject jsonSerializeWith: self.
 
 ]
 
@@ -45,52 +48,44 @@ PjSerializer >> serializationIndexFor: anObject [
 ]
 
 { #category : #serializing }
-PjSerializer >> serializationString [
-	^ serializationArray asJSON
-]
-
-{ #category : #serializing }
 PjSerializer >> serialize: anObject [
-	self serializationArrayFrom: anObject.
-	^self serializationString
+	| serialization |
+	serialization := self serializationArrayFrom: anObject.
+	^serialization asJSON
 ]
 
 { #category : #serializing }
 PjSerializer >> serializeArray: anArray [
-	| contentIndices valueIndex |
+	| serializedContent serializedElement |
 	serializedObjects add: anArray.
-	contentIndices := OrderedCollection new.
-	serializationArray add: {anArray className. contentIndices}.
+	serializedContent := OrderedCollection new.
 	anArray do: [ : each | 
-		valueIndex := self serializationIndexFor: each.
-		contentIndices addLast: valueIndex
+		serializedElement := self serialize: each.
+		serializedContent addLast: serializedElement
 	].
+	^{anArray className. serializedContent asArray}.
 
 ]
 
 { #category : #serializing }
 PjSerializer >> serializeDateOrTime: aDate [
-	serializationArray add: {self dateClass name. aDate}
+	^{self dateClass name. aDate}
 ]
 
 { #category : #serializing }
 PjSerializer >> serializeLiteral: aLiteral [
-	serializationArray add: {self serializedLiteralClass name. aLiteral}
-]
-
-{ #category : #serializing }
-PjSerializer >> serializeNil [
-	serializationArray add: {self serializedLiteralClass name. nil}	
+	^{self serializedLiteralClass name. aLiteral}
 ]
 
 { #category : #serializing }
 PjSerializer >> serializeObject: anObject [
-	|contentsDict |
+	|contentsDict|
 	contentsDict := Dictionary new.
 	anObject notNilIvNamesAndValuesDo: [ : key : value |
 		contentsDict at: key put: value
 	].
-	serializationArray add: {anObject className. contentsDict}
+	^{anObject className. contentsDict}.
+
 ]
 
 { #category : #serializing }

@@ -24,7 +24,7 @@ PjMaterializer >> materializeFromArray: serializedObjects [
 		collect: [ :array | 
 			class := Smalltalk at: array first asSymbol.
 			class newFromMaterialized: array second ].
-	^ materializedObjects first
+	^ materializedObjects
 ]
 
 { #category : #materializing }
