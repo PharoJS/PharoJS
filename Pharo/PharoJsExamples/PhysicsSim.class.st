@@ -12,6 +12,12 @@ Class {
 	#category : #'PharoJsExamples-PhysicsSimulation'
 }
 
+{ #category : #description }
+PhysicsSim class >> appJsSubFolder [
+	<pharoJsSkip>
+	^#js
+]
+
 { #category : #'initialize - release' }
 PhysicsSim >> addInitialBodies [
 	| boxA boxB ground |
