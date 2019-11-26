@@ -71,7 +71,7 @@ PjSerializationTestSupport >> logOriginal: original clone: clone [
 { #category : #serializing }
 PjSerializationTestSupport >> serializeThenMaterialize: anObject [
 	| clone |
-	clone := PjMaterializer materializeFrom: anObject serialize.
+	clone := PjMaterializer materializeFromString: anObject serialize.
 	self logOriginal: anObject clone: clone.
 	^clone
 

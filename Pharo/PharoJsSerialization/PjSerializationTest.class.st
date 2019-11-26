@@ -14,36 +14,81 @@ PjSerializationTest class >> appClass [
 ]
 
 { #category : #tests }
-PjSerializationTest >> assertSerialize: anObject equals: expectedString [
-	| actualString |
-	actualString := serializerClass serialize: anObject.
-	self assert: actualString equals: expectedString
+PjSerializationTest >> assert: accessors onSerializeThenMaterialize: aBlock [ 
+	| clone original |
+	original := self evalLocally: aBlock.
+	clone := self serializeThenMaterialize: original.
+	self assert: clone class == original class.
+	accessors do: [ : selector |
+		self assert: (clone perform: selector) equals: (original perform: selector)
+	] 
+
 ]
 
 { #category : #tests }
-PjSerializationTest >> assertSerializeMaterialize: anObject [
-	| jsonString clone |
-	jsonString := serializerClass serialize: anObject.
-	clone := materializerClass materializeFrom: jsonString.
+PjSerializationTest >> assertDuration: aBlock [
+	self assert: #(totalSeconds) onSerializeThenMaterialize: aBlock 
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> assertEqualitySerializeMaterialize: aBlock [
+	| clone  anObject |
+	anObject := self evalLocally: aBlock.
+	clone := self serializeThenMaterialize: anObject.
 	self assert: clone equals: anObject
 ]
 
-{ #category : #testing }
+{ #category : #tests }
+PjSerializationTest >> assertIdentitySerializeMaterialize: aBlock [
+	| clone anObject |
+	anObject := self evalLocally: aBlock.
+	clone := self serializeThenMaterialize: anObject.
+	self assert: clone == anObject
+]
+
+{ #category : #tests }
+PjSerializationTest >> assertSerializationArrayOf: originalBlock equals: expectedBlock [
+	| original serializationArray expceted |
+	original := self evalLocally: originalBlock.
+	serializationArray := serializerClass serializationArrayFrom: original.
+	expceted := self evalLocally: expectedBlock.
+	self assert: serializationArray = expceted.
+]
+
+{ #category : #tests }
+PjSerializationTest >> assertTime: aBlock [
+	self 
+		assert: #(hour24 minute second) 
+		onSerializeThenMaterialize: aBlock 
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> evalLocally: aBlock [
+	^aBlock value
+]
+
+{ #category : #tests }
 PjSerializationTest >> materializerClass [
 	^PjMaterializer
 ]
 
 { #category : #tests }
-PjSerializationTest >> nilJsonSerialized [
-	^'["PjUndefined",undefined]'
+PjSerializationTest >> serializeThenMaterialize: aBlock [
+	| serializationArray anObject |
+	anObject := self evalLocally: aBlock.
+	serializationArray := serializerClass
+		serializationArrayFrom: anObject.
+	^ materializerClass materializeFromArray: serializationArray
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSerializationTest >> serializerClass [
 	^PjSerializer
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSerializationTest >> setUp [
 	super setUp.
 	materializerClass := self materializerClass.
@@ -51,25 +96,82 @@ PjSerializationTest >> setUp [
 ]
 
 { #category : #tests }
-PjSerializationTest >> testLiteralMaterialize [
-	self assertSerializeMaterialize: 1024.
-	self assertSerializeMaterialize: 3.14.
-	self assertSerializeMaterialize: true.
-	self assertSerializeMaterialize: false.
-	self assertSerializeMaterialize: nil.
-	self assertSerializeMaterialize: 'hello'.
-	self assertSerializeMaterialize: 'I love PharoJS'.
+PjSerializationTest >> testArrayOfLiterals [
+	self assertEqualitySerializeMaterialize: [ #() ].
+	self assertEqualitySerializeMaterialize: [ #(31 12 23) ].
+	self assertEqualitySerializeMaterialize: [ #('abc' 'other' 'yes') ].
 
 ]
 
 { #category : #tests }
-PjSerializationTest >> testLiteralSerialization [
-	self assertSerialize: 1024 equals: '[["PjSerializedLiteral",1024]]'.
-	self assertSerialize: 3.14 equals: '[["PjSerializedLiteral",3.14]]'.
-	self assertSerialize: true equals: '[["PjSerializedLiteral",true]]'.
-	self assertSerialize: false equals: '[["PjSerializedLiteral",false]]'.
-	self assertSerialize: nil equals: '[', self nilJsonSerialized, ']'.
-	self assertSerialize: 'hello' equals: '[["PjSerializedLiteral","hello"]]'.
-	self assertSerialize: 'I love PharoJS' equals: '[["PjSerializedLiteral","I love PharoJS"]]'.
+PjSerializationTest >> testDuration [
+	self assertDuration: [Duration zero].
+	self assertDuration: [10 years].
+	self assertDuration: [6 months].
+	self assertDuration: [2 weeks].
+	self assertDuration: [2 hours].
+	self assertDuration: [30 minutes].
+	self assertDuration: [10 seconds].
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> testLiterals [
+	self assertIdentitySerializeMaterialize: [1024].
+	self assertIdentitySerializeMaterialize: [3.14].
+	self assertIdentitySerializeMaterialize: [true].
+	self assertIdentitySerializeMaterialize: [false].
+	self assertIdentitySerializeMaterialize: [nil].
+	self assertEqualitySerializeMaterialize: ['hello'].
+	self assertEqualitySerializeMaterialize: ['I love PharoJS'].
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> testSerializationArrayWithArrayOfLiterals [
+	
+	self 
+		assertSerializationArrayOf: [ #() ] 
+		equals: [{
+			{#Array. #()}
+		}].
+	self 
+		assertSerializationArrayOf: [ #(31 12 23) ] 
+		equals: [{
+			{#Array. #(2 3 4)}.
+			{#PjSerializedLiteral. 31}.
+			{#PjSerializedLiteral. 12}.
+			{#PjSerializedLiteral. 23}.
+		}].
+	self 
+		assertSerializationArrayOf: [ #('abc' 'other' 'yes') ] 
+		equals: [{
+			{#Array. #(2 3 4)}.
+			{#PjSerializedLiteral. 'abc'}.
+			{#PjSerializedLiteral. 'other'}.
+			{#PjSerializedLiteral. 'yes'}.
+		}].
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> testTimePart1 [
+	"Test split in parts, because it takes too much time when serialization is done on JS"
+	self assertTime: [Time now].
+	self assertTime: [Time noon].
+	self assertTime: [Time midnight].
+	self assertTime: [Time now seconds: 25].
+	self assertTime: [Time now seconds: 625].
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> testTimePart2 [
+	"Test split in parts, because it takes too much time when serialization is done on JS"
+	self assertTime: [Time hour: 1 minute: 1 second: 13].
+	self assertTime: [Time hour: 1 minute: 0 second: 0].
+	self assertTime: [Time hour: 12 minute: 0 second: 0].
+	self assertTime: [Time hour: 13 minute: 0 second: 0].
+	self assertTime: [Time hour: 23 minute: 59 second: 30].
 
 ]

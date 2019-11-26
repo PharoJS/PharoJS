@@ -43,12 +43,13 @@ PjObject class >> jsTranspilationImportMethods [
 				isNil ifNil: ifNotNil: ifNil:ifNotNil: ifNotNil:ifNil:
 			).
 		Object -> #(
-				jsonSerialize
+				jsonSerialize jsonSerializeWith:
 				-> as: asOrderedCollection
 				isKindOf: error: respondsTo: isMemberOf: className
 				isNotNil notNil isString isClass isBlock isNumber isBehavior 
 				isCollection isArray isFloat isInteger isCharacter isSymbol isStream
 			).
+		Object class -> #(newFromMaterialized:).
 		Collection -> #(
 				addAll: 
 			).

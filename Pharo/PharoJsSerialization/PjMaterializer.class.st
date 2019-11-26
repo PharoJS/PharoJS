@@ -8,17 +8,28 @@ Class {
 }
 
 { #category : #materializing }
-PjMaterializer class >> materializeFrom: aString [
-	^self new materializeFrom: aString
+PjMaterializer class >> materializeFromArray: aString [
+	^self new materializeFromArray: aString
 ]
 
 { #category : #materializing }
-PjMaterializer >> materializeFrom: aString [
-	| serializedObjects class materializedObjects |
+PjMaterializer class >> materializeFromString: aString [
+	^self new materializeFromString: aString
+]
+
+{ #category : #materializing }
+PjMaterializer >> materializeFromArray: serializedObjects [
+	| class materializedObjects |
+	materializedObjects := serializedObjects
+		collect: [ :array | 
+			class := Smalltalk at: array first asSymbol.
+			class newFromMaterialized: array second ].
+	^ materializedObjects first
+]
+
+{ #category : #materializing }
+PjMaterializer >> materializeFromString: aString [
+	| serializedObjects |
 	serializedObjects := JSON parse: aString.
-	materializedObjects := serializedObjects collect: [ : array |
-		class := Smalltalk at: array first.
-		class newFromMaterialized: array second
-	].
-	^materializedObjects first
+	^self materializeFromArray: serializedObjects
 ]

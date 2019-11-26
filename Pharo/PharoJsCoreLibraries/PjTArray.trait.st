@@ -36,7 +36,7 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 	<pharoJsSkip>
 	^ self jsTranspilationImportMethodsCollection,
 	{
-		Array -> #( isArray ).
+		Array -> #( isArray asArray).
 		ByteArray -> #( asString).
 		OrderedCollection -> #( join: addAllLast:).
 		SequenceableCollection -> #(
