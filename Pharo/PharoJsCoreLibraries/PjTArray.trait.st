@@ -3,7 +3,7 @@ I implement operations for array-like things in Javascript
 "
 Trait {
 	#name : #PjTArray,
-	#traits : 'PjTCollection',
+	#traits : 'PjTCollection - {#=}',
 	#classTraits : 'PjTCollection classTrait',
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
@@ -60,9 +60,13 @@ PjTArray >> , other [
 	^ self class new addAll: self; addAll: other; yourself
 ]
 
-{ #category : #enumerating }
+{ #category : #comparing }
 PjTArray >> = anArray [
-	<javascript: 'if(this.length!=anArray.length)return false;for(var i=0,max=this.length;i<max;++i)if(this[i]!=anArray[i])return false;return true'>
+	self size = anArray size ifFalse: [ ^false ].
+	self with: anArray do: [ : myElement : otherElement|
+		myElement = otherElement ifFalse: [ ^false ]
+	].
+	^true
 ]
 
 { #category : #converting }

@@ -82,12 +82,14 @@ PjProxy class >> proxyNamed: proxyName onBridge: aBridge [
 
 { #category : #comparing }
 PjProxy >> = anObject [
+	| equalMessage |
 	super == anObject ifTrue: [ ^ true ].
 	(anObject isKindOf: PjProxy) ifFalse: [ ^ false ].
-	jsName = anObject asJSON ifFalse: [ ^ false ].
-	proxySpecificBridge ifNil: [ ^ true ].
-	anObject jsBridge ifNil: [ ^ true ].
-	^ proxySpecificBridge = anObject jsBridge
+	proxySpecificBridge = anObject jsBridge ifFalse: [ ^false ].
+	equalMessage := Message selector: #= argument: anObject.
+	^self jsBridge: [ : bridge | 
+		bridge evalMessage: equalMessage sentTo: jsName
+	]
 ]
 
 { #category : #'reflective operations' }

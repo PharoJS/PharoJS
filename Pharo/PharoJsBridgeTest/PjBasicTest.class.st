@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #testing }
+PjBasicTest >> testBasicEquality [
+	self assertBlock: [ 312 ] equalsBlock: [ 312 ].
+	self denyBlock: [ 312 ] equalsBlock: [ 5 ].
+	self assertBlock: [ 'one two three' ] equalsBlock: [ 'one two three' ].
+	self assertBlock: [ 'one two three' ] equalsBlock: [ 'one ', 'two', ' three' ].
+	self denyBlock: [ 'one two three' ] equalsBlock: [ 'one three' ].
+
+
+]
+
+{ #category : #testing }
 PjBasicTest >> testBooleanMethods [
 	self assertEquivalent: [true asBit].
 	self assertEquivalent: [false asBit].
