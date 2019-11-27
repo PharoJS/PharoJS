@@ -9,6 +9,20 @@ Class {
 }
 
 { #category : #testing }
+PjProxyTest >> testArrayEquality [
+	self assertBlock: [ #() ] equalsBlock: [ #() ].
+	self denyBlock: [ #() ] equalsBlock: [ #(1 2 3) ].
+	self assertBlock: [ #(1 2 3) ] equalsBlock: [ #(1 2 3) ].
+	self denyBlock: [ #(1 2) ] equalsBlock: [ #(1 2 3) ].
+	self denyBlock: [ #(1 3 2) ] equalsBlock: [ #(1 2 3) ].
+	self assertBlock: [ #(one two three) ] equalsBlock: [ #(one two three) ].
+	self assertBlock: [ {true. 'two'. nil. 3.14.}] equalsBlock: [ {true. 'two'. nil. 3.14.} ].
+	self assertBlock: [ {{true. 'two'}. nil. 3.14.}] equalsBlock: [ {{true. 'two'}. nil. 3.14.} ].
+	self denyBlock: [ {{true. 'two'}. nil. 3.14.}] equalsBlock: [ {{false. 'abc'}. nil. 3.14.} ].
+
+]
+
+{ #category : #testing }
 PjProxyTest >> testAsJson [
 	self assert: 42 asJSON equals: '42'.
 	self assert: 'a\b"c' asJSON equals: '"a\\b\"c"'.
