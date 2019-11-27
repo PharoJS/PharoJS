@@ -6,7 +6,7 @@ PjTDate >> jsonSerializeWith: aSerializer [
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjTDate classSide >> newFromMaterialized: jsonString [
+PjTDate classSide >> materializeWith: anObject contents: jsonString [
 	<javascript: 'return new Date(jsonString)'>
 	
 ]

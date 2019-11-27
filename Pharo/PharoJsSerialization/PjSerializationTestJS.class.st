@@ -56,13 +56,13 @@ PjSerializationTestJS >> serializerClass [
 
 { #category : #tests }
 PjSerializationTestJS >> testLiteralSerialization [
-	self assertSerialize: [1024] equals: '["PjSerializedLiteral",1024]'.
-	self assertSerialize: [3.14] equals: '["PjSerializedLiteral",3.14]'.
-	self assertSerialize: [true] equals: '["PjSerializedLiteral",true]'.
-	self assertSerialize: [false] equals: '["PjSerializedLiteral",false]'.
-	self assertSerialize: [nil] equals: '["PjSerializedLiteral",null]'.
-	self assertSerialize: ['hello'] equals: '["PjSerializedLiteral","hello"]'.
-	self assertSerialize: ['I love PharoJS'] equals: '["PjSerializedLiteral","I love PharoJS"]'.
+	self assertSerialize: [1024] equals: '[["PjSerializedLiteral",1024]]'.
+	self assertSerialize: [3.14] equals: '[["PjSerializedLiteral",3.14]]'.
+	self assertSerialize: [true] equals: '[["PjSerializedLiteral",true]]'.
+	self assertSerialize: [false] equals: '[["PjSerializedLiteral",false]]'.
+	self assertSerialize: [nil] equals: '[["PjSerializedLiteral",null]]'.
+	self assertSerialize: ['hello'] equals: '[["PjSerializedLiteral","hello"]]'.
+	self assertSerialize: ['I love PharoJS'] equals: '[["PjSerializedLiteral","I love PharoJS"]]'.
 
 ]
 
@@ -79,11 +79,11 @@ PjSerializationTestJS >> testLiteralSerializationEquivalence [
 
 { #category : #tests }
 PjSerializationTestJS >> testSerializeArrayOfLiterals [
-	self assertSerialize: [ #() ] equals: '["Array",[]]'.
+	self assertSerialize: [ #() ] equals: '[["Array",[]]]'.
 	self 
 		assertSerialize: [ #(31 12 23) ] 
-		equals: '["Array",[["PjSerializedLiteral",31],["PjSerializedLiteral",12],["PjSerializedLiteral",23]]'.
+		equals: '[["Array",[2,3,4]],["PjSerializedLiteral",31],["PjSerializedLiteral",12],["PjSerializedLiteral",23]]'.
 	self 
 		assertSerialize: [ #('abc' 'other' 'yes') ] 
-		equals: '["Array",[["PjSerializedLiteral","abc"],["PjSerializedLiteral","other"],["PjSerializedLiteral","yes"]]'.
+		equals: '[["Array",[2,3,4]],["PjSerializedLiteral","abc"],["PjSerializedLiteral","other"],["PjSerializedLiteral","yes"]]'.
 ]

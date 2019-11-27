@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjSerializedLiteral class >> newFromMaterialized: anObject [
+PjSerializedLiteral class >> materializeWith: anObject1 contents: anObject [
 	^anObject
 ]

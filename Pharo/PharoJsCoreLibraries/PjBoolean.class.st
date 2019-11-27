@@ -24,7 +24,6 @@ PjBoolean class >> jsTranspilationImportMethods [
 			Boolean -> #(
 				==> eqv: jsonSerializeWith: 
 			).
-			Boolean class -> #(newFromMaterialized:)
 		}
 ]
 

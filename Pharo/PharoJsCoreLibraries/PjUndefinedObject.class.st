@@ -29,7 +29,8 @@ PjUndefinedObject class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{UndefinedObject -> #(
 				isNil ifNil: ifNotNil: ifNil:ifNotNil: ifNotNil:ifNil:
-				isNotNil notNil isEmptyOrNil jsonSerializeWith:
+				isNotNil notNil isEmptyOrNil 
+				jsonSerializeWith: 
 			).
 		}
 ]

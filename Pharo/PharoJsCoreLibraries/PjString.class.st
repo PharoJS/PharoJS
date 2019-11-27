@@ -23,7 +23,7 @@ PjString class >> jsTranspilationImportMethods [
 	^ self jsTranspilationImportMethodsArray,
 	{
 			String class -> #(
-				stringHash:initialHash: fromByteArray: newFromMaterialized:
+				stringHash:initialHash: fromByteArray:
 			).
 			String -> #(
 				findTokens: jsonSerializeWith:

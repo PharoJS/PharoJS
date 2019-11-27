@@ -49,11 +49,11 @@ PjSerializationTest >> assertIdentitySerializeMaterialize: aBlock [
 
 { #category : #tests }
 PjSerializationTest >> assertSerializationArrayOf: originalBlock equals: expectedBlock [
-	| original serializationArray expceted |
+	| original serializationArray expected |
 	original := self evalLocally: originalBlock.
-	serializationArray := serializerClass serializationArrayFrom: original.
-	expceted := self evalLocally: expectedBlock.
-	self assert: serializationArray = expceted.
+	serializationArray := serializerClass serializationArrayFor: original.
+	expected := self evalLocally: expectedBlock.
+	self assert: serializationArray = expected.
 ]
 
 { #category : #tests }
@@ -79,7 +79,7 @@ PjSerializationTest >> serializeThenMaterialize: aBlock [
 	| serializationArray anObject |
 	anObject := self evalLocally: aBlock.
 	serializationArray := serializerClass
-		serializationArrayFrom: anObject.
+		serializationArrayFor: anObject.
 	^ materializerClass materializeFromArray: serializationArray
 ]
 
@@ -93,6 +93,29 @@ PjSerializationTest >> setUp [
 	super setUp.
 	materializerClass := self materializerClass.
 	serializerClass := self serializerClass.
+]
+
+{ #category : #tests }
+PjSerializationTest >> testArrayCircularReferences [
+	self assertEqualitySerializeMaterialize: [ |array1 array2|
+		array1 := Array new: 1.
+		array2 := { array1 }.
+		array1 at: 1 put: array2.
+		array1.].
+
+	self assertEqualitySerializeMaterialize: [ |array|
+		array := Array new: 1.
+		array at: 1 put: array.
+		array].
+
+]
+
+{ #category : #tests }
+PjSerializationTest >> testArrayOfArrays [
+	self assertEqualitySerializeMaterialize: [ {#()} ].
+	self assertEqualitySerializeMaterialize: [ {#(). 3.14} ].
+	self assertEqualitySerializeMaterialize: [ {#(31 12 23). #(). #('abc' 'other' 'yes')} ].
+
 ]
 
 { #category : #tests }
@@ -132,25 +155,31 @@ PjSerializationTest >> testSerializationArrayWithArrayOfLiterals [
 	
 	self 
 		assertSerializationArrayOf: [ #() ] 
-		equals: [{
-			{#Array. #()}
-		}].
+		equals: [
+			{
+				{#Array. #()}
+			}
+	].
 	self 
 		assertSerializationArrayOf: [ #(31 12 23) ] 
-		equals: [{
-			{#Array. #(2 3 4)}.
-			{#PjSerializedLiteral. 31}.
-			{#PjSerializedLiteral. 12}.
-			{#PjSerializedLiteral. 23}.
-		}].
+		equals: [
+			{
+				{#Array. #(2 3 4)}. 
+				{#PjSerializedLiteral. 31}.
+				{#PjSerializedLiteral. 12}.
+				{#PjSerializedLiteral. 23}.
+			}
+		].
 	self 
 		assertSerializationArrayOf: [ #('abc' 'other' 'yes') ] 
-		equals: [{
-			{#Array. #(2 3 4)}.
-			{#PjSerializedLiteral. 'abc'}.
-			{#PjSerializedLiteral. 'other'}.
-			{#PjSerializedLiteral. 'yes'}.
-		}].
+		equals: [
+			{
+				{#Array. #(2 3 4)}. 
+				{#PjSerializedLiteral. 'abc'}.
+				{#PjSerializedLiteral. 'other'}.
+				{#PjSerializedLiteral. 'yes'}.
+			}
+		].
 
 ]
 

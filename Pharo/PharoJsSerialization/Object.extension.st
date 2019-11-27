@@ -15,12 +15,12 @@ Object >> jsonSerialize [
 
 { #category : #'*PharoJsSerialization' }
 Object >> jsonSerializeWith: aSerializer [
-	aSerializer serializeObject: self
+	^aSerializer serializeObject: self
 
 ]
 
 { #category : #'*PharoJsSerialization' }
-Object class >> newFromMaterialized: serializationDict [
+Object class >> materializeWith: anObject contents: serializationDict [
 	|restored|
 	restored := self new. "Ensure initialize is performed in case there are new IVs"
 	serializationDict keysAndValuesDo: [ : ivName :ivValue |
@@ -30,6 +30,11 @@ Object class >> newFromMaterialized: serializationDict [
 	].
 	^restored
 
+]
+
+{ #category : #'*PharoJsSerialization' }
+Object >> materializer: materializer initWith: contentsDescription [
+	^self
 ]
 
 { #category : #'*PharoJsSerialization' }

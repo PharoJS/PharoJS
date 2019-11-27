@@ -4,8 +4,3 @@ Extension { #name : #Boolean }
 Boolean >> jsonSerializeWith: aSerializer [
 	^aSerializer serializeLiteral: self
 ]
-
-{ #category : #'*PharoJsSerialization' }
-Boolean class >> newFromMaterialized: materializedObject [
-	^materializedObject
-]

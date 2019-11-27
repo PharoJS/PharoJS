@@ -2,7 +2,8 @@ Class {
 	#name : #PjSerializer,
 	#superclass : #Object,
 	#instVars : [
-		'serializedObjects'
+		'serializedObjects',
+		'serializations'
 	],
 	#pools : [
 		'PjBrowserGlobals'
@@ -11,8 +12,8 @@ Class {
 }
 
 { #category : #serializing }
-PjSerializer class >> serializationArrayFrom: anObject [
-	^self new serializationArrayFrom: anObject
+PjSerializer class >> serializationArrayFor: anObject [
+	^self new serializationArrayFor: anObject
 ]
 
 { #category : #serializing }
@@ -28,40 +29,47 @@ PjSerializer >> dateClass [
 { #category : #initialization }
 PjSerializer >> initialize [
 	super initialize.
-	serializedObjects := OrderedCollection new
+	serializedObjects := OrderedCollection new.
+	serializations := OrderedCollection new.
 ]
 
 { #category : #serializing }
-PjSerializer >> serializationArrayFrom: anObject [
+PjSerializer >> newSerializationIndexFor: anObject [
+	| objectIndex partialSerialization |
 	serializedObjects addLast: anObject.
-	^anObject jsonSerializeWith: self.
+	objectIndex := serializedObjects size.
+	serializations addLast: nil. "Save position"
+	partialSerialization := anObject jsonSerializeWith: self.
+	serializations at: objectIndex put: partialSerialization.
+	^objectIndex
+	
+]
 
+{ #category : #serializing }
+PjSerializer >> serializationArrayFor: anObject [
+	self newSerializationIndexFor: anObject.
+	^serializations asArray	
 ]
 
 { #category : #serializing }
 PjSerializer >> serializationIndexFor: anObject [
-	(serializedObjects includes: anObject) ifFalse: [
-		serializedObjects addLast: anObject.
-		anObject jsonSerializeWith: self.
-	].
-	^serializedObjects indexOf: anObject
+	^serializedObjects 
+		indexOf: anObject 
+		ifAbsent: [ self newSerializationIndexFor: anObject ]
 ]
 
 { #category : #serializing }
 PjSerializer >> serialize: anObject [
 	| serialization |
-	serialization := self serializationArrayFrom: anObject.
+	serialization := self serializationArrayFor: anObject.
 	^serialization asJSON
 ]
 
 { #category : #serializing }
 PjSerializer >> serializeArray: anArray [
-	| serializedContent serializedElement |
-	serializedObjects add: anArray.
-	serializedContent := OrderedCollection new.
-	anArray do: [ : each | 
-		serializedElement := self serialize: each.
-		serializedContent addLast: serializedElement
+	| serializedContent |
+	serializedContent := anArray collect: [ : each | 
+		self serializationIndexFor: each.
 	].
 	^{anArray className. serializedContent asArray}.
 
