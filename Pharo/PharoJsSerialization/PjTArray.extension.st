@@ -1,12 +1,11 @@
 Extension { #name : #PjTArray }
 
 { #category : #'*PharoJsSerialization' }
-PjTArray >> initAfterMaterializationWith: materializedObjects [
-	| actualElement |
-	self withIndexDo: [ : materizalizationIndex : index |
-		actualElement := materializedObjects at: materizalizationIndex.
-		self at: index put: actualElement
-	]
+PjTArray classSide >> newFromMaterialized: aJsonArray [
+	| materializedArray |
+	materializedArray := self new.
+	aJsonArray do: [ : each | materializedArray add: each materialize].
+	^materializedArray
 ]
 
 { #category : #'*PharoJsSerialization' }

@@ -1,177 +1,113 @@
 Class {
 	#name : #PjSerializationTest,
-	#superclass : #PjWebAppTestCase,
-	#instVars : [
-		'serializerClass',
-		'materializerClass'
-	],
+	#superclass : #PjBridgeTestCase,
 	#category : #'PharoJsSerialization-Tests'
 }
 
-{ #category : #'suite parameters' }
-PjSerializationTest class >> appClass [
-	^PjMinimalApp
+{ #category : #testing }
+PjSerializationTest >> testBasicTypes [
+	self assert: [ 'abc' serialize ] evaluatesTo: '["String","abc"]'.
+	self assert: [ 3.14 serialize ] evaluatesTo: '["Number",3.14]'.
+	self assert: [ true serialize ] evaluatesTo: '["Boolean",true]'.
+	self assert: [ nil serialize ] evaluatesTo: '["PjUndefinedObject",{}]'.
+	self assertBlock: [ PjSerializationTestSupport assertEquals: 645].
+	self assertBlock: [ PjSerializationTestSupport assertEquals: 3.14].
+	self assertBlock: [ PjSerializationTestSupport assertEquals: 'hello' ].
+	self assertBlock: [ PjSerializationTestSupport assertIdentity: nil ].
+	self assertBlock: [ PjSerializationTestSupport assertIdentity: true ].
+	self assertBlock: [ PjSerializationTestSupport assertIdentity: false ].
 ]
 
-{ #category : #tests }
-PjSerializationTest >> assert: accessors onSerializeThenMaterialize: aBlock [ 
-	| clone original |
-	original := self evalLocally: aBlock.
-	clone := self serializeThenMaterialize: original.
-	self assert: clone class == original class.
-	accessors do: [ : selector |
-		self assert: (clone perform: selector) equals: (original perform: selector)
-	] 
-
-]
-
-{ #category : #tests }
-PjSerializationTest >> assertDuration: aBlock [
-	self assert: #(totalSeconds) onSerializeThenMaterialize: aBlock 
-
-]
-
-{ #category : #tests }
-PjSerializationTest >> assertEqualitySerializeMaterialize: aBlock [
-	| clone  anObject |
-	anObject := self evalLocally: aBlock.
-	clone := self serializeThenMaterialize: anObject.
-	self assert: clone equals: anObject
-]
-
-{ #category : #tests }
-PjSerializationTest >> assertIdentitySerializeMaterialize: aBlock [
-	| clone anObject |
-	anObject := self evalLocally: aBlock.
-	clone := self serializeThenMaterialize: anObject.
-	self assert: clone == anObject
-]
-
-{ #category : #tests }
-PjSerializationTest >> assertSerializationArrayOf: originalBlock equals: expectedBlock [
-	| original serializationArray expceted |
-	original := self evalLocally: originalBlock.
-	serializationArray := serializerClass serializationArrayFrom: original.
-	expceted := self evalLocally: expectedBlock.
-	self assert: serializationArray = expceted.
-]
-
-{ #category : #tests }
-PjSerializationTest >> assertTime: aBlock [
-	self 
-		assert: #(hour24 minute second) 
-		onSerializeThenMaterialize: aBlock 
+{ #category : #testing }
+PjSerializationTest >> testCollectionsOfBasicTypes [
+	self assertBlock: [ PjSerializationTestSupport assertCollection: #() ].
+	self assertBlock: [ PjSerializationTestSupport assertCollection: #(1 2 3) ].
+	self assertBlock: [ PjSerializationTestSupport assertCollection: #('abc' 'other' 'yes') ].
+	self assertBlock: [ PjSerializationTestSupport assertCollection: OrderedCollection new ].
+	self assertBlock: [ PjSerializationTestSupport assertCollection: Set new ].
+	self assertBlock: [ 
+		|s|
+		s := Set new.
+		s addAll: #(1 2 3).
+		PjSerializationTestSupport assertCollection: s ].
+	self assertBlock: [ PjSerializationTestSupport assertCollection: SortedCollection new ].
+	self assertBlock: [ 
+		|s|
+		s := SortedCollection new.
+		s addAll: #(310 22 13).
+		PjSerializationTestSupport assertCollection: s ].
 
 ]
 
-{ #category : #tests }
-PjSerializationTest >> evalLocally: aBlock [
-	^aBlock value
-]
-
-{ #category : #tests }
-PjSerializationTest >> materializerClass [
-	^PjMaterializer
-]
-
-{ #category : #tests }
-PjSerializationTest >> serializeThenMaterialize: aBlock [
-	| serializationArray anObject |
-	anObject := self evalLocally: aBlock.
-	serializationArray := serializerClass
-		serializationArrayFrom: anObject.
-	^ materializerClass materializeFromArray: serializationArray
-]
-
-{ #category : #tests }
-PjSerializationTest >> serializerClass [
-	^PjSerializer
-]
-
-{ #category : #tests }
-PjSerializationTest >> setUp [
-	super setUp.
-	materializerClass := self materializerClass.
-	serializerClass := self serializerClass.
-]
-
-{ #category : #tests }
-PjSerializationTest >> testArrayOfLiterals [
-	self assertEqualitySerializeMaterialize: [ #() ].
-	self assertEqualitySerializeMaterialize: [ #(31 12 23) ].
-	self assertEqualitySerializeMaterialize: [ #('abc' 'other' 'yes') ].
+{ #category : #testing }
+PjSerializationTest >> testCollectionsOfComplexTypes [
+	self assertBlock: [ 
+		|s|
+		s := Set new.
+		s addAll: {Time now. 1 hour}.
+		PjSerializationTestSupport assertCollection: s ].
+	self assertBlock: [ 
+		|c1 c2 s|
+		s := Set new.
+		s addAll: {'wonderful'. 'world'}.
+		c1 := PjCompositeForSerializationTest new.
+		c1 a: 456.
+		c1 b: true.
+		c2 := PjCompositeForSerializationTest new.
+		c2 a: s.
+		c2 b: c1.
+		PjSerializationTestSupport assertComplexObject: c2.
+		].
 
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 PjSerializationTest >> testDuration [
-	self assertDuration: [Duration zero].
-	self assertDuration: [10 years].
-	self assertDuration: [6 months].
-	self assertDuration: [2 weeks].
-	self assertDuration: [2 hours].
-	self assertDuration: [30 minutes].
-	self assertDuration: [10 seconds].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: Duration zero].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: 10 years].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: 6 months].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: 2 weeks].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: 2 hours].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: 30 minutes].
+	self assertBlock: [ PjSerializationTestSupport assertDuration: 10 seconds].
 
 ]
 
-{ #category : #tests }
-PjSerializationTest >> testLiterals [
-	self assertIdentitySerializeMaterialize: [1024].
-	self assertIdentitySerializeMaterialize: [3.14].
-	self assertIdentitySerializeMaterialize: [true].
-	self assertIdentitySerializeMaterialize: [false].
-	self assertIdentitySerializeMaterialize: [nil].
-	self assertEqualitySerializeMaterialize: ['hello'].
-	self assertEqualitySerializeMaterialize: ['I love PharoJS'].
+{ #category : #testing }
+PjSerializationTest >> testTime [
+	self assertBlock: [ PjSerializationTestSupport assertTime: Time now].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time hour: 1 minute: 1 second: 13)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time now seconds: 25)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time now seconds: 625)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time noon)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time midnight)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time hour: 1 minute: 0 second: 0)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time hour: 12 minute: 0 second: 0)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time hour: 13 minute: 0 second: 0)].
+	self assertBlock: [ 
+		PjSerializationTestSupport assertTime: (Time hour: 23 minute: 59 second: 30)].
 
 ]
 
-{ #category : #tests }
-PjSerializationTest >> testSerializationArrayWithArrayOfLiterals [
+{ #category : #testing }
+PjSerializationTest >> testTimeDetailledSerialization [
+	| now clone |
+	now := self evalBlock: [ 
+				window instVarNamed: #now put: Time now.
+		 		window now.
+	].
+	clone := self evalBlock: [ PjSerializationTestSupport serializeThenMaterialize: window now].
+	self assert: clone hour24 equals: now hour24.
+	self assert: clone minute equals: now minute.
+	self assert: clone second equals: now second.
 	
-	self 
-		assertSerializationArrayOf: [ #() ] 
-		equals: [{
-			{#Array. #()}
-		}].
-	self 
-		assertSerializationArrayOf: [ #(31 12 23) ] 
-		equals: [{
-			{#Array. #(2 3 4)}.
-			{#PjSerializedLiteral. 31}.
-			{#PjSerializedLiteral. 12}.
-			{#PjSerializedLiteral. 23}.
-		}].
-	self 
-		assertSerializationArrayOf: [ #('abc' 'other' 'yes') ] 
-		equals: [{
-			{#Array. #(2 3 4)}.
-			{#PjSerializedLiteral. 'abc'}.
-			{#PjSerializedLiteral. 'other'}.
-			{#PjSerializedLiteral. 'yes'}.
-		}].
-
-]
-
-{ #category : #tests }
-PjSerializationTest >> testTimePart1 [
-	"Test split in parts, because it takes too much time when serialization is done on JS"
-	self assertTime: [Time now].
-	self assertTime: [Time noon].
-	self assertTime: [Time midnight].
-	self assertTime: [Time now seconds: 25].
-	self assertTime: [Time now seconds: 625].
-
-]
-
-{ #category : #tests }
-PjSerializationTest >> testTimePart2 [
-	"Test split in parts, because it takes too much time when serialization is done on JS"
-	self assertTime: [Time hour: 1 minute: 1 second: 13].
-	self assertTime: [Time hour: 1 minute: 0 second: 0].
-	self assertTime: [Time hour: 12 minute: 0 second: 0].
-	self assertTime: [Time hour: 13 minute: 0 second: 0].
-	self assertTime: [Time hour: 23 minute: 59 second: 30].
 
 ]

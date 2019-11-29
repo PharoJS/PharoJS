@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #serializing }
-PjSerializationTestSupport >> assertCollection: aCollection [
+PjSerializationTestSupport class >> assertCollection: aCollection [
 	| clone |
 	clone := self serializeThenMaterialize: aCollection.
 	clone class == aCollection class ifFalse: [ ^false ].
@@ -20,7 +20,7 @@ PjSerializationTestSupport >> assertCollection: aCollection [
 ]
 
 { #category : #serializing }
-PjSerializationTestSupport >> assertComplexObject: aComposite [
+PjSerializationTestSupport class >> assertComplexObject: aComposite [
 	| clone |
 	clone := self serializeThenMaterialize: aComposite.
 	clone class == aComposite class ifFalse: [ ^false ].
@@ -30,7 +30,7 @@ PjSerializationTestSupport >> assertComplexObject: aComposite [
 ]
 
 { #category : #serializing }
-PjSerializationTestSupport >> assertDuration: aDuration [
+PjSerializationTestSupport class >> assertDuration: aDuration [
 	| clone |
 	clone := self serializeThenMaterialize: aDuration.
 	clone class == Duration ifFalse: [ ^false ].
@@ -38,17 +38,17 @@ PjSerializationTestSupport >> assertDuration: aDuration [
 ]
 
 { #category : #serializing }
-PjSerializationTestSupport >> assertEquals: anObject [
+PjSerializationTestSupport class >> assertEquals: anObject [
 	^(self serializeThenMaterialize: anObject) = anObject
 ]
 
 { #category : #serializing }
-PjSerializationTestSupport >> assertIdentity: anObject [
+PjSerializationTestSupport class >> assertIdentity: anObject [
 	^(self serializeThenMaterialize: anObject) == anObject
 ]
 
 { #category : #serializing }
-PjSerializationTestSupport >> assertTime: aTime [
+PjSerializationTestSupport class >> assertTime: aTime [
 	| clone |
 	clone := self serializeThenMaterialize: aTime.
 	clone class == Time ifFalse: [ ^false ].
@@ -59,20 +59,6 @@ PjSerializationTestSupport >> assertTime: aTime [
 ]
 
 { #category : #serializing }
-PjSerializationTestSupport >> logOriginal: original clone: clone [
-	console log: '---'.
-	console log: 'serializing: '.
-	console log: original.
-	console log: 'materializing: '.
-	console log: clone.
-	console log: '---'
-]
-
-{ #category : #serializing }
-PjSerializationTestSupport >> serializeThenMaterialize: anObject [
-	| clone |
-	clone := PjMaterializer materializeFromString: anObject serialize.
-	self logOriginal: anObject clone: clone.
-	^clone
-
+PjSerializationTestSupport class >> serializeThenMaterialize: anObject [
+	^PjMaterializer materializeFrom: anObject serialize
 ]

@@ -1,13 +1,18 @@
 Extension { #name : #PjObject }
 
 { #category : #'*PharoJsSerialization' }
-PjObject >> initAfterMaterializationWith: materializedObjects [
-	self keysAndValuesDo: [ : key : value | ]
-]
+PjObject class >> newFromMaterialized: serializationArray [
+	|restored ivIndex|
+	restored := self new. "Ensure initialize is performed in case there are new IVs"
+	ivIndex := 1.
+	[ivIndex <= serializationArray size] whileTrue: [
+		restored 
+			instVarNamed: (serializationArray at: ivIndex) 
+			put: (serializationArray at: ivIndex + 1) materialize.
+		ivIndex := ivIndex + 2.
+	].
+	^restored
 
-{ #category : #'*PharoJsSerialization' }
-PjObject >> notNilIvNamesAndValuesDo: aBlock [
-	self keysAndValuesDo: aBlock
 ]
 
 { #category : #'*PharoJsSerialization' }
@@ -29,10 +34,5 @@ PjObject >> serializationContents [
 
 { #category : #'*PharoJsSerialization' }
 PjObject >> serialize [
-	^ PjSerializer serialize: self
-]
-
-{ #category : #'*PharoJsSerialization' }
-PjObject >> serializeOLD [
 	^ self serializationArray asJSON
 ]

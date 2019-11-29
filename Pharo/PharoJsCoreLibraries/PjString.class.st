@@ -4,8 +4,8 @@ strings in Javascript world
 Class {
 	#name : #PjString,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass + (PjTArray - {#jsonSerializeWith:})',
-	#classTraits : 'PjTExtensionClass classTrait + (PjTArray classTrait - {#newFromMaterialized:})',
+	#traits : 'PjTExtensionClass + PjTArray',
+	#classTraits : 'PjTExtensionClass classTrait + PjTArray classTrait',
 	#pools : [
 		'PjDomGlobals'
 	],
@@ -23,10 +23,10 @@ PjString class >> jsTranspilationImportMethods [
 	^ self jsTranspilationImportMethodsArray,
 	{
 			String class -> #(
-				stringHash:initialHash: fromByteArray: newFromMaterialized:
+				stringHash:initialHash: fromByteArray:
 			).
 			String -> #(
-				findTokens: jsonSerializeWith:
+				findTokens: 
 			).
 			Character class -> #(
 				cr escape lf linefeed space tab

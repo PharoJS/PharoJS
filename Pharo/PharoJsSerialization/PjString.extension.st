@@ -1,13 +1,13 @@
 Extension { #name : #PjString }
 
 { #category : #'*PharoJsSerialization' }
-PjString >> initAfterMaterializationWith: materializedObjects [
-	^self
+PjString >> materialize [
+	^PjMaterializer materializeFromString: self
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjString >> materialize [
-	^PjMaterializer materializeFromString: self
+PjString class >> newFromMaterialized: materializedObject [
+	^materializedObject
 ]
 
 { #category : #'*PharoJsSerialization' }
