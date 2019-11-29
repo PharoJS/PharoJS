@@ -62,6 +62,14 @@ PjBridgeTestCase >> assertBlock: aBlock [
 ]
 
 { #category : #asserting }
+PjBridgeTestCase >> assertBlock: block1 equalsBlock: block2 [
+	| result1 result2 |
+	result1 := self evalBlock: block1.
+	result2 := self evalBlock: block2.
+	self assert: result1 = result2
+]
+
+{ #category : #asserting }
 PjBridgeTestCase >> assertEquivalent: aBlock [
 	self assert: aBlock evaluatesTo: aBlock value
 ]
@@ -83,6 +91,14 @@ PjBridgeTestCase >> checkProxy: value [
 	self
 		assert: (self bridge evalResult: '{"proxy":"' , value asJSON , '"}')
 		equals: value
+]
+
+{ #category : #asserting }
+PjBridgeTestCase >> denyBlock: block1 equalsBlock: block2 [
+	| result1 result2 |
+	result1 := self evalBlock: block1.
+	result2 := self evalBlock: block2.
+	self deny: result1 = result2
 ]
 
 { #category : #'test support' }
