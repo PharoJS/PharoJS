@@ -60,10 +60,7 @@ PjApplication class >> defaultAppFolderName [
 { #category : #'*PharoJsExporter' }
 PjApplication class >> defaultAppFolderParent [
 	<pharoJsSkip>
-	| repository packageName |
-	packageName := self package name.
-	repository := IceRepository registry  detect: [: repo | repo includesPackageNamed: packageName].
-	^repository location / self defaultAppFolderParentName / self package name
+	^self repository location / self defaultAppFolderParentName / self package name
 ]
 
 { #category : #'*PharoJsExporter' }
@@ -108,6 +105,15 @@ PjApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet
 		^ true
 	].
 	^ false
+
+]
+
+{ #category : #'*PharoJsExporter' }
+PjApplication class >> repository [
+	<pharoJsSkip>
+	| packageName |
+	packageName := self package name.
+	^IceRepository registry  detect: [: repo | repo includesPackageNamed: packageName].
 
 ]
 
