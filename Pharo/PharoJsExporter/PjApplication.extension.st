@@ -60,7 +60,7 @@ PjApplication class >> defaultAppFolderName [
 { #category : #'*PharoJsExporter' }
 PjApplication class >> defaultAppFolderParent [
 	<pharoJsSkip>
-	^self repository location / self defaultAppFolderParentName / self package name
+	^self repositoryPath / self defaultAppFolderParentName / self package name
 ]
 
 { #category : #'*PharoJsExporter' }
@@ -115,6 +115,12 @@ PjApplication class >> repository [
 	packageName := self package name.
 	^IceRepository registry  detect: [: repo | repo includesPackageNamed: packageName].
 
+]
+
+{ #category : #'*PharoJsExporter' }
+PjApplication class >> repositoryPath [
+	<pharoJsSkip>
+	^self repository location
 ]
 
 { #category : #'*PharoJsExporter-App' }
