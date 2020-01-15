@@ -10,3 +10,7 @@ Metacello new
 </pre>
 
 More doc is available at: http://pharojs.org/
+
+Updates to this repo are automatically pushed to:
+- the PharoJS dedicated Slack,
+- the `pharo-js` channel of in the Pharo Discord server. 
