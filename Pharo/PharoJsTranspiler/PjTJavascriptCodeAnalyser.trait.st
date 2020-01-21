@@ -43,7 +43,7 @@ PjTJavascriptCodeAnalyser >> assertInstanceMethod: method equals: aString [
 
 { #category : #'test support' }
 PjTJavascriptCodeAnalyser >> classMethod: aSymbol [
-	^ self method: aSymbol of: '__proto__'
+	^ self method: aSymbol of: 'c$'
 ]
 
 { #category : #accessing }
@@ -63,7 +63,7 @@ PjTJavascriptCodeAnalyser >> does: actualString includes: expectedSubString [
 
 { #category : #'test support' }
 PjTJavascriptCodeAnalyser >> instanceMethod: aSymbol [
-	^ self method: aSymbol of: 'prototype'
+	^ self method: aSymbol of: 'i$'
 ]
 
 { #category : #accessing }
@@ -80,9 +80,8 @@ PjTJavascriptCodeAnalyser >> jsStream [
 PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 	| start aString end |
 	aString := String streamContents: [: aStream |
-		aStream nextPutAll: self classToTranspile nameToUseForJsConversion; nextPut: $..
 		aStream nextPutAll: methodOwner.
-		aStream nextPutAll: '.$def(function '.
+		aStream nextPutAll: '(function '.
 		self writeJsSelector: aSymbol onStream: aStream.
 		aStream nextPut: $( 
 	].

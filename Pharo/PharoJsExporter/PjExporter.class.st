@@ -220,6 +220,13 @@ PjExporter >> writeCoreObject [
 		nextPutAll: 'Object.defineProperty(Object.prototype,"$def",{value:';cr;
 		nextPutAll: ' function $def(aFunc){';cr;
 		nextPutAll: '	Object.defineProperty(this,aFunc.name,{writable:true,value:aFunc})}})';cr;
+		nextPutAll: 'Object.defineProperty(Object.prototype,"$$def",{value:';cr;
+		nextPutAll: ' function $$def(){';cr;
+		nextPutAll:	'   var v=Array.from(arguments),f=v.pop();';cr;
+		nextPutAll: '	  v=Array.from(v,function(x){if(!x.classPool)x.classPool={};return x.classPool})';cr;
+		nextPutAll: '	  if(!this.classPool)this.classPool={};';cr;
+		nextPutAll: '   v.unshift(this.$def.bind(this.prototype),this.$def.bind(this.__proto__),this.classPool);';cr;
+		nextPutAll: '   f.apply(null,v)}})';cr;
 		nextPutAll: 'var require';cr;
 		nextPutAll: 'global.';
 		nextPutAll: coreName;
@@ -229,8 +236,11 @@ PjExporter >> writeCoreObject [
 		nextPutAll: '.theClassClass=';
 		writeNameForClass: PjClass;
 		nextPut: $;;cr;
+		nextPutAll: coreName;
+		nextPutAll: '.$$def(function(i$,c$){';cr;
 		convertMethodAsts: self coreClass classToUseForJsConversion newClasses: OrderedCollection new;
-		writeMethodsOf: self coreClass class named: coreName with: '';
+		writeMethodsOf: self coreClass class named: coreName with: 'c$' ;
+		nextPutAll: '})';cr;
 		nextPutAll: coreName;
 		nextPut: $.;
 		nextPutAll: PjTranspiler pharoJsSelectorPrefix;

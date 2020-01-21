@@ -572,17 +572,34 @@ PjTranspiler >> writeJsSelector: aSelector onStream: aStream [
 			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]
 
+{ #category : #writing }
+PjTranspiler >> writeList: aCollection withPrefix: aString [ 
+	^ String streamContents: [: s |
+			aCollection do: [: each |
+				s nextPutAll: aString;nextPutAll: each
+	]]
+]
+
 { #category : #transpiling }
 PjTranspiler >> writeMethodsOf: aClass [
-	| className |
+	| className pools |
 	className := aClass nameToUseForJsConversion.
-	self writeMethodsOf: aClass named: className  with: '.prototype'.
-	self writeMethodsOf: aClass class named: className with: '.__proto__'
+	pools := #().
+	self
+		nextPutAll: className;
+		nextPutAll: '.$$def(function(i$,c$,p$';
+		writeList: pools withPrefix: ',$';
+		nextPutAll: '){';cr;
+		writeMethodsOf: aClass named: className  with: 'i$';
+		writeMethodsOf: aClass class named: className with: 'c$';
+		nextPutAll: '}';
+		writeList: pools withPrefix: ',';
+		nextPutAll: ')';cr.
 ]
 
 { #category : #transpiling }
 PjTranspiler >> writeMethodsOf: aClass named: aName with: reference [
-	"Use JS Object.defineProperty() to ensure that methods are not enumeratable. 
+	"Use JS Object.defineProperty() to ensure that methods are not enumerable. 
 	This is typically required by some third party libraries that create instances of Object, 
 	and expect that no property is available for enumeration. 
 	We set the writable attribute to true to enable reflection (e.g. replacing the method)."
@@ -590,9 +607,8 @@ PjTranspiler >> writeMethodsOf: aClass named: aName with: reference [
 	self withMethodsOf: aClass do: [ :method |
 		(self shouldSkipMethodNode: method) ifFalse: [
 			self 
-				nextPutAll: aName;
 				nextPutAll: reference;
-				nextPutAll: '.$def(';
+				nextPutAll: '(';
 				transpileMethod: method;
 				nextPutAll: ');';
 				cr

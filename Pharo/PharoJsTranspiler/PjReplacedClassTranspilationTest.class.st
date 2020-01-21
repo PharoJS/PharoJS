@@ -24,7 +24,7 @@ PjReplacedClassTranspilationTest >> testClassReplacement [
 	self assert: self jsCode includes: prefix, 'm_($in)'.
 	self assert: self jsCode includes: prefix, 'm1()'.
 	self assert: self jsCode includes: prefix, 'm2()'.
-	self assert: self jsCode includes: className, '.__proto__.$def(function ', prefix, 'c1()'.
-	self assert: self jsCode includes: className, '.__proto__.$def(function ', prefix, 'c2()'.
+	self assert: self jsCode includes: 'c$(function ', prefix, 'c1()'.
+	self assert: self jsCode includes: 'c$(function ', prefix, 'c2()'.
 
 ]
