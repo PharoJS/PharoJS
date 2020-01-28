@@ -19,7 +19,8 @@ Class {
 		'classesReferencingCache',
 		'writtenDNUs',
 		'beforeCodeOutputHook',
-		'shouldWriteDnu'
+		'shouldWriteDnu',
+		'poolsUsed'
 	],
 	#classInstVars : [
 		'pharoJsSelectorPrefix'
@@ -115,7 +116,6 @@ PjTranspiler >> convertAllClasses: classes [
 	classesInWriteOrder
 		do: [ :aClass | 
 			self writeClassInheritanceLinksOf: aClass.
-			self writeClassAndPoolVariablesDeclarationOf: aClass.
 			self writeMethodsOf: aClass ].
 	self writeDnuList.
 	self writeClassInitializeOfAll: classesInWriteOrder
@@ -140,9 +140,10 @@ PjTranspiler >> convertAndWriteClosedBlock: valuedBlock with: aBlock [
 	| jsAst |
 	jsAst := converter convertValuedBlock: valuedBlock.
 	aBlock value.
-	generator asString: jsAst on: self jsStream.
-	jsStream nextPut: $;; cr.
-
+	generator asString: jsAst on: self jsStream with: self.
+	jsStream
+		nextPut: $;;
+		cr
 ]
 
 { #category : #transpiling }
@@ -157,7 +158,6 @@ PjTranspiler >> convertClass: aClass [
 	| actualClassToConvert | 
 	actualClassToConvert := aClass classToUseForJsConversion.
 	self writeClassInheritanceLinksOf: actualClassToConvert.
-	self writeClassAndPoolVariablesDeclarationOf: actualClassToConvert.
 	self writeMethodsOf: actualClassToConvert.
 	self writeClassInitializeOf: actualClassToConvert.
 
@@ -273,8 +273,8 @@ PjTranspiler >> findClassesFor: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> generateCodeStringFrom: jsAst. [
-	generator asString: jsAst on: self jsStream
+PjTranspiler >> generateCodeStringFrom: jsAst [
+	generator asString: jsAst on: self jsStream with: self
 ]
 
 { #category : #initialization }
@@ -288,6 +288,7 @@ PjTranspiler >> initialize [
 	self shouldWriteDnu: true.
 	neededDNUs := Set new.
 	writtenDNUs := Set new.
+	poolsUsed := IdentityDictionary new.
 	classesReferencingCache := IdentityDictionary new.
 
 ]
@@ -349,9 +350,9 @@ PjTranspiler >> onTempStreamDo: aBlock [
 	| saveStream |
 	saveStream := jsStream.
 	jsStream := '' writeStream.
-	[
+	^ [
 		aBlock value.
-		^ jsStream contents
+		jsStream contents
 	] ensure: [ jsStream := saveStream ]
 ]
 
@@ -382,6 +383,26 @@ PjTranspiler >> orderForInitialization: classes [
 PjTranspiler >> orderForWriting: classes [ 
 	^ self order: classes with: [ : first : last |
 		last allSharedPoolsRecursive includes: first]
+]
+
+{ #category : #transpiling }
+PjTranspiler >> poolFor: myClass [
+	^ poolsUsed at: myClass ifAbsentPut: [OrderedCollection with: myClass]
+]
+
+{ #category : #transpiling }
+PjTranspiler >> poolReference: aClass for: myClass [
+	| index pool |
+	pool := self poolFor: myClass.
+	(pool includes: aClass) ifFalse: [
+		pool add: aClass
+	].
+	index := pool indexOf: aClass.
+	^ index < 2 ifTrue: [
+			'cp$'
+		] ifFalse: [
+			'$',aClass name
+		]
 ]
 
 { #category : #conversions }
@@ -430,9 +451,11 @@ PjTranspiler >> skipMethodPragmaKeyword [
 
 { #category : #transpiling }
 PjTranspiler >> transpileMethod: aMethod [
-	| jsAst |.
-	jsAst := converter convertAst: aMethod ast withPrimitive: aMethod primitive.
-  	generator asString: jsAst on: self jsStream.
+	| jsAst |
+	jsAst := converter
+		convertAst: aMethod ast
+		withPrimitive: aMethod primitive.
+	generator asString: jsAst on: self jsStream with: self
 ]
 
 { #category : #transpiling }
@@ -440,59 +463,6 @@ PjTranspiler >> withMethodsOf: aClass do: aBlock [
 	aClass selectorsWithExplicitOrigin do: [ : selector |
 		 aBlock value: (aClass compiledMethodAt: selector) ]
 
-]
-
-{ #category : #transpiling }
-PjTranspiler >> writeClassAndPoolVariablesDeclarationOf: aClass [
-	| isSharedPool allClassVarNames |
-	aClass classVariables isEmpty ifTrue: [(aClass sharedPools reject: #isJavascriptGlobalsPool) isEmpty ifTrue: [ ^ self ]].
-	allClassVarNames := aClass allClassVarNames asSet.
-	isSharedPool := aClass inheritsFrom: SharedPool.
-	self
-		nextPutAll: '(function($$){'.
-	aClass classVarNames do: [ : cvName |
-		self cr;
-			nextPutAll: '$$.';
-			writeInstanceVariable: cvName;
-			nextPutAll: '_=function($0){return ';
-			nextPutAll: '$$.';
-			writeInstanceVariable: cvName;
-			nextPutAll: '=$0};'.
-		isSharedPool ifTrue: [
-			self
-				nextPutAll: '$$.';
-				writeInstanceVariable: cvName;
-				nextPutAll: '$=function(){return ';
-				nextPutAll: '$$.';
-				writeInstanceVariable: cvName;
-				nextPut: $}			
-	]].
-	(aClass allSharedPools reject: #isJavascriptGlobalsPool) do: [: poolClass |
-		poolClass classVarNames do: [ : cvName |
-			(allClassVarNames includes: cvName) ifFalse: [
-				self cr;
-					nextPutAll: '$$.';
-					writeInstanceVariable: cvName;
-					nextPutAll: '_=';
-					writeNameForClass: poolClass;
-					nextPut: $.;
-					nextPutAll: self classVariablesHolderName;
-					nextPut: $.;
-					writeInstanceVariable: cvName;
-					nextPutAll: '_;$$.';		
-					writeInstanceVariable: cvName;
-					nextPutAll: '$=';
-					writeNameForClass: poolClass;
-					nextPut: $.;
-					nextPutAll: self classVariablesHolderName;
-					nextPut: $.;
-					writeInstanceVariable: cvName;
-					nextPut: $$
-	]]].
-	self
-		nextPutAll: '})(';
-		writeNameForClass: aClass;
-		nextPutAll: '.prototype);';cr
 ]
 
 { #category : #transpiling }
@@ -535,6 +505,21 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> writeClassVariableDeclarationsOf: aClass [
+	| keys |
+	keys := aClass classPool keys sorted.
+	keys isEmpty ifTrue: [ ^ self ].
+	keys do: [: cpName |
+			self
+				nextPutAll: 'cp$.';
+				nextPutAll: cpName;
+				nextPutAll: '='
+		].
+	self nextPutAll: 'null;';cr.
+
+]
+
+{ #category : #transpiling }
 PjTranspiler >> writeDnuList [
 	| selectors |
 	self shouldWriteDnu ifFalse: [^self].
@@ -574,31 +559,45 @@ PjTranspiler >> writeJsSelector: aSelector onStream: aStream [
 
 { #category : #writing }
 PjTranspiler >> writeList: aCollection withPrefix: aString [ 
-	^ String streamContents: [: s |
-			aCollection do: [: each |
-				s nextPutAll: aString;nextPutAll: each
-	]]
+	aCollection do: [: each |
+		self jsStream nextPutAll: aString;nextPutAll: each
+	]
 ]
 
 { #category : #transpiling }
 PjTranspiler >> writeMethodsOf: aClass [
-	| className pools |
+	| className methods pools |
 	className := aClass nameToUseForJsConversion.
-	pools := #().
+	methods := self onTempStreamDo: [
+		self
+			writeMethodsOf: aClass named: className  with: 'i$';
+			writeMethodsOf: aClass class named: className with: 'c$'
+	].
+	pools := self poolFor: aClass.
 	self
 		nextPutAll: className;
-		nextPutAll: '.$$def(function(i$,c$,p$';
-		writeList: pools withPrefix: ',$';
+		nextPutAll: '.$$def(function(i$,c$'.
+		pools do: [: each |
+			self
+				nextPutAll: ',';
+				nextPutAll: (self poolReference: each for: aClass)
+		].
+	self
 		nextPutAll: '){';cr;
-		writeMethodsOf: aClass named: className  with: 'i$';
-		writeMethodsOf: aClass class named: className with: 'c$';
-		nextPutAll: '}';
-		writeList: pools withPrefix: ',';
-		nextPutAll: ')';cr.
+		nextPutAll: methods;
+		writeClassVariableDeclarationsOf: aClass;
+		nextPutAll: '}'.
+		pools allButFirst do: [: each |
+			self
+				nextPutAll: ',';
+				writeNameForClass:  each
+		].
+		self nextPutAll: ')';cr.
+
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeMethodsOf: aClass named: aName with: reference [
+PjTranspiler >> writeMethodsOf: aClass named: unused with: reference [
 	"Use JS Object.defineProperty() to ensure that methods are not enumerable. 
 	This is typically required by some third party libraries that create instances of Object, 
 	and expect that no property is available for enumeration. 

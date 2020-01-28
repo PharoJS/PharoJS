@@ -13,3 +13,9 @@ Class {
 	],
 	#category : #'PharoJsTranspiler-Tests-Support'
 }
+
+{ #category : #'class initialization' }
+PjSuperClassForTranspilationTest class >> initialize [
+	B := #superB.
+
+]

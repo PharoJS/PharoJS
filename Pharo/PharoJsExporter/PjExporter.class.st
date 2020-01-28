@@ -222,10 +222,10 @@ PjExporter >> writeCoreObject [
 		nextPutAll: '	Object.defineProperty(this,aFunc.name,{writable:true,value:aFunc})}})';cr;
 		nextPutAll: 'Object.defineProperty(Object.prototype,"$$def",{value:';cr;
 		nextPutAll: ' function $$def(){';cr;
-		nextPutAll:	'   var v=Array.from(arguments),f=v.pop();';cr;
+		nextPutAll:	'   var v=Array.from(arguments),f=v[0];';cr;
+		nextPutAll: '   v[0]=this';cr;
 		nextPutAll: '	  v=Array.from(v,function(x){if(!x.classPool)x.classPool={};return x.classPool})';cr;
-		nextPutAll: '	  if(!this.classPool)this.classPool={};';cr;
-		nextPutAll: '   v.unshift(this.$def.bind(this.prototype),this.$def.bind(this.__proto__),this.classPool);';cr;
+		nextPutAll: '   v.unshift(this.$def.bind(this.prototype),this.$def.bind(this.__proto__));';cr;
 		nextPutAll: '   f.apply(null,v)}})';cr;
 		nextPutAll: 'var require';cr;
 		nextPutAll: 'global.';

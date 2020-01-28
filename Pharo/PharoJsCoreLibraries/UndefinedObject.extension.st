@@ -6,6 +6,11 @@ UndefinedObject >> asJsObjectUsing: converter [
 ]
 
 { #category : #'*PharoJsCoreLibraries' }
+UndefinedObject >> isPjProxyOrNil [
+	^ false
+]
+
+{ #category : #'*PharoJsCoreLibraries' }
 UndefinedObject class >> javascriptPlaceholder [
 	^ PjUndefinedObject
 ]

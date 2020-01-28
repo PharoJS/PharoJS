@@ -20,6 +20,7 @@ PjSingleClassTranspilationTest >> expectedClassName [
 { #category : #running }
 PjSingleClassTranspilationTest >> setUp [
 	super setUp.
+	transpiler poolFor: self classToTranspile.
 	self jsCode: (self convertClass: self classToTranspile).
 	className := self expectedClassName
 ]
@@ -42,33 +43,34 @@ PjSingleClassTranspilationTest >> testCascade [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testClassAndPoolVariableDefinition [
-	| classVarsHolder instanceSideClassVarsHolder poolVarsHolder |
-	instanceSideClassVarsHolder := className, '.prototype.', self classVariablesHolderName.
-	classVarsHolder := className, '.', self classVariablesHolderName.
-	poolVarsHolder := PjSharedPoolForTest nameToUseForJsConversion, '.', self classVariablesHolderName.
-	self assert: self jsCode includes: '(',classVarsHolder, ')'.
-	self assert: self jsCode includes: '$$.X_=function($0){return $$.X=$0};'.
-	self deny: self jsCode includes: '$$.X$=function('.
-	self assert: self jsCode includes: '$$.Y_=function($0){return $$.Y=$0}'.
-	self assert: self jsCode includes: '$$.$prototype_=function($0){return $$.$prototype=$0}'.
-	self assert: self jsCode includes: '$$.A_=function($0){return $$.A=$0}'.
-	self deny: self jsCode includes: '$$.A$=function('.
-	self deny: self jsCode includes: '$$.B_='.
-	self deny: self jsCode includes: '$$.document_='.
-	self assert: self jsCode includes: '$$.C_=',poolVarsHolder,'.C_'.
-	self assert: self jsCode includes: '$$.C$=',poolVarsHolder,'.C$'.
+	| sharedPoolVarsHolder superVarsHolder |
+	sharedPoolVarsHolder := '$', PjSharedPoolForTest nameToUseForJsConversion.
+	superVarsHolder := '$', PjSuperClassForTranspilationTest nameToUseForJsConversion.
+	self assert: self jsCode includes: className, '.$$def('.
+	self assert: self jsCode includes: 'cp$.X=cp$.'.
+	self deny: self jsCode includes: '$$.X'.
+	self deny: self jsCode includes: 'S=null'.
+	self deny: self jsCode includes: '.document='.
+	self assert: self jsCode includes: sharedPoolVarsHolder,'.C'.
+	self assert: self jsCode includes: superVarsHolder,'.B'.
+	self assert: self jsCode includes: superVarsHolder,'.S'.
+	self deny: self jsCode includes: 'cp$.S'.
+	self assert: self jsCode includes: '=cp$.A'.
 
 ]
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testClassSideMethods [
+	| superclassName sharedPoolName |
+	sharedPoolName := transpiler poolReference: PjSharedPoolForTest for: self classToTranspile.
+	superclassName := transpiler poolReference: PjSuperClassForTranspilationTest for: self classToTranspile.
 	self assertClassMethod: #c1 equals: '(){return this}'.
 	self assertClassMethod: #c2 equals: '(){return this}'.
-	self assertClassMethod: #initialize equals: '(){return this}'.
+	self assertClassMethod: #initialize equals: '(){cp$.A="testA";return this}'.
 	self assertClassMethod: #m1 equals: '(){',
-		'this.',self classVariablesHolderName,'.X=this.',self classVariablesHolderName,'.$prototype;',
-		'this.',self classVariablesHolderName,'.S_(this.',self classVariablesHolderName,'.S);',
-		'this.',self classVariablesHolderName,'.C_(this.',self classVariablesHolderName,'.C$());',
+		'cp$.X=cp$.$prototype;',
+		superclassName,'.S=',superclassName,'.S;',
+		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
 	self assert: (self jsCode endsWith: className, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();').
 	self assertClassMethod: #javascriptName equals: nil.
@@ -86,10 +88,13 @@ PjSingleClassTranspilationTest >> testCompose [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testInstanceSideMethods [
+	| superclassName sharedPoolName |
+	sharedPoolName := transpiler poolReference: PjSharedPoolForTest for: self classToTranspile.
+	superclassName := transpiler poolReference: PjSuperClassForTranspilationTest for: self classToTranspile.
 	self assertInstanceMethod: #m1 equals: '(){',
-		'this.X_(this.$prototype);',
-		'this.S_(this.S);',
-		'this.C_(this.C$());',
+		'cp$.X=cp$.$prototype;',
+		superclassName,'.S=',superclassName,'.S;',
+		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
 	self assertInstanceMethod: #m2 equals: '(){return this}'.
 	self assertInstanceMethod: #@ equals: '(op){return this}'.

@@ -181,7 +181,7 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 	| jsAst |
 	jsAst := convertedMethods at: aMethod.
-  	generator asString: jsAst on: self jsStream.
+	generator asString: jsAst on: self jsStream with: self
 ]
 
 { #category : #transpiling }
@@ -203,13 +203,6 @@ PjDependentTranspiler >> withMethodsOf: aClass do: aBlock [
 ]
 
 { #category : #transpiling }
-PjDependentTranspiler >> writeClassAndPoolVariablesDeclarationOf: aClass [
-	alreadyVariablesDeclaredClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
-	super writeClassAndPoolVariablesDeclarationOf: aClass.
-
-]
-
-{ #category : #transpiling }
 PjDependentTranspiler >> writeClassDefinitionOf: aClass [
 	alreadyDefinedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassDefinitionOf: aClass.
@@ -227,5 +220,12 @@ PjDependentTranspiler >> writeClassInheritanceLinksOf: aClass [
 PjDependentTranspiler >> writeClassInitializeOf: aClass [
 	alreadyInitializedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassInitializeOf: aClass.
+
+]
+
+{ #category : #transpiling }
+PjDependentTranspiler >> writeClassVariableDeclarationsOf: aClass [
+	alreadyVariablesDeclaredClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
+	super writeClassVariableDeclarationsOf: aClass.
 
 ]

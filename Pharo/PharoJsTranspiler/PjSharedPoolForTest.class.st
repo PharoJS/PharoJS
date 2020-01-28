@@ -12,5 +12,9 @@ Class {
 
 { #category : #'initialization-release' }
 PjSharedPoolForTest class >> initialize [
-	A := #A
+	A := #sharedA.
+	B := #sharedB.
+	C := #sharedC.
+
+
 ]

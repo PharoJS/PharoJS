@@ -186,6 +186,11 @@ PjProxy >> isPjProxyNil [
 	^ false
 ]
 
+{ #category : #testing }
+PjProxy >> isPjProxyOrNil [
+	^ true
+]
+
 { #category : #'javascript generation' }
 PjProxy >> javascriptName [
 	^ jsName

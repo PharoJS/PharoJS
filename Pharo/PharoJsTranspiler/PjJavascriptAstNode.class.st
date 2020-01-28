@@ -25,11 +25,6 @@ PjJavascriptAstNode >> acceptVisitor: aPjASTVisitor [
 	self subclassResponsibility
 ]
 
-{ #category : #printing }
-PjJavascriptAstNode >> asJavascriptString [
-	^ PjStringGenerator asString: self
-]
-
 { #category : #converting }
 PjJavascriptAstNode >> asJsAstBody [
 	^{self}

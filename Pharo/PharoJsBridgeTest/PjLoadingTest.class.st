@@ -25,7 +25,17 @@ PjLoadingTest >> testEvalBlock [
 		equals: (PjLoadForTest new subtract: 25).
 	self
 		assert: (self bridge evalBlock: [ PjLoadForTest new seventeen ])
-		equals: PjLoadForTest new seventeen
+		equals: PjLoadForTest new seventeen.
+	self
+		assert: (self bridge evalBlock: [ PjLoadForTest y ])
+		equals: PjLoadForTest y.
+	self
+		assert: (self bridge evalBlock: [ PjLoadForTest new z ])
+		equals: PjLoadForTest new z.
+	self
+		assert: (self bridge evalBlock: [ PjLoadForTest classVarNames size ])
+		equals: PjLoadForTest classVarNames size.
+
 ]
 
 { #category : #testing }

@@ -5,7 +5,12 @@ Class {
 	#name : #PjLoadForTest,
 	#superclass : #Object,
 	#classVars : [
-		'X'
+		'X',
+		'Y',
+		'Z'
+	],
+	#pools : [
+		'PjUniversalGlobals'
 	],
 	#category : #'PharoJsBridgeTest-Support'
 }
@@ -17,6 +22,15 @@ PjLoadForTest class >> fortyTwo [
 
 { #category : #any }
 PjLoadForTest class >> initialize [
+	" don't do this at home, kids: i.e. you really shouldn't be testig if you are running on Pharo or a browser"
+	" this is just here because Pharo 7 ships with a breakpoint set in the classVarNamed:put: method! "
+"	JSON isPjProxyOrNil ifTrue: ["
+		Y:='Y value'.
+		Z:='Z value'.
+"	] ifFalse: [
+		self classVarNames do: [: key |
+			self classVarNamed: key put: key,' value'
+	]]."
 	X := nil
 ]
 
@@ -27,6 +41,11 @@ PjLoadForTest class >> reset [
 ]
 
 { #category : #any }
+PjLoadForTest class >> y [
+	^ Y
+]
+
+{ #category : #any }
 PjLoadForTest >> seventeen [
 	^ X
 ]
@@ -34,4 +53,9 @@ PjLoadForTest >> seventeen [
 { #category : #any }
 PjLoadForTest >> subtract: n [
 	^ X := X - n
+]
+
+{ #category : #any }
+PjLoadForTest >> z [
+	^ Z
 ]

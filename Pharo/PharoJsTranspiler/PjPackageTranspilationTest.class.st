@@ -8,7 +8,7 @@ Class {
 PjPackageTranspilationTest >> assert: firstClass classVariablesSetBefore: lastClass [
 	self 
 		assert: firstClass 
-		inCodeWith: '.' , PjStringGenerator classVariablesHolderName , ');' 
+		inCodeWith: '.$$def(' 
 		before: lastClass
 ]
 

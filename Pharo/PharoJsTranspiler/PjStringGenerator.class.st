@@ -62,7 +62,8 @@ Class {
 		'jsStream',
 		'wroteCloseBrace',
 		'currentClass',
-		'currentlyDoingAssignment'
+		'currentlyDoingAssignment',
+		'transpiler'
 	],
 	#classVars : [
 		'AssignmentPrecedence',
@@ -84,11 +85,6 @@ Class {
 { #category : #accessing }
 PjStringGenerator class >> JsReservedWordsForInstanceVariables [
 	^ JsReservedWordsForInstanceVariables
-]
-
-{ #category : #printing }
-PjStringGenerator class >> asString: aPjAST [
-	^ self new asString: aPjAST
 ]
 
 { #category : #'Javascript names' }
@@ -174,15 +170,17 @@ PjStringGenerator class >> transpilerClass [
 
 { #category : #public }
 PjStringGenerator >> asString: aPjAST [
-	^ String streamContents: [ : aStream | self asString: aPjAST on: aStream ]
+	^ String
+		streamContents: [ :aStream | self asString: aPjAST on: aStream with: self ]
 ]
 
 { #category : #public }
-PjStringGenerator >> asString: aPjAST on: aStream [
+PjStringGenerator >> asString: aPjAST on: aStream with: aPjTranspiler [
 	jsStream := aStream.
 	currentPrecedenceLevel := -1.
 	currentlyDoingAssignment := false.
 	aPjAST acceptVisitor: self.
+	transpiler := aPjTranspiler.
 
 ]
 
@@ -284,7 +282,7 @@ PjStringGenerator >> visitArrayNode: aPjArrayNode [
 { #category : #visiting }
 PjStringGenerator >> visitAssignNode: aPjAssignNode [
 	| saveDoingAssignment |
-	(aPjAssignNode target isNonlocalClassOrPoolVariableReference: self currentClass) ifTrue: [
+"	(aPjAssignNode target isNonlocalClassOrPoolVariableReference: self currentClass) ifTrue: [
 		^ 	self atPrecedence: FunctionCallPrecedence do: [
 				saveDoingAssignment := currentlyDoingAssignment.
 				currentlyDoingAssignment := true.
@@ -296,7 +294,7 @@ PjStringGenerator >> visitAssignNode: aPjAssignNode [
 					visit: aPjAssignNode expression;
 					writeNonBrace: $)
 		]
-	].
+	]."
 	self atPrecedence: AssignmentPrecedence do: [
 		self
 			visit: aPjAssignNode target;
@@ -334,18 +332,11 @@ PjStringGenerator >> visitClassNode: aPjClassNode [
 
 { #category : #visiting }
 PjStringGenerator >> visitClassVariableNode: aPjClassVariableNode [
-	self visitClassVariableNode: aPjClassVariableNode with: ''
-]
-
-{ #category : #visiting }
-PjStringGenerator >> visitClassVariableNode: aPjClassVariableNode with: accessString [
-	(self currentClass isNotNil and: [self currentClass isClassSide]) ifTrue: [
-		self nextPut: $.; nextPutAll: PjStringGenerator classVariablesHolderName
-	].
 	self
-		writeNonBrace: $.;
-		writeVariable: aPjClassVariableNode identifier escapingIfIn: JsReservedWordsForInstanceVariables .
-	currentlyDoingAssignment ifFalse: [self nextPutAll: accessString]
+		writeNonBrace: (transpiler ifNil: ['cp$'] ifNotNil: [aPjClassVariableNode poolReferenceWith: transpiler]);
+		nextPut: $.;
+		writeVariable: aPjClassVariableNode identifier escapingIfIn: JsReservedWordsForInstanceVariables.
+
 ]
 
 { #category : #visiting }
@@ -477,7 +468,7 @@ PjStringGenerator >> visitObjectNode: aPjObjectNode [
 
 { #category : #visiting }
 PjStringGenerator >> visitPoolVariableNode: aPjClassVariableNode [
-	self visitClassVariableNode: aPjClassVariableNode with: '$()'
+	self visitClassVariableNode: aPjClassVariableNode
 ]
 
 { #category : #visiting }

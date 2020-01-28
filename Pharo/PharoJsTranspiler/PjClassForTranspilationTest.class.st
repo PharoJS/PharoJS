@@ -16,6 +16,16 @@ Class {
 	#category : #'PharoJsTranspiler-Tests-Support'
 }
 
+{ #category : #'accessing structure variables' }
+PjClassForTranspilationTest class >> a [
+	^ A
+]
+
+{ #category : #'accessing structure variables' }
+PjClassForTranspilationTest class >> b [
+	^ B
+]
+
 { #category : #any }
 PjClassForTranspilationTest class >> c1 [
 ]
@@ -39,6 +49,8 @@ PjClassForTranspilationTest class >> click: ev [
 
 { #category : #any }
 PjClassForTranspilationTest class >> initialize [
+	A := #testA.
+
 ]
 
 { #category : #'pharojs support' }

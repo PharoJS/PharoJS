@@ -20,7 +20,7 @@ PjClass class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
 		Behavior -> #( subclassesDo: allSubclasses allSubclassesDo: isBehavior ).
-		Class -> #( isClass ).
+		Class -> #( isClass classVarNames).
 	}
 ]
 
@@ -33,6 +33,16 @@ PjClass >> adoptInstance: anObject [
 { #category : #'Behavior: reflection' }
 PjClass >> class [
 	^ PjCore metaclassOf: self
+]
+
+{ #category : #'Behavior: reflection' }
+PjClass >> classVarNamed: aString [
+	^ self classPool at: aString
+]
+
+{ #category : #'Behavior: reflection' }
+PjClass >> classVarNamed: aString put: otherString [
+	self classPool at: aString put: otherString
 ]
 
 { #category : #testing }

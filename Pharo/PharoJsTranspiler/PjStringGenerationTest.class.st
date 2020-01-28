@@ -11,7 +11,7 @@ PjStringGenerationTest class >> classVariablesHolderName [
 
 { #category : #asserting }
 PjStringGenerationTest >> assert: aPjJavascriptAstNode asStringEquals: aString [
-	self assert: aPjJavascriptAstNode asJavascriptString equals: aString
+	self assert: (PjStringGenerator new asString: aPjJavascriptAstNode) equals: aString
 
 ]
 
@@ -59,34 +59,23 @@ PjStringGenerationTest >> testClassCall [
 PjStringGenerationTest >> testClassVariables [
 	| astAssignment classVar |
 	classVar := (PjClassVariableNode identifier: #ClassVarForTest).
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+	astAssignment := PjAssignNode target: classVar expression: classVar.
 	self
 		assert: astAssignment
-		asStringEquals: 'this.ClassVarForTest_(this.ClassVarForTest)'.
+		asStringEquals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
 	self
 		assert: (PjStringGenerator new currentClass: self class; asString: astAssignment)
-		equals: 'this.ClassVarForTest_(this.ClassVarForTest)'.
+		equals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
 	self
 		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
-		equals: 'this.',self classVariablesHolderName,'.ClassVarForTest_(this.',self classVariablesHolderName,'.ClassVarForTest)'.
+		equals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
 	classVar myClass: self class class.
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
 	self
 		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
-		equals: 'this.',self classVariablesHolderName,'.ClassVarForTest=this.',self classVariablesHolderName,'.ClassVarForTest'.
+		equals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
 ]
 
@@ -259,33 +248,23 @@ PjStringGenerationTest >> testOptimizedJsX [
 
 { #category : #testing }
 PjStringGenerationTest >> testPoolVariables [
-	| astAssignment classVar |
-	classVar := PjPoolVariableNode identifier: #PoolVarForTest.
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+	| astAssignment poolVar |
+	poolVar := (PjPoolVariableNode identifier: #PoolVarForTest) poolReference: 'cp$'.
+	astAssignment := PjAssignNode target: poolVar expression: poolVar.
 	self
 		assert: astAssignment
-		asStringEquals: 'this.PoolVarForTest_(this.PoolVarForTest$())'.
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+		asStringEquals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 	self
 		assert: (PjStringGenerator new currentClass: self class; asString: astAssignment)
-		equals: 'this.PoolVarForTest_(this.PoolVarForTest$())'.
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+		equals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 	self
 		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
-		equals: 'this.',self classVariablesHolderName,'.PoolVarForTest_(this.',self classVariablesHolderName,'.PoolVarForTest$())'.
-	classVar myClass: self class class.
-	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+		equals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
+
+	poolVar myClass: self class class.
 	self
 		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
-		equals: 'this.',self classVariablesHolderName,'.PoolVarForTest_(this.',self classVariablesHolderName,'.PoolVarForTest$())'.
+		equals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 
 ]
 
@@ -320,10 +299,10 @@ PjStringGenerationTest >> testReservedWords [
 		asStringEquals: 'for'.
 	self
 		assert: (PjClassVariableNode identifier: #prototype )
-		asStringEquals: '.$prototype'.
+		asStringEquals: 'cp$.$prototype'.
 	self
 		assert: (PjClassVariableNode identifier: #for )
-		asStringEquals: '.for'.
+		asStringEquals: 'cp$.for'.
 	self
 		assert: (PjInstanceVariableNode identifier: #while )
 		asStringEquals: '.while'.

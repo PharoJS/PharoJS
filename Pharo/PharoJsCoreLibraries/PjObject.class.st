@@ -47,6 +47,7 @@ PjObject class >> jsTranspilationImportMethods [
 				isKindOf: error: respondsTo: isMemberOf: className
 				isNotNil notNil isString isClass isBlock isNumber isBehavior 
 				isCollection isArray isFloat isInteger isCharacter isSymbol isStream
+				isPjProxyOrNil
 			).
 		Collection -> #(
 				addAll: 

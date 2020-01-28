@@ -16,14 +16,8 @@ PjSharedPoolDefinitionTranspilationTest >> expectedClassName [
 
 { #category : #testing }
 PjSharedPoolDefinitionTranspilationTest >> testClassVariables [
-	| classVarsHolder |
-	classVarsHolder := className, '.', self classVariablesHolderName.
-	self assert: self jsCode includes: '(',classVarsHolder,')'.
-	self assert: self jsCode includes: '$$.A_=function($0){return $$.A=$0}'.
-	self assert: self jsCode includes: '$$.A$=function(){return $$.A}'.
-	self assert: self jsCode includes: '$$.B_=function($0){return $$.B=$0}'.
-	self assert: self jsCode includes: '$$.B$=function(){return $$.B}'.
-	self assert: self jsCode includes: '$$.X_=function($0){return $$.X=$0}'.
-	self assert: self jsCode includes: '$$.X$=function(){return $$.X}'.
+	self assert: self jsCode includes: className, '.$$def('.
+	self assert: self jsCode includes: 'cp$.A=cp$.B=cp$.C=cp$.X=null;'.
+	self assert: self jsCode includes: 'cp$.A="sharedA"'.
 
 ]

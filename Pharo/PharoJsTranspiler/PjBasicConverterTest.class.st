@@ -7,6 +7,11 @@ Class {
 	#category : #'PharoJsTranspiler-Tests'
 }
 
+{ #category : #'test mock' }
+PjBasicConverterTest >> addPoolReference: aClass [ 
+	^ 'mock$'
+]
+
 { #category : #testing }
 PjBasicConverterTest >> testArray [
 	| x |
@@ -223,11 +228,12 @@ PjBasicConverterTest >> testMethodBasic6 [
 { #category : #testing }
 PjBasicConverterTest >> testReadWriteClassVariables [
 	| astAssignment classVar |
-	classVar := (PjClassVariableNode identifier: #ClassVarForTest) myClass: PjAstTests.
-	self assertContentsOf: [ ClassVarForTest ] convertsTo: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+	converter classForConversion: PjAstTests.
+	classVar := (PjClassVariableNode identifier: #ClassVarForTest) poolReference: PjAstTests;myClass: PjAstTests.
+	self assertContentsOf: [ ClassVarForTest ] convertsTo: classVar.
 	astAssignment := PjAssignNode 
-		target:  (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true)
-		expression: (PjFieldNode target: selfNode selectorNode: classVar isNonNil: true).
+		target:  classVar
+		expression: classVar.
 	self assertContentsOf: [ ClassVarForTest := ClassVarForTest ] convertsTo: astAssignment.
 ]
 

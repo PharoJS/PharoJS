@@ -16,6 +16,11 @@ Object >> asJsObjectUsing: converter [
 ]
 
 { #category : #'*PharoJsCoreLibraries' }
+Object >> isPjProxyOrNil [
+	^ false
+]
+
+{ #category : #'*PharoJsCoreLibraries' }
 Object class >> javascriptPlaceholder [
 	^PjObject
 ]
