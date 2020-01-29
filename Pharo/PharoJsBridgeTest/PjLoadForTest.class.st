@@ -22,15 +22,8 @@ PjLoadForTest class >> fortyTwo [
 
 { #category : #any }
 PjLoadForTest class >> initialize [
-	" don't do this at home, kids: i.e. you really shouldn't be testig if you are running on Pharo or a browser"
-	" this is just here because Pharo 7 ships with a breakpoint set in the classVarNamed:put: method! "
-"	JSON isPjProxyOrNil ifTrue: ["
-		Y:='Y value'.
-		Z:='Z value'.
-"	] ifFalse: [
-		self classVarNames do: [: key |
-			self classVarNamed: key put: key,' value'
-	]]."
+	Y:='Y original'.
+	Z:='Z original'.
 	X := nil
 ]
 
@@ -38,6 +31,14 @@ PjLoadForTest class >> initialize [
 PjLoadForTest class >> reset [
 	<pharoJsSkip>
 	self initialize
+]
+
+{ #category : #any }
+PjLoadForTest class >> setupClassVars [
+	self classVarNames do: [: key |
+		self classVarNamed: key put: key,' value'
+	].
+
 ]
 
 { #category : #any }

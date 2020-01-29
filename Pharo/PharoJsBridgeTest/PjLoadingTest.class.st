@@ -35,6 +35,14 @@ PjLoadingTest >> testEvalBlock [
 	self
 		assert: (self bridge evalBlock: [ PjLoadForTest classVarNames size ])
 		equals: PjLoadForTest classVarNames size.
+	self
+		bridge evalBlock: [ PjLoadForTest setupClassVars ].
+	self
+		assert: (self bridge evalBlock: [ PjLoadForTest y ])
+		equals: 'Y value'.
+	self
+		assert: (self bridge evalBlock: [ PjLoadForTest new z ])
+		equals: 'Z value'.
 
 ]
 

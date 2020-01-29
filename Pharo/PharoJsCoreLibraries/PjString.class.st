@@ -43,8 +43,16 @@ PjString class >> new [
 ]
 
 { #category : #'instance creation' }
-PjString class >> new: size [
-	<javascript: 'var str=String.fromCharCode(0);if("".repeat) return str.repeat(size);else return new Array(size+1).join(str)'>
+PjString class >> new: ignored [
+	^ self new
+]
+
+{ #category : #'instance creation' }
+PjString class >> streamContents: aBlock [
+	| stream |
+	stream := PjStringStream new.
+	aBlock value: stream.
+	^ stream contents
 ]
 
 { #category : #'instance creation' }
@@ -295,6 +303,11 @@ PjString >> proxyResponse [
 	<javascript: 'return ""+this'>
 ]
 
+{ #category : #writing }
+PjString >> readStream [
+	^ PjStringStream on: self
+]
+
 { #category : #accessing }
 PjString >> replaceFrom: start to: stop with: replacement startingAt: repStart [
 	<javascript: '
@@ -319,6 +332,11 @@ PjString >> split: anArray [
 { #category : #converting }
 PjString >> value [
 	<javascript: 'return ""+this'>
+]
+
+{ #category : #writing }
+PjString >> writeStream [
+	^ PjStringStream new
 ]
 
 { #category : #comparing }
