@@ -34,9 +34,3 @@ PjArrayStream >> nextPut: aValue [
 	array addLast: {aValue}.
 	^ aValue
 ]
-
-{ #category : #accessing }
-PjArrayStream >> nextPutAll: aCollection [
-	array addLast: aCollection.
-	^ aCollection
-]

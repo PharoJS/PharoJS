@@ -78,6 +78,12 @@ PjReadWriteStream >> nextPut: aCharacter [
 ]
 
 { #category : #accessing }
+PjReadWriteStream >> nextPutAll: aCollection [
+	array addLast: aCollection.
+	^ aCollection
+]
+
+{ #category : #accessing }
 PjReadWriteStream >> on: temp [
 	self load: temp.
 	self reset.

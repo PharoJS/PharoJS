@@ -222,7 +222,9 @@ PjServer >> stop [
 PjServer >> stopWebSocket [
 	self webSocket ifNil: [ ^self ].
 	self webSocket isConnected ifFalse: [ ^self ].
-	self webSocket close
+	[
+		self webSocket close
+	] on: ConnectionTimedOut do: [ " nothing: the socket's gone away " ]
 ]
 
 { #category : #accessing }

@@ -27,9 +27,3 @@ PjStringStream >> nextPut: aCharacter [
 	array addLast: aCharacter asString.
 	^ aCharacter
 ]
-
-{ #category : #accessing }
-PjStringStream >> nextPutAll: aString [
-	array addLast: aString.
-	^ aString
-]
