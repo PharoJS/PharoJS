@@ -5,7 +5,7 @@ To install PharoJS for Pharo 7 and above, perform the following code in a playgr
 <pre>
 Metacello new
   baseline: 'PharoJS';
-  repository: 'github://bouraqadi/PharoJS';
+  repository: 'github://PharoJS/PharoJS';
   load
 </pre>
 
