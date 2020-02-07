@@ -167,6 +167,12 @@ PjNumber >> asFloat [
 ]
 
 { #category : #converting }
+PjNumber >> asJsObject [
+	"Ensure we get a primitive type number and not a Number object"
+	<javascript: 'return this.valueOf()'>
+]
+
+{ #category : #converting }
 PjNumber >> asString [
 	<javascript: 'return this + ""'>
 ]

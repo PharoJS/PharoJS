@@ -101,3 +101,16 @@ PjAsJsObjectInJs >> testIgnoreArrayOfNonAssociations [
 	self assertBlock: [#(1 2 3) asJsObject class == Array].
 
 ]
+
+{ #category : #tests }
+PjAsJsObjectInJs >> testNumber [
+	self assertBlock: [ 3.14 asJsObject == 3.14].
+	self assertBlock: [ 42 asJsObject == 42].
+
+]
+
+{ #category : #tests }
+PjAsJsObjectInJs >> testString [
+	self assertBlock: [ 'Smalltalk Rocks!' asJsObject == 'Smalltalk Rocks!'].
+
+]

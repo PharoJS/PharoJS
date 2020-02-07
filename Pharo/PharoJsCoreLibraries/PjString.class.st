@@ -131,6 +131,12 @@ PjString >> asInteger [
 ]
 
 { #category : #converting }
+PjString >> asJsObject [
+	"Ensure we get a primitive type string and not a String object"
+	<javascript: 'return this.valueOf()'>
+]
+
+{ #category : #converting }
 PjString >> asLowercase [
 	^ self js_toLowerCase
 ]
