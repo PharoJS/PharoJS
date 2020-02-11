@@ -13,7 +13,7 @@ PjOptimizedClassTranspilationTest >> setUp [
 { #category : #testing }
 PjOptimizedClassTranspilationTest >> testBlocksAndReturns [
 	|prefix|
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := transpiler pharoJsSelectorPrefix.
 	self jsCode: (self convertClass: PjClassForTranspilationTest).
 	self assertInstanceMethod: #whileNotAtEnd
 		equals: '(){this.', prefix, 'm_(function(x){while(true==$asNil$(x).', prefix, 'm1()){}});while(true==this.', prefix, 'm2()){}return 42}'.
@@ -25,7 +25,7 @@ PjOptimizedClassTranspilationTest >> testBlocksAndReturns [
 { #category : #testing }
 PjOptimizedClassTranspilationTest >> testSubIf [
 	self jsCode: (self convertClass: PjClassForTranspilationTest).
-	self assertClassMethod: #setupMessage equals: '(){return $asNil$((this===JsClass?"":"Sorry, ")).', PjTranspiler pharoJsSelectorPrefix, '44_("Click anywhere")}'.
-	self assertClassMethod: #click: equals: '(ev){var m;var $_err_$={};try{m=($1=this.', PjTranspiler pharoJsSelectorPrefix, 'setupMessage())==undefined?',PjCore throwFunctionName,'($_err_$=this):$1;return m}catch(e){if(e===$_err_$)return e;throw e}}'.
+	self assertClassMethod: #setupMessage equals: '(){return $asNil$((this===JsClass?"":"Sorry, ")).', transpiler pharoJsSelectorPrefix, '44_("Click anywhere")}'.
+	self assertClassMethod: #click: equals: '(ev){var m;var $_err_$={};try{m=($1=this.', transpiler pharoJsSelectorPrefix, 'setupMessage())==undefined?',PjCore throwFunctionName,'($_err_$=this):$1;return m}catch(e){if(e===$_err_$)return e;throw e}}'.
 
 ]

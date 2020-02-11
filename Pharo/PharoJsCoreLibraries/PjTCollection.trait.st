@@ -9,10 +9,10 @@ Trait {
 }
 
 { #category : #random }
-PjTCollection classSide >> atRandom_jsGenerator [
+PjTCollection classSide >> atRandom_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'var randomIndex = Math.floor((Math.random() * this.', PjTranspiler pharoJsSelectorPrefix, 'size()) + 1);
-	return this.', PjTranspiler pharoJsSelectorPrefix, 'at_(randomIndex);'
+	^'var randomIndex = Math.floor((Math.random() * this.', transpiler pharoJsSelectorPrefix, 'size()) + 1);
+	return this.', transpiler pharoJsSelectorPrefix, 'at_(randomIndex);'
 ]
 
 { #category : #'pharojs support' }
@@ -39,5 +39,5 @@ PjTCollection >> = aMagnitude [
 
 { #category : #random }
 PjTCollection >> atRandom [
-	<jsGenerator: #atRandom_jsGenerator>
+	<jsGenerator: #atRandom_jsGenerator:>
 ]

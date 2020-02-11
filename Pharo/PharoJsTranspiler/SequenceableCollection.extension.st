@@ -9,10 +9,13 @@ SequenceableCollection >> includes: seq1 before: seq2 [
 ]
 
 { #category : #'*PharoJsTranspiler' }
+SequenceableCollection >> isFreeJavascriptValue [
+	^ self allSatisfy: #isFreeJavascriptValue
+]
+
+{ #category : #'*PharoJsTranspiler' }
 SequenceableCollection >> isLiteralJavascriptValue [
-	self do: [ : each |
-		each isLiteralJavascriptValue ifFalse: [ ^ false ] ].
-	^ true
+	^ self allSatisfy: #isLiteralJavascriptValue
 ]
 
 { #category : #'*PharoJsTranspiler' }

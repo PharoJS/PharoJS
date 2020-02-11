@@ -15,6 +15,6 @@ PjCoreLibrariesTranspilationTest >> testPjStringClass [
 PjCoreLibrariesTranspilationTest >> testPjUndefinedObjectClass [
 	self jsCode: (self convertClass: PjUndefinedObject).
 	self assertInstanceMethod: #= equals:  '(other){return undefined==other}'.
-	self assertClassMethod: #new equals: '(){return Smalltalk.', PjTranspiler pharoJsSelectorPrefix, 'signal_("cannot create instances of UndefinedObject")}'.
-	self assertClassMethod: #javascriptInitialize equals: '(){Smalltalk.', PjTranspiler pharoJsSelectorPrefix, 'nilInJs_(this.', PjTranspiler pharoJsSelectorPrefix, 'basicNew());return this}'
+	self assertClassMethod: #new equals: '(){return Smalltalk.', transpiler pharoJsSelectorPrefix, 'signal_("cannot create instances of UndefinedObject")}'.
+	self assertClassMethod: #javascriptInitialize equals: '(){Smalltalk.', transpiler pharoJsSelectorPrefix, 'nilInJs_(this.', transpiler pharoJsSelectorPrefix, 'basicNew());return this}'
 ]

@@ -20,9 +20,7 @@ Class {
 		'writtenDNUs',
 		'beforeCodeOutputHook',
 		'shouldWriteDnu',
-		'poolsUsed'
-	],
-	#classInstVars : [
+		'poolsUsed',
 		'pharoJsSelectorPrefix'
 	],
 	#category : #'PharoJsTranspiler-Kernel'
@@ -48,11 +46,6 @@ PjTranspiler class >> defaultPharoJsSelectorPrefix [
 	^'pj_'
 ]
 
-{ #category : #'class initialization' }
-PjTranspiler class >> initialize [
-	self pharoJsSelectorPrefix: self defaultPharoJsSelectorPrefix
-]
-
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
@@ -60,12 +53,7 @@ PjTranspiler class >> lineEnding [
 
 { #category : #transpiling }
 PjTranspiler class >> pharoJsSelectorPrefix [
-	^pharoJsSelectorPrefix
-]
-
-{ #category : #transpiling }
-PjTranspiler class >> pharoJsSelectorPrefix: newSelectorsPrefix [
-	pharoJsSelectorPrefix := newSelectorsPrefix
+	^ self defaultPharoJsSelectorPrefix
 ]
 
 { #category : #accessing }
@@ -290,7 +278,7 @@ PjTranspiler >> initialize [
 	writtenDNUs := Set new.
 	poolsUsed := IdentityDictionary new.
 	classesReferencingCache := IdentityDictionary new.
-
+	self pharoJsSelectorPrefix: self class defaultPharoJsSelectorPrefix
 ]
 
 { #category : #accessing }
@@ -386,6 +374,17 @@ PjTranspiler >> orderForWriting: classes [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> pharoJsSelectorPrefix [
+	^ pharoJsSelectorPrefix
+]
+
+{ #category : #transpiling }
+PjTranspiler >> pharoJsSelectorPrefix: newSelectorsPrefix [
+	pharoJsSelectorPrefix := newSelectorsPrefix.
+
+]
+
+{ #category : #transpiling }
 PjTranspiler >> poolFor: myClass [
 	^ poolsUsed at: myClass ifAbsentPut: [OrderedCollection with: myClass]
 ]
@@ -393,11 +392,15 @@ PjTranspiler >> poolFor: myClass [
 { #category : #transpiling }
 PjTranspiler >> poolReference: aClass for: myClass [
 	| index pool |
-	pool := self poolFor: myClass.
-	(pool includes: aClass) ifFalse: [
-		pool add: aClass
+	myClass ifNil: [
+		index := 0
+	] ifNotNil: [
+		pool := self poolFor: myClass instanceSide.
+		(pool includes: aClass) ifFalse: [
+			pool add: aClass
+		].
+		index := pool indexOf: aClass.
 	].
-	index := pool indexOf: aClass.
 	^ index < 2 ifTrue: [
 			'cp$'
 		] ifFalse: [
@@ -412,7 +415,7 @@ PjTranspiler >> removeAllConversions: aCollection [
 
 { #category : #accessing }
 PjTranspiler >> selectorsPrefix [
-	^PjTranspiler pharoJsSelectorPrefix
+	^ self pharoJsSelectorPrefix
 ]
 
 { #category : #conversions }
@@ -456,6 +459,11 @@ PjTranspiler >> transpileMethod: aMethod [
 		convertAst: aMethod ast
 		withPrimitive: aMethod primitive.
 	generator asString: jsAst on: self jsStream with: self
+]
+
+{ #category : #transpiling }
+PjTranspiler >> transpileMethodToString: aMethod [
+	^ self onTempStreamDo: [ self transpileMethod: aMethod ]
 ]
 
 { #category : #transpiling }
@@ -528,7 +536,7 @@ PjTranspiler >> writeDnuList [
 	self 
 		writeNameForClass: self coreClass;
 		nextPut: $.;
-		nextPutAll: PjTranspiler pharoJsSelectorPrefix;
+		nextPutAll: self pharoJsSelectorPrefix;
 		nextPutAll: 'registerDnuForAll_(['.
 	selectors do: [
 		: selector |

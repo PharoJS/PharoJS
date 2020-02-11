@@ -30,9 +30,9 @@ PjObject class >> addDnuSupportFor: selector [
 ]
 
 { #category : #reflection }
-PjObject class >> allEnumeratableKeysDo_jsGenerator [
+PjObject class >> allEnumeratableKeysDo_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'for (var i in this){aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_(i)};
+	^'for (var i in this){aBlock.', transpiler pharoJsSelectorPrefix, 'value_(i)};
 	return this;'
 ]
 
@@ -62,16 +62,16 @@ PjObject class >> jsTranspilationImportMethods [
 ]
 
 { #category : #'dictionary emulation' }
-PjObject class >> keysAndValuesDo_jsGenerator [
+PjObject class >> keysAndValuesDo_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_value_(i,this[i])};
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', transpiler pharoJsSelectorPrefix, 'value_value_(i,this[i])};
 	return this;'
 ]
 
 { #category : #'dictionary emulation' }
-PjObject class >> keysDo_jsGenerator [
+PjObject class >> keysDo_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_(i)};
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', transpiler pharoJsSelectorPrefix, 'value_(i)};
 	return this;'
 ]
 
@@ -82,21 +82,21 @@ PjObject class >> nextIdentityHash [
 
 { #category : #proxy }
 PjObject class >> resultObject: result [
-	<jsGenerator: #resultObject_jsGenerator>
+	<jsGenerator: #resultObject_jsGenerator:>
 	
 ]
 
 { #category : #proxy }
-PjObject class >> resultObject_jsGenerator [
+PjObject class >> resultObject_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'if (result != undefined) return result.', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse();
+	^'if (result != undefined) return result.', transpiler pharoJsSelectorPrefix, 'proxyResponse();
 		return null;'
 ]
 
 { #category : #'dictionary emulation' }
-PjObject class >> valuesDo_jsGenerator [
+PjObject class >> valuesDo_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', PjTranspiler pharoJsSelectorPrefix, 'value_(this[i])};
+	^'for (var i in this){if(this.hasOwnProperty(i))aBlock.', transpiler pharoJsSelectorPrefix, 'value_(this[i])};
 	return this;'
 ]
 
@@ -132,7 +132,7 @@ PjObject >> allEnumeratableKeys [
 
 { #category : #reflection }
 PjObject >> allEnumeratableKeysDo: aBlock [
-	<jsGenerator: #allEnumeratableKeysDo_jsGenerator>
+	<jsGenerator: #allEnumeratableKeysDo_jsGenerator:>
 ]
 
 { #category : #converting }
@@ -264,12 +264,12 @@ PjObject >> keys [
 
 { #category : #'dictionary emulation' }
 PjObject >> keysAndValuesDo: aBlock [
-	<jsGenerator: #keysAndValuesDo_jsGenerator>
+	<jsGenerator: #keysAndValuesDo_jsGenerator:>
 ]
 
 { #category : #'dictionary emulation' }
 PjObject >> keysDo: aBlock [
-	<jsGenerator: #keysDo_jsGenerator>
+	<jsGenerator: #keysDo_jsGenerator:>
 ]
 
 { #category : #'message performing' }
@@ -394,7 +394,7 @@ PjObject >> value [
 
 { #category : #'dictionary emulation' }
 PjObject >> valuesDo: aBlock [
-	<jsGenerator: #valuesDo_jsGenerator>
+	<jsGenerator: #valuesDo_jsGenerator:>
 ]
 
 { #category : #accessing }

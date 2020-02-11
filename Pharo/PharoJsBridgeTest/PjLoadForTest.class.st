@@ -28,6 +28,12 @@ PjLoadForTest class >> initialize [
 ]
 
 { #category : #any }
+PjLoadForTest class >> literal [
+	<jsLiteralGenerator>
+	^ 'abc','def'
+]
+
+{ #category : #any }
 PjLoadForTest class >> reset [
 	<pharoJsSkip>
 	self initialize
@@ -44,6 +50,12 @@ PjLoadForTest class >> setupClassVars [
 { #category : #any }
 PjLoadForTest class >> y [
 	^ Y
+]
+
+{ #category : #any }
+PjLoadForTest >> literal [
+	<jsLiteralGenerator>
+	^ 3 + 4
 ]
 
 { #category : #any }

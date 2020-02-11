@@ -41,11 +41,6 @@ PjTStreamWriter >> nextPutAll: string [
 	self jsStream nextPutAll: string
 ]
 
-{ #category : #writing }
-PjTStreamWriter >> pharoJsSelectorPrefix [
-	^PjTranspiler pharoJsSelectorPrefix
-]
-
 { #category : #'writing low-level' }
 PjTStreamWriter >> print: anObject [
 	anObject printJsOn: self jsStream

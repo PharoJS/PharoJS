@@ -15,7 +15,7 @@ PjReplacedClassTranspilationTest >> classToTranspile [
 { #category : #testing }
 PjReplacedClassTranspilationTest >> testClassReplacement [
 	| prefix |
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := transpiler pharoJsSelectorPrefix.
 	self deny: self jsCode includes: 'function ', className, '(){}'.
 "We use defineProperty. See PjTranspiler>>#writeMethodsOf:named:with:"
 	self assert: self jsCode includes: prefix, 'add_and_(op1,op2){return op2}'.

@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'class initialization' }
-PjBoolean class >> identityHash_jsGenerator [
+PjBoolean class >> identityHash_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'if(this == true){
 		return ', true identityHash asString,';}
@@ -66,7 +66,7 @@ PjBoolean >> asString [
 
 { #category : #'not defined category' }
 PjBoolean >> identityHash [
-	<jsGenerator: #identityHash_jsGenerator>
+	<jsGenerator: #identityHash_jsGenerator:>
 ]
 
 { #category : #controlling }

@@ -21,6 +21,7 @@ PjSingleClassTranspilationTest >> expectedClassName [
 PjSingleClassTranspilationTest >> setUp [
 	super setUp.
 	transpiler poolFor: self classToTranspile.
+	transpiler pharoJsSelectorPrefix: self selectorsPrefix.
 	self jsCode: (self convertClass: self classToTranspile).
 	className := self expectedClassName
 ]
@@ -33,7 +34,7 @@ PjSingleClassTranspilationTest >> testBlockReferencingSelf [
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCascade [
 	| prefix |
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := self selectorsPrefix.
 	self assertInstanceMethod: #cascadeSelf equals: '(){return (this.', prefix, 'm1(),this.', prefix, 'm_(4),this.', prefix, 'yourself())}'.
 	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype.', prefix, 'isNil.call(this),',self classToTranspile superclass name,'.prototype.', prefix, 'yourself.call(this))}'.
 	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x).', prefix, 'foo()),$1.', prefix, 'bar(),$1.', prefix, 'yourself())}'.
@@ -72,16 +73,16 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 		superclassName,'.S=',superclassName,'.S;',
 		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
-	self assert: (self jsCode endsWith: className, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();').
+	self assert: (self jsCode endsWith: className, '.', self selectorsPrefix, 'initialize();').
 	self assertClassMethod: #javascriptName equals: nil.
-	self assertClassMethod: #methodWithJsGenerator equals: '(){', self classToTranspile classMethodJsGenerator,'}'
+	self assertClassMethod: #methodWithJsGenerator equals: '(){', (self classToTranspile classMethod_jsGenerator: transpiler),'}'
 
 ]
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCompose [
 	| prefix |
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := self selectorsPrefix.
 	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this.', prefix, 'm1()).', prefix, 'm_(4)).', prefix, 'm2()}'.
 
 ]
@@ -102,7 +103,7 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 	self deny: self jsCode includes: 'methodToSkip'.
 	self deny: self jsCode includes: 'ThisShouldBeSkipped'.
 	self assertInstanceMethod: #m: equals: '($in){console.log("abc")}'.
-	self assertInstanceMethod: #insanceMethodWithJsGenerator equals:  '(){', self classToTranspile instanceMethodJsGenerator, '}'.
+	self assertInstanceMethod: #instanceMethodWithJsGenerator equals:  '(){', (self classToTranspile instanceMethod_jsGenerator: transpiler), '}'.
 
 ]
 
@@ -120,5 +121,5 @@ PjSingleClassTranspilationTest >> testNative [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testToDoExpr [
-	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1).', PjTranspiler pharoJsSelectorPrefix, 'to_do_(10,Object);return this}'
+	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1).', self selectorsPrefix, 'to_do_(10,Object);return this}'
 ]

@@ -44,6 +44,14 @@ PjAstConverter class >> jsCodePragmaKeyword [
 
 ]
 
+{ #category : #accessing }
+PjAstConverter class >> jsLiteralGeneratorPragmaKeyword [
+	"The argument of the pragma is a selector for class side message that generates javascript code that is used as the body of the method.
+	The smalltalk code if any is simply ignored."
+	^#jsLiteralGenerator
+
+]
+
 { #category : #conversions }
 PjAstConverter >> addAllConversions: aCollection [
 	messageConverter addAllConversions: aCollection
@@ -158,7 +166,7 @@ PjAstConverter >> handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode [
 		pragmaNamed: self jsCodeGeneratorPragmaKeyword.
 	generatorSelector := jsGeneratorPragma arguments first.
 	jsCode := classForConversion instanceSide
-		perform: generatorSelector value.
+		perform: generatorSelector value with: transpiler.
 	^ self astForJsCode: jsCode
 ]
 
@@ -170,6 +178,24 @@ PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
 	^self astForJsCode: jsCode
 ]
 
+{ #category : #'as yet unclassified' }
+PjAstConverter >> handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode [ 
+	| jsCode forClass selector result |
+	forClass := aRBMethodNode scope outerScope outerScope getClass.
+	selector := aRBMethodNode selector.
+	jsCode := String streamContents: [: s |
+		s nextPutAll: 'return '.
+		result := forClass isMeta ifTrue: [
+				forClass instanceSide perform: selector
+			] ifFalse: [
+				forClass basicNew perform: selector
+			].
+		result isLiteralJavascriptValue ifFalse: [ PjJavascriptTranspilationError signal: forClass asString,'>>#',selector,' returns a value with no literal Javascript representation'].
+		result printJsOn: s.
+	].
+	^ self astForJsCode: jsCode
+]
+
 { #category : #visiting }
 PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 	| body |
@@ -177,6 +203,8 @@ PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 		ifTrue: [ ^self handleJsCodePragmaInMethodNode: aRBMethodNode ].
 	(aRBMethodNode hasPragmaNamed: self jsCodeGeneratorPragmaKeyword)
 		ifTrue: [ ^self handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode ].
+	(aRBMethodNode hasPragmaNamed: self jsLiteralGeneratorPragmaKeyword)
+		ifTrue: [ ^self handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode ].
 	pushingReturnClass := nil.	"PjReturnNode"
 	needSelfReturn := false.
 	(methodPrimitive ~= 0
@@ -284,6 +312,11 @@ PjAstConverter >> jsCodeGeneratorPragmaKeyword [
 { #category : #accessing }
 PjAstConverter >> jsCodePragmaKeyword [
 	^self class jsCodePragmaKeyword
+]
+
+{ #category : #'as yet unclassified' }
+PjAstConverter >> jsLiteralGeneratorPragmaKeyword [
+	^ self class jsLiteralGeneratorPragmaKeyword
 ]
 
 { #category : #accessing }

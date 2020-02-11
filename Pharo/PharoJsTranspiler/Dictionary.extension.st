@@ -1,6 +1,14 @@
 Extension { #name : #Dictionary }
 
 { #category : #'*PharoJsTranspiler' }
+Dictionary >> isFreeJavascriptValue [
+	self keysAndValuesDo: [ : key : value |
+		key isString ifFalse: [ ^ false ] .
+		value isFreeJavascriptValue ifFalse: [ ^ false ] ].
+	^ true
+]
+
+{ #category : #'*PharoJsTranspiler' }
 Dictionary >> isLiteralJavascriptValue [
 	self keysAndValuesDo: [ : key : value |
 		key isString ifFalse: [ ^ false ] .

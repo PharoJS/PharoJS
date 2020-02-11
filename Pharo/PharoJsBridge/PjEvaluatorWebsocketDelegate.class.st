@@ -51,11 +51,11 @@ PjEvaluatorWebsocketDelegate class >> default: newInstance [
 ]
 
 { #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate class >> eval_jsGenerator [
+PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'var result;
 	try{
-		result = Object.', PjTranspiler pharoJsSelectorPrefix,'resultObject_((function(){return this.eval(aString)})());
+		result = Object.', transpiler pharoJsSelectorPrefix,'resultObject_((function(){return this.eval(aString)})());
 	}catch(exception){
 		result={exception:exception.message};
 	}
@@ -78,7 +78,7 @@ PjEvaluatorWebsocketDelegate class >> initialize [
 ]
 
 { #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator [
+PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'
 	var self=this;
@@ -88,9 +88,9 @@ PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGe
 		};
 	function callback(name,ev,jsThis) {
 		if (stop) ev.stopPropagation();
-		self.', PjTranspiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({cb : [name,
-								Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(ev),
-								Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]}));
+		self.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({cb : [name,
+								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(ev),
+								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]}));
 	}
 	PjBlockClosureProxy.$PjRefCount=0;
 	return PjBlockClosureProxy;
@@ -98,11 +98,11 @@ PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGe
 ]
 
 { #category : #'initialize-release' }
-PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator [
+PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'var wsd=this;
 	return function(){
-		wsd.', PjTranspiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', PjTranspiler pharoJsSelectorPrefix, 'resultObject_(this)}));
+		wsd.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(this)}));
 		return this
 	}'
 ]
@@ -192,7 +192,7 @@ PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> eval: aString [
-	<jsGenerator: #eval_jsGenerator>
+	<jsGenerator: #eval_jsGenerator:>
 ]
 
 { #category : #'initialize-release' }
@@ -219,12 +219,12 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation: stop [
-	<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator>
+	<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>
 ]
 
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> makeInspect [
-	<jsGenerator: #makeInspect_jsGenerator>
+	<jsGenerator: #makeInspect_jsGenerator:>
 ]
 
 { #category : #connecting }

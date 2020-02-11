@@ -21,6 +21,11 @@ Object >> convertToJsUsing: aPjTranspiler [
 ]
 
 { #category : #'*PharoJsTranspiler' }
+Object >> isFreeJavascriptValue [
+	^ self isLiteralJavascriptValue
+]
+
+{ #category : #'*PharoJsTranspiler' }
 Object >> isLiteralJavascriptValue [
 	^ false
 ]

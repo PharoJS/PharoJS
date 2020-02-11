@@ -34,12 +34,12 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWithPrefix: codeString be
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
-	self assert: firstClass inCodeWith: '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();' before: lastClass.
+	self assert: firstClass inCodeWith: '.', transpiler pharoJsSelectorPrefix, 'initialize();' before: lastClass.
 ]
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
-	self assert: firstClass inCodeWithPrefix: '.', PjTranspiler pharoJsSelectorPrefix, 'subclass_("' before: lastClass.
+	self assert: firstClass inCodeWithPrefix: '.', transpiler pharoJsSelectorPrefix, 'subclass_("' before: lastClass.
 
 ]
 
@@ -91,11 +91,11 @@ PjPackageTranspilationTest >> testJavascriptInitializeOverridesClassInitialize [
 	PjClientForJavascriptInitializationTest.
 	PjProviderForInitializationTest
 	}.
-	self assert: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'javascriptInitialize()'.
-	self deny: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize()'.
+	self assert: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'javascriptInitialize()'.
+	self deny: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'initialize()'.
 	self 
-		assert: PjProviderForInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize()'
-		appearsBefore: PjClientForJavascriptInitializationTest name, '.', PjTranspiler pharoJsSelectorPrefix, 'javascriptInitialize()'
+		assert: PjProviderForInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'initialize()'
+		appearsBefore: PjClientForJavascriptInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'javascriptInitialize()'
 ]
 
 { #category : #testing }

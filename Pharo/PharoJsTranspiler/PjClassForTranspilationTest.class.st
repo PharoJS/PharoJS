@@ -35,7 +35,7 @@ PjClassForTranspilationTest class >> c2 [
 ]
 
 { #category : #'pharojs support' }
-PjClassForTranspilationTest class >> classMethodJsGenerator [
+PjClassForTranspilationTest class >> classMethod_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^self name asJSON
 ]
@@ -54,7 +54,7 @@ PjClassForTranspilationTest class >> initialize [
 ]
 
 { #category : #'pharojs support' }
-PjClassForTranspilationTest class >> instanceMethodJsGenerator [
+PjClassForTranspilationTest class >> instanceMethod_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'return 1', ' + ', '2;'
 ]
@@ -93,7 +93,7 @@ PjClassForTranspilationTest class >> m1 [
 
 { #category : #any }
 PjClassForTranspilationTest class >> methodWithJsGenerator [
-	<jsGenerator: #classMethodJsGenerator>
+	<jsGenerator: #classMethod_jsGenerator:>
 ]
 
 { #category : #any }
@@ -147,8 +147,8 @@ PjClassForTranspilationTest >> composedCalls [
 ]
 
 { #category : #any }
-PjClassForTranspilationTest >> insanceMethodWithJsGenerator [
-		<jsGenerator: #instanceMethodJsGenerator>
+PjClassForTranspilationTest >> instanceMethodWithJsGenerator [
+		<jsGenerator: #instanceMethod_jsGenerator:>
 	^self
 ]
 

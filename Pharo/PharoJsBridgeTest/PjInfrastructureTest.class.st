@@ -14,20 +14,22 @@ PjInfrastructureTest >> testCallGetsTrampolined [
 
 { #category : #testing }
 PjInfrastructureTest >> testDNUSetup [
+	| prefix |
+	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
 	self
-		assert: (self bridge evalJavascript: 'undefined === document.', PjTranspiler pharoJsSelectorPrefix, 'children').
+		assert: (self bridge evalJavascript: 'undefined === document.', prefix, 'children').
 	self assert: (self bridge evalBlock: [ document children ~= nil ]).
 	self
 		assert:
-			(self bridge evalJavascript: 'window.', PjTranspiler pharoJsSelectorPrefix, 'children !== document.', PjTranspiler pharoJsSelectorPrefix, 'children').
+			(self bridge evalJavascript: 'window.', prefix, 'children !== document.', prefix, 'children').
 	self
-		assert: (self bridge evalJavascript: 'window.', PjTranspiler pharoJsSelectorPrefix, 'children !== undefined').
+		assert: (self bridge evalJavascript: 'window.', prefix, 'children !== undefined').
 	self
-		assert: (self bridge evalJavascript: 'window.', PjTranspiler pharoJsSelectorPrefix, 'children === console.', PjTranspiler pharoJsSelectorPrefix, 'children').
+		assert: (self bridge evalJavascript: 'window.', prefix, 'children === console.', prefix, 'children').
 	self
 		assert:
 			(self bridge
-				evalJavascript: 'HTMLDocument.prototype.', PjTranspiler pharoJsSelectorPrefix, 'children === document.', PjTranspiler pharoJsSelectorPrefix, 'children')
+				evalJavascript: 'HTMLDocument.prototype.', prefix, 'children === document.', prefix, 'children')
 ]
 
 { #category : #testing }
@@ -51,7 +53,7 @@ PjInfrastructureTest >> testIs [
 { #category : #testing }
 PjInfrastructureTest >> testJSSelector [
 	|prefix|
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
 	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: prefix, 'foo'.
 	self assert: [PjCore makePharoJsSelector: #foo:] evaluatesTo: prefix, 'foo_'.
 	self assert: [PjCore makePharoJsSelector: ','] evaluatesTo: prefix, '44_'.

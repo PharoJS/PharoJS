@@ -121,3 +121,8 @@ PjBridgeTestCase >> tearDown [
 	Author uniqueInstance fullName: authorInitialName.
 
 ]
+
+{ #category : #'test support' }
+PjBridgeTestCase >> transpileMethod: aMethod [
+	^ self bridge transpiler transpileMethodToString: aMethod
+]

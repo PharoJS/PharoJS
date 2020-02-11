@@ -199,16 +199,16 @@ PjCore class >> javascriptName [
 
 { #category : #'reflection support' }
 PjCore class >> keys: anObject [
-	<jsGenerator: #keys_jsGenerator>
+	<jsGenerator: #keys_jsGenerator:>
 ]
 
 { #category : #'reflection support' }
-PjCore class >> keys_jsGenerator [
+PjCore class >> keys_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'
 	var result={};
-	for (var i in anObject) { if(typeof anObject[i]!="function" && anObject[i]!=null && anObject[i].', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse) result[i]=anObject[i].', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse()}
-	return {', PjTranspiler pharoJsSelectorPrefix, 'proxyResponse:function(){return {keys:result}}}
+	for (var i in anObject) { if(typeof anObject[i]!="function" && anObject[i]!=null && anObject[i].', transpiler pharoJsSelectorPrefix, 'proxyResponse) result[i]=anObject[i].', transpiler pharoJsSelectorPrefix, 'proxyResponse()}
+	return {', transpiler pharoJsSelectorPrefix, 'proxyResponse:function(){return {keys:result}}}
 	'
 ]
 
@@ -219,14 +219,14 @@ PjCore class >> log: message [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> makeDNU: aSelector [
-	<jsGenerator: #makeDNU_jsGenerator>
+	<jsGenerator: #makeDNU_jsGenerator:>
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjCore class >> makeDNU_jsGenerator [
+PjCore class >> makeDNU_jsGenerator: transpiler [
 	<pharoJsSkip>
 	|prefix|
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := transpiler pharoJsSelectorPrefix.
 	^'var pjCore=this,ss=this.', prefix, 'makeSmalltalkSelector_(aSelector);
 	switch (ss.split(":").length) {
 		case 1: return function __DNU(){
@@ -330,17 +330,17 @@ PjCore class >> metaclassClass: anObject [
 
 { #category : #'reflection support' }
 PjCore class >> metaclassOf: aClass [
-	<jsGenerator: #metaclassOf_jsGenerator>
+	<jsGenerator: #metaclassOf_jsGenerator:>
 ]
 
 { #category : #'reflection support' }
-PjCore class >> metaclassOf_jsGenerator [
+PjCore class >> metaclassOf_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'if(this.metaclassClass!==this) return this.metaclassClass.', PjTranspiler pharoJsSelectorPrefix, 'metaclassOf_(aClass);
+	^'if(this.metaclassClass!==this) return this.metaclassClass.', transpiler pharoJsSelectorPrefix, 'metaclassOf_(aClass);
 	var theMetaClass={ prototype: aClass.__proto__,__proto__:this.theClassClass.prototype,
-		', PjTranspiler pharoJsSelectorPrefix, 'name: function(){return aClass.', PjTranspiler pharoJsSelectorPrefix, 'name()+" class"},
-		', PjTranspiler pharoJsSelectorPrefix, 'theNonMetaClass: function(){return aClass},
-		', PjTranspiler pharoJsSelectorPrefix, 'theMetaClass: function(){return theMetaClass},
+		', transpiler pharoJsSelectorPrefix, 'name: function(){return aClass.', transpiler pharoJsSelectorPrefix, 'name()+" class"},
+		', transpiler pharoJsSelectorPrefix, 'theNonMetaClass: function(){return aClass},
+		', transpiler pharoJsSelectorPrefix, 'theMetaClass: function(){return theMetaClass},
 		};
 	return theMetaClass
 	'
@@ -366,14 +366,13 @@ PjCore class >> nilTestFunctionName [
 
 { #category : #accessing }
 PjCore class >> pharoJsSelectorPrefix [
-	<jsGenerator: #pharoJsSelectorPrefix_jsGenerator>
+	<jsGenerator: #pharoJsSelectorPrefix_jsGenerator:>
 	^ PjTranspiler pharoJsSelectorPrefix
 ]
 
 { #category : #accessing }
-PjCore class >> pharoJsSelectorPrefix_jsGenerator [
-	<pharoJsSkip>
-	^ 'return ', PjTranspiler pharoJsSelectorPrefix asJSON
+PjCore class >> pharoJsSelectorPrefix_jsGenerator: transpiler [
+	^ 'return ',transpiler pharoJsSelectorPrefix asJSON
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -407,34 +406,34 @@ PjCore class >> registerDnuForAll: anArray [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> selector: selector arguments: args [
-	<jsGenerator: #selector_arguments_jsGenerator>
+	<jsGenerator: #selector_arguments_jsGenerator:>
 
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjCore class >> selector_arguments_jsGenerator [
+PjCore class >> selector_arguments_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'if(this.messageClass!==this)
-		return this.messageClass.', PjTranspiler pharoJsSelectorPrefix, 'selector_arguments_(selector,arguments);
+		return this.messageClass.', transpiler pharoJsSelectorPrefix, 'selector_arguments_(selector,arguments);
 	return {
 			selector: selector,
-			', PjTranspiler pharoJsSelectorPrefix, 'selector: function(){return this.selector},
+			', transpiler pharoJsSelectorPrefix, 'selector: function(){return this.selector},
 			arguments: args,
-			', PjTranspiler pharoJsSelectorPrefix, 'arguments: function(){return this.arguments}
+			', transpiler pharoJsSelectorPrefix, 'arguments: function(){return this.arguments}
 		}'
 
 ]
 
 { #category : #'reflection support' }
 PjCore class >> subclassSelector [
-	<jsGenerator: #subclassSelector_jsGenerator>
+	<jsGenerator: #subclassSelector_jsGenerator:>
 
 ]
 
 { #category : #'reflection support' }
-PjCore class >> subclassSelector_jsGenerator [
+PjCore class >> subclassSelector_jsGenerator: transpiler [
 	<pharoJsSkip>
-	^'return ', (PjCore pharoJsSelectorPrefix, #subclass_) asJSON
+	^'return ', (transpiler pharoJsSelectorPrefix, #subclass_) asJSON
 ]
 
 { #category : #'throw support' }

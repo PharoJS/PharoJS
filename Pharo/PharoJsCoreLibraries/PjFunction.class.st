@@ -32,12 +32,12 @@ PjFunction class >> jsTranspilationImportMethods [
 ]
 
 { #category : #exceptions }
-PjFunction class >> on_do_jsGenerator [
+PjFunction class >> on_do_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'try{
 		return this()
 	}catch(ex){
-		if(ex.', PjTranspiler pharoJsSelectorPrefix, 'isKindOf_(exception)){return handlerAction(ex)}
+		if(ex.', transpiler pharoJsSelectorPrefix, 'isKindOf_(exception)){return handlerAction(ex)}
 		throw ex
 	}'
 ]
@@ -186,7 +186,7 @@ PjFunction >> new: arg1 with: arg2 with: arg3 with: arg4 with: arg5 [
 
 { #category : #exceptions }
 PjFunction >> on: exception do: handlerAction [
-	<jsGenerator: #on_do_jsGenerator>
+	<jsGenerator: #on_do_jsGenerator:>
 ]
 
 { #category : #'Behavior: reflection' }

@@ -38,5 +38,5 @@ PjClassVariableNode >> poolReference: aString [
 
 { #category : #converting }
 PjClassVariableNode >> poolReferenceWith: aPjTranspiler [ 
-	^ aPjTranspiler poolReference: poolReference for: myClass instanceSide
+	^ aPjTranspiler poolReference: poolReference for: myClass
 ]

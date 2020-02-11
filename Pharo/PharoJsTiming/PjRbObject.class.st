@@ -28,9 +28,9 @@ PjRbObject class >> initialize [
 ]
 
 { #category : #transcript }
-PjRbObject class >> show_jsGenerator [
+PjRbObject class >> show_jsGenerator: transpiler [
 	<pharoJsSkip> 
-	^'console.log(aString.', PjTranspiler pharoJsSelectorPrefix, 'asString())'
+	^'console.log(aString.', transpiler pharoJsSelectorPrefix, 'asString())'
 ]
 
 { #category : #utilities }
@@ -53,6 +53,6 @@ PjRbObject >> cr [
 
 { #category : #transcript }
 PjRbObject >> show: aString [
-	<jsGenerator: #show_jsGenerator>
+	<jsGenerator: #show_jsGenerator:>
 	Transcript show: aString
 ]

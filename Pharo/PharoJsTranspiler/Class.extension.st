@@ -29,7 +29,7 @@ Class >> hasJavascriptName [
 ]
 
 { #category : #'*PharoJsTranspiler' }
-Class >> isLiteralJavascriptValue [
+Class >> isFreeJavascriptValue [
 	^ true
 ]
 
@@ -50,4 +50,9 @@ Class >> needsClassDefinition [
 { #category : #'*PharoJsTranspiler' }
 Class >> needsInitialization [
 	^(self hasClassMethod: #initialize) or: [ self hasClassMethod: #javascriptInitialize ]
+]
+
+{ #category : #'*PharoJsTranspiler' }
+Class >> printJsOn: aStream [
+	self error: 'Class doesn''t have a literal representation'
 ]

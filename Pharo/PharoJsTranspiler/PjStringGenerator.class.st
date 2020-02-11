@@ -63,7 +63,8 @@ Class {
 		'wroteCloseBrace',
 		'currentClass',
 		'currentlyDoingAssignment',
-		'transpiler'
+		'transpiler',
+		'pharoJsSelectorPrefix'
 	],
 	#classVars : [
 		'AssignmentPrecedence',
@@ -170,6 +171,7 @@ PjStringGenerator class >> transpilerClass [
 
 { #category : #public }
 PjStringGenerator >> asString: aPjAST [
+	pharoJsSelectorPrefix := PjTranspiler pharoJsSelectorPrefix.
 	^ String
 		streamContents: [ :aStream | self asString: aPjAST on: aStream with: self ]
 ]
@@ -179,8 +181,8 @@ PjStringGenerator >> asString: aPjAST on: aStream with: aPjTranspiler [
 	jsStream := aStream.
 	currentPrecedenceLevel := -1.
 	currentlyDoingAssignment := false.
-	aPjAST acceptVisitor: self.
 	transpiler := aPjTranspiler.
+	aPjAST acceptVisitor: self.
 
 ]
 
@@ -233,9 +235,19 @@ PjStringGenerator >> nonLocalReturnVariableName [
 	^ self class nonLocalReturnVariableName
 ]
 
+{ #category : #accessing }
+PjStringGenerator >> pharoJsSelectorPrefix [
+	^ pharoJsSelectorPrefix ifNil: [pharoJsSelectorPrefix := transpiler pharoJsSelectorPrefix]
+]
+
+{ #category : #accessing }
+PjStringGenerator >> poolReference: anUndefinedObject for: aClass [ 
+	^ 'cp$'
+]
+
 { #category : #'as yet unclassified' }
 PjStringGenerator >> selectorsPrefix [
-	^PjTranspiler pharoJsSelectorPrefix
+	^ transpiler pharoJsSelectorPrefix
 ]
 
 { #category : #visiting }

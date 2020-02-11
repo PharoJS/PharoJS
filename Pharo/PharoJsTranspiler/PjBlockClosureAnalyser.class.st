@@ -35,7 +35,7 @@ PjBlockClosureAnalyser >> checkFree: aRBVariableNode [
 	name := aRBVariableNode name.
 	self externalVariables at: name ifPresent: [ : value |
 		(value isKindOf: Error) ifTrue: [ value signal ].
-		value isLiteralJavascriptValue ifFalse: [ PjJavascriptTranspilationError signal: 'reference to non-literal value in variable: ', name ].
+		value isFreeJavascriptValue ifFalse: [ PjJavascriptTranspilationError signal: 'reference to non-literal value in variable: ', name ].
 		self register: name with: value.
 		^ PjTempVariableNode identifier: name
 	].

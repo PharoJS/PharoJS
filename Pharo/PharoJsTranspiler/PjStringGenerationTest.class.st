@@ -298,7 +298,7 @@ PjStringGenerationTest >> testReservedWords [
 		assert: (PjClassNode identifier: #for )
 		asStringEquals: 'for'.
 	self
-		assert: (PjClassVariableNode identifier: #prototype )
+		assert: ((PjClassVariableNode identifier: #prototype) myClass: self class)
 		asStringEquals: 'cp$.$prototype'.
 	self
 		assert: (PjClassVariableNode identifier: #for )

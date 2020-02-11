@@ -1,11 +1,6 @@
 Extension { #name : #String }
 
 { #category : #'*PharoJsTranspiler' }
-String >> basicConvertToJsUsing: transpiler [
-	^transpiler basicConvertString: self
-]
-
-{ #category : #'*PharoJsTranspiler' }
 String >> isLiteralJavascriptValue [
 	^ true
 ]

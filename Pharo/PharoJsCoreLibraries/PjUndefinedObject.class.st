@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialize }
-PjUndefinedObject class >> identityHash_jsGenerator [
+PjUndefinedObject class >> identityHash_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'return ', nil identityHash asString
 ]
@@ -51,7 +51,7 @@ PjUndefinedObject >> asJSON [
 
 { #category : #'not defined category' }
 PjUndefinedObject >> identityHash [
-	<jsGenerator: #identityHash_jsGenerator>
+	<jsGenerator: #identityHash_jsGenerator:>
 ]
 
 { #category : #accessing }

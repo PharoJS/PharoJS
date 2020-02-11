@@ -47,6 +47,13 @@ PjLoadingTest >> testEvalBlock [
 ]
 
 { #category : #testing }
+PjLoadingTest >> testLiteralGeneration [
+	self assertEquivalent: [ PjLoadForTest literal ].
+	self assertEquivalent: [ PjLoadForTest new literal ].
+
+]
+
+{ #category : #testing }
 PjLoadingTest >> testLoadClass [
 	PjLoadForTest reset.
 	self bridge loadClass: PjLoadForTest.
@@ -64,7 +71,7 @@ PjLoadingTest >> testLoadClass [
 { #category : #testing }
 PjLoadingTest >> testLoadClassContents [
 	| first firstBlock second secondBlock className third pjPrefix|
-	pjPrefix := PjTranspiler pharoJsSelectorPrefix.
+	pjPrefix := self bridge exporter transpiler pharoJsSelectorPrefix.
 	className := PjLoadForTest nameToUseForJsConversion.
 	PjLoadForTest reset.
 	first := self bridge convertToJs: PjLoadForTest.

@@ -243,7 +243,7 @@ PjExporter >> writeCoreObject [
 		nextPutAll: '})';cr;
 		nextPutAll: coreName;
 		nextPut: $.;
-		nextPutAll: PjTranspiler pharoJsSelectorPrefix;
+		nextPutAll: transpiler pharoJsSelectorPrefix;
 		nextPutAll: 'initializeCore();';cr
 ]
 

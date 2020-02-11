@@ -29,13 +29,14 @@ PjReadWriteStream class >> jsTranspilationImportMethods [
 
 { #category : #accessing }
 PjReadWriteStream >> atEnd [
-	position >= readLimit ifTrue: [ 1 < array size ifTrue: [self contents] ].
+	position >= readLimit ifTrue: [ self contents ].
 	^ position >= readLimit
 ]
 
 { #category : #accessing }
 PjReadWriteStream >> contents [
-	^self load: self join
+	1 < array size ifTrue: [ self load: self join ].
+	^ collection
 ]
 
 { #category : #'initialize-release' }

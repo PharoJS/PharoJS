@@ -95,7 +95,7 @@ BlockClosure >> isClosed [
 ]
 
 { #category : #'*PharoJsTranspiler' }
-BlockClosure >> isLiteralJavascriptValue [
+BlockClosure >> isFreeJavascriptValue [
 	^ self isClosed
 ]
 

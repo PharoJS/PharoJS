@@ -32,9 +32,9 @@ Class {
 }
 
 { #category : #arithmetics }
-PjNumber class >> divide_jsGenerator [
+PjNumber class >> divide_jsGenerator: transpiler [
 	<pharoJsSkip> 
-	^'if(anObject==0) return ZeroDivide.', PjTranspiler pharoJsSelectorPrefix, 'signal();return this / anObject;'
+	^'if(anObject==0) return ZeroDivide.', transpiler pharoJsSelectorPrefix, 'signal();return this / anObject;'
 ]
 
 { #category : #'class initialization' }
@@ -103,7 +103,7 @@ PjNumber >> - anObject [
 
 { #category : #arithmetics }
 PjNumber >> / anObject [
-	<jsGenerator: #divide_jsGenerator>
+	<jsGenerator: #divide_jsGenerator:>
 ]
 
 { #category : #arithmetics }
