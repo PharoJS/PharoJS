@@ -14,7 +14,8 @@ BaselineOfPharoJSExpress >> baseline: spec [
 		spec 
 			baseline: 'PharoJS' with: [
 				spec
-					repository: 'github://PharoJS/PharoJS' ];
+					repository: 'github://PharoJS/PharoJS' ].
+		spec 
 			"Packages"
 			package: 'PharoJsExpress' with: [ spec requires: #('PharoJS') ].
 	].
