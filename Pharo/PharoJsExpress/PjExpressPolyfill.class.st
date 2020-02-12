@@ -2,7 +2,7 @@
 An Express server
 "
 Class {
-	#name : #ExpressPolyfill,
+	#name : #PjExpressPolyfill,
 	#superclass : #PjJavascriptGlobals,
 	#classVars : [
 		'ExpressServer'
@@ -11,13 +11,13 @@ Class {
 }
 
 { #category : #'pharojs globals' }
-ExpressPolyfill class >> nodePackageName [
+PjExpressPolyfill class >> nodePackageName [
 	<pharoJsSkip>
 	^ 'express'
 ]
 
 { #category : #polyfill }
-ExpressPolyfill class >> nodePolyfill: aStream [
+PjExpressPolyfill class >> nodePolyfill: aStream [
 	<pharoJsSkip>
 	super nodePolyfill: aStream.
 ]

@@ -2,25 +2,25 @@
 A basic express server example
 
 Usage 
-1) From a playground > HelloWorldExample exportApp.
+1) From a playground > PjHelloWorldExample exportApp.
 2) Locate the server.js file that was generated
 3) $ npm install express
 4) node server.js
 "
 Class {
-	#name : #HelloWorldExample,
+	#name : #PjHelloWorldExample,
 	#superclass : #PjExpressApp,
 	#category : #PharoJsExpress
 }
 
 { #category : #exporting }
-HelloWorldExample class >> appJsFileName [
+PjHelloWorldExample class >> appJsFileName [
 	<pharoJsSkip>
 	^ 'server.js'
 ]
 
 { #category : #'start-stop' }
-HelloWorldExample >> start [
+PjHelloWorldExample >> start [
 	expressServer := ExpressServer new.
 	self getRequest: '/' send: 'hello world from pharojs-express!'.
 	self getRequest: '/json' json: '{ "name":'+'"John", "age":30, "city":"Toronto"}'.

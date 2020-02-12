@@ -1,7 +1,7 @@
 "
 A PjApplication for web servers using the popular web framework express.js
 
-Uses the class ExpressPolyfill to create an express server.
+Uses the class PjExpressPolyfill to create an express server.
 
 "
 Class {
@@ -11,7 +11,7 @@ Class {
 		'expressServer'
 	],
 	#pools : [
-		'ExpressPolyfill'
+		'PjExpressPolyfill'
 	],
 	#category : #PharoJsExpress
 }
