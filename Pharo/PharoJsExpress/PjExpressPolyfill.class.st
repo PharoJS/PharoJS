@@ -1,5 +1,7 @@
 "
 An Express server
+
+express node module required: $ npm install express
 "
 Class {
 	#name : #PjExpressPolyfill,
