@@ -17,21 +17,18 @@ Class {
 }
 
 { #category : #webapp }
-PjExpressApp >> getRequest: path json: text [
-	| a json |
-	a := PjClass new.
-	json := a newFromJsonString: text.
+PjExpressApp >> getRequest: path json: json [
 	expressServer get: path action: [ :req :res | res json: json ].
 ]
 
 { #category : #webapp }
-PjExpressApp >> getRequest: path send: text [
-	expressServer get: path action: [ :req :res | res send: text ].
+PjExpressApp >> getRequest: path send: obj [
+	expressServer get: path action: [ :req :res | res send: obj ].
 ]
 
 { #category : #webapp }
 PjExpressApp >> listen: port [
-	expressServer listen: port anon: [ PjCore log: 'listening on port ' + port ].
+	expressServer listen: port anon: [ Object log: 'listening on port ' + port ].
 	
 ]
 
