@@ -35,6 +35,11 @@ PjExpressApp >> listen: port [
 	
 ]
 
+{ #category : #webapp }
+PjExpressApp >> postRequest: path response: logic [
+	expressServer post: path action: logic.
+]
+
 { #category : #'start-stop' }
 PjExpressApp >> start [
 	expressServer := ExpressServer new.
