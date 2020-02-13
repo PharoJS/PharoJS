@@ -17,9 +17,3 @@ PjBodyParserPolyfill class >> nodePackageName [
 	<pharoJsSkip>
 	^ 'body-parser'
 ]
-
-{ #category : #polyfill }
-PjBodyParserPolyfill class >> nodePolyfill: aStream [
-	<pharoJsSkip>
-	super nodePolyfill: aStream.
-]

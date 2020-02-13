@@ -17,9 +17,3 @@ PjExpressPolyfill class >> nodePackageName [
 	<pharoJsSkip>
 	^ 'express'
 ]
-
-{ #category : #polyfill }
-PjExpressPolyfill class >> nodePolyfill: aStream [
-	<pharoJsSkip>
-	super nodePolyfill: aStream.
-]
