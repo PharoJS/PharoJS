@@ -77,6 +77,12 @@ PjBridgeAppClassDecorator >> headerLine [
 	^self rawAppClass headerLine
 ]
 
+{ #category : #accessing }
+PjBridgeAppClassDecorator >> pharoJsSelectorPrefix [
+	<pharoJsSkip>
+	^ PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #polyfill }
 PjBridgeAppClassDecorator >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
 	self rawAppClass

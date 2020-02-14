@@ -71,6 +71,7 @@ PjExporter >> appClass [
 { #category : #accessing }
 PjExporter >> appClass: aClass [ 
 	appClass := aClass.
+	transpiler pharoJsSelectorPrefix: aClass pharoJsSelectorPrefix.
 	self addAllClasses: appClass appClasses.
 	self addAllPackages: appClass appPackages.
 

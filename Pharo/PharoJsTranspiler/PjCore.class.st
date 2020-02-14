@@ -367,7 +367,7 @@ PjCore class >> nilTestFunctionName [
 { #category : #accessing }
 PjCore class >> pharoJsSelectorPrefix [
 	<jsGenerator: #pharoJsSelectorPrefix_jsGenerator:>
-	^ PjTranspiler pharoJsSelectorPrefix
+	^ self error: 'Only for Javascript side'
 ]
 
 { #category : #accessing }

@@ -86,6 +86,11 @@ PjBridgeClient >> jsGlobalNames [
 			flatCollectAsSet: #classVarNames
 ]
 
+{ #category : #accessing }
+PjBridgeClient >> pharoJsSelectorPrefix [
+	^ exporter transpiler pharoJsSelectorPrefix
+]
+
 { #category : #'initialization-release' }
 PjBridgeClient >> reset [
 	self appClass: self appClass.
@@ -127,7 +132,10 @@ PjBridgeClient >> stop [
 	"stop javascript interpreter"
 	self server isWebSocketConnected ifFalse: [ ^self ].
 	self bridge websocketDelegateClassName ifNil: [ ^self ].
-	self bridge sendMessage: self bridge websocketDelegateClassName, '.', exporter transpiler pharoJsSelectorPrefix, 'terminate()'.
+	[
+		self bridge sendMessage:
+			self bridge websocketDelegateClassName, '.', self pharoJsSelectorPrefix, 'terminate()'
+	] on: ConnectionTimedOut do: [ " nothing: the socket's gone away " ].
 
 ]
 

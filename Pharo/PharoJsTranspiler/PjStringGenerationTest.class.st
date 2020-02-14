@@ -25,13 +25,18 @@ PjStringGenerationTest >> nilTestFunctionName [
 	^PjStringGenerator nilTestFunctionName
 ]
 
+{ #category : #accessing }
+PjStringGenerationTest >> selectorsPrefix [
+	^ PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #testing }
 PjStringGenerationTest >> testArray [
 	| x |
 	x := PjTempVariableNode identifier: #x.
 	self
 		assert: (PjArrayNode expressions: { one. two. self apply: x selector: #foo })
-		asStringEquals: '[1,2,$asNil$(x).', PjTranspiler pharoJsSelectorPrefix, 'foo()]'.
+		asStringEquals: '[1,2,$asNil$(x).', self selectorsPrefix, 'foo()]'.
 
 ]
 
@@ -52,7 +57,7 @@ PjStringGenerationTest >> testBlock [
 PjStringGenerationTest >> testClassCall [
 	self
 		assert: (self apply: (PjClassNode identifier: #Number) selector: #one)
-		asStringEquals: 'Number.', PjTranspiler pharoJsSelectorPrefix, 'one()'
+		asStringEquals: 'Number.', self selectorsPrefix, 'one()'
 ]
 
 { #category : #testing }
@@ -82,7 +87,7 @@ PjStringGenerationTest >> testClassVariables [
 { #category : #testing }
 PjStringGenerationTest >> testField [
 	| x bar prefix |
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := self selectorsPrefix.
 	x := PjTempVariableNode identifier: #x.
 	bar := PjMessageSelectorNode identifier: #bar.
 	self
@@ -111,7 +116,7 @@ PjStringGenerationTest >> testField [
 { #category : #testing }
 PjStringGenerationTest >> testFieldForCall [
 	| x prefix |
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := self selectorsPrefix.
 	x := PjTempVariableNode identifier: #x.
 	self
 		assert: (self apply: selfNode selector: #foo) 
@@ -146,7 +151,7 @@ PjStringGenerationTest >> testFieldForCall [
 PjStringGenerationTest >> testGlobalCall [
 	self
 		assert: (self apply: (PjGlobalNode identifier: #Number) selector: #one)
-		asStringEquals: self nilTestFunctionName,'(Number).', PjTranspiler pharoJsSelectorPrefix, 'one()'
+		asStringEquals: self nilTestFunctionName,'(Number).', self selectorsPrefix, 'one()'
 ]
 
 { #category : #testing }
@@ -166,7 +171,7 @@ xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\000a\\
 { #category : #testing }
 PjStringGenerationTest >> testMethod [
 	| prefix |
-	prefix := PjTranspiler pharoJsSelectorPrefix.
+	prefix := self selectorsPrefix.
 	self
 		assert:
 			(PjMethodNode
@@ -325,20 +330,20 @@ PjStringGenerationTest >> testSelf [
 	self assert: selfNode asStringEquals: 'this'.
 	self
 		assert: (self apply: (PjSelfNode myClass: Integer) selector: #value)
-		asStringEquals: 'this.', PjTranspiler pharoJsSelectorPrefix, 'value()'.
+		asStringEquals: 'this.', self selectorsPrefix, 'value()'.
 	self
 		assert: (self apply: (PjSelfNode inBlock: true) selector: #value)
-		asStringEquals: PjStringGenerator selfName,'.', PjTranspiler pharoJsSelectorPrefix, 'value()'
+		asStringEquals: PjStringGenerator selfName,'.', self selectorsPrefix, 'value()'
 ]
 
 { #category : #testing }
 PjStringGenerationTest >> testSuperCall [
 	self
 		assert: (self apply: (PjSuperNode myClass: Integer) selector: #value)
-		asStringEquals: 'Number.prototype.', PjTranspiler pharoJsSelectorPrefix, 'value.call(this)'.
+		asStringEquals: 'Number.prototype.', self selectorsPrefix, 'value.call(this)'.
 	self
 		assert: (self apply: ((PjSuperNode myClass: Integer class) inBlock: true) selector: #value)
-		asStringEquals: 'Number.', PjTranspiler pharoJsSelectorPrefix, 'value.call(',PjStringGenerator selfName,')'
+		asStringEquals: 'Number.', self selectorsPrefix, 'value.call(',PjStringGenerator selfName,')'
 ]
 
 { #category : #testing }

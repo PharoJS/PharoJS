@@ -54,7 +54,8 @@ Class {
 		'blockClosures',
 		'client',
 		'runOnPharo',
-		'shouldStartJsInterpreter'
+		'shouldStartJsInterpreter',
+		'transpiler'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -163,7 +164,7 @@ PjBridge >> blockClosure: aBlockClosure [
 				^ PjJavascriptError signal: 'Block cannot have return' ].
 		thisArg := aBlockClosure argumentNames findFirst: [ : name | name='this' ].
 		proxy := self evalJavascript: self websocketDelegateClassName,
-			'.', PjTranspiler pharoJsSelectorPrefix, 'default().', PjTranspiler pharoJsSelectorPrefix, 'makeBlockClosureProxy_(',thisArg asString,')'.
+			'.', transpiler pharoJsSelectorPrefix, 'default().', transpiler pharoJsSelectorPrefix, 'makeBlockClosureProxy_(',thisArg asString,')'.
 		proxy closure: aBlockClosure.
 		proxy
 	]
@@ -183,9 +184,11 @@ PjBridge >> client [
 PjBridge >> client: aClient [
 	client := aClient.
 	client bridge: self.
+	transpiler := aClient exporter transpiler.
+
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> clientTitle [
 	^self client title
 ]
@@ -200,7 +203,7 @@ PjBridge >> defaultClientClass [
 	^self class defaultClientClass
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> defaultCommunicationTrialsCount [
 	^100
 ]
@@ -349,7 +352,7 @@ PjBridge >> handOffResult: aBlock [
 	]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> initialize [
 	super initialize.
 	executingCallbacks := false.
@@ -456,7 +459,7 @@ PjBridge >> port [
 	^self server port
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> port: portNumber [
 	self server port: portNumber
 ]
@@ -470,7 +473,7 @@ PjBridge >> proxies [
 PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
-	self sendMessage: self websocketDelegateClassName, '.', PjTranspiler pharoJsSelectorPrefix, 'reload_(true)'.
+	self sendMessage: self websocketDelegateClassName, '.', transpiler pharoJsSelectorPrefix, 'reload_(true)'.
 	self resetProxies.
 	self client reset.
 	self 
@@ -484,7 +487,7 @@ PjBridge >> resetClient [
 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> resetProxies [
 	proxies := nil.
 	"Ensure that proxies are actually suppressed which lead to releasing the objects on the JS side"
@@ -531,7 +534,7 @@ PjBridge >> serverAddress [
 	self shouldBeImplemented.
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> serverClass [
 	^PjServer
 ]
@@ -626,7 +629,7 @@ PjBridge >> timeout: aDuration [
 	timeout := (aDuration isKindOf: Duration) ifTrue: [ aDuration ] ifFalse: [ aDuration seconds ].
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> titleForTest: aTest [
 	^ aTest className , '>>#' , aTest selector
 ]
@@ -687,7 +690,7 @@ PjBridge >> webSocketUrlTag [
 	^self server webSocketUrlTag
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridge >> websocketDelegateClassName [
 	^self client websocketDelegateClassName
 ]

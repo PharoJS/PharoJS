@@ -7,6 +7,11 @@ Class {
 	#category : #'PharoJsExporter-Tests-Support'
 }
 
+{ #category : #accessing }
+PjTestClassForPolyfill class >> pharoJsSelectorPrefix [
+	^ 'alt_'
+]
+
 { #category : #any }
 PjTestClassForPolyfill >> m [
 	| bar ws |

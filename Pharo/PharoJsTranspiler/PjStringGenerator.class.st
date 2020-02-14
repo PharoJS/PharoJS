@@ -171,7 +171,7 @@ PjStringGenerator class >> transpilerClass [
 
 { #category : #public }
 PjStringGenerator >> asString: aPjAST [
-	pharoJsSelectorPrefix := PjTranspiler pharoJsSelectorPrefix.
+	pharoJsSelectorPrefix := self selectorsPrefix.
 	^ String
 		streamContents: [ :aStream | self asString: aPjAST on: aStream with: self ]
 ]
@@ -247,7 +247,7 @@ PjStringGenerator >> poolReference: anUndefinedObject for: aClass [
 
 { #category : #'as yet unclassified' }
 PjStringGenerator >> selectorsPrefix [
-	^ transpiler pharoJsSelectorPrefix
+	^ (transpiler ifNil: [PjTranspiler]) pharoJsSelectorPrefix
 ]
 
 { #category : #visiting }

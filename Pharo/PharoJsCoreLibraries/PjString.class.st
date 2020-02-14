@@ -28,6 +28,9 @@ PjString class >> jsTranspilationImportMethods [
 			String -> #(
 				findTokens: 
 			).
+			Symbol -> #(
+				cull: value: 
+			).
 			Character class -> #(
 				cr escape lf linefeed space tab
 			).

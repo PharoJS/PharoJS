@@ -68,7 +68,7 @@ PjPackageTranspilationTest >> testDnuSetup [
 	self generateJsCodeForClasses: {
 	PjClassBForCircularTranspilationTest.
 	}.
-	self assert: self jsCode includes: '.', PjTranspiler pharoJsSelectorPrefix, 'registerDnuForAll_(["isNil","javascriptName"]);'
+	self assert: self jsCode includes: '.', self selectorsPrefix, 'registerDnuForAll_(["isNil","javascriptName"]);'
 ]
 
 { #category : #testing }
@@ -79,7 +79,7 @@ PjPackageTranspilationTest >> testDuplicateClasses [
 	self generateJsCodeForClasses: classesToConvert.
 	className := PjClassAForPackageTranspilationTest name.
 	classDefintionString := 'subclass_("', className,'")'.
-	classInitializationString := className, '.', PjTranspiler pharoJsSelectorPrefix, 'initialize();'.
+	classInitializationString := className, '.', self selectorsPrefix, 'initialize();'.
 	{classDefintionString. classInitializationString} do: [:each |
 		self assert: (jsCode allRangesOfSubstring: each) size equals: 1] .
 

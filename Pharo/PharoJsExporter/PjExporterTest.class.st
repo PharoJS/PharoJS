@@ -10,7 +10,7 @@ Class {
 	#category : #'PharoJsExporter-Tests'
 }
 
-{ #category : #accessing }
+{ #category : #running }
 PjExporterTest >> classToTranspile [
 	^ PjClassExtensionForTest
 ]
@@ -95,6 +95,14 @@ PjExporterTest >> testImportMethodsFromPharo [
 	#(allInstances allInstancesDo: new) do: [ : selector |
 		self assertHasClassMethod: selector ].
 	self assertInstanceMethod: #yourself equals: '(){return this}'
+]
+
+{ #category : #testing }
+PjExporterTest >> testJsSelector [
+	| contents |
+	contents := (PjTestFileExporter exportApp: PjTestClassForPolyfill) contents.
+	self assert: (contents includesSubstring: 'function alt_m(').
+
 ]
 
 { #category : #testing }

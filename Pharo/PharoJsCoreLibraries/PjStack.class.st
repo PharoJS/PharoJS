@@ -1,10 +1,10 @@
+"
+I am a minimal implementation of Stack
+"
 Class {
 	#name : #PjStack,
-	#superclass : #Array,
+	#superclass : #PjArray,
 	#type : #variable,
-	#pools : [
-		'PjUniversalGlobals'
-	],
 	#category : #'PharoJsCoreLibraries-Kernel'
 }
 

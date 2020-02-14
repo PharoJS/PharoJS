@@ -252,7 +252,7 @@ PjProxy >> printJsOn: aStream [
 PjProxy >> removeEventListener: type [
 	^ self jsBridge: [ : bridge |
 		bridge evalJavascript: bridge websocketDelegateClassName,
-			'.', PjTranspiler pharoJsSelectorPrefix, 'set_callback_to_(',jsName,',',type asJSON,',undefined);'
+			'.', bridge transpiler pharoJsSelectorPrefix, 'set_callback_to_(',jsName,',',type asJSON,',undefined);'
 	]
 ]
 

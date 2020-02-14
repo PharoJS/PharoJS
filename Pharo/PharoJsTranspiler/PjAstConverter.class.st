@@ -210,7 +210,7 @@ PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 	(methodPrimitive ~= 0
 		and: [ methodPrimitive ~= 256 and: [ aRBMethodNode statements isEmpty ] ])
 		ifTrue: [ PjJavascriptTranspilationError
-				signal: 'primitive method with no fallback code' ].
+				signal: 'primitive method with no fallback code: ', aRBMethodNode selector ].
 	body := self visitAllNodes: aRBMethodNode statements.
 	(needSelfReturn
 		and: [ body isEmpty or: [ body expressions last isReturnOrThrow not ] ])

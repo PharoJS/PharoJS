@@ -1,3 +1,6 @@
+"
+I am a minimal implementation of Rectangle, just so Point can create me.
+"
 Class {
 	#name : #PjRectangle,
 	#superclass : #PjObject,
