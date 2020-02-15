@@ -55,6 +55,12 @@ PjApplication class >> headerLine [
 	^nil
 ]
 
+{ #category : #accessing }
+PjApplication class >> pharoJsSelectorPrefix [
+	<pharoJsSkip>
+	^ PjTranspiler pharoJsSelectorPrefix
+]
+
 { #category : #'instance creation' }
 PjApplication class >> resetCurrentInstance [
 	currentInstance := nil.
