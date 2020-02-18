@@ -12,7 +12,7 @@ BaselineOfLightweightObserverJS >> baseline: spec [
 		spec 
 			baseline: 'PharoJS' with: [
 				spec
-					repository: 'github://bouraqadi/PharoJS' ];
+					repository: 'github://PharoJS/PharoJS' ];
 			baseline: 'LightweightObserver' with: [
 				spec
 					repository: 'github://bouraqadi/PharoMisc' ].
