@@ -84,10 +84,10 @@ PjBridgeAppClassDecorator >> pharoJsSelectorPrefix [
 ]
 
 { #category : #polyfill }
-PjBridgeAppClassDecorator >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjBridgeAppClassDecorator >> polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet [
 	self rawAppClass
 		polyfill: aPolyfillClass
-		onStream: aStream
+		withTranspiler: aTranspiler
 		unlessIn: aSet
 ]
 

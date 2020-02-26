@@ -514,16 +514,21 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 
 { #category : #transpiling }
 PjTranspiler >> writeClassVariableDeclarationsOf: aClass [
-	| keys |
+	| keys count |
+	count := 0.
 	keys := aClass classPool keys sorted.
 	keys isEmpty ifTrue: [ ^ self ].
 	keys do: [: cpName |
 			self
 				nextPutAll: 'cp$.';
 				nextPutAll: cpName;
-				nextPutAll: '='
+				nextPutAll: '='.
+			(count := count + 1) = 10 ifTrue: [
+				self nextPutAll: 'null;';cr.
+				count := 0
+			]
 		].
-	self nextPutAll: 'null;';cr.
+	count > 0 ifTrue: [self nextPutAll: 'null;';cr].
 
 ]
 

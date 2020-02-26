@@ -42,10 +42,10 @@ PjDOMApplication class >> appHtmlSubFolder [
 ]
 
 { #category : #'*PharoJsExporter' }
-PjDOMApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjDOMApplication class >> polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet [
 	<pharoJsSkip>
-	^ (super polyfill: aPolyfillClass onStream: aStream unlessIn: aSet) and: [
-		aPolyfillClass domPolyfill: aStream.
+	^ (super polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet) and: [
+		aPolyfillClass domPolyfill: aTranspiler.
 		true
 	]
 ]

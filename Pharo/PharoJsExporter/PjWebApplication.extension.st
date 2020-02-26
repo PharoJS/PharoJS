@@ -7,10 +7,10 @@ PjWebApplication class >> appHtmlUrlString [
 ]
 
 { #category : #'*PharoJsExporter' }
-PjWebApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjWebApplication class >> polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet [
 	<pharoJsSkip>
-	^ (super polyfill: aPolyfillClass onStream: aStream unlessIn: aSet) and: [
-		aPolyfillClass browserPolyfill: aStream.
+	^ (super polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet) and: [
+		aPolyfillClass browserPolyfill: aTranspiler.
 		true
 	]
 ]

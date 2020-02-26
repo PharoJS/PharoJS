@@ -1,10 +1,10 @@
 Extension { #name : #PjNodeApplication }
 
 { #category : #'*PharoJsExporter' }
-PjNodeApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjNodeApplication class >> polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet [
 	<pharoJsSkip>
-	^ (super polyfill: aPolyfillClass onStream: aStream unlessIn: aSet) and: [
-		aPolyfillClass nodePolyfill: aStream.
+	^ (super polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet) and: [
+		aPolyfillClass nodePolyfill: aTranspiler.
 		true
 	]
 ]
