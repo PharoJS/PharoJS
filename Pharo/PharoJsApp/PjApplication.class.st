@@ -13,7 +13,8 @@ Class {
 		'appFolder',
 		'currentInstance',
 		'port',
-		'status'
+		'status',
+		'exportVersion'
 	],
 	#category : #PharoJsApp
 }

@@ -77,6 +77,23 @@ PjApplication class >> exportApp [
 ]
 
 { #category : #'*PharoJsExporter-App' }
+PjApplication class >> exportApp: version [
+	<pharoJsSkip>
+	exportVersion := version.
+	self exportApp.
+
+]
+
+{ #category : #'*PharoJsExporter-App' }
+PjApplication class >> exportVersion [
+	<pharoJsSkip>
+	self error: 'Override this in your application with the code:
+exportVersion
+	<jsLiteralGenerator>
+	^ exportVersion'
+]
+
+{ #category : #'*PharoJsExporter-App' }
 PjApplication class >> exporterClass [
 	<pharoJsSkip>
 	^ PjFileExporter
