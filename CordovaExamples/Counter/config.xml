@@ -31,6 +31,4 @@
         <icon height="72" src="/res/icon/ios/icon-72.png" width="72" />
         <icon height="144" src="/res/icon/ios/icon-72-2x.png" width="144" />
     </platform>
-    <engine name="android" spec="^7.1.4" />
-    <engine name="ios" spec="^4.5.5" />
 </widget>
