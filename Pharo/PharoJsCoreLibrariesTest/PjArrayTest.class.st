@@ -131,6 +131,18 @@ PjArrayTest >> testConverstionToSet [
 ]
 
 { #category : #testing }
+PjArrayTest >> testCopy [
+	| tests |
+	tests := self bridge
+		evalBlock: [ | array |
+			array := #(10 20 30 40).
+			{array copy = array. array copy == array} ].
+	self assert: tests first.
+	self deny: tests last.
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testDetectIfFound [
 	self
 		assertEquivalent: [|array found|

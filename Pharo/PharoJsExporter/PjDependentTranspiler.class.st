@@ -30,6 +30,7 @@ PjDependentTranspiler >> addClassToConvert: aClass [
 	(classesToConvert includes: addClass) ifFalse: [
 		" redundant test allows setting breakpoint for adding classes "
 		addClass == PjTranspiler  ifTrue: [ self halt ].
+		addClass == Random  ifTrue: [ self halt ].
 		classesToConvert add: addClass.
 	]
 ]

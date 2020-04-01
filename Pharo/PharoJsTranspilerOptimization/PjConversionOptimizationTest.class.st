@@ -35,43 +35,136 @@ PjConversionOptimizationTest >> testAnd [
 PjConversionOptimizationTest >> testBlockReturns [
 	| expectedAst tempId temp xArg |
 	messageConverter
-		addAllConversions: { PjIfNilOptimization.
-		 PjIfNotNilOptimization.
-		 PjIfTrueOptimization.
-		 PjIfTrueIfFalseOptimization}.
-
-	expectedAst := self simpleBlock: {three. two. (PjIfTrueIfFalseNode test: one whenTrue: returnTwo whenFalse: returnOne)}.
-	self assertContentsOf: [ [ 3. 2. 1 ifTrue: [ 2 ] ifFalse: [ 1 ] ] ] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: {three. two. PjIfTrueIfFalseNode test: one whenTrue: throwTwo whenFalse: returnOne}.
-	self assertContentsOf: [ [ 3. 2. 1 ifTrue: [ ^ 2 ] ifFalse: [ 1 ] ] ] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: {PjIfTrueIfFalseNode test: one whenTrue: two whenFalse: one. returnTwo}.
-	self assertContentsOf: [ [ 1 ifTrue: [ 2 ] ifFalse: [ 1 ] . 2] ] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: {three. two. (PjIfTrueIfFalseNode test: (PjIfTrueIfFalseNode test: one whenTrue: two whenFalse: one) whenTrue: returnTwo whenFalse: returnOne)}.
-	self assertContentsOf: [ [ 3. 2. (1 ifTrue: [ 2 ] ifFalse: [ 1 ]) ifTrue: [ 2 ] ifFalse: [ 1 ] ] ] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: {three. two. PjIfTrueIfFalseNode test: one whenTrue: returnOne whenFalse: returnNil}.
-	self assertContentsOf: [ [ 3. 2. 1 ifTrue: [1] ] ] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: {three. two. PjIfTrueIfFalseNode test: one whenTrue: throwTwo whenFalse: throwOne}.
-	self assertContentsOf: [ [ 3. 2. ^ 1 ifTrue: [ 2 ] ifFalse: [ 1 ] ] ] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: {three. two. PjIfNilIfNotNilNode test: one 	whenNotNil: throwOne whenNil: throwNil}.
-	self assertContentsOf: [ [ 3. 2. ^1 ifNotNil: [1] ] ] convertsTo: expectedAst.
-
+		addAllConversions:
+			{PjIfNilOptimization.
+			PjIfNotNilOptimization.
+			PjIfTrueOptimization.
+			PjIfTrueIfFalseOptimization}.
+	expectedAst := self
+		simpleBlock:
+			{three.
+			two.
+			(PjIfTrueIfFalseNode
+				test: one
+				whenTrue: returnOne
+				whenFalse: returnNil)}
+		locals: #().
+	self
+		assertContentsOf: [ [ 3.
+			2.
+			1
+				ifTrue: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock:
+			{three.
+			two.
+			(PjIfTrueIfFalseNode
+				test: one
+				whenTrue: throwTwo
+				whenFalse: throwOne)}
+		locals: #().
+	self
+		assertContentsOf: [ [ 3.
+			2.
+			^ 1
+				ifTrue: [ 2 ]
+				ifFalse: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock:
+			{three.
+			two.
+			(PjIfNilIfNotNilNode
+				test: one
+				whenNotNil: throwOne
+				whenNil: throwNil)}
+		locals: #().
+	self
+		assertContentsOf: [ [ 3.
+			2.
+			^ 1 ifNotNil: [ 1 ] ] ]
+		convertsTo: expectedAst.
 	xArg := PjArgumentNode identifier: #x.
-	expectedAst := self simpleBlock: {three. two. PjIfNilIfNotNilNode test: (PjAssignNode target: xArg expression: one) whenNotNil: (PjNonLocalReturnNode expression: xArg) whenNil: throwNil}.
-	self assertContentsOf: [ [ 3. 2. ^1 ifNotNil: [:x| x] ] ] convertsTo: expectedAst.
-
+	expectedAst := self
+		simpleBlock:
+			{three.
+			two.
+			(PjIfNilIfNotNilNode
+				test: (PjAssignNode target: xArg expression: one)
+				whenNotNil: (PjNonLocalReturnNode expression: xArg)
+				whenNil: throwNil)}
+		locals: #(x).
+	self
+		assertContentsOf: [ [ 3.
+			2.
+			^ 1 ifNotNil: [ :x | x ] ] ]
+		convertsTo: expectedAst.
 	tempId := '$1'.
-	temp := (PjTempVariableNode identifier: tempId asSymbol).
-	expectedAst := self simpleBlock: {three. two. PjIfNilIfNotNilNode test: (PjAssignNode target: temp expression: one) whenNotNil: (PjReturnNode expression: temp) whenNil: returnOne}.
-	self assertContentsOf: [ [ 3. 2. 1 ifNil: [1] ] ] convertsTo: expectedAst.
+	temp := PjTempVariableNode identifier: tempId asSymbol.
+	expectedAst := self
+		simpleBlock:
+			{three.
+			two.
+			(PjIfNilIfNotNilNode
+				test: (PjAssignNode target: temp expression: one)
+				whenNotNil: (PjReturnNode expression: temp)
+				whenNil: returnOne)}
+		locals: #('$1').
+	self
+		assertContentsOf: [ [ 3.
+			2.
+			1 ifNil: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock:
+			{three.
+			two.
+			(PjIfNilIfNotNilNode
+				test: (PjAssignNode target: temp expression: one)
+				whenNotNil: (PjNonLocalReturnNode expression: temp)
+				whenNil: throwOne)}
+		locals: #('$1').
+	self
+		assertContentsOf: [ [ 3.
+			2.
+			^ 1 ifNil: [ 1 ] ] ]
+		convertsTo: expectedAst
+]
 
-	expectedAst := self simpleBlock: {three. two. PjIfNilIfNotNilNode test: (PjAssignNode target: temp expression: one) 	whenNotNil: (PjNonLocalReturnNode expression: temp) whenNil: throwOne}.
-	self assertContentsOf: [ [ 3. 2. ^1 ifNil: [1] ] ] convertsTo: expectedAst.
+{ #category : #testing }
+PjConversionOptimizationTest >> testBlockReturns1 [
+	| expectedAst |
+	messageConverter
+		addAllConversions:
+			{PjIfNilOptimization.
+			PjIfNotNilOptimization.
+			PjIfTrueOptimization.
+			PjIfTrueIfFalseOptimization}.
+	expectedAst := self
+		simpleBlock: {three. two. (PjIfTrueIfFalseNode test: one whenTrue: returnTwo whenFalse: returnOne)}
+		locals: #().
+	self 
+		assertContentsOf: [ [ 3. 2. 1 ifTrue: [ 2 ] ifFalse: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock: {three. two. (PjIfTrueIfFalseNode test: one whenTrue: throwTwo whenFalse: returnOne)}
+		locals: #().
+	self
+		assertContentsOf: [ [ 3. 2. 1 ifTrue: [ ^ 2 ] ifFalse: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock: {PjIfTrueIfFalseNode test: one whenTrue: two whenFalse: one. returnTwo}
+		locals: #().
+	self
+		assertContentsOf: [ [ 1 ifTrue: [ 2 ] ifFalse: [ 1 ]. 2 ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock: {three. two. (PjIfTrueIfFalseNode test: (PjIfTrueIfFalseNode test: one whenTrue: two whenFalse: one) whenTrue: returnTwo whenFalse: returnOne)}
+		locals: #().
+	self
+		assertContentsOf: [ [ 3. 2. (1 ifTrue: [ 2 ] ifFalse: [ 1 ]) ifTrue: [ 2 ] ifFalse: [ 1 ] ] ]
+		convertsTo: expectedAst.
 
 ]
 
@@ -138,34 +231,39 @@ PjConversionOptimizationTest >> testIfFalseifTrue [
 PjConversionOptimizationTest >> testIfNil [
 	| expectedAst tempVariable tempVariableName y |
 	y := PjTempVariableNode identifier: #y.
-	messageConverter addAllConversions: {PjIfNilOptimization}. 
-	tempVariableName := PjStringGenerator tempNamePrefix, '1'.
-	tempVariable := PjTempVariableNode identifier: tempVariableName asSymbol.
-	expectedAst := PjIfNilIfNotNilNode 
-			test: (PjAssignNode
+	messageConverter addAllConversions: {PjIfNilOptimization}.
+	tempVariableName := PjStringGenerator tempNamePrefix , '1'.
+	tempVariable := PjTempVariableNode
+		identifier: tempVariableName asSymbol.
+	expectedAst := PjIfNilIfNotNilNode
+		test:
+			(PjAssignNode
 				target: tempVariable
 				expression: (self apply: y selector: #foo))
-			whenNotNil: (PjReturnNode expression: tempVariable)
-			whenNil: returnOne.
-	self assertContentsOf: [^ y foo ifNil: [1]] convertsTo: expectedAst.
-
-	expectedAst := self simpleBlock: expectedAst.
-	self assertContentsOf: [ [y foo ifNil: [1]] ] convertsTo: expectedAst.
-
-	expectedAst := PjIfNilIfNotNilNode 
-			test: (PjAssignNode
+		whenNotNil: (PjReturnNode expression: tempVariable)
+		whenNil: returnOne.
+	self
+		assertContentsOf: [ ^ y foo ifNil: [ 1 ] ]
+		convertsTo: expectedAst.
+	expectedAst := self simpleBlock: expectedAst locals: #('$1').
+	self
+		assertContentsOf: [ [ y foo ifNil: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := PjIfNilIfNotNilNode
+		test:
+			(PjAssignNode
 				target: tempVariable
 				expression: (self apply: y selector: #foo))
-			whenNotNil: (PjNonLocalReturnNode expression: tempVariable)
-			whenNil: throwOne.
-	expectedAst := self simpleBlock: expectedAst.
-	self assertContentsOf: [ [ ^ y foo ifNil: [1]] ] convertsTo: expectedAst.
-
-	expectedAst := PjIfNilNode 
-			test: (self apply: y selector: #foo)
-			whenNil: one.
-	self assertContentsOf: [y foo ifNil: [1]] convertsTo: expectedAst.
-
+		whenNotNil: (PjNonLocalReturnNode expression: tempVariable)
+		whenNil: throwOne.
+	expectedAst := self simpleBlock: expectedAst locals: #('$1').
+	self
+		assertContentsOf: [ [ ^ y foo ifNil: [ 1 ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := PjIfNilNode
+		test: (self apply: y selector: #foo)
+		whenNil: one.
+	self assertContentsOf: [ y foo ifNil: [ 1 ] ] convertsTo: expectedAst
 ]
 
 { #category : #testing }
@@ -293,22 +391,63 @@ PjConversionOptimizationTest >> testIfTrueIfFalse [
 PjConversionOptimizationTest >> testInlineBlockReturns [
 	| expectedAst |
 	messageConverter
-		addAllConversions: {PjIfTrueOptimization. PjIfTrueIfFalseOptimization}.
-	expectedAst := self simpleBlock: {PjIfTrueIfFalseNode 
-			test: one
-			whenTrue: (PjSequenceNode expressions: {two. returnThree})
-			whenFalse: (PjReturnNode expression: (self simpleBlock: {two. returnThree}))
-		}.
-	self assertContentsOf: [ [ 1 ifTrue: [ 2. 3 ] ifFalse: [ [ 2. 3 ] ] ] ] convertsTo: expectedAst.
-	
-	expectedAst := self simpleBlock: {PjIfTrueIfFalseNode 
-			test: one
-			whenTrue: (PjSequenceNode expressions: {two. three})
-			whenFalse: (PjSequenceNode expressions: {one. self simpleBlock: {two. returnThree}}).
-			returnOne.
-		}.
-	self assertContentsOf: [ [ 1 ifTrue: [ 2. 3 ] ifFalse: [ 1. [ 2. 3 ] ]. 1 ] ] convertsTo: expectedAst.
-
+		addAllConversions:
+			{PjIfTrueOptimization.
+			PjIfTrueIfFalseOptimization}.
+	expectedAst := self
+		simpleBlock:
+			{(PjIfTrueIfFalseNode
+				test: one
+				whenTrue:
+					(PjSequenceNode
+						expressions:
+							{two.
+							returnThree})
+				whenFalse:
+					(PjReturnNode
+						expression:
+							(self
+								simpleBlock:
+									{two.
+									returnThree}
+								locals: #())))}
+		locals: #().
+	self
+		assertContentsOf: [ [ 1
+				ifTrue: [ 2.
+					3 ]
+				ifFalse: [ [ 2.
+					3 ] ] ] ]
+		convertsTo: expectedAst.
+	expectedAst := self
+		simpleBlock:
+			{(PjIfTrueIfFalseNode
+				test: one
+				whenTrue:
+					(PjSequenceNode
+						expressions:
+							{two.
+							three})
+				whenFalse:
+					(PjSequenceNode
+						expressions:
+							{one.
+							(self
+								simpleBlock:
+									{two.
+									returnThree}
+								locals: #())})).
+			returnOne}
+		locals: #().
+	self
+		assertContentsOf: [ [ 1
+				ifTrue: [ 2.
+					3 ]
+				ifFalse: [ 1.
+					[ 2.
+					3 ] ].
+			1 ] ]
+		convertsTo: expectedAst
 ]
 
 { #category : #testing }
@@ -323,7 +462,7 @@ PjConversionOptimizationTest >> testInlineBlockTempvars [
 			whenFalse:(PjReturnNode expression:PjNilNode new)}.
 	self assertContentsOf: block convertsTo: expectedAst.
 	block := [ [ 3 timesRepeat: [ |w| w ] ] ].
-	expectedAst := PjBlockNode parameters:{} locals:{#w} body:{
+	expectedAst := PjBlockNode parameters:{} locals:#(w '$1') body:{
 		PjForLoopNode
 			from:(PjAssignNode target:(PjTempVariableNode identifier:'$1') expression:(PjLiteralValueNode value:1))
 			to:(PjLiteralValueNode value:3)

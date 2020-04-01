@@ -323,7 +323,7 @@ PjObject >> proxyResponse [
 	if (!name) {
 		Object.$Pj_counter = (Object.$Pj_counter||0)+1;
 		name = "$_"+Object.$Pj_counter;
-		(function(){return this})()[name]=this;
+		global[name]=this;
 		try{Object.defineProperty(this,"$_jsName",{value:name,writable:true})}catch(e){}
 	}
 	return { remove : this.$PjProxyRemove , proxy : name}

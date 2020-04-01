@@ -213,44 +213,80 @@ PjGenerationOptimizationTest >> testOr [
 PjGenerationOptimizationTest >> testSequence [
 	| x inputAst |
 	x := PjTempVariableNode identifier: #x.
-	inputAst := PjSequenceNode expressions: {
-		one. two. 
-		PjIfTrueIfFalseNode
-			test: (self apply: x selector: #foo)
-			whenTrue: one
-			whenFalse: two}.
-	self assert: (PjIfTrueNode test: inputAst whenTrue: one) asStringEquals: 'if(true==(1,2,(true==$asNil$(x).', self selectorsPrefix, 'foo()?1:2)))1'.
-	self assert: inputAst asStringEquals: '{1;2;if(true==$asNil$(x).', self selectorsPrefix, 'foo())1;else 2}'.
-
-	inputAst := self simpleBlock: {
-		PjIfTrueIfFalseNode 
-			test: one
-			whenTrue: (PjSequenceNode expressions: {two. PjIfTrueNode test: one not whenTrue:  two. returnThree})
-			whenFalse: (PjReturnNode expression: (self simpleBlock: {two. returnThree})).
-		two.
-		returnThree
-	}.
-	self assert: inputAst asStringEquals: '(function(){if(true==1){2;if(false==1)2;return 3}else return function(){2;return 3};2;return 3})'.
-	inputAst := PjBlockNode parameters: #(a) locals: #(d) body: {
-		PjIfTrueNode test: falseNode whenTrue: (PjSequenceNode expressions: {
-			PjAssignNode
+	inputAst := PjSequenceNode
+		expressions:
+			{one.
+			two.
+			(PjIfTrueIfFalseNode
+				test: (self apply: x selector: #foo)
+				whenTrue: one
+				whenFalse: two)}.
+	self
+		assert: (PjIfTrueNode test: inputAst whenTrue: one)
+		asStringEquals:
+			'if(true==(1,2,(true==$asNil$(x).' , self selectorsPrefix
+				, 'foo()?1:2)))1'.
+	self
+		assert: inputAst
+		asStringEquals: '{1;2;if(true==$asNil$(x).' , self selectorsPrefix , 'foo())1;else 2}'.
+	inputAst := self
+		simpleBlock:
+			{(PjIfTrueIfFalseNode
+				test: one
+				whenTrue:
+					(PjSequenceNode
+						expressions:
+							{two.
+							(PjIfTrueNode test: one not whenTrue: two).
+							returnThree})
+				whenFalse:
+					(PjReturnNode
+						expression:
+							(self
+								simpleBlock:
+									{two.
+									returnThree}
+								locals: #()))).
+			two.
+			returnThree}
+		locals: #().
+	self
+		assert: inputAst
+		asStringEquals:
+			'(function(){if(true==1){2;if(false==1)2;return 3}else return function(){2;return 3};2;return 3})'.
+	inputAst := PjBlockNode
+		parameters: #(a)
+		locals: #(d)
+		body:
+			{(PjIfTrueNode
+				test: falseNode
+				whenTrue:
+					(PjSequenceNode
+						expressions:
+							{(PjAssignNode
+								target: (PjTempVariableNode identifier: #d)
+								expression: trueNode)})).
+			(PjAssignNode
 				target: (PjTempVariableNode identifier: #d)
-				expression: trueNode}).
-		PjAssignNode
-			target: (PjTempVariableNode identifier: #d)
-			expression: falseNode.
-		PjReturnNode expression: (PjArgumentNode identifier: #a)
-		}.
-	self assert: inputAst asStringEquals: '(function(a){var d;if(true==false)d=true;d=false;return a})'.
-	inputAst := PjBlockNode parameters: #(a) locals: #(d) body: {
-		PjIfTrueNode test: falseNode whenTrue: (PjSequenceNode expressions: #()).
-		PjAssignNode
-			target: (PjTempVariableNode identifier: #d)
-			expression: falseNode.
-		PjReturnNode expression: (PjArgumentNode identifier: #a)
-		}.
-	self assert: inputAst asStringEquals: '(function(a){var d;if(true==false){}d=false;return a})'.
-
+				expression: falseNode).
+			(PjReturnNode expression: (PjArgumentNode identifier: #a))}.
+	self
+		assert: inputAst
+		asStringEquals: '(function(a){var d;if(true==false)d=true;d=false;return a})'.
+	inputAst := PjBlockNode
+		parameters: #(a)
+		locals: #(d)
+		body:
+			{(PjIfTrueNode
+				test: falseNode
+				whenTrue: (PjSequenceNode expressions: #())).
+			(PjAssignNode
+				target: (PjTempVariableNode identifier: #d)
+				expression: falseNode).
+			(PjReturnNode expression: (PjArgumentNode identifier: #a))}.
+	self
+		assert: inputAst
+		asStringEquals: '(function(a){var d;if(true==false){}d=false;return a})'
 ]
 
 { #category : #testing }

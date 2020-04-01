@@ -7,6 +7,10 @@ Class {
 	#name : #PjBrowserGlobals,
 	#superclass : #PjJavascriptGlobals,
 	#classVars : [
+		'Float32Array',
+		'Image',
+		'Uint16Array',
+		'Uint8Array',
 		'XMLHttpRequest',
 		'localStorage'
 	],

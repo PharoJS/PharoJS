@@ -11,7 +11,7 @@ PjStringGenerationTest class >> classVariablesHolderName [
 
 { #category : #asserting }
 PjStringGenerationTest >> assert: aPjJavascriptAstNode asStringEquals: aString [
-	self assert: (PjStringGenerator new asString: aPjJavascriptAstNode) equals: aString
+	self assert: (PjStringGenerator new asString: aPjJavascriptAstNode with: self) equals: aString
 
 ]
 
@@ -25,9 +25,14 @@ PjStringGenerationTest >> nilTestFunctionName [
 	^PjStringGenerator nilTestFunctionName
 ]
 
+{ #category : #'test mock' }
+PjStringGenerationTest >> poolReference: anUndefinedObject for: anUndefinedObject2 [ 
+	^ 'cp$'
+]
+
 { #category : #accessing }
 PjStringGenerationTest >> selectorsPrefix [
-	^ PjTranspiler pharoJsSelectorPrefix
+	^ '_'
 ]
 
 { #category : #testing }
@@ -70,16 +75,16 @@ PjStringGenerationTest >> testClassVariables [
 		asStringEquals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
 	self
-		assert: (PjStringGenerator new currentClass: self class; asString: astAssignment)
+		assert: (PjStringGenerator new currentClass: self class; asString: astAssignment with: self)
 		equals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
 	self
-		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
+		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment with: self)
 		equals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
 	classVar myClass: self class class.
 	self
-		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
+		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment with: self)
 		equals: 'cp$.ClassVarForTest=cp$.ClassVarForTest'.
 
 ]
@@ -161,10 +166,10 @@ PjStringGenerationTest >> testLiteral [
 	self assert: (PjLiteralValueNode value: $x) asStringEquals: '"x"'.
 	self assert: (PjLiteralValueNode value: nil) asStringEquals: 'undefined'.
 	self assert: (PjLiteralValueNode value: (String with: (Character value: 7)),'a\b"
-x',(String with: Character null)) asStringEquals: '"\007a\\b\"\rx\000"'.
+x',(String with: Character null)) asStringEquals: '"\x07a\\b\"\rx\x00"'.
 	self assert: (PjLiteralValueNode value: 'a\b"',(String with: (Character value:257)) ) asStringEquals: '"a\\b\"\u0101"'.
 	self assert: (PjLiteralValueNode value: (String with: Character null),'a\b"
-xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\000a\\b\"\rx\u3088\u3046\u3053\u305Dy\u0101"'.
+xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\x00a\\b\"\rx\u3088\u3046\u3053\u305Dy\u0101"'.
 
 ]
 
@@ -260,15 +265,15 @@ PjStringGenerationTest >> testPoolVariables [
 		assert: astAssignment
 		asStringEquals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 	self
-		assert: (PjStringGenerator new currentClass: self class; asString: astAssignment)
+		assert: (PjStringGenerator new currentClass: self class; asString: astAssignment with: self)
 		equals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 	self
-		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
+		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment with: self)
 		equals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 
 	poolVar myClass: self class class.
 	self
-		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment)
+		assert: (PjStringGenerator new currentClass: self class class; asString: astAssignment with: self)
 		equals: 'cp$.PoolVarForTest=cp$.PoolVarForTest'.
 
 ]

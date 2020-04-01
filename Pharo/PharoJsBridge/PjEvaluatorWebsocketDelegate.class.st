@@ -55,7 +55,7 @@ PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'var result;
 	try{
-		result = Object.', transpiler pharoJsSelectorPrefix,'resultObject_((function(){return this.eval(aString)})());
+		result = Object.', transpiler pharoJsSelectorPrefix,'resultObject_((function(){return global.eval(aString)})());
 	}catch(exception){
 		result={exception:exception.message};
 	}
@@ -72,8 +72,8 @@ PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
 PjEvaluatorWebsocketDelegate class >> initialize [
 	<javascript:
 	'"JSON Math WebSocket console global document history location navigator screen window localStorage module process require".split(" ").forEach(function(s){
-		if(this[s]){
-			try{Object.defineProperty(this[s],"$_jsName",{value:s,writable:true})}catch(s){};
+		if(global[s]){
+			try{Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}catch(s){};
 	}})'>
 ]
 

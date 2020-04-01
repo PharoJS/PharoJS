@@ -22,9 +22,8 @@ String >> printOneJsCharacter: each onStream: aStream [
 			ifFalse: [ each = 13
 					ifTrue: [ aStream nextPut: $r ]
 					ifFalse: [
-						aStream nextPut: $0.
-						aStream nextPut: ('0123' at: each // 8 + 1).
-						aStream nextPut: ('01234567' at: each \\ 8 + 1) ] ] 
+						aStream nextPut: $x.
+						aStream nextPutAll: (each printStringBase: 16 nDigits: 2) ] ] 
 	] ifFalse: [
 		each < 128 ifTrue: [
 			each = 34 ifTrue: [ aStream nextPut: $\ ].

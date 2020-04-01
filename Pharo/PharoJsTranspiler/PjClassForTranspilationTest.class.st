@@ -116,6 +116,22 @@ PjClassForTranspilationTest >> add: op1 and: op2 [
 ]
 
 { #category : #any }
+PjClassForTranspilationTest >> blockWithNamedParameter [
+	self m2 ifNotNil: [ : foo | foo m2 ].
+	^ self m1 ifNotNil: [ : foo | foo m1 ]
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> blockWithUnnamedParameter [
+	^ self m1 ifNil: [ 42 ]
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> blockWithUnnamedParameterNonTail [
+	^ 3+(self m1 ifNil: [ 42 ])
+]
+
+{ #category : #any }
 PjClassForTranspilationTest >> blocksReferencingSelf [
 	[self].
 	^self

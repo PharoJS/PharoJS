@@ -80,7 +80,7 @@ PjBridgeAppClassDecorator >> headerLine [
 { #category : #accessing }
 PjBridgeAppClassDecorator >> pharoJsSelectorPrefix [
 	<pharoJsSkip>
-	^ PjTranspiler pharoJsSelectorPrefix
+	^ rawAppClass pharoJsSelectorPrefix
 ]
 
 { #category : #polyfill }

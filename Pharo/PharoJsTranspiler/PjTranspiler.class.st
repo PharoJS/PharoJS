@@ -41,19 +41,9 @@ PjTranspiler class >> coreClass [
 	^ PjCore
 ]
 
-{ #category : #'class initialization' }
-PjTranspiler class >> defaultPharoJsSelectorPrefix [
-	^'pj_'
-]
-
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
-]
-
-{ #category : #transpiling }
-PjTranspiler class >> pharoJsSelectorPrefix [
-	^ self defaultPharoJsSelectorPrefix
 ]
 
 { #category : #accessing }
@@ -278,7 +268,8 @@ PjTranspiler >> initialize [
 	writtenDNUs := Set new.
 	poolsUsed := IdentityDictionary new.
 	classesReferencingCache := IdentityDictionary new.
-	self pharoJsSelectorPrefix: self class defaultPharoJsSelectorPrefix
+	self pharoJsSelectorPrefix: '_'.
+
 ]
 
 { #category : #accessing }
@@ -386,7 +377,7 @@ PjTranspiler >> pharoJsSelectorPrefix: newSelectorsPrefix [
 
 { #category : #transpiling }
 PjTranspiler >> poolFor: myClass [
-	^ poolsUsed at: myClass ifAbsentPut: [OrderedCollection with: myClass]
+	^ poolsUsed at: myClass instanceSide ifAbsentPut: [OrderedCollection with: myClass instanceSide ]
 ]
 
 { #category : #transpiling }
@@ -395,7 +386,7 @@ PjTranspiler >> poolReference: aClass for: myClass [
 	myClass ifNil: [
 		index := 0
 	] ifNotNil: [
-		pool := self poolFor: myClass instanceSide.
+		pool := self poolFor: myClass.
 		(pool includes: aClass) ifFalse: [
 			pool add: aClass
 		].
@@ -485,6 +476,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 
 { #category : #transpiling }
 PjTranspiler >> writeClassInheritanceLinksOf: aClass [
+	((aClass hasClassMethod: #javascriptSkipSubclassing) and: [ aClass javascriptSkipSubclassing ]) ifTrue: [ ^ self ].
 	self 
 		writeNameForClass: aClass superclass;
 		nextPutAll: '.', self pharoJsSelectorPrefix, 'subclass_("';
