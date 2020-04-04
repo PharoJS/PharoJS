@@ -93,11 +93,6 @@ PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 
 ]
 
-{ #category : #'as yet unclassified' }
-PjTJavascriptCodeAnalyser >> selectorsPrefix [
-	^PjTranspiler pharoJsSelectorPrefix
-]
-
 { #category : #writing }
 PjTJavascriptCodeAnalyser >> writeJsSelector: aSelector onStream: aStream [
 	| isBinary |

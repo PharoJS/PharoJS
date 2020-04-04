@@ -61,7 +61,7 @@ PjTranspilationTest >> nilTestFunctionName [
 
 { #category : #accessing }
 PjTranspilationTest >> selectorsPrefix [
-	^ transpiler pharoJsSelectorPrefix
+	^  '_'
 ]
 
 { #category : #running }
@@ -81,7 +81,7 @@ PjTranspilationTest >> writeJsSelector: aSelector onStream: aStream [
 	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
 			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
 	isBinary := aSelector isBinary.
-	aStream nextPutAll: self selectorsPrefix.
+	aStream nextPut: $_.
 	aSelector do:[ :each | 
 			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]

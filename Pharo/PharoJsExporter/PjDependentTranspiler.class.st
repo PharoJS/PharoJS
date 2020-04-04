@@ -187,7 +187,7 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 	| jsAst |
 	jsAst := convertedMethods at: aMethod.
-	generator asString: jsAst on: self jsStream with: self
+	generator asString: jsAst on: self jsStream
 ]
 
 { #category : #transpiling }

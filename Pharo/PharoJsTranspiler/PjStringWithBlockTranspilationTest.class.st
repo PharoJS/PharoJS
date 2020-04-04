@@ -29,7 +29,7 @@ PjStringWithBlockTranspilationTest >> testBlock1Arg [
 PjStringWithBlockTranspilationTest >> testBlockAsArgument [
 	self 
 		assertStCode: '1 to: 10 by: 2 do: [: x | x ]' 
-		convertedIncludes: '(1).', 	transpiler pharoJsSelectorPrefix, 'to_by_do_(10,2,function(x){return x})'
+		convertedIncludes: '(1)._to_by_do_(10,2,function(x){return x})'
 ]
 
 { #category : #testing }

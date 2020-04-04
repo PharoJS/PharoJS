@@ -118,7 +118,7 @@ PjTranspiler >> convertAndWriteClosedBlock: valuedBlock with: aBlock [
 	| jsAst |
 	jsAst := converter convertValuedBlock: valuedBlock.
 	aBlock value.
-	generator asString: jsAst on: self jsStream with: self.
+	generator asString: jsAst on: self jsStream.
 	jsStream
 		nextPut: $;;
 		cr
@@ -252,7 +252,7 @@ PjTranspiler >> findClassesFor: aClass [
 
 { #category : #transpiling }
 PjTranspiler >> generateCodeStringFrom: jsAst [
-	generator asString: jsAst on: self jsStream with: self
+	generator asString: jsAst on: self jsStream
 ]
 
 { #category : #initialization }
@@ -262,7 +262,7 @@ PjTranspiler >> initialize [
 	converter := self defaultConverterClass new.
 	converter transpiler: self.
 	converter addAllMessageConversions: self defaultMessageConversions.
-	generator := self defaultGeneratorClass new.
+	generator := self defaultGeneratorClass new transpiler: self.
 	self shouldWriteDnu: true.
 	neededDNUs := Set new.
 	writtenDNUs := Set new.
@@ -449,7 +449,7 @@ PjTranspiler >> transpileMethod: aMethod [
 	jsAst := converter
 		convertAst: aMethod ast
 		withPrimitive: aMethod primitive.
-	generator asString: jsAst on: self jsStream with: self
+	generator asString: jsAst on: self jsStream
 ]
 
 { #category : #transpiling }

@@ -117,8 +117,8 @@ PjClassForTranspilationTest >> add: op1 and: op2 [
 
 { #category : #any }
 PjClassForTranspilationTest >> blockWithNamedParameter [
-	self m2 ifNotNil: [ : foo | foo m2 ].
-	^ self m1 ifNotNil: [ : foo | foo m1 ]
+"	self m2 ifNotNil: [ : foo | foo m2 ].
+"	^ self m1 ifNotNil: [ : foo | foo m1 ]
 ]
 
 { #category : #any }

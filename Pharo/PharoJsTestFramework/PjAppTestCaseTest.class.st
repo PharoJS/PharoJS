@@ -5,10 +5,8 @@ Class {
 }
 
 { #category : #testing }
-PjAppTestCaseTest >> assertHasArrayAPI: jsArrayLikeClass prefix: prefix [
-	| selector |
-	selector := prefix, 'first'. "representative selector"
-	self assert: (jsArrayLikeClass prototype js_hasOwnProperty: selector)
+PjAppTestCaseTest >> assertHasArrayAPI: jsArrayLikeClass [
+	self assert: (jsArrayLikeClass prototype js_hasOwnProperty: '_first')
 
 ]
 
@@ -59,19 +57,23 @@ PjAppTestCaseTest >> testExportedCodeOfAppRunningJsSideIsComplete [
 
 { #category : #testing }
 PjAppTestCaseTest >> testExportedCodeOfAppRunningPharoSideIsMinimal [
-	| bridge jsMessage jsSystemDict prefix |
-	PjBridgeTestResource availableFor: PjNonMinmialAppRunningOnPharoTest suite tests anyOne.
+	| bridge jsMessage jsSystemDict |
+	PjBridgeTestResource
+		availableFor: PjNonMinmialAppRunningOnPharoTest suite tests anyOne.
 	bridge := PjBridgeTestResource current bridge.
-	self assert: PjNonMinmialAppRunningOnPharoTest appClass == PjHtmlGeneratingCounterApp.
-	jsMessage := PjJavascriptMessage receiverId: #Smalltalk selector: #yourself arguments: #().
+	self assert: PjNonMinmialAppRunningOnPharoTest appClass equals: PjHtmlGeneratingCounterApp.
+	jsMessage := PjJavascriptMessage
+		receiverId: #Smalltalk
+		selector: #yourself
+		arguments: #().
 	jsSystemDict := bridge evalMessage: jsMessage.
-	self assert: (jsSystemDict at: PjNonMinmialAppRunningOnJsTest appClass name) isNil.
-	prefix := PjNonMinmialAppRunningOnPharoTest appClass pharoJsSelectorPrefix.
-	#(Array NodeList HTMLCollection) do: [ : jsArrayLikeClassName |
-		|jsArrayLikeClass|
-		jsArrayLikeClass := jsSystemDict at: jsArrayLikeClassName.
-		self assertHasArrayAPI: jsArrayLikeClass prefix: prefix]
-
+	self
+		assert: (jsSystemDict at: PjNonMinmialAppRunningOnJsTest appClass name) isNil.
+	#(Array NodeList HTMLCollection)
+		do: [ :jsArrayLikeClassName | 
+			| jsArrayLikeClass |
+			jsArrayLikeClass := jsSystemDict at: jsArrayLikeClassName.
+			self assertHasArrayAPI: jsArrayLikeClass ]
 ]
 
 { #category : #testing }

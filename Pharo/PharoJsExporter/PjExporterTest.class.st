@@ -30,11 +30,6 @@ PjExporterTest >> pharoJsSelectorPrefix [
 	^ exporter transpiler pharoJsSelectorPrefix
 ]
 
-{ #category : #'as yet unclassified' }
-PjExporterTest >> selectorsPrefix [
-	^ exporter transpiler pharoJsSelectorPrefix
-]
-
 { #category : #running }
 PjExporterTest >> setUp [
 	super setUp.
@@ -48,7 +43,7 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 	exporter addClass: PjClassExtensionForTest.
 	jsCode := exporter javascriptCode.
 	self assertInstanceMethod: #isLiteral equals: '(){return 42}'.
-	self assert: (jsCode splitOn: 'i$(function ', exporter transpiler pharoJsSelectorPrefix,'isLiteral') size equals: 2.
+	self assert: (jsCode splitOn: 'i$(function ', self pharoJsSelectorPrefix,'isLiteral') size equals: 2.
 
 ]
 
@@ -56,14 +51,14 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 PjExporterTest >> testClassInheritanceOrder [
 	exporter appClass: PjApplication.
 	jsCode := exporter javascriptCode.
-	self assert: 'Object.', exporter transpiler pharoJsSelectorPrefix, 'subclass_(Error)' precedes: 'Error.', exporter transpiler pharoJsSelectorPrefix, 'subclass_'
+	self assert: 'Object.', self pharoJsSelectorPrefix, 'subclass_(Error)' precedes: 'Error.', exporter transpiler pharoJsSelectorPrefix, 'subclass_'
 ]
 
 { #category : #testing }
 PjExporterTest >> testCoreClassedLoaded [
 	|pjPrefix|
 	exporter appClass: PjApplication.
-	pjPrefix := exporter transpiler pharoJsSelectorPrefix.
+	pjPrefix := self pharoJsSelectorPrefix. " has to be done after an application has been set "
 	jsCode := exporter javascriptCode.
 	self assert: (jsCode includesSubstring: 'Object.', pjPrefix, 'subclass_("PjApplication")' ).
 	self deny: (jsCode includesSubstring: 'function Object()' ).

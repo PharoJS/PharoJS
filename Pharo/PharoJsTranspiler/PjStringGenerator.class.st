@@ -171,22 +171,16 @@ PjStringGenerator class >> transpilerClass [
 
 { #category : #public }
 PjStringGenerator >> asString: aPjAST [
-	^ self asString: aPjAST with: transpiler
+		^ String streamContents: [ :aStream | self asString: aPjAST on: aStream ]
 ]
 
 { #category : #public }
-PjStringGenerator >> asString: aPjAST on: aStream with: aPjTranspiler [
+PjStringGenerator >> asString: aPjAST on: aStream [
 	jsStream := aStream.
 	currentPrecedenceLevel := -1.
 	currentlyDoingAssignment := false.
-	transpiler := aPjTranspiler.
 	aPjAST acceptVisitor: self.
 
-]
-
-{ #category : #public }
-PjStringGenerator >> asString: aPjAST with: aPjTranspiler [
-		^ String streamContents: [ :aStream | self asString: aPjAST on: aStream with: aPjTranspiler ]
 ]
 
 { #category : #precedence }
@@ -246,6 +240,11 @@ PjStringGenerator >> pharoJsSelectorPrefix [
 { #category : #accessing }
 PjStringGenerator >> selectorsPrefix [
 	^ transpiler pharoJsSelectorPrefix
+]
+
+{ #category : #accessing }
+PjStringGenerator >> transpiler: aPjTranspiler [ 
+	transpiler := aPjTranspiler
 ]
 
 { #category : #visiting }
