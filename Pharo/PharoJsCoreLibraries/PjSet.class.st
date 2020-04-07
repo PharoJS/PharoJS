@@ -23,3 +23,15 @@ PjSet >> addLast: element [
 	^super addLast: element
 	
 ]
+
+{ #category : #enumerating }
+PjSet >> like: anObject [
+	(self includes: anObject) ifTrue: [ ^ anObject ].
+	^ nil
+]
+
+{ #category : #enumerating }
+PjSet >> like: anObject ifAbsent: aBlock [
+	(self includes: anObject) ifTrue: [ ^ anObject ].
+	^ aBlock value
+]

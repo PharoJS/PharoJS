@@ -261,6 +261,12 @@ PjArrayTest >> testReject [
 ]
 
 { #category : #testing }
+PjArrayTest >> testRemove [
+	self assertEquivalent: [ #(10 20 30 40) asOrderedCollection removeAt: 2 ].
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testShallowCopy [
 	| clone |
 	clone := self evalBlock: [ #(11 22 33) copy].

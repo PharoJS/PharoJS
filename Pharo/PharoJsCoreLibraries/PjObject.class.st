@@ -50,8 +50,8 @@ PjObject class >> jsTranspilationImportMethods [
 				isPjProxyOrNil
 			).
 		Collection -> #(
-				addAll: 
-			).
+				addAll: ifEmpty:ifNotEmpty: ifNotEmpty:ifEmpty: ifEmpty: ifNotEmpty: 
+ 			).
 		Dictionary -> #(
 				do: 
 			).
@@ -355,11 +355,11 @@ PjObject >> shallowCopy [
 	^copy
 ]
 
-{ #category : #'dictionary emulation' }
+{ #category : #accessing }
 PjObject >> size [
 	| count |
 	count := 0.
-	self keysAndValuesDo: [: key : value |
+	self keysDo: [: value |
 		count := count + 1
 	].
 	^ count

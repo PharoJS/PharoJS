@@ -43,6 +43,28 @@ PjSetTest >> testElementAddedSeveralTimesShowsUpOnlyOnce [
 ]
 
 { #category : #testing }
+PjSetTest >> testLike [
+	set addAll: #(1 2 3 4 5).
+	self assert: (set like: 4) equals: 4.
+	self assert: (set like: 42) equals: nil.
+	self assert: (set like: 4 ifAbsent: [ 3+4 ]) equals: 4.
+	self assert: (set like: 42 ifAbsent: [ 3+4 ]) equals: 7.
+
+]
+
+{ #category : #testing }
+PjSetTest >> testRemove [
+	set addAll: #(1 2 3 4 5).
+	set remove: 3 ifAbsent: [ ].
+	set remove: 42 ifAbsent: [ ].
+	self assert: set size equals: 4.
+	#(1 2 4 5) do: [ : expectedElement |
+		self assert: (set includes: expectedElement)
+	].
+
+]
+
+{ #category : #testing }
 PjSetTest >> testRemoveAll [
 	set addAll: #(1 2 3 4 5).
 	set removeAll: #(1 5).
