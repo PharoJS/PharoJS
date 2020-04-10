@@ -46,11 +46,11 @@ PjMessageConverter >> conversionsAt: selector [
 ]
 
 { #category : #converting }
-PjMessageConverter >> convert: selector receiver: receiver args: args [
-	receiver isSuper ifTrue: [ ^nil ].
+PjMessageConverter >> convert: selector receiver: receiverAstNode args: args [
+	receiverAstNode isSuper ifTrue: [ ^nil ].
 	conversions at: selector ifPresent: [ : collection |
 		collection do: [ : conversion |
-			(conversion convertReceiver: receiver args: args) ifNotNil: [ : ast | ^ ast ] ]
+			(conversion convertReceiver: receiverAstNode args: args) ifNotNil: [ : ast | ^ ast ] ]
 	].
 	^ nil
 ]
