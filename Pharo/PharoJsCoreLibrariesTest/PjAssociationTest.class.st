@@ -5,21 +5,19 @@ Class {
 }
 
 { #category : #testing }
-PjAssociationTest >> testEqualityForAssociationsWithDifferentKeys [
-	self assertEquivalent: [(3->#hello)=(2->#hello)].
-
-]
-
-{ #category : #testing }
-PjAssociationTest >> testEqualityForAssociationsWithDifferentValues [
-	self assertEquivalent: [(3->2)=(3->6)].
-
-]
-
-{ #category : #testing }
-PjAssociationTest >> testEqualityForEqualAssociations [
+PjAssociationTest >> testEqualityForAssociations [
+	self assertEquivalent: [(1->#hello)=(2->#hello)].
 	self assertEquivalent: [(3->#hello)=(3->#hello)].
-	self assertEquivalent: [(3->4)=(3->4)].
+	self assertEquivalent: [(1->#hello)=(2->#goodbye)].
+	self assertEquivalent: [(3->#hello)=(3->#goodbye)].
+	self assertEquivalent: [
+			| a | 
+			a := 3->4. 
+			a = a].
+	self assertEquivalent: [(1->5)=(2->5)].
+	self assertEquivalent: [(3->5)=(3->5)].
+	self assertEquivalent: [(1->5)=(2->8)].
+	self assertEquivalent: [(3->8)=(3->8)].
 
 ]
 
@@ -30,15 +28,11 @@ PjAssociationTest >> testEqualityForKeys [
 		a := 3->4.
 		b := 3->6.
 		a key = b key].
-
-]
-
-{ #category : #testing }
-PjAssociationTest >> testEqualityForSameAssociation [
 	self assertEquivalent: [
-			| a | 
-			a := 3->4. 
-			a = a].
+		| a b |
+		a := 4->1.
+		b := 6->2.
+		a key = b key].
 
 ]
 
@@ -48,6 +42,11 @@ PjAssociationTest >> testEqualityForValues [
 		| a b |
 		a := 4->3.
 		b := 6->3.
+		a value = b value].
+	self assertEquivalent: [
+		| a b |
+		a := 4->1.
+		b := 6->2.
 		a value = b value].
 
 ]
