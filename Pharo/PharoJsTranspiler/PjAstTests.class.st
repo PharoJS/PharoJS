@@ -52,6 +52,11 @@ PjAstTests >> apply: aPjJavascriptAstNode selector: aSelector nonNil: nonNil [
 
 ]
 
+{ #category : #accessing }
+PjAstTests >> pharoJsSelectorPrefix [
+	^ '_'
+]
+
 { #category : #running }
 PjAstTests >> setUp [
 	super setUp.
@@ -90,9 +95,9 @@ PjAstTests >> setUp [
 ]
 
 { #category : #testing }
-PjAstTests >> simpleBlock: objectOrCollection [
+PjAstTests >> simpleBlock: objectOrCollection locals: anArray [
 	^ PjBlockNode 
 		parameters: #()
-		locals: #() 
+		locals: anArray
 		body: objectOrCollection
 ]

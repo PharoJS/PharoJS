@@ -8,6 +8,12 @@ Class {
 	#category : #'PharoJsExamples-Counter'
 }
 
+{ #category : #accessing }
+PjHtmlGeneratingCounterApp class >> pharoJsSelectorPrefix [
+	<pharoJsSkip>
+	^  '_'
+]
+
 { #category : #'initialize-release' }
 PjHtmlGeneratingCounterApp >> buttonsSharedCss [
 	^ {

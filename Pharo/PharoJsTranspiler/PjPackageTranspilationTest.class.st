@@ -34,12 +34,12 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWithPrefix: codeString be
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
-	self assert: firstClass inCodeWith: '.', transpiler pharoJsSelectorPrefix, 'initialize();' before: lastClass.
+	self assert: firstClass inCodeWith: '._initialize();' before: lastClass.
 ]
 
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
-	self assert: firstClass inCodeWithPrefix: '.', transpiler pharoJsSelectorPrefix, 'subclass_("' before: lastClass.
+	self assert: firstClass inCodeWithPrefix: '._subclass_("' before: lastClass.
 
 ]
 
@@ -68,7 +68,7 @@ PjPackageTranspilationTest >> testDnuSetup [
 	self generateJsCodeForClasses: {
 	PjClassBForCircularTranspilationTest.
 	}.
-	self assert: self jsCode includes: '.', self selectorsPrefix, 'registerDnuForAll_(["isNil","javascriptName"]);'
+	self assert: self jsCode includes: '._registerDnuForAll_(["isNil","javascriptName"]);'
 ]
 
 { #category : #testing }
@@ -79,7 +79,7 @@ PjPackageTranspilationTest >> testDuplicateClasses [
 	self generateJsCodeForClasses: classesToConvert.
 	className := PjClassAForPackageTranspilationTest name.
 	classDefintionString := 'subclass_("', className,'")'.
-	classInitializationString := className, '.', self selectorsPrefix, 'initialize();'.
+	classInitializationString := className, '._initialize();'.
 	{classDefintionString. classInitializationString} do: [:each |
 		self assert: (jsCode allRangesOfSubstring: each) size equals: 1] .
 
@@ -91,11 +91,11 @@ PjPackageTranspilationTest >> testJavascriptInitializeOverridesClassInitialize [
 	PjClientForJavascriptInitializationTest.
 	PjProviderForInitializationTest
 	}.
-	self assert: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'javascriptInitialize()'.
-	self deny: self jsCode includes: PjClientForJavascriptInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'initialize()'.
+	self assert: self jsCode includes: PjClientForJavascriptInitializationTest name, '._javascriptInitialize()'.
+	self deny: self jsCode includes: PjClientForJavascriptInitializationTest name, '._initialize()'.
 	self 
-		assert: PjProviderForInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'initialize()'
-		appearsBefore: PjClientForJavascriptInitializationTest name, '.', transpiler pharoJsSelectorPrefix, 'javascriptInitialize()'
+		assert: PjProviderForInitializationTest name, '._initialize()'
+		appearsBefore: PjClientForJavascriptInitializationTest name, '._javascriptInitialize()'
 ]
 
 { #category : #testing }

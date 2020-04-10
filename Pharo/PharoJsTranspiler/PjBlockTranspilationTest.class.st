@@ -174,7 +174,7 @@ PjBlockTranspilationTest >> testBlockWithReferencedScopes [
 	x := 1337.
 	self 
 		assertStBlock: [|w| w := superClosed value.{w.x. 123}] asClosedBlock
-		convertsTo: '(function(superClosed,x){return function(){var w;w=$asNil$(superClosed).', transpiler pharoJsSelectorPrefix, 'value();return [w,x,123]}})((function(y){return function(){return y}})(17),1337)'.
+		convertsTo: '(function(superClosed,x){return function(){var w;w=$asNil$(superClosed)._value();return [w,x,123]}})((function(y){return function(){return y}})(17),1337)'.
 
 ]
 

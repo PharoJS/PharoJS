@@ -41,19 +41,9 @@ PjTranspiler class >> coreClass [
 	^ PjCore
 ]
 
-{ #category : #'class initialization' }
-PjTranspiler class >> defaultPharoJsSelectorPrefix [
-	^'pj_'
-]
-
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
-]
-
-{ #category : #transpiling }
-PjTranspiler class >> pharoJsSelectorPrefix [
-	^ self defaultPharoJsSelectorPrefix
 ]
 
 { #category : #accessing }
@@ -128,7 +118,7 @@ PjTranspiler >> convertAndWriteClosedBlock: valuedBlock with: aBlock [
 	| jsAst |
 	jsAst := converter convertValuedBlock: valuedBlock.
 	aBlock value.
-	generator asString: jsAst on: self jsStream with: self.
+	generator asString: jsAst on: self jsStream.
 	jsStream
 		nextPut: $;;
 		cr
@@ -262,7 +252,7 @@ PjTranspiler >> findClassesFor: aClass [
 
 { #category : #transpiling }
 PjTranspiler >> generateCodeStringFrom: jsAst [
-	generator asString: jsAst on: self jsStream with: self
+	generator asString: jsAst on: self jsStream
 ]
 
 { #category : #initialization }
@@ -272,13 +262,14 @@ PjTranspiler >> initialize [
 	converter := self defaultConverterClass new.
 	converter transpiler: self.
 	converter addAllMessageConversions: self defaultMessageConversions.
-	generator := self defaultGeneratorClass new.
+	generator := self defaultGeneratorClass new transpiler: self.
 	self shouldWriteDnu: true.
 	neededDNUs := Set new.
 	writtenDNUs := Set new.
 	poolsUsed := IdentityDictionary new.
 	classesReferencingCache := IdentityDictionary new.
-	self pharoJsSelectorPrefix: self class defaultPharoJsSelectorPrefix
+	self pharoJsSelectorPrefix: '_'.
+
 ]
 
 { #category : #accessing }
@@ -386,7 +377,7 @@ PjTranspiler >> pharoJsSelectorPrefix: newSelectorsPrefix [
 
 { #category : #transpiling }
 PjTranspiler >> poolFor: myClass [
-	^ poolsUsed at: myClass ifAbsentPut: [OrderedCollection with: myClass]
+	^ poolsUsed at: myClass instanceSide ifAbsentPut: [OrderedCollection with: myClass instanceSide ]
 ]
 
 { #category : #transpiling }
@@ -395,7 +386,7 @@ PjTranspiler >> poolReference: aClass for: myClass [
 	myClass ifNil: [
 		index := 0
 	] ifNotNil: [
-		pool := self poolFor: myClass instanceSide.
+		pool := self poolFor: myClass.
 		(pool includes: aClass) ifFalse: [
 			pool add: aClass
 		].
@@ -458,7 +449,7 @@ PjTranspiler >> transpileMethod: aMethod [
 	jsAst := converter
 		convertAst: aMethod ast
 		withPrimitive: aMethod primitive.
-	generator asString: jsAst on: self jsStream with: self
+	generator asString: jsAst on: self jsStream
 ]
 
 { #category : #transpiling }
@@ -485,6 +476,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 
 { #category : #transpiling }
 PjTranspiler >> writeClassInheritanceLinksOf: aClass [
+	((aClass hasClassMethod: #javascriptSkipSubclassing) and: [ aClass javascriptSkipSubclassing ]) ifTrue: [ ^ self ].
 	self 
 		writeNameForClass: aClass superclass;
 		nextPutAll: '.', self pharoJsSelectorPrefix, 'subclass_("';
@@ -514,16 +506,21 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 
 { #category : #transpiling }
 PjTranspiler >> writeClassVariableDeclarationsOf: aClass [
-	| keys |
+	| keys count |
+	count := 0.
 	keys := aClass classPool keys sorted.
 	keys isEmpty ifTrue: [ ^ self ].
 	keys do: [: cpName |
 			self
 				nextPutAll: 'cp$.';
 				nextPutAll: cpName;
-				nextPutAll: '='
+				nextPutAll: '='.
+			(count := count + 1) = 10 ifTrue: [
+				self nextPutAll: 'null;';cr.
+				count := 0
+			]
 		].
-	self nextPutAll: 'null;';cr.
+	count > 0 ifTrue: [self nextPutAll: 'null;';cr].
 
 ]
 

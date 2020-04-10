@@ -12,12 +12,13 @@ Class {
 }
 
 { #category : #polyfill }
-PjJavascriptGlobals class >> browserPolyfill: aStream [
+PjJavascriptGlobals class >> browserPolyfill: aTranspiler [
 	<pharoJsSkip>
+
 ]
 
 { #category : #polyfill }
-PjJavascriptGlobals class >> domPolyfill: aStream [
+PjJavascriptGlobals class >> domPolyfill: aTranspiler [
 	<pharoJsSkip>
 ]
 
@@ -35,11 +36,11 @@ PjJavascriptGlobals class >> nodePackageName [
 ]
 
 { #category : #polyfill }
-PjJavascriptGlobals class >> nodePolyfill: aStream [
+PjJavascriptGlobals class >> nodePolyfill: aTranspiler [
 	<pharoJsSkip>
 	self nodePackageName ifNil: [ ^ self ].
 	self classVariables size = 1 ifFalse: [ PjJavascriptTranspilationError signal: 'node polyfills should only have 1 class variable' ].
-	aStream
+	aTranspiler
 		nextPutAll: 'var ';
 		nextPutAll: self classVarNames first;
 		nextPutAll: '=Smalltalk.require("';

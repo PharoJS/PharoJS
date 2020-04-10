@@ -84,7 +84,7 @@ PjSpecialMessageConversion >> selector [
 
 { #category : #options }
 PjSpecialMessageConversion >> tempName [
-	^ self astConverter tempName
+	^ self astConverter newTemp
 ]
 
 { #category : #options }

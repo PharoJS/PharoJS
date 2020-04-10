@@ -300,11 +300,11 @@ PjCore class >> makeSubclass [
 	<javascript: 'var pjCore=this;
 return function(subclassName){
 	var subclass = (function(){
-		if(this[subclassName]) 
-			return this[subclassName];
+		if(global[subclassName]) 
+			return global[subclassName];
 		var newClass = (new Function("return function "+subclassName+"(){}"))();
-		newClass.name = subclassName;
-		return this[subclassName] = newClass;
+		// newClass.name = subclassName;
+		return global[subclassName] = newClass;
 	})();
 	if(subclass.__proto__.__proto__ == this.__proto__){return;}
 	subclass.subclasses = [];

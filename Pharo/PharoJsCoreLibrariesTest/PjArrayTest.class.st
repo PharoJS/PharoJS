@@ -131,6 +131,18 @@ PjArrayTest >> testConverstionToSet [
 ]
 
 { #category : #testing }
+PjArrayTest >> testCopy [
+	| tests |
+	tests := self bridge
+		evalBlock: [ | array |
+			array := #(10 20 30 40).
+			{array copy = array. array copy == array} ].
+	self assert: tests first.
+	self deny: tests last.
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testDetectIfFound [
 	self
 		assertEquivalent: [|array found|
@@ -246,6 +258,12 @@ PjArrayTest >> testReject [
 	self assert: filtered size equals: 2.
 	self assert: filtered first equals: 20.
 	self assert: filtered last equals: 30.
+]
+
+{ #category : #testing }
+PjArrayTest >> testRemove [
+	self assertEquivalent: [ #(10 20 30 40) asOrderedCollection removeAt: 2 ].
+
 ]
 
 { #category : #testing }

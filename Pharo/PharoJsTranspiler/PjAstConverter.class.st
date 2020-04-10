@@ -348,6 +348,12 @@ PjAstConverter >> newTemp [
 	^tempName
 ]
 
+{ #category : #'temp vars' }
+PjAstConverter >> newTemp: tempName [
+	extraTempVariablesToDeclare add: tempName.
+	^ tempName
+]
+
 { #category : #'non-nil handling' }
 PjAstConverter >> nonNilIdentifiers [
 	^ nonNilIdentifiers ifNil: [ nonNilIdentifiers := Stack new ]
@@ -381,7 +387,7 @@ PjAstConverter >> reset [
 
 { #category : #'initialize-release' }
 PjAstConverter >> resetExtraTempVariablesToDeclare [
-	extraTempVariablesToDeclare := OrderedCollection new.
+	extraTempVariablesToDeclare := Set new.
 ]
 
 { #category : #visiting }
@@ -512,7 +518,7 @@ PjAstConverter >> visitBlockNode: aRBBlockNode [
 	].
 	^ PjBlockNode
 		parameters: aRBBlockNode argumentNames
-		locals: aRBBlockNode temporaryNames, extaTempVars
+		locals: aRBBlockNode temporaryNames, extaTempVars asArray
 		body: expressions
 ]
 
@@ -652,19 +658,20 @@ PjAstConverter >> visitMessageNode: aRBMessageNode isNonNil: isNonNil [
 
 { #category : #visiting }
 PjAstConverter >> visitMethodNode: aRBMethodNode [
-	| body extraTempVars savedExtraTempVariablesToDeclare |
-	currentConvertingMethod := aRBMethodNode compiledMethod.
-	savedExtraTempVariablesToDeclare := extraTempVariablesToDeclare.
-	self resetExtraTempVariablesToDeclare.
-	self reset.
-	body := self handlePragmaInMethodNode: aRBMethodNode.
-	extraTempVars := extraTempVariablesToDeclare.
-	extraTempVariablesToDeclare := savedExtraTempVariablesToDeclare.
-	self resetExtraTempVariablesToDeclare.
-	currentConvertingMethod := nil.
+	| body extraTempVars |
+	[
+		currentConvertingMethod := aRBMethodNode compiledMethod.
+		self resetExtraTempVariablesToDeclare.
+		self reset.
+		body := self handlePragmaInMethodNode: aRBMethodNode.
+	] ensure:[
+		extraTempVars := extraTempVariablesToDeclare.
+		self resetExtraTempVariablesToDeclare.
+		currentConvertingMethod := nil.
+	].
 	^ (PjMethodNode
 		parameters: aRBMethodNode argumentNames
-		locals: aRBMethodNode temporaryNames , extraTempVars
+		locals: aRBMethodNode temporaryNames, extraTempVars asArray
 		body: body
 		methodName: aRBMethodNode selector
 		needsSelf: self hasInBlockSelfReferences

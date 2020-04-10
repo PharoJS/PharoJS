@@ -171,17 +171,14 @@ PjStringGenerator class >> transpilerClass [
 
 { #category : #public }
 PjStringGenerator >> asString: aPjAST [
-	pharoJsSelectorPrefix := self selectorsPrefix.
-	^ String
-		streamContents: [ :aStream | self asString: aPjAST on: aStream with: self ]
+		^ String streamContents: [ :aStream | self asString: aPjAST on: aStream ]
 ]
 
 { #category : #public }
-PjStringGenerator >> asString: aPjAST on: aStream with: aPjTranspiler [
+PjStringGenerator >> asString: aPjAST on: aStream [
 	jsStream := aStream.
 	currentPrecedenceLevel := -1.
 	currentlyDoingAssignment := false.
-	transpiler := aPjTranspiler.
 	aPjAST acceptVisitor: self.
 
 ]
@@ -241,13 +238,13 @@ PjStringGenerator >> pharoJsSelectorPrefix [
 ]
 
 { #category : #accessing }
-PjStringGenerator >> poolReference: anUndefinedObject for: aClass [ 
-	^ 'cp$'
+PjStringGenerator >> selectorsPrefix [
+	^ transpiler pharoJsSelectorPrefix
 ]
 
-{ #category : #'as yet unclassified' }
-PjStringGenerator >> selectorsPrefix [
-	^ (transpiler ifNil: [PjTranspiler]) pharoJsSelectorPrefix
+{ #category : #accessing }
+PjStringGenerator >> transpiler: aPjTranspiler [ 
+	transpiler := aPjTranspiler
 ]
 
 { #category : #visiting }
@@ -345,7 +342,7 @@ PjStringGenerator >> visitClassNode: aPjClassNode [
 { #category : #visiting }
 PjStringGenerator >> visitClassVariableNode: aPjClassVariableNode [
 	self
-		writeNonBrace: (transpiler ifNil: ['cp$'] ifNotNil: [aPjClassVariableNode poolReferenceWith: transpiler]);
+		writeNonBrace: (aPjClassVariableNode poolReferenceWith: transpiler);
 		nextPut: $.;
 		writeVariable: aPjClassVariableNode identifier escapingIfIn: JsReservedWordsForInstanceVariables.
 

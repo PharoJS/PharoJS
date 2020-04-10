@@ -77,6 +77,23 @@ PjApplication class >> exportApp [
 ]
 
 { #category : #'*PharoJsExporter-App' }
+PjApplication class >> exportApp: version [
+	<pharoJsSkip>
+	exportVersion := version.
+	self exportApp.
+
+]
+
+{ #category : #'*PharoJsExporter-App' }
+PjApplication class >> exportVersion [
+	<pharoJsSkip>
+	self error: 'Override this in your application with the code:
+exportVersion
+	<jsLiteralGenerator>
+	^ exportVersion'
+]
+
+{ #category : #'*PharoJsExporter-App' }
 PjApplication class >> exporterClass [
 	<pharoJsSkip>
 	^ PjFileExporter
@@ -95,12 +112,12 @@ PjApplication class >> ifInvalidFolder: folder do: aBlock [
 ]
 
 { #category : #'*PharoJsExporter-App' }
-PjApplication class >> polyfill: aPolyfillClass onStream: aStream unlessIn: aSet [
+PjApplication class >> polyfill: aPolyfillClass withTranspiler: aTranspiler unlessIn: aSet [
 	<pharoJsSkip>
 	(aSet includes: aPolyfillClass) ifFalse: [
 		aSet add: aPolyfillClass.
 		aPolyfillClass requiredPolyfills do: [ : pool |
-			self polyfill: pool onStream: aStream unlessIn: aSet
+			self polyfill: pool withTranspiler: aTranspiler unlessIn: aSet
 		].
 		^ true
 	].
