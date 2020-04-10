@@ -8,6 +8,7 @@ Class {
 PjToDoOptimization >> convertReceiver: receiver args: args [
 	| from to by body toName byName |
 	true ifTrue: [ ^ nil ].
+	self flag: #todo.
 	self astConverter isInExpression ifTrue: [ ^ nil ].
 	args last isBlock ifFalse: [ ^ nil ].
 	args last arguments size = 1 ifFalse: [ ^ nil ].

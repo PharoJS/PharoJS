@@ -36,6 +36,7 @@ PjFileExporter >> createFileNamed: fName startingWith: beginning and: string ifE
 					OSPlatform current environment at: 'USERNAME' ifPresent: [: name |
 						self nextPutAll: ' by ';nextPutAll: name]]].
 			self cr.
+			self nextPutAll: '''use strict'';';cr.
 			aBlock value: f ] ].
 	[ ^ self fileStreamClass newFileNamed: fName do: header ]
 		on: FileExistsException

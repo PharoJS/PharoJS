@@ -13,7 +13,8 @@ Class {
 		'appFolder',
 		'currentInstance',
 		'port',
-		'status'
+		'status',
+		'exportVersion'
 	],
 	#category : #PharoJsApp
 }
@@ -58,7 +59,7 @@ PjApplication class >> headerLine [
 { #category : #accessing }
 PjApplication class >> pharoJsSelectorPrefix [
 	<pharoJsSkip>
-	^ PjTranspiler pharoJsSelectorPrefix
+	^ 'pj_'
 ]
 
 { #category : #'instance creation' }

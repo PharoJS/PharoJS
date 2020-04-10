@@ -16,6 +16,7 @@ PjIfNotNilOptimization >> convertReceiver: receiverNode args: aCollection [
 			whenNotNil: (self visitInlineBlock: notNilBlockNode)
 	].
 	variableId := notNilBlockNode arguments first name.
+	self astConverter newTemp: variableId.
 	^ PjIfNotNilNode
 			test: (self inExpressionDo: [PjAssignNode
 						target: (PjArgumentNode identifier: variableId)

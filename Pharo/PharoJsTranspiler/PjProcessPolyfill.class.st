@@ -11,9 +11,9 @@ Class {
 }
 
 { #category : #polyfill }
-PjProcessPolyfill class >> browserPolyfill: aStream [
+PjProcessPolyfill class >> browserPolyfill: aTranspiler [
 	<pharoJsSkip>
-	super browserPolyfill: aStream.
-	aStream
+	super browserPolyfill: aTranspiler.
+	aTranspiler
 		nextPutAll: 'var process=process||{exit:function(){window.close()}};';cr
 ]

@@ -8,12 +8,12 @@ ProtoObject class >> classToUseForJsConversion [
 
 { #category : #'*PharoJsTranspiler' }
 ProtoObject class >> hasClassMethod: selector [
-	^self class includesSelector: selector
+	^self classSide includesSelector: selector
 ]
 
 { #category : #'*PharoJsTranspiler' }
 ProtoObject class >> hasInstanceMethod: selector [
-	^self includesSelector: selector
+	^self instanceSide includesSelector: selector
 ]
 
 { #category : #'*PharoJsTranspiler' }

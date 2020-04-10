@@ -49,7 +49,7 @@ PjUndefinedObject >> asJSON [
 	^ 'null'
 ]
 
-{ #category : #'not defined category' }
+{ #category : #comparing }
 PjUndefinedObject >> identityHash [
 	<jsGenerator: #identityHash_jsGenerator:>
 ]

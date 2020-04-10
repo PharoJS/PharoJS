@@ -31,8 +31,8 @@ PjDependentTranspilerTest >> testIncludeMethods [
 	self generateJsCodeForClasses: { PjClassForTranspilationTest }.
 	self assert: (self instanceMethod: #selector) equals: '(){return this.selector}'.
 	self assert: (self instanceMethod: #selectors) equals: '(){return [this.selector]}'.
-	self assert: (self instanceMethod: #order:selector:) equals: '(aNumber,aString){this.', transpiler pharoJsSelectorPrefix, 'order_(aNumber);this.selector=aString;return this}'.
-	self assert: (self classMethod: #javascriptInitialize) equals: '(){this.pj_instVarNamed_put_("stackTraceLimit",100);return this}'.
+	self assert: (self instanceMethod: #order:selector:) equals: '(aNumber,aString){this._order_(aNumber);this.selector=aString;return this}'.
+	self assert: (self classMethod: #javascriptInitialize) equals: '(){this._instVarNamed_put_("stackTraceLimit",100);return this}'.
 	self assert: (self classMethod: #javascriptName) equals: nil. "because of pragma"
 	self assert: (self classMethod: #exampleForTest) equals: '(){return this}'.
 

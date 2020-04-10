@@ -33,12 +33,10 @@ PjSingleClassTranspilationTest >> testBlockReferencingSelf [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCascade [
-	| prefix |
-	prefix := self selectorsPrefix.
-	self assertInstanceMethod: #cascadeSelf equals: '(){return (this.', prefix, 'm1(),this.', prefix, 'm_(4),this.', prefix, 'yourself())}'.
-	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype.', prefix, 'isNil.call(this),',self classToTranspile superclass name,'.prototype.', prefix, 'yourself.call(this))}'.
-	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x).', prefix, 'foo()),$1.', prefix, 'bar(),$1.', prefix, 'yourself())}'.
-	self assertInstanceMethod: #cascadeNested equals: '(){return (this.', prefix, 'm1(),this.', prefix, 'm_((this.', prefix, 'm1(),this.', prefix, 'm2())),this.', prefix, 'yourself())}'.
+	self assertInstanceMethod: #cascadeSelf equals: '(){return (this._m1(),this._m_(4),this._yourself())}'.
+	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype._isNil.call(this),',self classToTranspile superclass name,'.prototype._yourself.call(this))}'.
+	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x)._foo()),$1._bar(),$1._yourself())}'.
+	self assertInstanceMethod: #cascadeNested equals: '(){return (this._m1(),this._m_((this._m1(),this._m2())),this._yourself())}'.
 
 ]
 
@@ -73,7 +71,7 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 		superclassName,'.S=',superclassName,'.S;',
 		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
-	self assert: (self jsCode endsWith: className, '.', self selectorsPrefix, 'initialize();').
+	self assert: (self jsCode endsWith: className, '._initialize();').
 	self assertClassMethod: #javascriptName equals: nil.
 	self assertClassMethod: #methodWithJsGenerator equals: '(){', (self classToTranspile classMethod_jsGenerator: transpiler),'}'
 
@@ -81,9 +79,7 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCompose [
-	| prefix |
-	prefix := self selectorsPrefix.
-	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this.', prefix, 'm1()).', prefix, 'm_(4)).', prefix, 'm2()}'.
+	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this._m1())._m_(4))._m2()}'.
 
 ]
 
@@ -121,5 +117,5 @@ PjSingleClassTranspilationTest >> testNative [
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testToDoExpr [
-	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1).', self selectorsPrefix, 'to_do_(10,Object);return this}'
+	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1)._to_do_(10,Object);return this}'
 ]

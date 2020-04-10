@@ -253,7 +253,7 @@ PjExporter >> writeGlobalsPolyfills: pools [
 	pools do: [ :pool | 
 		self appClass
 			polyfill: pool
-			onStream: self transpiler jsStream
+			withTranspiler: self transpiler
 			unlessIn: globalsPools
 	].
 

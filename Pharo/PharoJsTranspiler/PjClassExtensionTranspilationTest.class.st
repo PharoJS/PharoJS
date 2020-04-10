@@ -23,6 +23,6 @@ PjClassExtensionTranspilationTest >> testClassExtension [
 { #category : #testing }
 PjClassExtensionTranspilationTest >> testJavascriptInitialize [
 	self assertClassMethod: #javascriptInitialize equals: '(){return this}'.
-	self assert: self jsCode includes: PjClassForTranspilationTest name, '.', transpiler pharoJsSelectorPrefix, 'javascriptInitialize()'.
+	self assert: self jsCode includes: PjClassForTranspilationTest name, '._javascriptInitialize()'.
 
 ]

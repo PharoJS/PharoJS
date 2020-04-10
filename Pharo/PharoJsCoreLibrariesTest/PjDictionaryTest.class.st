@@ -33,6 +33,34 @@ PjDictionaryTest >> testAtIfAbsentPut [
 ]
 
 { #category : #testing }
+PjDictionaryTest >> testAtIfEmpty [
+	self assertEquivalent: [ Dictionary new isEmpty ].
+	self assertEquivalent: [ (Dictionary new at: #x put: 4;yourself) isEmpty ].
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d ifEmpty: [ 3 ]].
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d ifEmpty: [ 3 ] ifNotEmpty: [42]].
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d ifNotEmpty: [ 3 ] ifEmpty: [42]].
+	self assertEquivalent: [|d t|
+		d := Dictionary new.t:=5.
+		d at: #x put: 4.
+		d ifEmpty: [ t:=3 ].t].
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d at: #x put: 4.
+		d ifEmpty: [ 3 ] ifNotEmpty: [42]].
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d at: #x put: 4.
+		d ifNotEmpty: [ 3 ] ifEmpty: [42]].
+
+]
+
+{ #category : #testing }
 PjDictionaryTest >> testAtPut [
 	self assertEquivalent: [|d|
 		d := Dictionary new.

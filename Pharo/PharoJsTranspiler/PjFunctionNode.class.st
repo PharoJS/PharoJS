@@ -23,6 +23,12 @@ PjFunctionNode >> acceptVisitor: aPjASTVisitor [
 ]
 
 { #category : #accessing }
+PjFunctionNode >> addLocal: anObject [
+	locals := locals asOrderedCollection.
+	^ locals add: anObject
+]
+
+{ #category : #accessing }
 PjFunctionNode >> body [
 	^ body
 ]

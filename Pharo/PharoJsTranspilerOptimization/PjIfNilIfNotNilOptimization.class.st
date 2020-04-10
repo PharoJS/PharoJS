@@ -7,16 +7,18 @@ Class {
 	#category : #'PharoJsTranspilerOptimization-Optimizations'
 }
 
-{ #category : #optimizing }
+{ #category : #converting }
 PjIfNilIfNotNilOptimization >> convertReceiver: receiverNode args: aCollection [ 
 	| notNilBlockNode |
 	aCollection first isOptimizableAsContionalBlock ifFalse: [ ^ nil ].
 	notNilBlockNode := aCollection second.
 	notNilBlockNode isOptimizableAsContionalBlock ifFalse: [ ^ nil ].
-	(notNilBlockNode isBlock and: [ notNilBlockNode arguments notEmpty ]) ifTrue: [
+	(notNilBlockNode isBlock and: [ notNilBlockNode arguments notEmpty ]) ifTrue: [ | temp |
+		temp := notNilBlockNode arguments first name.
+		self astConverter newTemp: temp.
 		^ self
 			test: (self inExpressionDo: [PjAssignNode
-						target: (PjArgumentNode identifier: notNilBlockNode arguments first name)
+						target: (PjArgumentNode identifier: temp)
 						expression: (self visit: receiverNode)])
 			whenNotNil: (self visitInlineBlock: notNilBlockNode)
 			whenNil: (self visitInlineBlock: aCollection first)
@@ -33,7 +35,7 @@ PjIfNilIfNotNilOptimization >> selector [
 ]
 
 { #category : #optimizing }
-PjIfNilIfNotNilOptimization >> test: aTest whenNotNil: whenNotAst whenNil: whenAst [ 
+PjIfNilIfNotNilOptimization >> test: aTest whenNotNil: whenNotAst whenNil: whenAst [
 	(aTest class = PjUnaryNode and: [ aTest operator = #! ]) ifTrue: [
 		^PjIfNilIfNotNilNode
 			test: aTest expression

@@ -33,7 +33,7 @@ PjWhileNode >> body: anObject [
 
 { #category : #testing }
 PjWhileNode >> canPropogateReturns [
-	^ true
+	^ true " not really, but we don't want to add a 'return this' at the end "
 ]
 
 { #category : #accessing }

@@ -11,10 +11,10 @@ Class {
 }
 
 { #category : #polyfill }
-PjTest2Polyfill class >> nodePolyfill: aStream [
+PjTest2Polyfill class >> nodePolyfill: aTranspiler [
 	<pharoJsSkip>
-	super nodePolyfill: aStream.
-	aStream
+	super nodePolyfill: aTranspiler.
+	aTranspiler
 		nextPutAll: 'var Bar=Foobar.Bar;';cr
 ]
 
