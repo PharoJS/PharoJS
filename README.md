@@ -1,6 +1,8 @@
 # PharoJS: Develop in Pharo, Run on Javascript
 
-To install PharoJS for Pharo 7 and above, perform the following code in a playground:
+PharoJS is currently available for Pharo 7 only.
+
+To install PharoJS, perform the following code in a playground:
 
 <pre>
 Metacello new
