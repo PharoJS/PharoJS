@@ -178,7 +178,7 @@ PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
 	^self astForJsCode: jsCode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 PjAstConverter >> handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode [ 
 	| jsCode forClass selector result |
 	forClass := aRBMethodNode scope outerScope outerScope getClass.
@@ -314,7 +314,7 @@ PjAstConverter >> jsCodePragmaKeyword [
 	^self class jsCodePragmaKeyword
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjAstConverter >> jsLiteralGeneratorPragmaKeyword [
 	^ self class jsLiteralGeneratorPragmaKeyword
 ]
