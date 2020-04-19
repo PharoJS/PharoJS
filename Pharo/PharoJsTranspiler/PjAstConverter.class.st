@@ -629,6 +629,11 @@ PjAstConverter >> visitLiteralNode: aRBLiteralValueNode [
 		]
 ]
 
+{ #category : #'as yet unclassified' }
+PjAstConverter >> visitLiteralValueNode: aRBLiteralValueNode [ 
+	^ self visitLiteralNode: aRBLiteralValueNode
+]
+
 { #category : #visiting }
 PjAstConverter >> visitMessageNode: aRBMessageNode [ 
 	^ self visitMessageNode: aRBMessageNode isNonNil: false
