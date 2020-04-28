@@ -601,6 +601,7 @@ PjBridge >> startWithoutWaitingForClient [
 	self isServerStarted
 		ifTrue: [ ^ self ].
 	self server start.
+	"retry if not started within 200ms"
 	self
 		when: [ self isServerStarted ]
 		do: [  ]
