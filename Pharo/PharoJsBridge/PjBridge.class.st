@@ -134,26 +134,6 @@ PjBridge >> appClass: aPharoJsAppClass [
 
 ]
 
-{ #category : #public }
-PjBridge >> asyncEval: smalltalkString withResultDo: singleArgBlock [
-	| javaScriptString |
-	javaScriptString := self convertToJs: smalltalkString.
-	self asyncEvalJavascript: javaScriptString withResultDo: singleArgBlock
-]
-
-{ #category : #public }
-PjBridge >> asyncEvalJavascript: javaScriptString withResultDo: singleArgBlock [
-	self sendMessage: javaScriptString.
-	[
-	self 
-		when: [self isSyncDataAvailable] 
-		do: [self handOffResult: singleArgBlock] 
-		onTimeOutDo: [ ^ PjJavascriptError signal: 'Time Out! No response received' ]
-		timeOutDuration: self timeout.
-	] fork.
-
-]
-
 { #category : #'closure handling' }
 PjBridge >> blockClosure: aBlockClosure [
 	^ self blockClosures at: aBlockClosure ifAbsentPut: [
