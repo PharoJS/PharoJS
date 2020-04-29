@@ -32,13 +32,24 @@ PjExpressApp >> listen: port [
 	
 ]
 
+{ #category : #'start-stop' }
+PjExpressApp >> port [
+	^ 3000
+]
+
 { #category : #webapp }
 PjExpressApp >> postRequest: path response: logic [
 	server post: path action: logic.
 ]
 
 { #category : #'start-stop' }
+PjExpressApp >> setupPaths [
+   self subclassResponsibility
+]
+
+{ #category : #'start-stop' }
 PjExpressApp >> start [
-	server := ExpressServer new.
-	^ server.
+   server := ExpressServer new.
+   self setupPaths.
+   self listen: self port.
 ]

@@ -20,16 +20,14 @@ PjHelloWorldExample class >> appJsFileName [
 ]
 
 { #category : #'start-stop' }
-PjHelloWorldExample >> start [
+PjHelloWorldExample >> setupPaths [
 	| john |
-	server := ExpressServer new.
 	self getRequest: '/' send: 'hello world from pharojs-express!'.
 	john := 'John'.
 	self getRequest: '/json' json: { #name -> john.  #age -> 30. #city -> 'Toronto'} asDictionary.
 	self getRequest: '/json1' json: 'hello text'.
 	self getRequest: '/json2' json: #(1 2 fred nil #nil).
 	self getRequest: '/json3' json: 42.
-	"add code to listen"
-	self listen: 3000.
-	^ server.
+   "server get: '/p' do: [:req :req | req send: (self getResultFor: req) ]."
+    "and more examples"
 ]
