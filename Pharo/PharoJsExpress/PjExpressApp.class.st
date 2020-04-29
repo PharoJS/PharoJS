@@ -8,7 +8,7 @@ Class {
 	#name : #PjExpressApp,
 	#superclass : #PjNodeApplication,
 	#instVars : [
-		'expressServer'
+		'server'
 	],
 	#pools : [
 		'PjExpressPolyfill'
@@ -18,27 +18,27 @@ Class {
 
 { #category : #webapp }
 PjExpressApp >> getRequest: path json: json [
-	expressServer get: path action: [ :req :res | res json: json ].
+	server get: path action: [ :req :res | res json: json ].
 ]
 
 { #category : #webapp }
 PjExpressApp >> getRequest: path send: obj [
-	expressServer get: path action: [ :req :res | res send: obj ].
+	server get: path action: [ :req :res | res send: obj ].
 ]
 
 { #category : #webapp }
 PjExpressApp >> listen: port [
-	expressServer listen: port anon: [ Object log: 'listening on port ' + port ].
+	server listen: port anon: [ Object log: 'listening on port ' + port ].
 	
 ]
 
 { #category : #webapp }
 PjExpressApp >> postRequest: path response: logic [
-	expressServer post: path action: logic.
+	server post: path action: logic.
 ]
 
 { #category : #'start-stop' }
 PjExpressApp >> start [
-	expressServer := ExpressServer new.
-	^ expressServer.
+	server := ExpressServer new.
+	^ server.
 ]

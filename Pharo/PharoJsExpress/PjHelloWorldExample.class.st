@@ -22,7 +22,7 @@ PjHelloWorldExample class >> appJsFileName [
 { #category : #'start-stop' }
 PjHelloWorldExample >> start [
 	| john |
-	expressServer := ExpressServer new.
+	server := ExpressServer new.
 	self getRequest: '/' send: 'hello world from pharojs-express!'.
 	john := 'John'.
 	self getRequest: '/json' json: { #name -> john.  #age -> 30. #city -> 'Toronto'} asDictionary.
@@ -31,5 +31,5 @@ PjHelloWorldExample >> start [
 	self getRequest: '/json3' json: 42.
 	"add code to listen"
 	self listen: 3000.
-	^ expressServer.
+	^ server.
 ]
