@@ -1,5 +1,5 @@
 "
-A PjApplication for web servers using the popular web framework express.js
+A PjApplication for web servers using the popular web framework express.js (https://expressjs.com/)
 
 Uses the class PjExpressPolyfill to create an express server.
 
