@@ -1,14 +1,14 @@
-Extension { #name : #PjArray }
+Extension { #name : #PjCollection }
 
 { #category : #'*PharoJsSerialization' }
-PjArray class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
+PjCollection class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
 	^ self
 		withAll:
 			(jsonObject collect: [ :each | reader readFromJsObjectOrDictionary: each ])
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjArray >> writePhxJsonRepresentationOn: w [
+PjCollection >> writePhxJsonRepresentationOn: w [
 	w
 		doBetweenSquareBrackets: [ self
 				do: [ :each | each writePhxJsonOn: w ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #PjSerializationTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #'PharoJsSerialization-Tests'
+	#category : #'PharoJsSerializationDeprecated-Tests'
 }
 
 { #category : #testing }
