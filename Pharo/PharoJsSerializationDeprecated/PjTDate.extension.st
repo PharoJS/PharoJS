@@ -1,12 +1,12 @@
 Extension { #name : #PjTDate }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJsSerializationDeprecated' }
 PjTDate classSide >> newFromMaterialized: jsonString [
 	<javascript: 'return new Date(jsonString)'>
 	
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJsSerializationDeprecated' }
 PjTDate >> serializationContents [
 	^self
 ]
