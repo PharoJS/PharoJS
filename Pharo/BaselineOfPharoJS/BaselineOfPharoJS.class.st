@@ -50,7 +50,9 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsTranspilerOptimization' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsSerialization' with: [
-				spec requires: #('PharoJsCoreLibraries' 'PharoJsBridgeTest')]; 
+				spec requires: #('PharoJsCoreLibraries')]; 
+			package: 'PharoJsSerializationTest' with: [
+				spec requires: #('PharoJsSerialization' 'PharoJsBridgeTest')]; 
 			package: 'PharoJsSerializationDeprecated' with: [
 				spec requires: #('PharoJsApp' 'PharoJsTranspiler' 'PharoJsTestFramework' ). ]. ].
 
