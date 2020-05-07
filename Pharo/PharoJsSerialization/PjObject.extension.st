@@ -1,38 +1,30 @@
 Extension { #name : #PjObject }
 
 { #category : #'*PharoJsSerialization' }
-PjObject class >> newFromMaterialized: serializationArray [
-	|restored ivIndex|
-	restored := self new. "Ensure initialize is performed in case there are new IVs"
-	ivIndex := 1.
-	[ivIndex <= serializationArray size] whileTrue: [
-		restored 
-			instVarNamed: (serializationArray at: ivIndex) 
-			put: (serializationArray at: ivIndex + 1) materialize.
-		ivIndex := ivIndex + 2.
-	].
-	^restored
-
+PjObject >> allPhxJsonInstvarNames [
+	^ self keys
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjObject >> serializationArray [
-	^ {self className.
-	self serializationContents}
+PjObject class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
+	| obj |
+	obj := self new.
+	reader addKnownObject: obj.
+	jsonObject
+		keysAndValuesDo: [ :k :v | obj instVarNamed: k put: (reader readFromJsObjectOrDictionary: v) ].
+	^ obj 
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjObject >> serializationContents [
-	|serializable|
-	serializable := OrderedCollection new.
-	self keysAndValuesDo: [ : key : value |
-		serializable add: key.
-		serializable add: value serializationArray.
-	].
-	^serializable
+PjObject class >> jsTranspilationImportMethodsNonstandard [
+	<pharoJsSkip>
+	^ {(Object class -> #(newPhxJsonWriter)).
+	(Object
+		->
+			#(asPhxJsonString #writePhxJsonOn: writePhxJsonRepresentationOn: #writePhxJsonObjectOn:))}
 ]
 
 { #category : #'*PharoJsSerialization' }
-PjObject >> serialize [
-	^ self serializationArray asJSON
+PjObject class >> phxJsonClassName [
+	^ self name
 ]

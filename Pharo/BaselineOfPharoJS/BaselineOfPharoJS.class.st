@@ -26,7 +26,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsBridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'Zinc-WebSocket-Core' ). ];
+				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'Zinc-WebSocket-Core' 'PharoJsSerialization'). ];
 			package: #PharoJsBridgeTest with: [
 				spec requires: #('PharoJsTestFramework' 'PharoJsBridge' ). ];
 			package: #PharoJsCoreLibraries with: [
@@ -47,9 +47,11 @@ BaselineOfPharoJS >> baseline: spec [
 				spec requires: #('PharoJsBridge' ). ];
 			package: 'PharoJsTranspiler' with: [
 				spec requires: #('Equals' ). ];
-			package: #PharoJsTranspilerOptimization with: [
+			package: 'PharoJsTranspilerOptimization' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsSerialization' with: [
+				spec requires: #('PharoJsCoreLibraries')]; 
+			package: 'PharoJsSerializationDeprecated' with: [
 				spec requires: #('PharoJsApp' 'PharoJsTranspiler' 'PharoJsTestFramework' ). ]. ].
 
 ]

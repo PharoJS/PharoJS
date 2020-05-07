@@ -605,7 +605,7 @@ PjBridge >> startWithoutWaitingForClient [
 		when: [ self isServerStarted ]
 		do: [  ]
 		onTimeOutDo: [ self server start ]
-		timeOutDuration: 200 milliseconds.
+		timeOutDuration: 200 milliSeconds.
 	self waitForServerToStart.
 	self client start
 ]
