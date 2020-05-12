@@ -365,8 +365,9 @@ PjBridge >> isResponseMessageAvailableFor: aSentMessageToClient [
 	[ result == self and: [ self isWebSocketDataAvailable ] ]
 		whileTrue: [ | respMsg |
 			respMsg := PhxJsonReader readFromString: self webSocket readMessage.
-			respMsg inResponseToId = aSentMessageToClient id
-				ifTrue: [ result := self evalResponseMessage: respMsg ] ].
+			 result := self evalResponseMessage: respMsg 
+		"	respMsg inResponseToId = aSentMessageToClient id
+				ifTrue: []" ].
 	self executeAnyCallbacks.
 	^ result ~~ self
 ]

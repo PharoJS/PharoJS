@@ -95,7 +95,7 @@ PjBridgeTestCase >> checkProxy: value [
 	self
 		assert:
 			(self bridge
-				evalResult:
+				evalResponseMessage:
 					(PjMessageResponse  newWithContents: '{"proxy":"' , value asJSON , '"}')
 						)
 		equals: value
