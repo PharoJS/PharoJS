@@ -68,6 +68,15 @@ PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
 	}'
 ]
 
+{ #category : #constants }
+PjEvaluatorWebsocketDelegate class >> includeClasses [
+	^ {PhxJsonReader.
+	PjMessageDeleteGlobalVar.
+	PjMessageEvaluate.
+	PjMessageReload.
+	PjMessageTerminate}
+]
+
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
 	<javascript:
@@ -107,20 +116,9 @@ PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator: transpiler [
 	}'
 ]
 
-{ #category : #ivo }
-PjEvaluatorWebsocketDelegate class >> myExtraClasses [
-	^ {PhxJsonReader.
-	PjMessage.
-	PjMessageDeleteVar.
-	PjMessageEvaluate.
-	PjMessageReload.
-	PjMessageTerminate}
-]
-
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
-	self closeDefault.
-	location reload: true.
+	self reload: true.
 	
 ]
 
@@ -170,21 +168,6 @@ PjEvaluatorWebsocketDelegate class >> terminate [
 PjEvaluatorWebsocketDelegate >> close [
 	shouldRetryToConnectToServer := false.
 	super close
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> command: aString [
-	<javascript:
-	'var top = (function(){return this})(),
-		match = aString.match(/^:(.)((\$_)?.*)/),
-		op = match[1],
-		name = match[2],
-		obj = top[name];
-	if (obj && op=="-") {
-		obj.$_jsName = undefined;
-		if (match[2])
-			delete top[name]
-	}'>
 ]
 
 { #category : #connecting }
@@ -250,17 +233,11 @@ PjEvaluatorWebsocketDelegate >> onError: event [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> onMessage: event [
-	| jsonString aString msg |
+	| jsonString msg |
 	jsonString := event data.
 	msg := PhxJsonReader readFromString: jsonString.
-	aString := msg contents.
-	self logReceived: aString.
-	aString first = ':' ifTrue: [ ^ self command: aString ].
-	self timeout: [
-		aString := self eval: aString.
-		self isClosed ifFalse: [webSocket send: (PjMessageResponse newWithContents: aString) asPhxJsonString ].
-		self logSent: aString
-	] for: 0
+	self logReceived: msg logDescription.
+	msg evaluateInContext: self newMessageContext
 ]
 
 { #category : #connecting }
@@ -270,6 +247,9 @@ PjEvaluatorWebsocketDelegate >> reconnect [
 ]
 
 { #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> timeout: aBlock for: milliseconds [
-	<javascript: 'setTimeout(aBlock,milliseconds)'>
+PjEvaluatorWebsocketDelegate >> tryToSendMessage: aMessage [
+	self isClosed
+		ifTrue: [ self logSent: 'Failed to send (websocket closed): ' , aMessage logDescription ]
+		ifFalse: [ webSocket send: aMessage asPhxJsonString.
+			self logSent: aMessage logDescription ]
 ]

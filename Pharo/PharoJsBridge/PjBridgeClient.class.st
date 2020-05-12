@@ -134,12 +134,7 @@ PjBridgeClient >> stop [
 	self server isWebSocketConnected
 		ifFalse: [ ^ self ].
 	self bridge websocketDelegateClassName ifNil: [ ^ self ].
-	[ self bridge
-		sendMessage:
-			(PjMessageTerminate
-				newWithContents:
-					self bridge websocketDelegateClassName , '.'
-						, self pharoJsSelectorPrefix , 'terminate()') ]
+	[ self bridge sendMessage: PjMessageTerminate new ]
 		on: ConnectionTimedOut
 		do: [ " nothing: the socket's gone away " ]
 ]

@@ -15,16 +15,11 @@ Class {
 { #category : #'finalization support' }
 PjProxyFinalizationHandler class >> finalizerForProxyNamed: aString onBridge: aBridge [
 	| instance |
-	instance := self jsName: aString onBridge: aBridge.
-	^instance finalizer
-]
-
-{ #category : #'instance creation' }
-PjProxyFinalizationHandler class >> jsName: aString onBridge: aBridge [
-	^self new 
+	instance := self new
 		proxyJsName: aString;
 		bridge: aBridge;
-		yourself
+		yourself.
+	^ instance finalizer
 ]
 
 { #category : #accessing }
