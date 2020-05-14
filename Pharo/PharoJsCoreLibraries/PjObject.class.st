@@ -82,14 +82,19 @@ PjObject class >> nextIdentityHash [
 
 { #category : #proxy }
 PjObject class >> resultObject: result [
-	<jsGenerator: #resultObject_jsGenerator:>
-	
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	^ result ifNotNil: [ result proxyResponse ]
 ]
 
 { #category : #proxy }
 PjObject class >> resultObject_jsGenerator: transpiler [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+"Ivo: obsolete"
 	<pharoJsSkip>
-	^'if (result != undefined) return result.', transpiler pharoJsSelectorPrefix, 'proxyResponse();
+	^ 'if (result != undefined) return result.'
+		, transpiler pharoJsSelectorPrefix
+		,
+			'proxyResponse();
 		return null;'
 ]
 

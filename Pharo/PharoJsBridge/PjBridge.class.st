@@ -131,18 +131,24 @@ PjBridge >> appClass: aPharoJsAppClass [
 
 { #category : #'closure handling' }
 PjBridge >> blockClosure: aBlockClosure [
-	^ self blockClosures at: aBlockClosure ifAbsentPut: [
-		| proxy thisArg |
-		(aBlockClosure isKindOf: BlockClosure) ifFalse: [
-				^ PjJavascriptError signal: 'Must be a BlockClosure' ].
-		aBlockClosure hasMethodReturn ifTrue: [
-				^ PjJavascriptError signal: 'Block cannot have return' ].
-		thisArg := aBlockClosure argumentNames findFirst: [ : name | name='this' ].
-		proxy := self evalJavascript: self websocketDelegateClassName,
-			'.', transpiler pharoJsSelectorPrefix, 'default().', transpiler pharoJsSelectorPrefix, 'makeBlockClosureProxy_(',thisArg asString,')'.
-		proxy closure: aBlockClosure.
-		proxy
-	]
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	^ self blockClosures
+		at: aBlockClosure
+		ifAbsentPut: [ | proxy thisArg |
+			(aBlockClosure isKindOf: BlockClosure)
+				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
+			aBlockClosure hasMethodReturn
+				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
+			thisArg := aBlockClosure argumentNames
+				findFirst: [ :name | name = 'this' ].
+			proxy := self
+				evalJavascript:
+					self websocketDelegateClassName , '.'
+						, transpiler pharoJsSelectorPrefix , 'default().'
+						, transpiler pharoJsSelectorPrefix , 'makeBlockClosureProxy_('
+						, thisArg asString , ')'.
+			proxy closure: aBlockClosure.
+			proxy ]
 ]
 
 { #category : #'closure handling' }

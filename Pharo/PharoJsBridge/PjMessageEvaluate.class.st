@@ -10,10 +10,10 @@ PjMessageEvaluate >> evaluateInContext: aMessageContext [
 	wsd := aMessageContext websocketDelegate.
 	self
 		timeout: [ | resultString responseMsg |
-			resultString := wsd eval: contents.
+			resultString := wsd evalSafe: contents.
 			responseMsg := PjMessageResponse newWithContents: resultString.
-			console log: responseMsg logDescription .
 			responseMsg inResponseToId: self id.
+			console log: responseMsg logDescription .
 			wsd tryToSendMessage: responseMsg ]
 		for: 0
 ]
