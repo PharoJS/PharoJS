@@ -323,16 +323,15 @@ PjObject >> printString [
 
 { #category : #proxy }
 PjObject >> proxyResponse [
-	<javascript:
-	'var name = this.$_jsName;
-	if (!name) {
-		Object.$Pj_counter = (Object.$Pj_counter||0)+1;
-		name = "$_"+Object.$Pj_counter;
-		global[name]=this;
-		try{Object.defineProperty(this,"$_jsName",{value:name,writable:true})}catch(e){}
-	}
-	return { remove : this.$PjProxyRemove , proxy : name}
-	'>
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	| name |
+	name := self instVarNamed: '$_jsName'.
+	name
+		ifNil: [ name := '$_' , PjProxyManager nextId asString.
+			global at: name put: self.
+			self instVarNamed: '$_jsName' putHidden: name ].
+	^ {('remove' -> (self instVarNamed: '$PjProxyRemove')).
+	('proxy' -> name)} asDictionary
 ]
 
 { #category : #'initialize-release' }

@@ -95,11 +95,18 @@ PjProxy >> = anObject [
 { #category : #'reflective operations' }
 PjProxy >> addEventListener: type block: listener [
 	| jsMessage |
-	^ self jsBridge: [ :bridge | | bc |
-		bc := bridge blockClosure: listener.
-		jsMessage := PjJavascriptMessage receiverId: bridge websocketDelegateClassName selector: #set:callback:to: arguments: { self. type. bc }.
-		bridge evalMessage: jsMessage
-	]
+	^ self
+		jsBridge: [ :bridge | 
+			| bc |
+			bc := bridge blockClosure: listener.
+			jsMessage := PjJavascriptMessage
+				receiverId: bridge websocketDelegateClassName
+				selector: #set:callback:to:
+				arguments:
+					{self.
+					type.
+					bc}.
+			bridge evalMessage: jsMessage ]
 ]
 
 { #category : #converting }

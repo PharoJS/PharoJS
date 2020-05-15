@@ -68,34 +68,6 @@ PjEvaluatorWebsocketDelegate class >> initialize [
 	}})'>
 ]
 
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^ '
-	var self=this;
-	console.log("makeBlockClosureProxy this=", this);
-	debugger;
-	function PjBlockClosureProxy(ev){
-			callback(PjBlockClosureProxy.$_jsName,ev,this);
-			return true;
-		};
-	function callback(name,ev,jsThis) {
-		if (stop) ev.stopPropagation();
-		self.' , transpiler pharoJsSelectorPrefix
-		,
-			'doCallBack_(JSON.stringify({cb : [name,
-								Object.' , transpiler pharoJsSelectorPrefix
-		,
-			'resultObject_(ev),
-								Object.' , transpiler pharoJsSelectorPrefix
-		,
-			'resultObject_(withThis?jsThis:undefined)]}));
-	}
-	PjBlockClosureProxy.$PjRefCount=0;
-	return PjBlockClosureProxy;
-	'
-]
-
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
 	self reload: true.
@@ -208,7 +180,7 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis [
 PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation: stop [
 	"<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>"
 
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+		<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	<javascript:
 		'
 	var self=this;
@@ -225,7 +197,23 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation:
 	PjBlockClosureProxy.$PjRefCount=0;
 	return PjBlockClosureProxy;
 	'>
-	^[:ev | ]
+
+	| b |
+	b := [ :ev | 
+	[ :name :ev2 :jsThis | 
+	| cbPayload cb |
+	stop
+		ifTrue: [ ev2 stopPropagation ].
+	cbPayload := {name.
+	ev2 proxyResponse.
+	(withThis
+		ifFalse: [ nil ]
+		ifTrue: [ jsThis proxyResponse ])}.
+	cb := {('cb' -> cbPayload)} asDictionary.
+	self doCallBack: (JSON stringify: cb) ].
+	true ].
+	b instVarNamed: '$PjRefCount' put: 0.
+	^ b
 ]
 
 { #category : #'initialize-release' }
