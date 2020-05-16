@@ -68,6 +68,29 @@ PjEvaluatorWebsocketDelegate class >> initialize [
 	}})'>
 ]
 
+{ #category : #'as yet unclassified' }
+PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator: transpiler [
+
+	<pharoJsSkip>
+	^'
+	var self=this;
+	function PjBlockClosureProxy(ev){
+			callback(PjBlockClosureProxy.$_jsName,ev,this);
+			return true;
+		};
+	function callback(name,ev,jsThis) {
+		if (stop) ev.stopPropagation();
+		var cb = {cb : [name,
+								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(ev),
+								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]};
+	 console.log("**CB " , cb);
+		self.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify(cb));
+	}
+	PjBlockClosureProxy.$PjRefCount=0;
+	return PjBlockClosureProxy;
+	'
+]
+
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
 	self reload: true.
@@ -180,40 +203,24 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis [
 PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation: stop [
 	"<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>"
 
-		<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	<javascript:
-		'
-	var self=this;
-	function PjBlockClosureProxy(ev){
-			callback(PjBlockClosureProxy.$_jsName,ev,this);
-			return true;
-		};
-	function callback(name,ev,jsThis) {
-		if (stop) ev.stopPropagation();
-		self.pj_doCallBack_(JSON.stringify({cb : [name,
-								Object.pj_resultObject_(ev),
-								Object.pj_resultObject_(withThis?jsThis:undefined)]}));
-	}
-	PjBlockClosureProxy.$PjRefCount=0;
-	return PjBlockClosureProxy;
-	'>
-
-	| b |
-	b := [ :ev | 
-	[ :name :ev2 :jsThis | 
-	| cbPayload cb |
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	| blockClosure |
+	blockClosure := [ :ev | 
+	| cbPayload name target cb |
 	stop
-		ifTrue: [ ev2 stopPropagation ].
-	cbPayload := {name.
-	ev2 proxyResponse.
-	(withThis
+		ifTrue: [ ev stopPropagation ].
+	target := withThis ~= 0
 		ifFalse: [ nil ]
-		ifTrue: [ jsThis proxyResponse ])}.
+		ifTrue: [ ev target ifNil: [ ev sourceElement ] ].
+	name := blockClosure instVarNamed: '$_jsName'.
+	cbPayload := {name.
+	ev proxyResponse.
+	target proxyResponse}.
 	cb := {('cb' -> cbPayload)} asDictionary.
-	self doCallBack: (JSON stringify: cb) ].
+	self doCallBack: (JSON stringify: cb).
 	true ].
-	b instVarNamed: '$PjRefCount' put: 0.
-	^ b
+	blockClosure instVarNamed: '$PjRefCount' put: 0.
+	^ blockClosure
 ]
 
 { #category : #'initialize-release' }

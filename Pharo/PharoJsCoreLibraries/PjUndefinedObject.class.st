@@ -60,6 +60,11 @@ PjUndefinedObject >> isJSPrimitiveType [
 ]
 
 { #category : #converting }
+PjUndefinedObject >> proxyResponse [
+	^ self
+]
+
+{ #category : #converting }
 PjUndefinedObject >> value [
 	^ nil
 ]
