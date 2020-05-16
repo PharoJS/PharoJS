@@ -43,6 +43,14 @@ PjBridgeTestCase >> addToDOM: html [
 PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
 	| actualResult |
 	actualResult := self bridge evalBlock: aBlock.
+	expectedResult isCollection ifTrue: [
+		expectedResult withIndexDo: [: each : index | | v |
+			v := actualResult at: index.
+			self assert: each = v
+				description: [ (self comparingStringBetween: v and: each), ' at index ',index asString ] 
+		].
+		^ self
+	].
 	expectedResult isNumber
 		ifTrue: [ expectedResult isNaN
 				ifTrue: [ ^ self assert: actualResult isNaN ] ].

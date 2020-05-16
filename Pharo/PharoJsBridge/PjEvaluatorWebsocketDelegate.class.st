@@ -72,9 +72,9 @@ PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
 PjEvaluatorWebsocketDelegate class >> initialize [
 	<javascript:
 	'"JSON Math WebSocket console global document history location navigator screen window localStorage module process require".split(" ").forEach(function(s){
-		if(global[s]){
-			try{Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}catch(s){};
-	}})'>
+		try{if(global[s]){
+			Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}}catch(s){};
+	})'>
 ]
 
 { #category : #'socket behavior' }

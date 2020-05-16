@@ -25,8 +25,8 @@ PjClass class >> javascriptName [
 PjClass class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
-		Behavior -> #( allSubclasses allSubclassesDo: isBehavior ).
-		Class -> #( subclassesDo: isClass classVarNames).
+		Behavior -> #( subclassesDo: allSubclasses allSubclassesDo: isBehavior ).
+		Class -> #( isClass classVarNames).
 	}
 ]
 

@@ -53,7 +53,7 @@ PjObject class >> jsTranspilationImportMethods [
 				addAll: ifEmpty:ifNotEmpty: ifNotEmpty:ifEmpty: ifEmpty: ifNotEmpty: 
  			).
 		Dictionary -> #(
-				do: 
+				do: at:ifAbsentPut: at:ifPresent:ifAbsentPut:
 			).
 		Dictionary class -> #(
 				newFrom: newFromPairs: 
@@ -390,6 +390,15 @@ PjObject >> value [
 		js: PjCore pharoJsSelectorPrefix, 'value'
 		for: self
 		else: [ self ]
+]
+
+{ #category : #'dictionary emulation' }
+PjObject >> values [
+	<javascript: 'var result=[];for (var i in this){if(this.hasOwnProperty(i))result.push(this[i])};return result;'>
+	| result |
+	result:=#().
+	self valuesDo: [: v | result add: v ].
+	^ result
 ]
 
 { #category : #'dictionary emulation' }

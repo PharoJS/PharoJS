@@ -11,3 +11,8 @@ Class {
 ManifestPharoJsCoreLibrariesTest class >> ruleRBLongMethodsRuleV1FalsePositive [
 	^ #(#(#(#RGClassDefinition #(#PjDictionaryTest)) #'2020-04-07T13:17:55.236525-04:00') )
 ]
+
+{ #category : #'code-critics' }
+ManifestPharoJsCoreLibrariesTest class >> ruleRBkeysDoRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#PjDictionaryTest #testKeysAndValuesDo #false)) #'2020-04-30T00:35:25.536759-04:00') )
+]

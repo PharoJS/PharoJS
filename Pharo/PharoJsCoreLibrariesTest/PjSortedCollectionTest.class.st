@@ -26,6 +26,14 @@ PjSortedCollectionTest >> setUp [
 ]
 
 { #category : #testing }
+PjSortedCollectionTest >> testAddAll [
+	collection := self evalBlock: [ SortedCollection new addAll: #(3 6 1 4 9 2 7 8 5 10);yourself ].	
+	(1 to: 10) do: [ : index |
+		self assert: (collection at: index) equals: index ]
+
+]
+
+{ #category : #testing }
 PjSortedCollectionTest >> testAllButLast [
 	| allButLast |
 	1 to: 4 do: [:each|
@@ -35,6 +43,14 @@ PjSortedCollectionTest >> testAllButLast [
 	1 to: 3 do: [ : each |
 		self assert: (allButLast at: each) equals: each.
 	].
+
+]
+
+{ #category : #testing }
+PjSortedCollectionTest >> testAsSortedCollection [
+	collection := self evalBlock: [ #(3 6 1 4 9 2 7 8 5 10) asSortedCollection ].	
+	(1 to: 10) do: [ : index |
+		self assert: (collection at: index) equals: index ]
 
 ]
 
@@ -49,6 +65,41 @@ PjSortedCollectionTest >> testCollect [
 	self assert: collection first equals: 1.
 	self assert: collection last equals: 3.
 	
+]
+
+{ #category : #testing }
+PjSortedCollectionTest >> testFromDictionary [
+	self assertEquivalent: [|d|
+		d := Dictionary new.
+		d at: #x put: #x.
+		d at: #a put: #a.
+		d at: #y put: #y.
+		d at: #w put: #w.
+		d at: #e put: #e.
+		d at: #b put: #b.
+		d asSortedCollection
+		].
+
+]
+
+{ #category : #testing }
+PjSortedCollectionTest >> testFromLargeArray [
+	self assertEquivalent: [
+		((130 to: 90 by: -1) collect: #asString) asSortedCollection.
+	].
+
+]
+
+{ #category : #testing }
+PjSortedCollectionTest >> testObjects [
+	self assertEquivalent: [
+		| s |
+		s := SortedCollection new.
+		1 to: 10 do: [: each |
+			s add: (PjMinimalApp data: each % 3) ].
+		s collect: #data
+	].
+
 ]
 
 { #category : #testing }
