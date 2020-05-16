@@ -106,6 +106,39 @@ PjProxyTest >> testClick [
 ]
 
 { #category : #testing }
+PjProxyTest >> testClickWithEventTarget [
+	| rectangle count |
+	count := 0.
+	rectangle := document createElement: 'div'.
+	rectangle id: 'grn'.
+	rectangle instVarNamed: #count put: 0.	" need to use instVarNamed:put: to force creation of slot "
+	Smalltalk garbageCollect.
+	document body appendChild: rectangle.
+	rectangle
+		addEventListener: 'click'
+		block: [ :xev :this | 
+			| alsoRectangle |
+			alsoRectangle := this.
+			count := count + 1.
+			alsoRectangle count: alsoRectangle count + 1 ].
+	self bridge
+		evalJavascript:
+			'(' , rectangle asJSON , '.click(false),' , rectangle asJSON
+				, '.click(true),false)'.
+	Smalltalk garbageCollect.
+	rectangle dispatchEvent: (window MouseEvent new: #click).
+	rectangle dispatchEvent: (window MouseEvent new: #click).
+	self assert: (document getElementById: 'grn') count equals: 4.
+	Smalltalk garbageCollect.
+	self assert: (document getElementById: 'grn') count equals: 4.
+	rectangle dispatchEvent: (window MouseEvent new: #click).
+	rectangle dispatchEvent: (window MouseEvent new: #click).
+	Smalltalk garbageCollect.
+	self assert: (document getElementById: 'grn') count equals: 6.
+	self assert: count = 6
+]
+
+{ #category : #testing }
 PjProxyTest >> testGetElementById [
 	| rectangle |
 	rectangle := document createElement: 'div'.

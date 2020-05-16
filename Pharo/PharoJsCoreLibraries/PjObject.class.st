@@ -325,11 +325,7 @@ PjObject >> printString [
 PjObject >> proxyResponse [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	| name |
-	name := self instVarNamed: '$_jsName'.
-	name
-		ifNil: [ name := '$_' , PjProxyManager nextId asString.
-			global at: name put: self.
-			self instVarNamed: '$_jsName' putHidden: name ].
+	name := PjProxyManager ensureObjectRegistered: self.
 	^ {('remove' -> (self instVarNamed: '$PjProxyRemove')).
 	('proxy' -> name)} asDictionary
 ]

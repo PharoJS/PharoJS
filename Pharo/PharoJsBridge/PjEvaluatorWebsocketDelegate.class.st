@@ -204,23 +204,10 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation:
 	"<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>"
 
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| blockClosure |
-	blockClosure := [ :ev | 
-	| cbPayload name target cb |
-	stop
-		ifTrue: [ ev stopPropagation ].
-	target := withThis ~= 0
-		ifFalse: [ nil ]
-		ifTrue: [ ev target ifNil: [ ev sourceElement ] ].
-	name := blockClosure instVarNamed: '$_jsName'.
-	cbPayload := {name.
-	ev proxyResponse.
-	target proxyResponse}.
-	cb := {('cb' -> cbPayload)} asDictionary.
-	self doCallBack: (JSON stringify: cb).
-	true ].
-	blockClosure instVarNamed: '$PjRefCount' put: 0.
-	^ blockClosure
+	^PjProxyManager
+		makeBlockClosureProxy: withThis
+		stopPropagation: stop
+		for: self
 ]
 
 { #category : #'initialize-release' }
