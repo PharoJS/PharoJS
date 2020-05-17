@@ -49,6 +49,11 @@ PjArray >> addLast: x [
 	<javascript: 'this.push(x);return x'>
 ]
 
+{ #category : #accessing }
+PjArray >> anyOne [
+	<javascript: 'return this[0]'>
+]
+
 { #category : #enumerating }
 PjArray >> at: i put: x [
 	<javascript: 'return this[i-1]=x'>

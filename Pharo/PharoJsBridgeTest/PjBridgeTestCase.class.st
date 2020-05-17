@@ -43,6 +43,14 @@ PjBridgeTestCase >> addToDOM: html [
 PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
 	| actualResult |
 	actualResult := self bridge evalBlock: aBlock.
+	expectedResult isCollection ifTrue: [
+		expectedResult withIndexDo: [: each : index | | v |
+			v := actualResult at: index.
+			self assert: each = v
+				description: [ (self comparingStringBetween: v and: each), ' at index ',index asString ] 
+		].
+		^ self
+	].
 	expectedResult isNumber
 		ifTrue: [ expectedResult isNaN
 				ifTrue: [ ^ self assert: actualResult isNaN ] ].
@@ -83,21 +91,13 @@ PjBridgeTestCase >> assertJavascript: expressionString evaluatesTo: expectedResu
 
 { #category : #'test support' }
 PjBridgeTestCase >> checkBasic: value [
-	self
-		assert:
-			(self bridge
-				evalResult: (PjMessage newWithContents: value asJSON) asPhxJsonString)
-		equals: value
+	self assert: (self bridge evalResult: value asJSON) equals: value
 ]
 
 { #category : #'test support' }
 PjBridgeTestCase >> checkProxy: value [
 	self
-		assert:
-			(self bridge
-				evalResult:
-					(PjMessage newWithContents: '{"proxy":"' , value asJSON , '"}')
-						asPhxJsonString)
+		assert: (self bridge evalResult: '{"proxy":"' , value asJSON , '"}')
 		equals: value
 ]
 

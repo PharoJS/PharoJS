@@ -69,16 +69,16 @@ PjNumber class >> jsTranspilationImportMethods [
 	| selectorsForChronology numberSelectors |
 	selectorsForChronology := #(year years week weeks day days hour hours minute minutes second seconds milliSecond milliSeconds),
 		(Number selectorsInProtocol: '*PharoExtra-Chronology').
-	numberSelectors := selectorsForChronology, #(floorLog: negated reciprocal log: asInteger asNumber squared even odd fractionPart integerPart // strictlyPositive positive negative raisedToInteger: raisedTo: isNumber isZero quo: rem:).
+	numberSelectors := selectorsForChronology, #(floorLog: negated reciprocal log: asInteger asNumber squared even odd fractionPart integerPart // strictlyPositive positive negative raisedToInteger: raisedTo: isNumber isZero quo: rem: ceiling floor).
 	^ self jsTranspilationImportMethodsMagnitude,
-			{(Number -> numberSelectors).
+			{Number -> numberSelectors.
 			Number class -> #(one).
-			(Integer -> #(asCharacter isPowerOfTwo)).
-			(SmallInteger -> #(highBit basicIdentityHash identityHash hashMultiply hash)).
-			(Float -> #(isInfinite rounded asFloat)).
-			(Float class
+			Integer -> #(asCharacter isPowerOfTwo).
+			SmallInteger -> #(highBit basicIdentityHash identityHash hashMultiply hash).
+			Float -> #(isInfinite rounded asFloat).
+			Float class
 				->
-					#(denormalized e emax emin epsilon fmax fmin fminDenormalized fminNormalized halfPi infinity maxExactInteger nan negativeInfinity negativeZero one pi precision radix threePi twoPi zero))}
+					#(denormalized e emax emin epsilon fmax fmin fminDenormalized fminNormalized halfPi infinity maxExactInteger nan negativeInfinity negativeZero one pi precision radix threePi twoPi zero)}
 ]
 
 { #category : #arithmetics }
@@ -395,8 +395,16 @@ PjNumber >> to: end [
 ]
 
 { #category : #looping }
+PjNumber >> to: end by: step [
+	| interval |
+	interval := OrderedCollection new.
+	self to: end by: step do: [ : each | interval add: each ].
+	^interval
+]
+
+{ #category : #looping }
 PjNumber >> to: end by: step do: aBlock [
-	<javascript: 'for(var i=this; i <= end; i += step){aBlock(i);}'>
+	<javascript: 'for(var i=this; step<0?i >= end:i <= end; i += step){aBlock(i);}'>
 ]
 
 { #category : #looping }
