@@ -79,10 +79,3 @@ PjParametrizableServerDelegate >> javascript [
 PjParametrizableServerDelegate >> javascript: anObject [
 	javascript := anObject
 ]
-
-{ #category : #handling }
-PjParametrizableServerDelegate >> windowCloserHtml [
-	^ '<script type="text/javascript">
-    window.close();
-</script>'
-]

@@ -258,18 +258,6 @@ PjEvaluatorWebsocketDelegate >> reconnect [
 	super connectTo: bridgeUrlString
 ]
 
-{ #category : #'defaut instance' }
-PjEvaluatorWebsocketDelegate >> tryFireFoxHack [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	<javascript: '
-
-
-var aUrl = "http://localhost:" + this.bridgeUrlString.match(/\d+/) + "/windowCloser.html";
-window.alert(aUrl); 
-window.open(aUrl, "_self");
-'>
-]
-
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> tryToSendMessage: aMessage [
 	self isClosed
