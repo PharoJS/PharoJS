@@ -107,35 +107,51 @@ PjProxyTest >> testClick [
 
 { #category : #testing }
 PjProxyTest >> testClickWithEventTarget [
-	| rectangle count |
+	| rectangle1 rectangle2 lastClickedRectangle count listenerBlock |
 	count := 0.
-	rectangle := document createElement: 'div'.
-	rectangle id: 'grn'.
-	rectangle instVarNamed: #count put: 0.	" need to use instVarNamed:put: to force creation of slot "
+	rectangle1 := document createElement: 'div'.
+	rectangle1 id: 'rect1'.
+	rectangle1 instVarNamed: #count put: 0.
+	rectangle2 := document createElement: 'div'.
+	rectangle2 id: 'rect2'.
+	rectangle2 instVarNamed: #count put: 0.
 	Smalltalk garbageCollect.
-	document body appendChild: rectangle.
-	rectangle
-		addEventListener: 'click'
-		block: [ :xev :this | 
-			| alsoRectangle |
-			alsoRectangle := this.
-			count := count + 1.
-			alsoRectangle count: alsoRectangle count + 1 ].
+	document body appendChild: rectangle1.
+	document body appendChild: rectangle2.
+	listenerBlock := [ :xev :this | 
+	| alsoRectangle |
+	alsoRectangle := this.
+	lastClickedRectangle := alsoRectangle.
+	count := count + 1.
+	alsoRectangle count: alsoRectangle count + 1 ].
+	rectangle1 addEventListener: 'click' block: listenerBlock.
+	rectangle2 addEventListener: 'click' block: listenerBlock.
 	self bridge
 		evalJavascript:
-			'(' , rectangle asJSON , '.click(false),' , rectangle asJSON
+			'(' , rectangle1 asJSON , '.click(false),' , rectangle1 asJSON
 				, '.click(true),false)'.
 	Smalltalk garbageCollect.
-	rectangle dispatchEvent: (window MouseEvent new: #click).
-	rectangle dispatchEvent: (window MouseEvent new: #click).
-	self assert: (document getElementById: 'grn') count equals: 4.
+	rectangle1 dispatchEvent: (window MouseEvent new: #click).
+	rectangle1 dispatchEvent: (window MouseEvent new: #click).
+	self assert: (document getElementById: 'rect1') count equals: 4.
+	self assert: rectangle1 equals: lastClickedRectangle.
 	Smalltalk garbageCollect.
-	self assert: (document getElementById: 'grn') count equals: 4.
-	rectangle dispatchEvent: (window MouseEvent new: #click).
-	rectangle dispatchEvent: (window MouseEvent new: #click).
+	self assert: (document getElementById: 'rect1') count equals: 4.
+	rectangle1 dispatchEvent: (window MouseEvent new: #click).
+	rectangle1 dispatchEvent: (window MouseEvent new: #click).
 	Smalltalk garbageCollect.
-	self assert: (document getElementById: 'grn') count equals: 6.
-	self assert: count = 6
+	self assert: (document getElementById: 'rect1') count equals: 6.
+	self assert: (document getElementById: 'rect2') count equals: 0.
+	self assert: count = 6.
+	self bridge
+		evalJavascript:
+			'(' , rectangle2 asJSON , '.click(false),' , rectangle2 asJSON
+				, '.click(true),false)'.
+	Smalltalk garbageCollect.
+	self assert: rectangle2 equals: lastClickedRectangle.
+	self assert: (document getElementById: 'rect1') count equals: 6.
+	self assert: (document getElementById: 'rect2') count equals: 2.
+	self assert: count = 8
 ]
 
 { #category : #testing }

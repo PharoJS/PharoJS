@@ -33,13 +33,6 @@ PjInfrastructureTest >> testDNUSetup [
 ]
 
 { #category : #testing }
-PjInfrastructureTest >> testEvaluatorWebsockerDelegateId [
-
-
-		self bridge sendMessage: PjMessageReload new.
-]
-
-{ #category : #testing }
 PjInfrastructureTest >> testGetterGetsTrampolined [
 	self assert: (self bridge evalBlock: [ document body ~= nil ])
 ]

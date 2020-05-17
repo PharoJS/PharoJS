@@ -8,7 +8,8 @@ Class {
 		'bridge',
 		'codeGenerator',
 		'exporter',
-		'appClass'
+		'appClass',
+		'clientId'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -43,6 +44,17 @@ PjBridgeClient >> bridge: aBridge [
 	bridge := aBridge.
 	self codeGenerator bridge: self bridge
 
+]
+
+{ #category : #accessing }
+PjBridgeClient >> clientId [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	^ clientId
+]
+
+{ #category : #accessing }
+PjBridgeClient >> clientId: anObject [
+	clientId := anObject
 ]
 
 { #category : #accessing }
@@ -95,6 +107,7 @@ PjBridgeClient >> pharoJsSelectorPrefix [
 PjBridgeClient >> reset [
 	self appClass: self appClass.
 	self bridge: self bridge.
+	self clientId: nil.
 	"Ensure transpiler is reset correctly.
 	Transpiler is driven by exporter"
 	String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ] 

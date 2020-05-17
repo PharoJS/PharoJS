@@ -46,16 +46,17 @@ PjParametrizableServerDelegate >> handleRequest: request [
 	prefix := request uri isSlash
 		ifTrue: [ 'index.html' ]
 		ifFalse: [ request uri firstPathSegment ].
-	('index.html' = prefix and: self html isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity html: self html ].
-	('index.js' = prefix and: self javascript isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity javascript: self javascript ].
-	('index.css' = prefix and: self css isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity css: self css ].
-	('favicon.ico' = prefix and: self favicon isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity favicon: self favicon ].
-	entity ifNotNil: [^ ZnResponse ok: entity].
-	
+	('index.html' = prefix and: self html isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity html: self html ].
+	('index.js' = prefix and: self javascript isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity javascript: self javascript ].
+	('index.css' = prefix and: self css isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity css: self css ].
+	('favicon.ico' = prefix and: self favicon isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity favicon: self favicon ].
+	'windowCloser.html' = prefix
+		ifTrue: [ entity := ZnEntity html: self windowCloserHtml ].
+	entity ifNotNil: [ ^ ZnResponse ok: entity ].
 	^ ZnResponse notFound: request uri
 ]
 
@@ -77,4 +78,11 @@ PjParametrizableServerDelegate >> javascript [
 { #category : #accessing }
 PjParametrizableServerDelegate >> javascript: anObject [
 	javascript := anObject
+]
+
+{ #category : #handling }
+PjParametrizableServerDelegate >> windowCloserHtml [
+	^ '<script type="text/javascript">
+    window.close();
+</script>'
 ]

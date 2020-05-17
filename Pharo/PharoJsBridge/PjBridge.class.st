@@ -238,7 +238,7 @@ PjBridge >> evalJavascript: javaScriptString [
 	self
 		when: [ self isConnected
 				ifFalse: [ ^ self ].
-			self isResponseMessageAvailableFor: msg ]
+			self isIncomingMessageAvailable ]
 		do: [ self handOffResult: [ :val | ^ val ] ]
 		onTimeOutDo: [ ^ PjJavascriptError
 				signal: 'no response after ' , self timeout printString ]
@@ -272,6 +272,9 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 { #category : #evaluating }
 PjBridge >> evalResponseMessage: aPjMessage [
 	| stonString |
+	(aPjMessage isKindOf: PjMessageSetClientId)
+		ifTrue: [ self client clientId: aPjMessage clientId.
+			^ self ].
 	stonString := aPjMessage contents.
 	self server logSocketRead: stonString.
 	^ self evalResult: stonString parsed: (PjSTONReader from: stonString)
@@ -357,10 +360,26 @@ PjBridge >> initialize [
 
 ]
 
+{ #category : #activity }
+PjBridge >> isClientIdReceived [
+	self isIncomingMessageAvailable.
+	^ self client clientId notNil
+]
+
 { #category : #public }
 PjBridge >> isConnected [
 	self webSocket ifNil: [ ^false ].
 	^self webSocket isConnected
+]
+
+{ #category : #evaluating }
+PjBridge >> isIncomingMessageAvailable [
+	[ result == self and: [ self isWebSocketDataAvailable ] ]
+		whileTrue: [ | respMsg |
+			respMsg := PhxJsonReader readFromString: self webSocket readMessage.
+			result := self evalResponseMessage: respMsg ].
+	self executeAnyCallbacks.
+	^ result ~~ self
 ]
 
 { #category : #public }
@@ -368,21 +387,17 @@ PjBridge >> isListening [
 	^self server isListening
 ]
 
-{ #category : #evaluating }
-PjBridge >> isResponseMessageAvailableFor: aSentMessageToClient [
-	[ result == self and: [ self isWebSocketDataAvailable ] ]
-		whileTrue: [ | respMsg |
-			respMsg := PhxJsonReader readFromString: self webSocket readMessage.
-			 result := self evalResponseMessage: respMsg 
-		"	respMsg inResponseToId = aSentMessageToClient id
-				ifTrue: []" ].
-	self executeAnyCallbacks.
-	^ result ~~ self
-]
-
 { #category : #public }
 PjBridge >> isServerStarted [
 	^self server isRunning
+]
+
+{ #category : #public }
+PjBridge >> isServerStartedExtraCheck [
+	^ (ZnClient new
+		timeout: 1;
+		ifFail: [ nil ];
+		get: 'http://localhost:' , self port asString , '') notNil
 ]
 
 { #category : #public }
@@ -461,7 +476,8 @@ PjBridge >> resetClient [
 		when: [ self webSocket ~~ oldWebSocket ]
 		do: [ oldWebSocket close ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
-		timeOutDuration: self client startTimeout
+		timeOutDuration: self client startTimeout.
+	self waitForClientToStart
 ]
 
 { #category : #initialization }
@@ -569,15 +585,16 @@ PjBridge >> startOn: portNumber title: title [
 
 { #category : #public }
 PjBridge >> startWithoutWaitingForClient [
+	| attempts |
 	self isServerStarted
 		ifTrue: [ ^ self ].
 	self server start.
-	self
-		when: [ self isServerStarted ]
-		do: [  ]
-		onTimeOutDo: [ self server start ]
-		timeOutDuration: 200 milliSeconds.
-	self waitForServerToStart.
+	attempts := 0.
+	[ self isServerStarted and: [ self isServerStartedExtraCheck ] ]
+		whileFalse: [ self server stop. self server start.
+			attempts := attempts + 1.
+			attempts > 10
+				ifTrue: [ self error: 'Server not ready after 10 attempts' ] ].
 	self client start
 ]
 
@@ -631,7 +648,16 @@ PjBridge >> waitForClientToStart [
 { #category : #activity }
 PjBridge >> waitForClientToStartFor: time [
 	self 
-		when: [self isConnected] 
+		when: [self isConnected and: [self isClientIdReceived]] 
+		do: [^self] 
+		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
+		timeOutDuration: time
+]
+
+{ #category : #activity }
+PjBridge >> waitForClientToStartFor: time doing: aBlock [
+	self 
+		when: [aBlock value. self isConnected] 
 		do: [^self] 
 		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
 		timeOutDuration: time

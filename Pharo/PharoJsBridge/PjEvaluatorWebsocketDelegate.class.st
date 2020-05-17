@@ -242,10 +242,32 @@ PjEvaluatorWebsocketDelegate >> onMessage: event [
 	msg evaluateInContext: self newMessageContext
 ]
 
+{ #category : #'socket behavior' }
+PjEvaluatorWebsocketDelegate >> onOpen: event [
+	super onOpen: event.
+	self
+		tryToSendMessage:
+			(PjMessageSetClientId new
+				clientId: self id;
+				yourself)
+]
+
 { #category : #connecting }
 PjEvaluatorWebsocketDelegate >> reconnect [
 	shouldRetryToConnectToServer ifFalse: [^ self ].
 	super connectTo: bridgeUrlString
+]
+
+{ #category : #'defaut instance' }
+PjEvaluatorWebsocketDelegate >> tryFireFoxHack [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	<javascript: '
+
+
+var aUrl = "http://localhost:" + this.bridgeUrlString.match(/\d+/) + "/windowCloser.html";
+window.alert(aUrl); 
+window.open(aUrl, "_self");
+'>
 ]
 
 { #category : #'socket behavior' }
