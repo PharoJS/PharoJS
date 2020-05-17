@@ -72,9 +72,9 @@ PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
 PjEvaluatorWebsocketDelegate class >> initialize [
 	<javascript:
 	'"JSON Math WebSocket console global document history location navigator screen window localStorage module process require".split(" ").forEach(function(s){
-		if(global[s]){
-			try{Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}catch(s){};
-	}})'>
+		try{if(global[s]){
+			Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}}catch(s){};
+	})'>
 ]
 
 { #category : #'socket behavior' }
@@ -105,16 +105,6 @@ PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator: transpiler [
 		wsd.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(this)}));
 		return this
 	}'
-]
-
-{ #category : #ivo }
-PjEvaluatorWebsocketDelegate class >> myExtraClasses [
-	^ {PhxJsonReader.
-	PjMessage.
-	PjMessageDeleteVar.
-	PjMessageEvaluate.
-	PjMessageReload.
-	PjMessageTerminate}
 ]
 
 { #category : #'defaut instance' }
@@ -196,8 +186,7 @@ PjEvaluatorWebsocketDelegate >> connectTo: urlString [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
-	webSocket
-		send: (PjMessageResponse newWithContents: aResult) asPhxJsonString.
+	webSocket send: aResult.
 	self logSent: aResult
 ]
 
@@ -250,15 +239,13 @@ PjEvaluatorWebsocketDelegate >> onError: event [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> onMessage: event [
-	| jsonString aString msg |
-	jsonString := event data.
-	msg := PhxJsonReader readFromString: jsonString.
-	aString := msg contents.
+	| aString|
+	aString := event data.
 	self logReceived: aString.
 	aString first = ':' ifTrue: [ ^ self command: aString ].
 	self timeout: [
 		aString := self eval: aString.
-		self isClosed ifFalse: [webSocket send: (PjMessageResponse newWithContents: aString) asPhxJsonString ].
+		self isClosed ifFalse: [webSocket send: aString].
 		self logSent: aString
 	] for: 0
 ]

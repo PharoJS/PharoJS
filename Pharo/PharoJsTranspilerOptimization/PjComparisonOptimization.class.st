@@ -19,7 +19,7 @@ PjComparisonOptimization >> convertReceiver: receiver args: args [
 
 { #category : #converting }
 PjComparisonOptimization >> isOkWith: receiver and: arg [
-	^ true
+	^ receiver isLiteralNode
 ]
 
 { #category : #converting }

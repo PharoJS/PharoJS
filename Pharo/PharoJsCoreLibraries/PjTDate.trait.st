@@ -22,6 +22,11 @@ PjTDate classSide >> today [
 	^self now
 ]
 
+{ #category : #accessing }
+PjTDate >> addDays: dayCount [
+	<javascript: 'return new Date(this.valueOf()+86400000*dayCount)'>
+]
+
 { #category : #converting }
 PjTDate >> asDateAndTime [
 	^self
@@ -45,6 +50,11 @@ PjTDate >> monthIndex [
 { #category : #accessing }
 PjTDate >> monthIndex: anInteger [
 	^self month: anInteger - 1
+]
+
+{ #category : #accessing }
+PjTDate >> monthName [
+	^ #(January February March April May June July August September October November December) at: self monthIndex
 ]
 
 { #category : #accessing }
