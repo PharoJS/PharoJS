@@ -1,11 +1,6 @@
 Extension { #name : #PjUndefinedObject }
 
 { #category : #'*PharoJsSerialization' }
-PjUndefinedObject class >> newFromMaterialized: anObject [
-	^nil
-]
-
-{ #category : #'*PharoJsSerialization' }
-PjUndefinedObject >> serializationContents [
-	^self
+PjUndefinedObject >> writePhxJsonOn: w [
+	w << 'null'
 ]
