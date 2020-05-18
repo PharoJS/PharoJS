@@ -134,6 +134,26 @@ PjBridge >> appClass: aPharoJsAppClass [
 
 ]
 
+{ #category : #public }
+PjBridge >> asyncEval: smalltalkString withResultDo: singleArgBlock [
+	| javaScriptString |
+	javaScriptString := self convertToJs: smalltalkString.
+	self asyncEvalJavascript: javaScriptString withResultDo: singleArgBlock
+]
+
+{ #category : #public }
+PjBridge >> asyncEvalJavascript: javaScriptString withResultDo: singleArgBlock [
+	self sendMessage: javaScriptString.
+	[
+	self 
+		when: [self isSyncDataAvailable] 
+		do: [self handOffResult: singleArgBlock] 
+		onTimeOutDo: [ ^ PjJavascriptError signal: 'Time Out! No response received' ]
+		timeOutDuration: self timeout.
+	] fork.
+
+]
+
 { #category : #'closure handling' }
 PjBridge >> blockClosure: aBlockClosure [
 	^ self blockClosures at: aBlockClosure ifAbsentPut: [
@@ -198,7 +218,7 @@ PjBridge >> deleteJsValue: jsName [
 	"Called by proxy finalizer see methode PjProxy>>jsName:onBridge:"
 	self proxies removeKey: jsName ifAbsent: [ ].
 	self isServerStopped ifTrue: [ ^self ].
-	self sendMessage: (PjMessageDeleteVar newWithContents: ':-',jsName).
+	self sendMessage: ':-',jsName.
 	^ proxies
 ]
 
@@ -237,7 +257,7 @@ PjBridge >> evalGetResult [
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
 	self isConnected ifFalse: [ ^ nil ].
-	self sendMessage: (PjMessageEvaluate newWithContents: javaScriptString).
+	self sendMessage: javaScriptString.
 	^ self evalGetResult
 ]
 
@@ -265,12 +285,9 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 ]
 
 { #category : #evaluating }
-PjBridge >> evalResult: serializedMessage [
-	| msg stonString |
-	msg := PhxJsonReader readFromString: serializedMessage.
-	stonString := msg contents.
-	self server logSocketRead: stonString.
-	^ self evalResult: stonString parsed: (PjSTONReader from: stonString)
+PjBridge >> evalResult: aString [
+	self server logSocketRead: aString.
+	^ self evalResult: aString parsed: (PjSTONReader from: aString)
 ]
 
 { #category : #evaluating }
@@ -456,19 +473,18 @@ PjBridge >> proxies [
 PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
-	self
-		sendMessage:
-			(PjMessageReload
-				newWithContents:
-					self websocketDelegateClassName , '.'
-						, transpiler pharoJsSelectorPrefix , 'reload_(true)').
+	self sendMessage: self websocketDelegateClassName, '.', transpiler pharoJsSelectorPrefix, 'reload_(true)'.
 	self resetProxies.
 	self client reset.
-	self
-		when: [ self webSocket ~~ oldWebSocket ]
-		do: [ oldWebSocket close ]
-		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
-		timeOutDuration: self client startTimeout
+	self 
+		when: [self webSocket ~~ oldWebSocket] 
+		do: [
+			oldWebSocket close.
+		] 
+		onTimeOutDo: [
+			self error: 'Client did NOT reconnect!']
+		timeOutDuration: self client startTimeout.
+
 ]
 
 { #category : #initialization }
@@ -493,14 +509,12 @@ PjBridge >> scheduleCallback: aBlock [
 ]
 
 { #category : #activity }
-PjBridge >> sendMessage: aMessage [
-"	| msg |
-	msg := PjMessage new.
-	msg contents: aString."
-	self
-		when: [ self isConnected ]
-		do: [ self webSocket sendMessage: aMessage asPhxJsonString.
-			self server logSocketWritten: aMessage logDescription ]
+PjBridge >> sendMessage: aString [
+	self 
+		when: [self isConnected] 
+		do: [
+			self webSocket sendMessage: aString.
+			self server logSocketWritten: aString] 
 		onTimeOutDo: [ self inform: 'WebSocket is NOT avaialble' ]
 		timeOutDuration: 100 milliSeconds
 ]
@@ -579,11 +593,6 @@ PjBridge >> startWithoutWaitingForClient [
 	self isServerStarted
 		ifTrue: [ ^ self ].
 	self server start.
-	self
-		when: [ self isServerStarted ]
-		do: [  ]
-		onTimeOutDo: [ self server start ]
-		timeOutDuration: 200 milliSeconds.
 	self waitForServerToStart.
 	self client start
 ]

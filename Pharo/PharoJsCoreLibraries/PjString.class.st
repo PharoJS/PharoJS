@@ -119,6 +119,11 @@ PjString >> asCharacter [
 ]
 
 { #category : #converting }
+PjString >> asDate [
+	<javascript: 'return new Date(this)'>
+]
+
+{ #category : #converting }
 PjString >> asElementId [
 	^ document getElementById: self
 ]

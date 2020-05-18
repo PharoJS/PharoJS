@@ -4,6 +4,11 @@ Class {
 	#category : #'PharoJsTranspilerOptimization-Optimizations'
 }
 
+{ #category : #accessing }
+PjIdenticalOptimization >> isOkWith: receiver and: arg [
+	^ true
+]
+
 { #category : #converting }
 PjIdenticalOptimization >> operator [
 	^ #===

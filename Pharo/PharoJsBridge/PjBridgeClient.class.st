@@ -130,18 +130,13 @@ PjBridgeClient >> startTimeout [
 { #category : #activity }
 PjBridgeClient >> stop [
 	"stop javascript interpreter"
+	self server isWebSocketConnected ifFalse: [ ^self ].
+	self bridge websocketDelegateClassName ifNil: [ ^self ].
+	[
+		self bridge sendMessage:
+			self bridge websocketDelegateClassName, '.', self pharoJsSelectorPrefix, 'terminate()'
+	] on: ConnectionTimedOut do: [ " nothing: the socket's gone away " ].
 
-	self server isWebSocketConnected
-		ifFalse: [ ^ self ].
-	self bridge websocketDelegateClassName ifNil: [ ^ self ].
-	[ self bridge
-		sendMessage:
-			(PjMessageTerminate
-				newWithContents:
-					self bridge websocketDelegateClassName , '.'
-						, self pharoJsSelectorPrefix , 'terminate()') ]
-		on: ConnectionTimedOut
-		do: [ " nothing: the socket's gone away " ]
 ]
 
 { #category : #accessing }

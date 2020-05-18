@@ -14,6 +14,18 @@ PjTArray classSide >> collect_jsGenerator: transpiler [
 	^'var result=[];for(var i=0,max=this.length;i<max;++i)result.push(typeof aBlock=="string"?$asNil$(this[i]).', transpiler pharoJsSelectorPrefix, 'perform_(aBlock):aBlock(this[i]));return result'
 ]
 
+{ #category : #enumerating }
+PjTArray classSide >> do_jsGenerator: transpiler [
+	<pharoJsSkip>
+	^'for(var i=0,max=this.length;i<max;++i)if(typeof aBlock=="string")$asNil$(this[i]).', transpiler pharoJsSelectorPrefix, 'perform_(aBlock);else aBlock(this[i])'
+]
+
+{ #category : #enumerating }
+PjTArray classSide >> do_separatedBy_jsGenerator: transpiler [
+	<pharoJsSkip>
+	^'for(var i=0,max=this.length;i<max;++i){if(i)separatorBlock();if(typeof elementBlock=="string")$asNil$(this[i]).', transpiler pharoJsSelectorPrefix, 'perform_(elementBlock);else elementBlock(this[i])}'
+]
+
 { #category : #testing }
 PjTArray classSide >> includes_jsGenerator: transpiler [
 	<pharoJsSkip>
@@ -99,17 +111,23 @@ PjTArray >> collect: aBlock [
 
 { #category : #enumerating }
 PjTArray >> do: aBlock [
-	<javascript: 'for(var i=0,max=this.length;i<max;++i)aBlock(this[i]);return this'>
+	<jsGenerator: #do_jsGenerator:>
 ]
 
 { #category : #enumerating }
 PjTArray >> do: elementBlock separatedBy: separatorBlock [
-	<javascript: 'for(var i=0,max=this.length;i<max;++i){if(i)separatorBlock();elementBlock(this[i])};return this'>
+	<jsGenerator: #do_separatedBy_jsGenerator:>
+
 ]
 
 { #category : #accessing }
 PjTArray >> first [
 	<javascript: 'return this[0]'>
+]
+
+{ #category : #accessing }
+PjTArray >> first: n [
+	<javascript: 'return this.slice(0,n)'>
 ]
 
 { #category : #testing }
@@ -141,6 +159,11 @@ PjTArray >> isEmpty [
 { #category : #accessing }
 PjTArray >> last [
 	<javascript: 'return this[this.length-1]'>
+]
+
+{ #category : #accessing }
+PjTArray >> last: n [
+	<javascript: 'return this.slice(this.length-n)'>
 ]
 
 { #category : #enumerating }

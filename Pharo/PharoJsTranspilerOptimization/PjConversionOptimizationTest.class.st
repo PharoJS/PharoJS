@@ -180,7 +180,9 @@ PjConversionOptimizationTest >> testComparisons [
 	self assertContentsOf: [ x='foo' ] convertsTo: (PjBinaryNode operator: #== left: x right: foo).
 	self assertContentsOf: [ x~=y ]
 			convertsTo: (PjApplyNode receiver: x selector: #~= args: {y}).
-	self assertContentsOf: [ x<=y ] convertsTo: (PjBinaryNode operator: #<= left: x right: y).
+	self assertContentsOf: [ 1<=y ] convertsTo: (PjBinaryNode operator: #<= left: one right: y).
+	self assertContentsOf: [ 'hello'<=y ] convertsTo: (PjBinaryNode operator: #<= left: helloString right: y).
+	self assertContentsOf: [ x<=y ] convertsTo: (PjApplyNode func:(PjFieldNode target:(PjTempVariableNode identifier:#x) selectorNode:(PjMessageSelectorNode identifier:#'<=') isNonNil:false) args:{PjTempVariableNode identifier:#y}).
 	self assertContentsOf: [ x~~y ] convertsTo: (PjBinaryNode operator: #!== left: x right: y).
 	self assertContentsOf: [ x==y ] convertsTo: (PjBinaryNode operator: #=== left: x right: y).
 	self assertContentsOf: [ 1~=y ] convertsTo: (PjBinaryNode operator: #!= left: one right: y).
