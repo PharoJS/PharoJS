@@ -3,7 +3,8 @@ Class {
 	#superclass : #PjDomController,
 	#instVars : [
 		'contents',
-		'id'
+		'id',
+		'addresseeId'
 	],
 	#classVars : [
 		'currentId'
@@ -15,7 +16,6 @@ Class {
 PjMessage class >> newWithContents: contents [
 	^ self new
 		contents: contents;
-		id: self nextMessageId;
 		yourself
 ]
 
@@ -23,6 +23,16 @@ PjMessage class >> newWithContents: contents [
 PjMessage class >> nextMessageId [
 	currentId := currentId ifNil: [ 1 ] ifNotNil: [ :id | id + 1 ].
 	^ currentId
+]
+
+{ #category : #accessing }
+PjMessage >> addresseeId [
+	^ addresseeId
+]
+
+{ #category : #accessing }
+PjMessage >> addresseeId: anObject [
+	addresseeId := anObject
 ]
 
 { #category : #accessing }
@@ -48,6 +58,12 @@ PjMessage >> id [
 { #category : #accessing }
 PjMessage >> id: anObject [
 	id := anObject
+]
+
+{ #category : #'initialize-release' }
+PjMessage >> initialize [
+	super initialize.
+	id := self class nextMessageId
 ]
 
 { #category : #printing }

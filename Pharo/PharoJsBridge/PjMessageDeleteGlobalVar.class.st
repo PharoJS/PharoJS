@@ -14,20 +14,20 @@ PjMessageDeleteGlobalVar class >> newForVarName: jsName [
 		yourself
 ]
 
-{ #category : #'default instance' }
-PjMessageDeleteGlobalVar >> deleteGlobalVarNamed: aVarName [
-	<javascript:
-	'var obj = global[aVarName];
-	if (obj) {
-		obj.$_jsName = undefined;
-		if (aVarName)
-			delete global[aVarName]
-	}'>
+{ #category : #public }
+PjMessageDeleteGlobalVar >> evaluateInContext: aMessageContext [
+	PjProxyManager deleteGlobalVarNamed: self varName
 ]
 
 { #category : #public }
-PjMessageDeleteGlobalVar >> evaluateInContext: aMessageContext [
-	self deleteGlobalVarNamed: self varName
+PjMessageDeleteGlobalVar >> logDescription [
+	^ String
+		streamContents: [ :ws | 
+			ws nextPutAll: self class name.
+			ws nextPutAll: ' id: '.
+			ws nextPutAll: self id printString.
+			ws nextPutAll: ' varName: '.
+			ws nextPutAll: self varName ]
 ]
 
 { #category : #accessing }

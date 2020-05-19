@@ -396,8 +396,9 @@ PjBridge >> isServerStarted [
 PjBridge >> isServerStartedExtraCheck [
 	^ (ZnClient new
 		timeout: 1;
-		ifFail: [ nil ];
-		get: 'http://localhost:' , self port asString , '') notNil
+		ifFail: [ String new ];
+		get: 'http://localhost:' , self port asString , '/serverFingerPrint')
+		= self server fingerPrint
 ]
 
 { #category : #public }
@@ -474,7 +475,7 @@ PjBridge >> resetClient [
 	self client reset.
 	self
 		when: [ self webSocket ~~ oldWebSocket ]
-		do: [ oldWebSocket close ]
+		do: [ "oldWebSocket close" ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
 		timeOutDuration: self client startTimeout.
 	self waitForClientToStart

@@ -32,9 +32,15 @@ PjWebsocketDelegate class >> connectToTag: tagString [
 PjWebsocketDelegate class >> connectToUrl: urlString [
 	| newInstance |
 	newInstance := self new.
-	newInstance id: self randomIdForNewInstance.
 	newInstance connectTo: urlString.
-	^newInstance
+	^ newInstance
+]
+
+{ #category : #'as yet unclassified' }
+PjWebsocketDelegate class >> new [
+	^ super new
+		id: self randomIdForNewInstance;
+		yourself
 ]
 
 { #category : #'instance creation' }
@@ -77,6 +83,12 @@ PjWebsocketDelegate >> initWebSocket [
 	webSocket instVarNamed:#onmessage put: [: event | self onMessage: event]..
 	webSocket instVarNamed:#onclose put: [: event | self onClose: event].
 	webSocket instVarNamed:#onerror put: [: event | self onError: event].
+]
+
+{ #category : #'initialize-release' }
+PjWebsocketDelegate >> initialize [
+	super initialize.
+	id := self class randomIdForNewInstance.
 ]
 
 { #category : #testing }

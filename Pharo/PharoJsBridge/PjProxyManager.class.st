@@ -2,7 +2,8 @@ Class {
 	#name : #PjProxyManager,
 	#superclass : #Object,
 	#classVars : [
-		'currentId'
+		'currentId',
+		'proxies'
 	],
 	#pools : [
 		'PjNodeGlobals'
@@ -13,7 +14,19 @@ Class {
 { #category : #'instance creation' }
 PjProxyManager class >> atProxyId: aProxyId put: anObject [
 	global at: aProxyId put: anObject.
+	self proxies at: aProxyId put: anObject.
 	anObject instVarNamed: '$_jsName' putHidden: aProxyId
+]
+
+{ #category : #'default instance' }
+PjProxyManager class >> deleteGlobalVarNamed: aVarName [
+	<javascript:
+	'var obj = global[aVarName];
+	if (obj) {
+		obj.$_jsName = undefined;
+		if (aVarName)
+			delete global[aVarName]
+	}'>
 ]
 
 { #category : #'instance creation' }
@@ -55,4 +68,10 @@ PjProxyManager class >> makeBlockClosureProxy: withThis stopPropagation: stop fo
 PjProxyManager class >> nextId [
 	currentId := currentId ifNil: [ 1 ] ifNotNil: [ :id | id + 1 ].
 	^ currentId
+]
+
+{ #category : #'instance creation' }
+PjProxyManager class >> proxies [
+	proxies ifNil: [ proxies := Dictionary new].
+	^ proxies
 ]

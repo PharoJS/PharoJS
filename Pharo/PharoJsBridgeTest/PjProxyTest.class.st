@@ -126,32 +126,17 @@ PjProxyTest >> testClickWithEventTarget [
 	alsoRectangle count: alsoRectangle count + 1 ].
 	rectangle1 addEventListener: 'click' block: listenerBlock.
 	rectangle2 addEventListener: 'click' block: listenerBlock.
-	self bridge
-		evalJavascript:
-			'(' , rectangle1 asJSON , '.click(false),' , rectangle1 asJSON
-				, '.click(true),false)'.
-	Smalltalk garbageCollect.
 	rectangle1 dispatchEvent: (window MouseEvent new: #click).
-	rectangle1 dispatchEvent: (window MouseEvent new: #click).
-	self assert: (document getElementById: 'rect1') count equals: 4.
+	self assert: (document getElementById: 'rect1') count equals: 1.
 	self assert: rectangle1 equals: lastClickedRectangle.
-	Smalltalk garbageCollect.
-	self assert: (document getElementById: 'rect1') count equals: 4.
-	rectangle1 dispatchEvent: (window MouseEvent new: #click).
-	rectangle1 dispatchEvent: (window MouseEvent new: #click).
-	Smalltalk garbageCollect.
-	self assert: (document getElementById: 'rect1') count equals: 6.
 	self assert: (document getElementById: 'rect2') count equals: 0.
-	self assert: count = 6.
-	self bridge
-		evalJavascript:
-			'(' , rectangle2 asJSON , '.click(false),' , rectangle2 asJSON
-				, '.click(true),false)'.
+	self assert: count = 1.
+	rectangle2 dispatchEvent: (window MouseEvent new: #click).
 	Smalltalk garbageCollect.
 	self assert: rectangle2 equals: lastClickedRectangle.
-	self assert: (document getElementById: 'rect1') count equals: 6.
-	self assert: (document getElementById: 'rect2') count equals: 2.
-	self assert: count = 8
+	self assert: (document getElementById: 'rect1') count equals: 1.
+	self assert: (document getElementById: 'rect2') count equals: 1.
+	self assert: count = 2
 ]
 
 { #category : #testing }

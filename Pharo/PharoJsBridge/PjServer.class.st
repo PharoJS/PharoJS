@@ -79,6 +79,11 @@ PjServer >> favicon: jsString [
 	self delegate favicon: jsString
 ]
 
+{ #category : #accessing }
+PjServer >> fingerPrint [
+	^self delegate fingerPrint
+]
+
 { #category : #'request handling' }
 PjServer >> handleRequest: request forWebSocketOn: stream [
 	| acceptKey  response |

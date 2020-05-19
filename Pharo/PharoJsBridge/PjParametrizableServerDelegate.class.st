@@ -15,10 +15,18 @@ Class {
 		'html',
 		'javascript',
 		'css',
-		'favicon'
+		'favicon',
+		'fingerPrint'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
+
+{ #category : #'instance-creation' }
+PjParametrizableServerDelegate class >> new [
+	^ super new
+		initialize;
+		yourself
+]
 
 { #category : #accessing }
 PjParametrizableServerDelegate >> css [
@@ -40,6 +48,16 @@ PjParametrizableServerDelegate >> favicon: anObject [
 	favicon := anObject
 ]
 
+{ #category : #accessing }
+PjParametrizableServerDelegate >> fingerPrint [
+	^ fingerPrint
+]
+
+{ #category : #accessing }
+PjParametrizableServerDelegate >> fingerPrint: anObject [
+	fingerPrint := anObject
+]
+
 { #category : #handling }
 PjParametrizableServerDelegate >> handleRequest: request [
 	| entity prefix |
@@ -54,8 +72,8 @@ PjParametrizableServerDelegate >> handleRequest: request [
 		ifTrue: [ entity := ZnEntity css: self css ].
 	('favicon.ico' = prefix and: self favicon isEmptyOrNil not)
 		ifTrue: [ entity := ZnEntity favicon: self favicon ].
-	'windowCloser.html' = prefix
-		ifTrue: [ entity := ZnEntity html: self windowCloserHtml ].
+	'serverFingerPrint' = prefix
+		ifTrue: [ entity := ZnEntity html: self fingerPrint ].
 	entity ifNotNil: [ ^ ZnResponse ok: entity ].
 	^ ZnResponse notFound: request uri
 ]
@@ -68,6 +86,12 @@ PjParametrizableServerDelegate >> html [
 { #category : #accessing }
 PjParametrizableServerDelegate >> html: aString [
 	html := aString
+]
+
+{ #category : #'initialize-release' }
+PjParametrizableServerDelegate >> initialize [
+	super initialize.
+	fingerPrint := UUIDGenerator next asString
 ]
 
 { #category : #accessing }

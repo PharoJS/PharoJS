@@ -28,9 +28,9 @@ PjMessageResponse >> logDescription [
 		streamContents: [ :ws | 
 			ws nextPutAll: self class name.
 			ws nextPutAll: ' id: '.
-			ws nextPutAll: self id.
+			ws nextPutAll: self id asString.
 			ws nextPutAll: ' inResponseToId: '.
-			ws nextPutAll: self inResponseToId.
+			ws nextPutAll: self inResponseToId asString.
 			ws nextPutAll: ' contents: '.
 			ws nextPutAll: self contents ]
 ]
