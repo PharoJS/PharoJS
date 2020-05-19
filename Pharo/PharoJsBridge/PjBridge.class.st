@@ -475,7 +475,7 @@ PjBridge >> resetClient [
 	self client reset.
 	self
 		when: [ self webSocket ~~ oldWebSocket ]
-		do: [ "oldWebSocket close" ]
+		do: [ oldWebSocket close ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
 		timeOutDuration: self client startTimeout.
 	self waitForClientToStart
