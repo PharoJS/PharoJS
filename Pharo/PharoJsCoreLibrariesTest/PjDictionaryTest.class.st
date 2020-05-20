@@ -122,6 +122,12 @@ PjDictionaryTest >> testKeysAndValuesDo [
 	self
 		assert: [ | count |
 			count := 0.
+			eg values do: [ :v | count := count + v ].
+			count ]
+		evaluatesTo: 50.
+	self
+		assert: [ | count |
+			count := 0.
 			eg do: [ :v | count := count + v ].
 			count ]
 		evaluatesTo: 50.

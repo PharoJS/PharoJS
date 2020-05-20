@@ -41,3 +41,23 @@ PjDictionary >> collect: aBlock [
 	].
 	^resultDict
 ]
+
+{ #category : #enumerating }
+PjDictionary >> reject: aBlock [
+	| result |
+	result := OrderedCollection new.
+	self keysAndValuesDo: [: key : value |
+		(aBlock value: value) ifFalse: [result addLast: value]
+	].
+	^ result
+]
+
+{ #category : #enumerating }
+PjDictionary >> select: aBlock [
+	| result |
+	result := OrderedCollection new.
+	self keysAndValuesDo: [: key : value |
+		(aBlock value: value) ifTrue: [result addLast: value]
+	].
+	^ result
+]

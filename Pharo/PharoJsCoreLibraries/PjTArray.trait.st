@@ -112,6 +112,11 @@ PjTArray >> first [
 	<javascript: 'return this[0]'>
 ]
 
+{ #category : #accessing }
+PjTArray >> first: n [
+	<javascript: 'return this.slice(0,n)'>
+]
+
 { #category : #testing }
 PjTArray >> ifEmpty: aBlock [
 	self isEmpty ifTrue: [^aBlock value].
@@ -141,6 +146,11 @@ PjTArray >> isEmpty [
 { #category : #accessing }
 PjTArray >> last [
 	<javascript: 'return this[this.length-1]'>
+]
+
+{ #category : #accessing }
+PjTArray >> last: n [
+	<javascript: 'return this.slice(this.length-n)'>
 ]
 
 { #category : #enumerating }

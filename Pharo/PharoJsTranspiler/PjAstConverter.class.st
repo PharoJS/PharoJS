@@ -314,7 +314,7 @@ PjAstConverter >> jsCodePragmaKeyword [
 	^self class jsCodePragmaKeyword
 ]
 
-{ #category : #accessing }
+{ #category : #visiting }
 PjAstConverter >> jsLiteralGeneratorPragmaKeyword [
 	^ self class jsLiteralGeneratorPragmaKeyword
 ]
