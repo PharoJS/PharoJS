@@ -476,7 +476,7 @@ PjBridge >> resetClient [
 	Instead proxies are taken care of in PjAppTestCase>>tearDown. (also see see resetProxiesWithImmediateFinalization)
 	Assume here that there are no proxies left. (client & bridge)
 	"
-	self assert: self proxies isEmpty.
+	self resetProxiesImmediately. "huhm, some tests rely on this explicitly"
 	self client reset.
 	self
 		when: [ self webSocket ~~ oldWebSocket ]

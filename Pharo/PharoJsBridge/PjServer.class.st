@@ -20,6 +20,11 @@ Class {
 }
 
 { #category : #accessing }
+PjServer class >> portsCurrentlyInUse [
+	^(self allInstances select: #isRunning thenCollect: #port) asSet
+]
+
+{ #category : #accessing }
 PjServer class >> webSocketUrlTag [
 	^'javascript-bridge'
 ]
@@ -217,9 +222,9 @@ PjServer >> serveConnectionOn: listeningSocket [
 { #category : #public }
 PjServer >> start [
 	| candidatePort usedPorts |
-	candidatePort := self nextPortNumber.
-	usedPorts := (self class allInstances select: #isRunning thenCollect: #port) asSet.
-	[ usedPorts includes: candidatePort ] whileTrue: [candidatePort := self nextPortNumber].
+	usedPorts := self class portsCurrentlyInUse.
+	[ candidatePort := self nextPortNumber.
+	usedPorts includes: candidatePort ] whileTrue.
 	self startOnPort: candidatePort
 ]
 
