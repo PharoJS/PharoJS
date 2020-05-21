@@ -471,7 +471,12 @@ PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
 	self sendMessage: PjMessageReload new.
-	self resetProxies.
+	"self resetProxies. <= REMOVED
+	Ivo 2020may21 This is too late to finalize the proxies.
+	Instead proxies are taken care of in PjAppTestCase>>tearDown. (also see see resetProxiesWithImmediateFinalization)
+	Assume here that there are no proxies left. (client & bridge)
+	"
+	self assert: self proxies isEmpty.
 	self client reset.
 	self
 		when: [ self webSocket ~~ oldWebSocket ]
@@ -482,12 +487,20 @@ PjBridge >> resetClient [
 ]
 
 { #category : #initialization }
-PjBridge >> resetProxies [
+PjBridge >> resetProxiesImmediately [
+	"Leaving this to garbage collection leads to inpredictable results,
+	because finalizations might occur in a next (reloaded) client JS session"
+	self proxies
+		do: [ :v | 
+			(self finalizationRegistry remove: v ifAbsent: [ nil ])
+				ifNotNil: [ :finalizerItem | "finalizerItem finalizeValues"
+					"For now, NOT executing the finalizations (which sends delete proxy messages to the client), because of unknown problems.
+					This should be made synchronous anyway by waiting for acknowledgement from client.
+					For now, removing them (inactivating) is enough, we only execute this method when we no further need the client."
+					].
+			true ].
 	proxies := nil.
-	"Ensure that proxies are actually suppressed which lead to releasing the objects on the JS side"
-	"This is achieved by calling BjBridge>>#cleanUpJsSide"
-	Smalltalk garbageCollect. 
-
+	"Smalltalk garbageCollect. "
 ]
 
 { #category : #public }
@@ -585,17 +598,23 @@ PjBridge >> startOn: portNumber title: title [
 ]
 
 { #category : #public }
-PjBridge >> startWithoutWaitingForClient [
+PjBridge >> startServer [
 	| attempts |
 	self isServerStarted
 		ifTrue: [ ^ self ].
 	self server start.
 	attempts := 0.
 	[ self isServerStarted and: [ self isServerStartedExtraCheck ] ]
-		whileFalse: [ self server stop. self server start.
+		whileFalse: [ self server stop. self server start. 
 			attempts := attempts + 1.
 			attempts > 10
 				ifTrue: [ self error: 'Server not ready after 10 attempts' ] ].
+
+]
+
+{ #category : #public }
+PjBridge >> startWithoutWaitingForClient [
+	self startServer.
 	self client start
 ]
 
@@ -610,7 +629,8 @@ PjBridge >> stop [
 PjBridge >> stopServer [
 	self isServerStopped ifTrue: [ ^self ].
 	self server stop.
-	self waitForServerToStop 
+	self waitForServerToStop.
+	3 timesRepeat: [ Smalltalk garbageCollect ]
 ]
 
 { #category : #public }
