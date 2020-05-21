@@ -62,6 +62,14 @@ PjBrowserBridgeClient >> start [
 
 { #category : #activity }
 PjBrowserBridgeClient >> startJsInterpreter [
+
+"
+self bridge isServerStartedExtraCheck
+self bridge isServerIndexHtmlAvailable
+self bridge isServerIndexJsAvailable
+self serverUrlString
+self bridge server isWebSocketConnected
+"
 	WebBrowser
 		openOn: self serverUrlString
 		inBackground: self openBrowserInBackground
