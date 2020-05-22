@@ -232,6 +232,13 @@ PjBridge >> ensureServerProcessAlive [
 ]
 
 { #category : #public }
+PjBridge >> ensureServerStarted [
+	self server isStarted
+		ifTrue: [ ^ self ].
+	self server start
+]
+
+{ #category : #public }
 PjBridge >> evalBlock: aBlock [
 	^self evalJavascript: (self convertToJs: aBlock asValuedBlock)
 
