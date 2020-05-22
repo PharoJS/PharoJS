@@ -1,6 +1,6 @@
 Class {
 	#name : #PjNotIdenticalOptimization,
-	#superclass : #PjIdenticalOptimization,
+	#superclass : #PjComparisonOptimization,
 	#category : #'PharoJsTranspilerOptimization-Optimizations'
 }
 

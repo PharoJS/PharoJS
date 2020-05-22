@@ -1,7 +1,7 @@
 Class {
 	#name : #PjChronololgyTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #'PharoJsCoreLibrariesTest-Objects'
+	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
 { #category : #testing }

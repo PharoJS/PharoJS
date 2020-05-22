@@ -19,11 +19,11 @@ PjTCollection classSide >> atRandom_jsGenerator: transpiler [
 PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 	<pharoJsSkip>
 	^ {
-		Collection ->#(asSet reject: asOrderedCollection asSortedCollection: asSortedCollection
+		Collection ->#(asSet reject: asOrderedCollection
 			allSatisfy: anySatisfy: noneSatisfy: inject:into: 
 			detect:ifFound:ifNone: detect:ifNone: detect:ifFound: remove: isCollection 
 			asDictionary associationsDo: addAll: isEmptyOrNil removeAll: 
-			includesAll: max min
+			includesAll:
 		).
 		Collection class ->#(
 			withAll: 
@@ -40,9 +40,4 @@ PjTCollection >> = aMagnitude [
 { #category : #random }
 PjTCollection >> atRandom [
 	<jsGenerator: #atRandom_jsGenerator:>
-]
-
-{ #category : #arithmetic }
-PjTCollection >> sum [
-	^ self inject: 0 into: [:accum :each | accum + each]
 ]
