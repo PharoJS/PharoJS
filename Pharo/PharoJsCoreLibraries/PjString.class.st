@@ -241,7 +241,7 @@ PjString >> first [
 	^self at: 1
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 PjString >> first: n [
 	^ self js_substring: 0 to: n
 ]

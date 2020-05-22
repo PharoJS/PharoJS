@@ -107,6 +107,16 @@ PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator: transpiler [
 	}'
 ]
 
+{ #category : #'pharojs support' }
+PjEvaluatorWebsocketDelegate class >> myExtraClasses [
+	^ {PhxJsonReader.
+	PjMessage.
+	PjMessageDeleteVar.
+	PjMessageEvaluate.
+	PjMessageReload.
+	PjMessageTerminate}
+]
+
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
 	self closeDefault.
@@ -186,7 +196,8 @@ PjEvaluatorWebsocketDelegate >> connectTo: urlString [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
-	webSocket send: aResult.
+	webSocket
+		send: (PjMessageResponse newWithContents: aResult) asPhxJsonString.
 	self logSent: aResult
 ]
 
@@ -239,13 +250,15 @@ PjEvaluatorWebsocketDelegate >> onError: event [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> onMessage: event [
-	| aString|
-	aString := event data.
+	| jsonString aString msg |
+	jsonString := event data.
+	msg := PhxJsonReader readFromString: jsonString.
+	aString := msg contents.
 	self logReceived: aString.
 	aString first = ':' ifTrue: [ ^ self command: aString ].
 	self timeout: [
 		aString := self eval: aString.
-		self isClosed ifFalse: [webSocket send: aString].
+		self isClosed ifFalse: [webSocket send: (PjMessageResponse newWithContents: aString) asPhxJsonString ].
 		self logSent: aString
 	] for: 0
 ]
