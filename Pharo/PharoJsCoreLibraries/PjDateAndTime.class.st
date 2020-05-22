@@ -49,14 +49,24 @@ PjDateAndTime class >> year: year month: month1To12 day: day1To31 hour: hour min
 	<javascript: 'return new this(year, month1To12 - 1, day1To31, hour, minute, second)'>
 ]
 
-{ #category : #adding }
+{ #category : #arithmetics }
 PjDateAndTime >> + otherObject [
 	^otherObject addDateAndTime: self
+]
+
+{ #category : #arithmetics }
+PjDateAndTime >> - anObject [
+	^anObject subtractFromDateAndTime: self 
 ]
 
 { #category : #converting }
 PjDateAndTime >> asDateAndTime [
 	^self
+]
+
+{ #category : #arithmetics }
+PjDateAndTime >> basicSubtractFromDateAndTime: other [
+	<javascript: 'return other - this;'>
 ]
 
 { #category : #accessing }
@@ -112,6 +122,11 @@ PjDateAndTime >> monthIndex: anInteger [
 { #category : #accessing }
 PjDateAndTime >> second [
 	^self getSeconds
+]
+
+{ #category : #arithmetics }
+PjDateAndTime >> subtractFromDateAndTime: aDateAndTime [
+	^Duration milliSeconds: (self basicSubtractFromDateAndTime: aDateAndTime)
 ]
 
 { #category : #accessing }
