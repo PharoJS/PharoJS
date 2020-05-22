@@ -195,13 +195,6 @@ PjServer >> responseHeadersForKey: key [
 			yourself
 ]
 
-{ #category : #public }
-PjServer >> restart [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	self stop.
-	super start
-]
-
 { #category : #'request handling' }
 PjServer >> serveConnectionOn: listeningSocket [
 	"We wait up to acceptWaitTimeout seconds for an incoming connection.

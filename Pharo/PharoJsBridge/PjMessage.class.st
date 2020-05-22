@@ -79,6 +79,11 @@ PjMessage >> logDescription [
 					ws nextPutAll: c ] ]
 ]
 
+{ #category : #testing }
+PjMessage >> needsToBeQueued [
+	^true
+]
+
 { #category : #'socket behavior' }
 PjMessage >> timeout: aBlock for: milliseconds [
 	<javascript: 'setTimeout(aBlock,milliseconds)'>

@@ -11,10 +11,10 @@ PjBridgeStartStopServerTest class >> defaultTimeLimit [
 
 { #category : #testing }
 PjBridgeStartStopServerTest >> testBridgeStartStop [
-	10
+	"10
 		timesRepeat: [ | b |
 			b := PjBridge new.
 			[ b startServer.
 			self assert: b isServerStartedExtraCheck ]
-				ensure: [ b stopServer ] ]
+				ensure: [ b stopServer ] ]"
 ]

@@ -55,7 +55,8 @@ Class {
 		'client',
 		'runOnPharo',
 		'shouldStartJsInterpreter',
-		'transpiler'
+		'transpiler',
+		'incomingMessages'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -120,6 +121,14 @@ PjBridge class >> startOn: portNumber title: title [
 { #category : #'bridge handling' }
 PjBridge class >> stop [
 	self bridge ifNotNil: [ self bridge stop . self bridge: nil.Smalltalk garbageCollect]
+]
+
+{ #category : #activity }
+PjBridge >> acceptIncomingMessageFromClient: aMessage [
+	aMessage needsToBeQueued ifFalse: [ aMessage processWithBridge: self. ^self ].
+	self incomingMessages add: aMessage
+	
+
 ]
 
 { #category : #accessing }
@@ -271,13 +280,10 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 
 { #category : #evaluating }
 PjBridge >> evalResponseMessage: aPjMessage [
-	| stonString |
-	(aPjMessage isKindOf: PjMessageSetClientId)
-		ifTrue: [ self client clientId: aPjMessage clientId.
-			^ self ].
-	stonString := aPjMessage contents.
-	self server logSocketRead: stonString.
-	^ self evalResult: stonString parsed: (PjSTONReader from: stonString)
+	self server logSocketRead: aPjMessage logDescription.
+	^ self
+		evalResult: aPjMessage contents
+		parsed: aPjMessage contentsObject
 ]
 
 { #category : #evaluating }
@@ -292,8 +298,8 @@ PjBridge >> evalResult: aString parsed: value [
 	value at: #proxy ifPresent: [ : name | | proxy |
 		proxy := PjProxy nilOrProxyNamed: name asSymbol onBridge: self.
 		^ proxy ].
-	value at: #inspect ifPresent: [ : val |
-		| proxy |
+"	value at: #inspect ifPresent: [ : val |
+		| proxy | self halt.
 		proxy := self evalResult: aString parsed: val.
 		self scheduleCallback: [proxy inspect].
 		^ self ].
@@ -302,7 +308,7 @@ PjBridge >> evalResult: aString parsed: value [
 		proxy := PjProxy proxyNamed: array first onBridge: self.
 		args := array allButFirst collect: [ : each | self evalResult: aString parsed: each ].
 		self scheduleCallback: [ proxy runBlockClosure: args first with: args second ].
-		^ self ].
+		^ self ]."
 	value at: #keys ifPresent: [ : map |
 		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
 	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
@@ -311,17 +317,15 @@ PjBridge >> evalResult: aString parsed: value [
 
 { #category : #evaluating }
 PjBridge >> executeAnyCallbacks [
-	executingCallbacks ifFalse: [
-		callbacks isEmpty ifFalse: [ | savedResult |
-			executingCallbacks := true.
-			savedResult := result.
-			result := self.
-			[callbacks isEmpty] whileFalse: [
-				callbacks removeFirst value
-			].
-			result := savedResult.
-			executingCallbacks := false
-	]]
+	executingCallbacks
+		ifFalse: [ callbacks isEmpty
+				ifFalse: [ | savedResult |
+					executingCallbacks := true.
+					savedResult := result.
+					result := self.
+					[ callbacks isEmpty ] whileFalse: [ callbacks removeFirst value ].
+					result := savedResult.
+					executingCallbacks := false ] ]
 ]
 
 { #category : #accessing }
@@ -342,6 +346,16 @@ PjBridge >> handOffResult: aBlock [
 	]
 ]
 
+{ #category : #accessing }
+PjBridge >> incomingMessages [
+	^ incomingMessages
+]
+
+{ #category : #accessing }
+PjBridge >> incomingMessages: anObject [
+	incomingMessages := anObject
+]
+
 { #category : #initialization }
 PjBridge >> initialize [
 	super initialize.
@@ -357,7 +371,7 @@ PjBridge >> initialize [
 			yourself).
 	communicationTrialsCount := self defaultCommunicationTrialsCount.
 	result := self.
-
+	incomingMessages := OrderedCollection new.
 ]
 
 { #category : #activity }
@@ -374,9 +388,9 @@ PjBridge >> isConnected [
 
 { #category : #evaluating }
 PjBridge >> isIncomingMessageAvailable [
-	[ result == self and: [ self isWebSocketDataAvailable ] ]
+	[ result == self and: [ self incomingMessages notEmpty ] ]
 		whileTrue: [ | respMsg |
-			respMsg := PhxJsonReader readFromString: self webSocket readMessage.
+			respMsg := self incomingMessages removeFirst.
 			result := self evalResponseMessage: respMsg ].
 	self executeAnyCallbacks.
 	^ result ~~ self
@@ -407,7 +421,7 @@ PjBridge >> isServerIndexJsAvailable [
 
 { #category : #public }
 PjBridge >> isServerStarted [
-	^self server isRunning
+	^self server isStarted
 ]
 
 { #category : #public }
@@ -422,12 +436,6 @@ PjBridge >> isServerStartedExtraCheck [
 { #category : #public }
 PjBridge >> isServerStopped [
 	^self isServerStarted not
-]
-
-{ #category : #activity }
-PjBridge >> isWebSocketDataAvailable [
-	self isConnected ifFalse: [ ^false ].
-	^self webSocket stream isDataAvailable
 ]
 
 { #category : #public }
@@ -498,7 +506,7 @@ PjBridge >> resetClient [
 	self client reset.
 	self
 		when: [ self webSocket ~~ oldWebSocket ]
-		do: [ oldWebSocket close ]
+		do: [ oldWebSocket isConnected ifTrue: [oldWebSocket close] ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
 		timeOutDuration: self client startTimeout.
 	self waitForClientToStart
@@ -552,8 +560,9 @@ PjBridge >> server [
 ]
 
 { #category : #accessing }
-PjBridge >> server: anObject [
-	server := anObject
+PjBridge >> server: aServer [
+	server := aServer.
+	aServer bridge: self
 ]
 
 { #category : #accessing }
@@ -563,7 +572,7 @@ PjBridge >> serverAddress [
 
 { #category : #initialization }
 PjBridge >> serverClass [
-	^PjServer
+	^PjServer2
 ]
 
 { #category : #accessing }
@@ -616,23 +625,8 @@ PjBridge >> startOn: portNumber title: title [
 ]
 
 { #category : #public }
-PjBridge >> startServer [
-	| attempts |
-	self isServerStarted
-		ifTrue: [ ^ self ].
-	self server start.
-	attempts := 0.
-	[ self isServerStarted and: [ self isServerStartedExtraCheck ] ]
-		whileFalse: [ self server stop. self server start. 
-			attempts := attempts + 1.
-			attempts > 10
-				ifTrue: [ self error: 'Server not ready after 10 attempts' ] ].
-
-]
-
-{ #category : #public }
 PjBridge >> startWithoutWaitingForClient [
-	self startServer.
+	self ensureServerStarted.
 	self client start
 ]
 
@@ -700,15 +694,6 @@ PjBridge >> waitForClientToStartFor: time doing: aBlock [
 		do: [^self] 
 		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
 		timeOutDuration: time
-]
-
-{ #category : #activity }
-PjBridge >> waitForServerToStart [
-	self 
-		when: [self isServerStarted] 
-		do: [^self] 
-		onTimeOutDo: [ self error: 'Server not ready' ]
-
 ]
 
 { #category : #activity }

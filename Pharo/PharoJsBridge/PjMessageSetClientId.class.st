@@ -16,3 +16,13 @@ PjMessageSetClientId >> clientId [
 PjMessageSetClientId >> clientId: anObject [
 	clientId := anObject
 ]
+
+{ #category : #testing }
+PjMessageSetClientId >> needsToBeQueued [
+	^false
+]
+
+{ #category : #testing }
+PjMessageSetClientId >> processWithBridge: aBridge [
+	aBridge client clientId: self clientId
+]

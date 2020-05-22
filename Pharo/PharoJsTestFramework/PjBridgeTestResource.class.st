@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestResource,
 	#instVars : [
 		'bridge',
-		'appClass'
+		'appClass',
+		'execEnv'
 	],
 	#category : #'PharoJsTestFramework-Kernel'
 }
@@ -47,12 +48,13 @@ PjBridgeTestResource >> appClass [
 { #category : #accessing }
 PjBridgeTestResource >> appClass: aClass [
 	appClass := aClass.
-	self bridge: appClass bridge. 
+	self bridge: appClass bridge.
 	PjBridge bridge: self bridge.
 	self bridge shouldStartJsInterpreter: false.
 	self setUpClient.
-	self bridge	startWithoutWaitingForClient.
-
+	execEnv := ExecutionEnvironmentStub new.
+	execEnv	beActiveDuring: [ self bridge startWithoutWaitingForClient ].
+	 "self bridge startWithoutWaitingForClient " 
 ]
 
 { #category : #accessing }
@@ -95,10 +97,11 @@ PjBridgeTestResource >> setUpClient [
 
 { #category : #running }
 PjBridgeTestResource >> tearDown [
-	super tearDown.
-	self bridge ifNotNil: [
-		self bridge stop.
-		PjBridge bridge: nil
-	].
 
+	super tearDown.
+	self bridge
+		ifNotNil: [ self bridge stop.
+			PjBridge bridge: nil ].
+	execEnv forkedProcesses  ifNotNil: [:coll | coll do: [ :each | each terminate ]].
+	Smalltalk garbageCollect.
 ]
