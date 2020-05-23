@@ -531,6 +531,22 @@ PjBridge >> restart [
 ]
 
 { #category : #activity }
+PjBridge >> resultForSentMessage: sentMsg [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	(self incomingResponseMessageForSentMessage: sentMsg)
+		ifNotNil: [ :incMsg | 
+			self incomingMessages remove: incMsg.
+			"RESULT IS BEING MANIPULATED FROM executeCallbacksUntilDepletion?????"
+			result := self evalResponseMessage: incMsg.
+			result := result isClosure
+				ifTrue: [ result value ]
+				ifFalse: [ result ].
+			self executeCallbacksUntilDepletion.
+			^ result ].
+	self error: 'this should not happen'
+]
+
+{ #category : #activity }
 PjBridge >> sendMessage: aMessage [
 "	| msg |
 	msg := PjMessage new.
