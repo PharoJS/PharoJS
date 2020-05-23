@@ -77,10 +77,7 @@ PjProxyTest >> testChildren [
 
 { #category : #testing }
 PjProxyTest >> testClick [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-"Ivo temporarily going slower? because of logging or so?"
 	| rectangle count |
-	self timeLimit: 20 seconds. 
 	count := 0.
 	rectangle := document createElement: 'div'.
 	rectangle id: 'grn'.
