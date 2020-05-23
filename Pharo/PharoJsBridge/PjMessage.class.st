@@ -45,11 +45,6 @@ PjMessage >> contents: anObject [
 	contents := anObject
 ]
 
-{ #category : #public }
-PjMessage >> evaluateInContext: aMessageContext [
-	self subclassResponsibility 
-]
-
 { #category : #accessing }
 PjMessage >> id [
 	^ id
@@ -82,6 +77,16 @@ PjMessage >> logDescription [
 { #category : #testing }
 PjMessage >> needsToBeQueued [
 	^true
+]
+
+{ #category : #printing }
+PjMessage >> printOn: ws [
+	<pharoJsSkip>
+	super printOn: ws.
+	ws space.
+	ws << 'id:'.
+	ws << self id.
+
 ]
 
 { #category : #'socket behavior' }

@@ -129,6 +129,13 @@ PjServer2 >> initializeDelegate [
 ]
 
 { #category : #testing }
+PjServer2 >> isServerStarted [
+	"compatibility for PjBridge class>>bridge (needed for debugging)"
+
+	^ self isStarted
+]
+
+{ #category : #testing }
 PjServer2 >> isServerStartedExtraCheck [
 	^ (ZnClient new
 		timeout: 1;
@@ -244,8 +251,9 @@ PjServer2 >> startOnCurrentUsablePortNumber [
 
 { #category : #accessing }
 PjServer2 >> startOnPort: aPort [
-	self znServer port: aPort; start.
-	
+	self znServer
+		port: aPort;
+		start
 ]
 
 { #category : #accessing }
@@ -267,6 +275,11 @@ PjServer2 >> timing: anObject [
 { #category : #accessing }
 PjServer2 >> url [
 	^ self znServer url
+]
+
+{ #category : #accessing }
+PjServer2 >> urlString [
+	^self url asString
 ]
 
 { #category : #accessing }

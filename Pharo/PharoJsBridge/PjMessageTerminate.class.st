@@ -1,6 +1,6 @@
 Class {
 	#name : #PjMessageTerminate,
-	#superclass : #PjMessage,
+	#superclass : #PjMessageS2c,
 	#category : #'PharoJsBridge-Proxy'
 }
 

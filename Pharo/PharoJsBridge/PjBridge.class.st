@@ -46,17 +46,15 @@ Class {
 	#instVars : [
 		'server',
 		'communicationTrialsCount',
-		'result',
 		'timeout',
-		'callbacks',
-		'executingCallbacks',
 		'proxies',
 		'blockClosures',
 		'client',
 		'runOnPharo',
 		'shouldStartJsInterpreter',
 		'transpiler',
-		'incomingMessages'
+		'incomingMessages',
+		'result'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -125,10 +123,12 @@ PjBridge class >> stop [
 
 { #category : #activity }
 PjBridge >> acceptIncomingMessageFromClient: aMessage [
-	aMessage needsToBeQueued ifFalse: [ aMessage processWithBridge: self. ^self ].
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	Logger log: 'Incoming msg: ' , aMessage logDescription.
+	aMessage shouldEvaluateImmediately
+		ifTrue: [ aMessage processWithBridge: self.
+			^ self ].
 	self incomingMessages add: aMessage
-	
-
 ]
 
 { #category : #accessing }
@@ -246,6 +246,7 @@ PjBridge >> evalBlock: aBlock [
 
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	| msg |
 	self isConnected
 		ifFalse: [ ^ nil ].
@@ -254,8 +255,11 @@ PjBridge >> evalJavascript: javaScriptString [
 	self
 		when: [ self isConnected
 				ifFalse: [ ^ self ].
-			self isIncomingMessageAvailable ]
-		do: [ self handOffResult: [ :val | ^ val ] ]
+			(self incomingResponseMessageForSentMessage: msg) notNil ]
+		do: [ | resultForSentMessage |
+			resultForSentMessage := self resultForSentMessage: msg.
+			"self executeCallbacksUntilDepletion.  why does this have to be called from #resultForSentMessage: ? "
+			^ resultForSentMessage ]
 		onTimeOutDo: [ ^ PjJavascriptError
 				signal: 'no response after ' , self timeout printString ]
 		timeOutDuration: self timeout.
@@ -297,6 +301,7 @@ PjBridge >> evalResponseMessage: aPjMessage [
 PjBridge >> evalResult: aString parsed: value [
 	value isLiteral ifTrue: [ ^ value ].
 	value isNumber ifTrue: [ ^ value ].
+	value isDictionary ifTrue: [ value isEmpty ifTrue: [ ^nil ] ].
 	value at: #remove ifPresent: [ 
 		| proxy |
 		proxy := PjProxy nilOrProxyNamed: (value at: #proxy) asSymbol onBridge: self.
@@ -306,7 +311,7 @@ PjBridge >> evalResult: aString parsed: value [
 		proxy := PjProxy nilOrProxyNamed: name asSymbol onBridge: self.
 		^ proxy ].
 "	value at: #inspect ifPresent: [ : val |
-		| proxy | self halt.
+		| proxy |
 		proxy := self evalResult: aString parsed: val.
 		self scheduleCallback: [proxy inspect].
 		^ self ].
@@ -319,38 +324,28 @@ PjBridge >> evalResult: aString parsed: value [
 	value at: #keys ifPresent: [ : map |
 		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
 	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
+  self halt.
 	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
 ]
 
-{ #category : #evaluating }
-PjBridge >> executeAnyCallbacks [
-	executingCallbacks
-		ifFalse: [ callbacks isEmpty
-				ifFalse: [ | savedResult |
-					executingCallbacks := true.
-					savedResult := result.
-					result := self.
-					[ callbacks isEmpty ] whileFalse: [ callbacks removeFirst value ].
-					result := savedResult.
-					executingCallbacks := false ] ]
+{ #category : #activity }
+PjBridge >> executeCallbacksUntilDepletion [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+"ugly"
+	[ | cb |
+	cb := self incomingMessages
+		detect: [ :msg | msg isCallback ]
+		ifNone: [ nil ].
+	cb
+		ifNotNil: [ self incomingMessages remove: cb.
+			cb processCallbackWithBridge: self.
+			true ]
+		ifNil: [ false ] ] whileTrue
 ]
 
 { #category : #accessing }
 PjBridge >> exporter [
 	^self client exporter
-]
-
-{ #category : #activity }
-PjBridge >> handOffResult: aBlock [
-	result ~~ self ifTrue: [ | temp |
-		temp := result.
-		result := self.
-		temp isClosure ifTrue: [
-			aBlock value: temp value
-		] ifFalse: [
-			aBlock value: temp
-		]
-	]
 ]
 
 { #category : #accessing }
@@ -363,13 +358,17 @@ PjBridge >> incomingMessages: anObject [
 	incomingMessages := anObject
 ]
 
+{ #category : #evaluating }
+PjBridge >> incomingResponseMessageForSentMessage: aMsg [
+	^ self incomingMessages
+		detect: [ :msg | msg inResponseToId = aMsg id and: [ msg isCallback not ] ] ifNone: [ nil ]
+]
+
 { #category : #initialization }
 PjBridge >> initialize [
 	super initialize.
-	executingCallbacks := false.
 	runOnPharo := false.
 	shouldStartJsInterpreter := true.
-	callbacks := OrderedCollection new.
 	self server: self serverClass new.
 	self finalizationRegistry add: self executor:
 		(ObjectFinalizer new
@@ -377,13 +376,12 @@ PjBridge >> initialize [
 			selector: #stop;
 			yourself).
 	communicationTrialsCount := self defaultCommunicationTrialsCount.
-	result := self.
 	incomingMessages := OrderedCollection new.
+
 ]
 
 { #category : #activity }
 PjBridge >> isClientIdReceived [
-	self isIncomingMessageAvailable.
 	^ self client clientId notNil
 ]
 
@@ -391,16 +389,6 @@ PjBridge >> isClientIdReceived [
 PjBridge >> isConnected [
 	self webSocket ifNil: [ ^false ].
 	^self webSocket isConnected
-]
-
-{ #category : #evaluating }
-PjBridge >> isIncomingMessageAvailable [
-	[ result == self and: [ self incomingMessages notEmpty ] ]
-		whileTrue: [ | respMsg |
-			respMsg := self incomingMessages removeFirst.
-			result := self evalResponseMessage: respMsg ].
-	self executeAnyCallbacks.
-	^ result ~~ self
 ]
 
 { #category : #public }
@@ -540,12 +528,6 @@ PjBridge >> resetProxiesImmediately [
 PjBridge >> restart [
 	self stop.
 	self start
-]
-
-{ #category : #evaluating }
-PjBridge >> scheduleCallback: aBlock [
-	callbacks ifNil: [ callbacks := OrderedCollection new ].
-	callbacks add: aBlock
 ]
 
 { #category : #activity }

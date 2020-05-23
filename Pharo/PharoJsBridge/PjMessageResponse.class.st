@@ -1,6 +1,6 @@
 Class {
 	#name : #PjMessageResponse,
-	#superclass : #PjMessage,
+	#superclass : #PjMessageC2s,
 	#instVars : [
 		'inResponseToId'
 	],
@@ -13,11 +13,6 @@ PjMessageResponse >> contentsObject [
 	^ PjSTONReader from: self contents
 ]
 
-{ #category : #public }
-PjMessageResponse >> evaluateInContext: aMessageContext [
-	"self subclassResponsibility "
-]
-
 { #category : #accessing }
 PjMessageResponse >> inResponseToId [
 	^ inResponseToId
@@ -28,6 +23,19 @@ PjMessageResponse >> inResponseToId: anObject [
 	inResponseToId := anObject
 ]
 
+{ #category : #testing }
+PjMessageResponse >> isCallback [
+	| obj |
+	obj := self contentsObject.
+	obj isDictionary
+		ifFalse: [ ^ false ].
+	(obj includesKey: #inspect)
+		ifTrue: [ ^ true ].
+	(obj includesKey: 'cb')
+		ifTrue: [ ^ true ].
+	^ false
+]
+
 { #category : #printing }
 PjMessageResponse >> logDescription [
 	^ String
@@ -36,51 +44,56 @@ PjMessageResponse >> logDescription [
 			ws nextPutAll: ' id: '.
 			ws nextPutAll: self id asString.
 			ws nextPutAll: ' inResponseToId: '.
-			ws nextPutAll: self inResponseToId asString.
+			ws
+				nextPutAll:
+					(self inResponseToId
+						ifNotNil: [ :aNumber | aNumber asString ]
+						ifNil: [ '-' ]).
 			ws nextPutAll: ' contents: '.
-			ws nextPutAll: self contents ]
+			ws nextPutAll: (self contents ifNil: [ '-' ]) ]
 ]
 
-{ #category : #testing }
-PjMessageResponse >> needsToBeQueued [
-	| obj |
-	obj := self contentsObject.
-	obj isDictionary
-		ifFalse: [ ^ true ].
-	(obj includesKey: #inspect)
-		ifTrue: [ ^ false ].
-	(obj includesKey: #cb)
-		ifTrue: [ ^ false ].
-	^ true
+{ #category : #printing }
+PjMessageResponse >> printOn: ws [
+	<pharoJsSkip>
+	super printOn: ws.
+	ws space.
+	ws << 'ir2id: '.
+	ws << (self inResponseToId ifNil: ['-']).
+	ws space.
+	ws << self contents
 ]
 
 { #category : #testing }
 PjMessageResponse >> processCallbackWithBridge: aBridge [
 	<pharoJsSkip>
+	Logger log: 'PjMessageResponse>>processWithBridge: aBridge'.
+	(self contentsObject includesKey: #inspect)
+		ifTrue: [ self processInspectWithBridge: aBridge ].
+	(self contentsObject includesKey: #cb)
+		ifTrue: [ self processCbWithBridge: aBridge ]
+]
+
+{ #category : #testing }
+PjMessageResponse >> processCbWithBridge: aBridge [
+	<pharoJsSkip>
 	| array proxy args |
+		Logger log: 'PjMessageResponse>>processCallbackWithBridge: aBridge'.
+	"will have its own dedicated PjMessaga class"
 	array := self contentsObject at: #cb.
 	proxy := PjProxy proxyNamed: array first onBridge: aBridge.
 	args := array allButFirst
 		collect: [ :each | aBridge evalResult: self contents parsed: each ].
-	aBridge
-		scheduleCallback: [ proxy runBlockClosure: args first with: args second ]
+   proxy runBlockClosure: args first with: args second
 ]
 
 { #category : #testing }
 PjMessageResponse >> processInspectWithBridge: aBridge [
 	<pharoJsSkip>
 	| proxy |
+		"will have its own dedicated PjMessaga class"
 	proxy := aBridge
 		evalResult: self contents
 		parsed: (self contentsObject at: #inspect).
-	aBridge scheduleCallback: [ proxy inspect ]
-]
-
-{ #category : #testing }
-PjMessageResponse >> processWithBridge: aBridge [
-	<pharoJsSkip>
-	(self contentsObject includesKey: #inspect)
-		ifTrue: [ self processInspectWithBridge: aBridge ].
-	(self contentsObject includesKey: #cb)
-		ifTrue: [ self processCallbackWithBridge: aBridge ]
+	 proxy inspect 
 ]

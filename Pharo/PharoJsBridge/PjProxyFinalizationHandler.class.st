@@ -35,9 +35,9 @@ PjProxyFinalizationHandler >> bridge: aBridge [
 
 { #category : #finalization }
 PjProxyFinalizationHandler >> cleanUpJsSide [
-	self bridge ifNil: [ ^self ].
+"	self bridge ifNil: [ ^self ].
 	self bridge isServerStopped ifTrue: [ ^self ].
-	self bridge deleteJsValue: self proxyJsName
+	self bridge deleteJsValue: self proxyJsName"
 ]
 
 { #category : #accessing }

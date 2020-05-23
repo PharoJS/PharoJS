@@ -168,6 +168,7 @@ PjExporter >> nextPut: aCharacter [
 
 { #category : #'writing low-level' }
 PjExporter >> nextPutAll: aString [
+	(aString includes: 'WebSocket') ifTrue: [ self halt ].
 	jsStream nextPutAll: aString
 ]
 

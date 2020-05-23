@@ -32,6 +32,8 @@ PjProxyTest >> testAsJson [
 
 { #category : #testing }
 PjProxyTest >> testBlockClosures [
+	| b |
+	b := document body.
 	document body addEventListener: 'click' block: [ 42 ].
 	self
 		should: [ document body addEventListener: 'click' block: 42 ]
@@ -49,7 +51,8 @@ PjProxyTest >> testBlockClosures [
 	self assert: self bridge blockClosures size equals: 1.
 	document body removeEventListener: 'click'.
 	self assert:
-		self bridge blockClosures size equals: 0
+		self bridge blockClosures size equals: 0.
+	
 ]
 
 { #category : #testing }
@@ -76,7 +79,10 @@ PjProxyTest >> testChildren [
 
 { #category : #testing }
 PjProxyTest >> testClick [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+"Ivo temporarily going slower? because of logging or so?"
 	| rectangle count |
+	self timeLimit: 20 seconds. 
 	count := 0.
 	rectangle := document createElement: 'div'.
 	rectangle id: 'grn'.

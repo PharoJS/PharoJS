@@ -20,13 +20,24 @@ PjProxyManager class >> atProxyId: aProxyId put: anObject [
 
 { #category : #'default instance' }
 PjProxyManager class >> deleteGlobalVarNamed: aVarName [
-	<javascript:
-	'var obj = global[aVarName];
+"	<javascript:
+		'var obj = global[aVarName];
 	if (obj) {
 		obj.$_jsName = undefined;
 		if (aVarName)
 			delete global[aVarName]
-	}'>
+	}'>"
+	"self log: 'Executing ProxyManager>>deleteGlobalVarNamed: ' , aVarName."
+	aVarName ifNil: [ ^ self ].
+	aVarName isEmpty
+		ifTrue: [ ^ self ].
+	(global instVarNamed: aVarName)
+	"	ifNil: [ self log: 'Delete proxy -> No object found for: ' , aVarName ]"
+		ifNotNil: [ :obj | 
+			"self log: 'Delete proxy ->  Object found for: ' , aVarName."
+			obj
+				ifNotNil: [ obj instVarNamed: '$_jsName' put: nil.
+					global removeKey: aVarName ] ]
 ]
 
 { #category : #'instance creation' }
@@ -37,6 +48,11 @@ PjProxyManager class >> ensureObjectRegistered: anObject [
 		ifNil: [ aProxyId := '$_' , PjProxyManager nextId asString.
 			self atProxyId: aProxyId put: anObject ].
 	^ aProxyId
+]
+
+{ #category : #'default instance' }
+PjProxyManager class >> log: aString [
+	"PjLoggingEvaluatorWebsocketDelegate default log: aString"
 ]
 
 { #category : #'instance creation' }

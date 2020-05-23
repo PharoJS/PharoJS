@@ -1,6 +1,6 @@
 Class {
 	#name : #PjMessageReload,
-	#superclass : #PjMessage,
+	#superclass : #PjMessageS2c,
 	#category : #'PharoJsBridge-Proxy'
 }
 

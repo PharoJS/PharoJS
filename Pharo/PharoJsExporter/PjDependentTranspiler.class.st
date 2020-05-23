@@ -95,6 +95,7 @@ PjDependentTranspiler >> convertMethodAsts: aClass newClasses: newClasses [
 				ifNotNil: [ self addClassToConvert: aClass superclass ].
 			self
 				addClassesToConvert: (aClass instanceSide sharedPools reject: #isJavascriptGlobalsPool).
+
 			convertedClasses add: aClass.
 			newClasses add: aClass ].
 	self
@@ -107,6 +108,7 @@ PjDependentTranspiler >> convertMethodAsts: aClass newClasses: newClasses [
 
 { #category : #loading }
 PjDependentTranspiler >> discoveredGlobalsPool: aClass [
+"aClass == PjWebSocketPolyfill ifTrue: [ self halt ]."
 	globalPools add: aClass
 ]
 

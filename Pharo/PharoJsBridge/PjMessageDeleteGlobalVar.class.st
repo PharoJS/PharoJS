@@ -1,6 +1,6 @@
 Class {
 	#name : #PjMessageDeleteGlobalVar,
-	#superclass : #PjMessage,
+	#superclass : #PjMessageS2c,
 	#instVars : [
 		'varName'
 	],

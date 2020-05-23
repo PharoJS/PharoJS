@@ -1,6 +1,6 @@
 Class {
 	#name : #PjMessageSetClientId,
-	#superclass : #PjMessage,
+	#superclass : #PjMessageC2s,
 	#instVars : [
 		'clientId'
 	],
@@ -18,6 +18,11 @@ PjMessageSetClientId >> clientId: anObject [
 ]
 
 { #category : #testing }
+PjMessageSetClientId >> isCallback [
+	^false
+]
+
+{ #category : #testing }
 PjMessageSetClientId >> needsToBeQueued [
 	^false
 ]
@@ -25,4 +30,9 @@ PjMessageSetClientId >> needsToBeQueued [
 { #category : #testing }
 PjMessageSetClientId >> processWithBridge: aBridge [
 	aBridge client clientId: self clientId
+]
+
+{ #category : #testing }
+PjMessageSetClientId >> shouldEvaluateImmediately [
+	^true
 ]
