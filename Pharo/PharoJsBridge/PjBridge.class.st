@@ -111,6 +111,7 @@ PjBridge class >> openOn: portNumber title: title [
 
 { #category : #'instance creation' }
 PjBridge class >> startOn: portNumber title: title [
+	<script: 'PjBridge startOn: 1234 title: ''Test bridge'''>
 	^  (self bridgeForAppClass: self defaultApp)
 		startOn: portNumber title: title;
 		yourself
@@ -310,21 +311,9 @@ PjBridge >> evalResult: aString parsed: value [
 	value at: #proxy ifPresent: [ : name | | proxy |
 		proxy := PjProxy nilOrProxyNamed: name asSymbol onBridge: self.
 		^ proxy ].
-"	value at: #inspect ifPresent: [ : val |
-		| proxy |
-		proxy := self evalResult: aString parsed: val.
-		self scheduleCallback: [proxy inspect].
-		^ self ].
-	value at: #cb ifPresent: [ : array |
-		| proxy args |
-		proxy := PjProxy proxyNamed: array first onBridge: self.
-		args := array allButFirst collect: [ : each | self evalResult: aString parsed: each ].
-		self scheduleCallback: [ proxy runBlockClosure: args first with: args second ].
-		^ self ]."
 	value at: #keys ifPresent: [ : map |
 		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
 	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
-  self halt.
 	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
 ]
 
@@ -548,14 +537,11 @@ PjBridge >> resultForSentMessage: sentMsg [
 
 { #category : #activity }
 PjBridge >> sendMessage: aMessage [
-"	| msg |
-	msg := PjMessage new.
-	msg contents: aString."
 	self
 		when: [ self isConnected ]
 		do: [ self webSocket sendMessage: aMessage asPhxJsonString.
 			self server logSocketWritten: aMessage logDescription ]
-		onTimeOutDo: [ self inform: 'WebSocket is NOT avaialable' ]
+		onTimeOutDo: [ self inform: 'WebSocket is NOT available' ]
 		timeOutDuration: 100 milliSeconds
 ]
 
@@ -638,16 +624,7 @@ PjBridge >> startWithoutWaitingForClient [
 { #category : #public }
 PjBridge >> stop [
 	self client stop.
-	self stopServer.
-
-]
-
-{ #category : #activity }
-PjBridge >> stopServer [
-	self isServerStopped ifTrue: [ ^self ].
-	self server stop.
-	self waitForServerToStop.
-	3 timesRepeat: [ Smalltalk garbageCollect ]
+	self server stop
 ]
 
 { #category : #public }

@@ -190,35 +190,37 @@ PjServer2 >> newDelegate [
 	| d |
 	d := ZnDefaultServerDelegate empty.
 	d map: '/' to: 'index.html'.
-	self html
-		ifNotNil: [ :str | 
-			d
-				map: 'index.html'
-				to: [ :request | ZnResponse ok: (ZnEntity text: str) ] ].
-	self javascript
-		ifNotNil: [ :str | 
-			d
-				map: 'index.js'
-				to: [ :request | ZnResponse ok: (ZnEntity text: str) ] ].
-	self css
-		ifNotNil: [ :str | 
-			d
-				map: 'index.css'
-				to: [ :request | ZnResponse ok: (ZnEntity text: str) ] ].
-	self favicon
-		ifNotNil: [ :str | 
-			d
-				map: 'favicon.ico'
-				to: [ :request | ZnResponse ok: (ZnEntity text: str) ] ].
-	self fingerPrint
-		ifNotNil: [ :str | 
-			d
-				map: 'serverFingerPrint'
-				to: [ :request | ZnResponse ok: (ZnEntity text: str) ] ].
+	d
+		map: 'index.html'
+		to: [ :request | ZnResponse ok: (ZnEntity html: self html) ].
+	d
+		map: 'index.js'
+		to: [ :request | ZnResponse ok: (ZnEntity javascript: self javascript) ].
+	d
+		map: 'index.css'
+		to: [ :request | ZnResponse ok: (ZnEntity css: self css) ].
+	d
+		map: 'favicon.ico'
+		to: [ :request | 
+			self favicon
+				ifNil: [ ZnResponse notFound: request uri ]
+				ifNotNil: [ ZnResponse ok: (ZnEntity favicon: self favicon) ] ].
+	d
+		map: 'serverFingerPrint'
+		to: [ :request | ZnResponse ok: (ZnEntity text: self fingerPrint) ].
 	d
 		map: self webSocketUrlTag
 		to: (ZnWebSocketDelegate map: self webSocketUrlTag to: self).
 	^ d
+]
+
+{ #category : #printing }
+PjServer2 >> printOn: ws [
+	super printOn: ws.
+	ws << ' --> '.
+	self znServer
+		ifNil: [ 'znServer missing???' ]
+		ifNotNil: [ :znSrv | znSrv printOn: ws ]
 ]
 
 { #category : #accessing }
@@ -251,6 +253,9 @@ PjServer2 >> startOnCurrentUsablePortNumber [
 
 { #category : #accessing }
 PjServer2 >> startOnPort: aPort [
+	self isStarted
+		ifTrue: [ ^ self ].
+	self stop.
 	self znServer
 		port: aPort;
 		start
@@ -264,11 +269,13 @@ PjServer2 >> stop [
 
 { #category : #accessing }
 PjServer2 >> timing [
+self halt.
 	^ timing
 ]
 
 { #category : #accessing }
 PjServer2 >> timing: anObject [
+self halt.
 	timing := anObject
 ]
 

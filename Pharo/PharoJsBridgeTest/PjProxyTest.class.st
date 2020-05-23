@@ -32,8 +32,6 @@ PjProxyTest >> testAsJson [
 
 { #category : #testing }
 PjProxyTest >> testBlockClosures [
-	| b |
-	b := document body.
 	document body addEventListener: 'click' block: [ 42 ].
 	self
 		should: [ document body addEventListener: 'click' block: 42 ]
@@ -167,6 +165,30 @@ PjProxyTest >> testIterateOverChildren [
 	container children withIndexDo: [ : each : index | 
 		each textContent: index].
 
+]
+
+{ #category : #testing }
+PjProxyTest >> testProxyGarbageCollection [
+	| b jsName |
+	b := document body.
+	jsName := b javascriptName.
+	self assert: jsName equals: '$_2'.
+	
+	"Following lines to mimic the effect of garbage collection in a deteministic way."
+	(self finalizationRegistry remove: b ifAbsent: [ nil ])
+		ifNotNil: [ :finalizerItem | finalizerItem finalizeValues ].
+	b := nil.
+	
+	self deny: (global includesKey: jsName)
+]
+
+{ #category : #testing }
+PjProxyTest >> testProxyMissingError [
+	"This test fails intermittently because of interfering garbage collection effects of released proxies"
+	self timeLimit: 60 seconds.
+	1 to: 5 by: 0.1 do: [ :num | 
+		document body children.
+		num milliSeconds wait ]
 ]
 
 { #category : #testing }
