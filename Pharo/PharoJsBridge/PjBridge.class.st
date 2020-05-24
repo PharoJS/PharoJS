@@ -54,7 +54,8 @@ Class {
 		'shouldStartJsInterpreter',
 		'transpiler',
 		'incomingMessages',
-		'result'
+		'result',
+		'executingCallbacks'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -111,7 +112,6 @@ PjBridge class >> openOn: portNumber title: title [
 
 { #category : #'instance creation' }
 PjBridge class >> startOn: portNumber title: title [
-	<script: 'PjBridge startOn: 1234 title: ''Test bridge'''>
 	^  (self bridgeForAppClass: self defaultApp)
 		startOn: portNumber title: title;
 		yourself
@@ -119,7 +119,10 @@ PjBridge class >> startOn: portNumber title: title [
 
 { #category : #'bridge handling' }
 PjBridge class >> stop [
-	self bridge ifNotNil: [ self bridge stop . self bridge: nil.Smalltalk garbageCollect]
+	self bridge
+		ifNotNil: [ self bridge stop.
+			self bridge: nil.
+			Smalltalk garbageCollect ]
 ]
 
 { #category : #activity }
@@ -194,11 +197,6 @@ PjBridge >> convertToJs: anObject [
 { #category : #accessing }
 PjBridge >> defaultClientClass [
 	^self class defaultClientClass
-]
-
-{ #category : #initialization }
-PjBridge >> defaultCommunicationTrialsCount [
-	^100
 ]
 
 { #category : #'closure handling' }
@@ -357,7 +355,7 @@ PjBridge >> initialize [
 			receiver: self server;
 			selector: #stop;
 			yourself).
-	communicationTrialsCount := self defaultCommunicationTrialsCount.
+	communicationTrialsCount := 100.
 	incomingMessages := OrderedCollection new.
 
 ]
@@ -403,7 +401,7 @@ PjBridge >> isServerStarted [
 
 { #category : #public }
 PjBridge >> isServerStopped [
-	^self isStarted not
+	^self server isStarted not
 ]
 
 { #category : #public }
@@ -515,6 +513,7 @@ PjBridge >> restart [
 { #category : #activity }
 PjBridge >> resultForSentMessage: sentMsg [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	<T000322Sweep1>
 	(self incomingResponseMessageForSentMessage: sentMsg)
 		ifNotNil: [ :incMsg | 
 			self incomingMessages remove: incMsg.
