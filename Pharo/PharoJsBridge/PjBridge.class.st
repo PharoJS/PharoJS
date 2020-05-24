@@ -3,7 +3,7 @@ A PjBridge is the facade that allows interacting (i.e. evaluting code) with a ja
 
 Example: 
 ""1) Start a bridge in a workspace""
-bridge := PjBridge startOn: 12345.
+bridge := PjBridge startOn: 12345 title: 'Example'.
 
 ""2) Open a web browser on http://localhost:12345""
 
@@ -228,15 +228,8 @@ PjBridge >> dnuJsString [
 ]
 
 { #category : #public }
-PjBridge >> ensureServerProcessAlive [
-	self server ensureProcessAlive
-]
-
-{ #category : #public }
-PjBridge >> ensureServerStarted [
-	self server isStarted
-		ifTrue: [ ^ self ].
-	self server start
+PjBridge >> enableClientLogging [
+	self client: self client withClientLogging
 ]
 
 { #category : #public }
@@ -409,17 +402,17 @@ PjBridge >> isServerStarted [
 ]
 
 { #category : #public }
-PjBridge >> isServerStartedExtraCheck [
+PjBridge >> isServerStopped [
+	^self isStarted not
+]
+
+{ #category : #public }
+PjBridge >> isStartedCheckExternally [
 	^ (ZnClient new
 		timeout: 1;
 		ifFail: [ String new ];
 		get: 'http://localhost:' , self port asString , '/serverFingerPrint')
 		= self server fingerPrint
-]
-
-{ #category : #public }
-PjBridge >> isServerStopped [
-	^self isServerStarted not
 ]
 
 { #category : #public }
@@ -563,7 +556,7 @@ PjBridge >> serverAddress [
 
 { #category : #initialization }
 PjBridge >> serverClass [
-	^PjServer2
+	^PjBridgeServer
 ]
 
 { #category : #accessing }
@@ -617,7 +610,7 @@ PjBridge >> startOn: portNumber title: title [
 
 { #category : #public }
 PjBridge >> startWithoutWaitingForClient [
-	self ensureServerStarted.
+	self server start.
 	self client start
 ]
 

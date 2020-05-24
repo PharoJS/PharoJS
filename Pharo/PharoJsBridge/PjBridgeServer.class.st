@@ -1,5 +1,5 @@
 Class {
-	#name : #PjServer2,
+	#name : #PjBridgeServer,
 	#superclass : #Object,
 	#instVars : [
 		'timing',
@@ -19,18 +19,18 @@ Class {
 }
 
 { #category : #accessing }
-PjServer2 class >> currentUsablePortNumber [
+PjBridgeServer class >> currentUsablePortNumber [
 	
 	^CurrentUsablePortNumber
 ]
 
 { #category : #accessing }
-PjServer2 class >> currentUsablePortNumber: aNumber [
+PjBridgeServer class >> currentUsablePortNumber: aNumber [
 	CurrentUsablePortNumber := aNumber
 ]
 
 { #category : #accessing }
-PjServer2 class >> incrementCurrentUsablePortNumber [
+PjBridgeServer class >> incrementCurrentUsablePortNumber [
 	| p |
 	p := self currentUsablePortNumber
 		ifNotNil: [ :cp | cp + 1 ]
@@ -41,102 +41,95 @@ PjServer2 class >> incrementCurrentUsablePortNumber [
 ]
 
 { #category : #accessing }
-PjServer2 class >> maxPortNumber [
+PjBridgeServer class >> maxPortNumber [
 	^65535
 ]
 
 { #category : #accessing }
-PjServer2 class >> minPortNumber [
+PjBridgeServer class >> minPortNumber [
 	^1024
 ]
 
 { #category : #accessing }
-PjServer2 class >> webSocketUrlTag [
+PjBridgeServer class >> webSocketUrlTag [
 	^'javascript-bridge'
 ]
 
 { #category : #accessing }
-PjServer2 >> bridge [
+PjBridgeServer >> bridge [
 	^ bridge
 ]
 
 { #category : #accessing }
-PjServer2 >> bridge: anObject [
+PjBridgeServer >> bridge: anObject [
 	bridge := anObject
 ]
 
 { #category : #accessing }
-PjServer2 >> css [
+PjBridgeServer >> css [
 	^ css
 ]
 
 { #category : #accessing }
-PjServer2 >> css: anObject [
+PjBridgeServer >> css: anObject [
 	css := anObject
 ]
 
 { #category : #accessing }
-PjServer2 >> ensureProcessAlive [
-	
-]
-
-{ #category : #accessing }
-PjServer2 >> favicon [
+PjBridgeServer >> favicon [
 	^ favicon
 ]
 
 { #category : #accessing }
-PjServer2 >> favicon: anObject [
+PjBridgeServer >> favicon: anObject [
 	favicon := anObject
 ]
 
 { #category : #accessing }
-PjServer2 >> fingerPrint [
+PjBridgeServer >> fingerPrint [
 	^ fingerPrint
 ]
 
 { #category : #accessing }
-PjServer2 >> fingerPrint: anObject [
+PjBridgeServer >> fingerPrint: anObject [
 	fingerPrint := anObject
 ]
 
-{ #category : #accessing }
-PjServer2 >> handleMessage: rawSocketMessage forSocket: aWebSocket [
+{ #category : #websocket }
+PjBridgeServer >> handleMessage: rawSocketMessage forSocket: aWebSocket [
 	self bridge acceptIncomingMessageFromClient: (PhxJsonReader readFromString: rawSocketMessage)
 ]
 
 { #category : #accessing }
-PjServer2 >> html [
+PjBridgeServer >> html [
 	^ html
 ]
 
 { #category : #accessing }
-PjServer2 >> html: anObject [
+PjBridgeServer >> html: anObject [
 	html := anObject
 ]
 
 { #category : #'initialize-release' }
-PjServer2 >> initialize [
-	super initialize.
-	znServer := ZnMultiThreadedServer  new.
-	fingerPrint := UUIDGenerator next asString.
-	self initializeDelegate.
+PjBridgeServer >> indexHtmlResponse [
+	^ ZnResponse ok: (ZnEntity html: self html)
 ]
 
 { #category : #'initialize-release' }
-PjServer2 >> initializeDelegate [
-	znServer delegate: self newDelegate
+PjBridgeServer >> initialize [
+	super initialize.
+	znServer := self newDefaultZnServer.
+	fingerPrint := UUIDGenerator next asString.
+	
 ]
 
 { #category : #testing }
-PjServer2 >> isServerStarted [
-	"compatibility for PjBridge class>>bridge (needed for debugging)"
-
-	^ self isStarted
+PjBridgeServer >> isStarted [
+	^ self znServer isRunning and: [ self isStartedCheckExternally ]
 ]
 
 { #category : #testing }
-PjServer2 >> isServerStartedExtraCheck [
+PjBridgeServer >> isStartedCheckExternally [
 	^ (ZnClient new
 		timeout: 1;
 		ifFail: [ String new ];
@@ -145,13 +138,8 @@ PjServer2 >> isServerStartedExtraCheck [
 				, '/serverFingerPrint') = self fingerPrint
 ]
 
-{ #category : #testing }
-PjServer2 >> isStarted [
-	^ self znServer isRunning and: [ self isServerStartedExtraCheck ]
-]
-
-{ #category : #accessing }
-PjServer2 >> isStartedWithinTimeout [
+{ #category : #start }
+PjBridgeServer >> isStartedWithinTimeout [
 	| attempts |
 	attempts := 1.
 	[ self isStarted
@@ -162,31 +150,39 @@ PjServer2 >> isStartedWithinTimeout [
 	^ false
 ]
 
-{ #category : #testing }
-PjServer2 >> isWebSocketConnected [
+{ #category : #websocket }
+PjBridgeServer >> isWebSocketConnected [
 	^self webSocket notNil
 ]
 
 { #category : #accessing }
-PjServer2 >> javascript [
+PjBridgeServer >> javascript [
 	^ javascript
 ]
 
 { #category : #accessing }
-PjServer2 >> javascript: anObject [
+PjBridgeServer >> javascript: anObject [
 	javascript := anObject
 ]
 
 { #category : #logging }
-PjServer2 >> logSocketRead: aString [
+PjBridgeServer >> logSocketRead: aString [
 ]
 
 { #category : #logging }
-PjServer2 >> logSocketWritten: aString [
+PjBridgeServer >> logSocketWritten: aString [
 ]
 
-{ #category : #accessing }
-PjServer2 >> newDelegate [
+{ #category : #'initialize-release' }
+PjBridgeServer >> newDefaultZnServer [
+	| srv |
+	srv := ZnMultiThreadedServer new.
+	srv delegate: self newDefaultZnServerDelegate.
+	^ srv
+]
+
+{ #category : #'initialize-release' }
+PjBridgeServer >> newDefaultZnServerDelegate [
 	| d |
 	d := ZnDefaultServerDelegate empty.
 	d map: '/' to: 'index.html'.
@@ -214,8 +210,13 @@ PjServer2 >> newDelegate [
 	^ d
 ]
 
+{ #category : #public }
+PjBridgeServer >> port: aPortNumber [
+	self znServer port: aPortNumber
+]
+
 { #category : #printing }
-PjServer2 >> printOn: ws [
+PjBridgeServer >> printOn: ws [
 	super printOn: ws.
 	ws << ' --> '.
 	self znServer
@@ -223,8 +224,8 @@ PjServer2 >> printOn: ws [
 		ifNotNil: [ :znSrv | znSrv printOn: ws ]
 ]
 
-{ #category : #accessing }
-PjServer2 >> safelyHandleMessage: aMessage forSocket: aWebSocket [
+{ #category : #websocket }
+PjBridgeServer >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 	[ self handleMessage: aMessage forSocket: aWebSocket ]
 		on: Error
 		do: [ :ex | 
@@ -236,9 +237,11 @@ PjServer2 >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 			ex return ]
 ]
 
-{ #category : #accessing }
-PjServer2 >> start [
+{ #category : #start }
+PjBridgeServer >> start [
 	| attempts |
+	self isStarted
+		ifTrue: [ ^ self ].
 	attempts := 1.
 	[ self startOnCurrentUsablePortNumber.
 	self isStartedWithinTimeout ]
@@ -246,13 +249,13 @@ PjServer2 >> start [
 			self class incrementCurrentUsablePortNumber ]
 ]
 
-{ #category : #accessing }
-PjServer2 >> startOnCurrentUsablePortNumber [
+{ #category : #start }
+PjBridgeServer >> startOnCurrentUsablePortNumber [
 	self startOnPort: self class currentUsablePortNumber
 ]
 
-{ #category : #accessing }
-PjServer2 >> startOnPort: aPort [
+{ #category : #start }
+PjBridgeServer >> startOnPort: aPort [
 	self isStarted
 		ifTrue: [ ^ self ].
 	self stop.
@@ -261,36 +264,36 @@ PjServer2 >> startOnPort: aPort [
 		start
 ]
 
-{ #category : #accessing }
-PjServer2 >> stop [
+{ #category : #stop }
+PjBridgeServer >> stop [
 	Logger log: 'Server stop'.
 	self znServer stop
 ]
 
 { #category : #accessing }
-PjServer2 >> timing [
+PjBridgeServer >> timing [
 self halt.
 	^ timing
 ]
 
 { #category : #accessing }
-PjServer2 >> timing: anObject [
+PjBridgeServer >> timing: anObject [
 self halt.
 	timing := anObject
 ]
 
 { #category : #accessing }
-PjServer2 >> url [
+PjBridgeServer >> url [
 	^ self znServer url
 ]
 
 { #category : #accessing }
-PjServer2 >> urlString [
+PjBridgeServer >> urlString [
 	^self url asString
 ]
 
 { #category : #accessing }
-PjServer2 >> value: aWebSocket [
+PjBridgeServer >> value: aWebSocket [
 	[ self webSocket: aWebSocket.
 	aWebSocket
 		runWith:
@@ -300,27 +303,27 @@ PjServer2 >> value: aWebSocket [
 ]
 
 { #category : #accessing }
-PjServer2 >> webSocket [
+PjBridgeServer >> webSocket [
 	^ webSocket
 ]
 
 { #category : #accessing }
-PjServer2 >> webSocket: anObject [
+PjBridgeServer >> webSocket: anObject [
 	Logger log: anObject asString.
 	webSocket := anObject
 ]
 
 { #category : #accessing }
-PjServer2 >> webSocketUrlTag [
+PjBridgeServer >> webSocketUrlTag [
 	^self class webSocketUrlTag 
 ]
 
 { #category : #accessing }
-PjServer2 >> znServer [
+PjBridgeServer >> znServer [
 	^ znServer
 ]
 
 { #category : #accessing }
-PjServer2 >> znServer: anObject [
+PjBridgeServer >> znServer: anObject [
 	znServer := anObject
 ]

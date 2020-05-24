@@ -83,10 +83,6 @@ PjBridgeTestResource >> initialize [
 
 { #category : #running }
 PjBridgeTestResource >> resetClient [
-	"SUnit does terminate all threads forked while tests are run."
-	"See TestExecutionEnvironment>>#runTestCase:"
-	"So, first ensure server process is alive"
-	self bridge ensureServerProcessAlive.
 	self bridge resetClient
 ]
 
