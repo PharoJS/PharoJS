@@ -67,7 +67,6 @@ PjMessageResponse >> printOn: ws [
 { #category : #testing }
 PjMessageResponse >> processCallbackWithBridge: aBridge [
 	<pharoJsSkip>
-	Logger log: 'PjMessageResponse>>processWithBridge: aBridge'.
 	(self contentsObject includesKey: #inspect)
 		ifTrue: [ self processInspectWithBridge: aBridge ].
 	(self contentsObject includesKey: #cb)
@@ -78,7 +77,6 @@ PjMessageResponse >> processCallbackWithBridge: aBridge [
 PjMessageResponse >> processCbWithBridge: aBridge [
 	<pharoJsSkip>
 	| array proxy args |
-		Logger log: 'PjMessageResponse>>processCallbackWithBridge: aBridge'.
 	"will have its own dedicated PjMessaga class"
 	array := self contentsObject at: #cb.
 	proxy := PjProxy proxyNamed: array first onBridge: aBridge.

@@ -45,6 +45,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'server',
+		'communicationTrialsCount',
 		'timeout',
 		'proxies',
 		'blockClosures',
@@ -127,7 +128,6 @@ PjBridge class >> stop [
 { #category : #activity }
 PjBridge >> acceptIncomingMessageFromClient: aMessage [
 <PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	Logger log: 'Incoming msg: ' , aMessage logDescription.
 	aMessage shouldEvaluateImmediately
 		ifTrue: [ aMessage processWithBridge: self.
 			^ self ].
@@ -237,7 +237,7 @@ PjBridge >> evalBlock: aBlock [
 
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	| msg |
 	self isConnected
 		ifFalse: [ ^ nil ].
@@ -249,7 +249,6 @@ PjBridge >> evalJavascript: javaScriptString [
 			(self incomingResponseMessageForSentMessage: msg) notNil ]
 		do: [ | resultForSentMessage |
 			resultForSentMessage := self resultForSentMessage: msg.
-			"self executeCallbacksUntilDepletion.  why does this have to be called from #resultForSentMessage: ? "
 			^ resultForSentMessage ]
 		onTimeOutDo: [ ^ PjJavascriptError
 				signal: 'no response after ' , self timeout printString ]
@@ -282,7 +281,6 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 
 { #category : #evaluating }
 PjBridge >> evalResponseMessage: aPjMessage [
-	self server logSocketRead: aPjMessage logDescription.
 	^ self
 		evalResult: aPjMessage contents
 		parsed: aPjMessage contentsObject
@@ -309,17 +307,10 @@ PjBridge >> evalResult: aString parsed: value [
 
 { #category : #activity }
 PjBridge >> executeCallbacksUntilDepletion [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-"ugly"
-	[ | cb |
-	cb := self incomingMessages
-		detect: [ :msg | msg isCallback ]
-		ifNone: [ nil ].
-	cb
-		ifNotNil: [ self incomingMessages remove: cb.
-			cb processCallbackWithBridge: self.
-			true ]
-		ifNil: [ false ] ] whileTrue
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	[ self takeNextCallbackFromIncomingMessages
+		ifNil: [ ^ self ]
+		ifNotNil: [ :cb | cb processCallbackWithBridge: self ] ] repeat
 ]
 
 { #category : #accessing }
@@ -354,6 +345,7 @@ PjBridge >> initialize [
 			receiver: self server;
 			selector: #stop;
 			yourself).
+	communicationTrialsCount := 100.
 	incomingMessages := OrderedCollection new.
 
 ]
@@ -513,15 +505,19 @@ PjBridge >> resultForSentMessage: sentMsg [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	<T000322Sweep1>
 	(self incomingResponseMessageForSentMessage: sentMsg)
-		ifNotNil: [ :incMsg | 
+		ifNotNil: [ :incMsg | |result2|
+			"executingCallbacks == true ifTrue: [ self halt ]."
 			self incomingMessages remove: incMsg.
 			"RESULT IS BEING MANIPULATED FROM executeCallbacksUntilDepletion?????"
-			result := self evalResponseMessage: incMsg.
-			result := result isClosure
-				ifTrue: [ result value ]
-				ifFalse: [ result ].
+"			incMsg id = 36 ifTrue: [ self halt ]."
+			result2 := self evalResponseMessage: incMsg.
+			result2 := result2 isClosure
+				ifTrue: [ result2 value ]
+				ifFalse: [ result2 ].
+			executingCallbacks := true. 
 			self executeCallbacksUntilDepletion.
-			^ result ].
+			executingCallbacks := false. 
+			^ result2 ].
 	self error: 'this should not happen'
 ]
 
@@ -617,6 +613,17 @@ PjBridge >> stop [
 	self server stop
 ]
 
+{ #category : #activity }
+PjBridge >> takeNextCallbackFromIncomingMessages [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	self incomingMessages
+		detect: [ :msg | msg isCallback ]
+		ifFound: [ :cb | 
+			self incomingMessages remove: cb.
+			^ cb ]
+		ifNone: [ ^ nil ]
+]
+
 { #category : #public }
 PjBridge >> terminateClient [
 	self isConnected ifFalse: [ ^self ].  
@@ -668,15 +675,6 @@ PjBridge >> waitForClientToStartFor: time doing: aBlock [
 		timeOutDuration: time
 ]
 
-{ #category : #activity }
-PjBridge >> waitForServerToStop [
-	self 
-		when: [self isServerStopped] 
-		do: [^self] 
-		onTimeOutDo: [ self error: 'Server not stopped yet' ]
-
-]
-
 { #category : #accessing }
 PjBridge >> webSocket [
 	^self server webSocket
@@ -708,9 +706,4 @@ PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeO
 	].
 	^failureBlock value.	
 
-]
-
-{ #category : #public }
-PjBridge >> withClientLogging [
-	self client: self client withClientLogging
 ]

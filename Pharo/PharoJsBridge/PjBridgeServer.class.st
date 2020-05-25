@@ -97,7 +97,10 @@ PjBridgeServer >> fingerPrint: anObject [
 
 { #category : #websocket }
 PjBridgeServer >> handleMessage: rawSocketMessage forSocket: aWebSocket [
-	self bridge acceptIncomingMessageFromClient: (PhxJsonReader readFromString: rawSocketMessage)
+	| msg |
+	msg := PhxJsonReader readFromString: rawSocketMessage.
+	self bridge acceptIncomingMessageFromClient: msg.
+	self logSocketRead: msg logDescription
 ]
 
 { #category : #accessing }
@@ -167,10 +170,15 @@ PjBridgeServer >> javascript: anObject [
 
 { #category : #logging }
 PjBridgeServer >> logSocketRead: aString [
+
+	Logger log: 'Received: ' , aString.
 ]
 
 { #category : #logging }
 PjBridgeServer >> logSocketWritten: aString [
+
+
+	Logger log: 'Sent: ' , aString.
 ]
 
 { #category : #'initialize-release' }
@@ -266,7 +274,6 @@ PjBridgeServer >> startOnPort: aPort [
 
 { #category : #stop }
 PjBridgeServer >> stop [
-	Logger log: 'Server stop'.
 	self znServer stop
 ]
 
@@ -297,7 +304,7 @@ PjBridgeServer >> value: aWebSocket [
 	[ self webSocket: aWebSocket.
 	aWebSocket
 		runWith:
-			[ :aMessage | Logger log: aMessage. self safelyHandleMessage: aMessage forSocket: aWebSocket ] ]
+			[ :aMessage | self safelyHandleMessage: aMessage forSocket: aWebSocket ] ]
 		on: Error
 		do: [ self webSocket: nil ]	
 ]
@@ -309,7 +316,6 @@ PjBridgeServer >> webSocket [
 
 { #category : #accessing }
 PjBridgeServer >> webSocket: anObject [
-	Logger log: anObject asString.
 	webSocket := anObject
 ]
 
