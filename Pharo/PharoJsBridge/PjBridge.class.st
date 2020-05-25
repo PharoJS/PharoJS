@@ -53,9 +53,7 @@ Class {
 		'runOnPharo',
 		'shouldStartJsInterpreter',
 		'transpiler',
-		'incomingMessages',
-		'result',
-		'executingCallbacks'
+		'frames'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -224,6 +222,13 @@ PjBridge >> dnuJsString [
 	^self transpiler dnuJsString
 ]
 
+{ #category : #initialization }
+PjBridge >> doInNewFrame: aBlock [
+	frames add: OrderedCollection new.
+	aBlock value.
+	frames removeLast.
+]
+
 { #category : #public }
 PjBridge >> enableClientLogging [
 	self client: self client withClientLogging
@@ -249,6 +254,7 @@ PjBridge >> evalJavascript: javaScriptString [
 			(self incomingResponseMessageForSentMessage: msg) notNil ]
 		do: [ | resultForSentMessage |
 			resultForSentMessage := self resultForSentMessage: msg.
+			self executeCallbacksUntilDepletion.
 			^ resultForSentMessage ]
 		onTimeOutDo: [ ^ PjJavascriptError
 				signal: 'no response after ' , self timeout printString ]
@@ -310,7 +316,7 @@ PjBridge >> executeCallbacksUntilDepletion [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	[ self takeNextCallbackFromIncomingMessages
 		ifNil: [ ^ self ]
-		ifNotNil: [ :cb | cb processCallbackWithBridge: self ] ] repeat
+		ifNotNil: [ :cb | self doInNewFrame: [cb processCallbackWithBridge: self] ] ] repeat
 ]
 
 { #category : #accessing }
@@ -320,12 +326,7 @@ PjBridge >> exporter [
 
 { #category : #accessing }
 PjBridge >> incomingMessages [
-	^ incomingMessages
-]
-
-{ #category : #accessing }
-PjBridge >> incomingMessages: anObject [
-	incomingMessages := anObject
+	^frames last
 ]
 
 { #category : #evaluating }
@@ -336,18 +337,22 @@ PjBridge >> incomingResponseMessageForSentMessage: aMsg [
 
 { #category : #initialization }
 PjBridge >> initialize [
+
 	super initialize.
+	frames := OrderedCollection with: OrderedCollection new.
 	runOnPharo := false.
 	shouldStartJsInterpreter := true.
 	self server: self serverClass new.
-	self finalizationRegistry add: self executor:
-		(ObjectFinalizer new
-			receiver: self server;
-			selector: #stop;
-			yourself).
+	self finalizationRegistry
+		add: self
+		executor:
+			(ObjectFinalizer new
+				receiver: self server;
+				selector: #stop;
+				yourself).
 	communicationTrialsCount := 100.
-	incomingMessages := OrderedCollection new.
-
+"	incomingMessages := OrderedCollection new."
+	
 ]
 
 { #category : #activity }
@@ -514,9 +519,7 @@ PjBridge >> resultForSentMessage: sentMsg [
 			result2 := result2 isClosure
 				ifTrue: [ result2 value ]
 				ifFalse: [ result2 ].
-			executingCallbacks := true. 
-			self executeCallbacksUntilDepletion.
-			executingCallbacks := false. 
+		 
 			^ result2 ].
 	self error: 'this should not happen'
 ]

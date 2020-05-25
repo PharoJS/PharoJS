@@ -16,6 +16,7 @@ Class {
 PjMessage class >> newWithContents: contents [
 	^ self new
 		contents: contents;
+		id: self nextMessageId;
 		yourself
 ]
 
@@ -58,7 +59,7 @@ PjMessage >> id: anObject [
 { #category : #'initialize-release' }
 PjMessage >> initialize [
 	super initialize.
-	id := self class nextMessageId
+
 ]
 
 { #category : #printing }

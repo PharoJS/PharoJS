@@ -141,28 +141,6 @@ PjProxyTest >> testClickWithEventTarget [
 ]
 
 { #category : #testing }
-PjProxyTest >> testClickXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| rectangle count |
-	count := 0.
-	rectangle := document createElement: 'div'.
-	rectangle id: 'grn'.
-	rectangle instVarNamed: #count put: 0.	" need to use instVarNamed:put: to force creation of slot "
-	Smalltalk garbageCollect.
-	document body appendChild: rectangle.
-	rectangle
-		addEventListener: 'click'
-		block: [ :xev | 
-			count := count + 1.
-			rectangle count: rectangle count + 1 ].
-	self bridge
-		evalJavascript:
-			'(' , rectangle asJSON , '.click(false),' , rectangle asJSON
-				, '.click(true),false)'.
-	self assert: (document getElementById: 'grn') count equals: 2
-]
-
-{ #category : #testing }
 PjProxyTest >> testGetElementById [
 	| rectangle |
 	rectangle := document createElement: 'div'.
@@ -205,7 +183,7 @@ PjProxyTest >> testProxyGarbageCollection [
 PjProxyTest >> testProxyMissingError [
 	"This test fails intermittently because of interfering garbage collection effects of released proxies"
 	self timeLimit: 60 seconds.
-	1 to: 5 by: 0.1 do: [ :num | 
+	1 to: 10 by: 1 do: [ :num | 
 		document body children.
 		num milliSeconds wait ]
 ]
