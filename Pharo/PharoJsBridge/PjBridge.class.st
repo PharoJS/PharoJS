@@ -45,7 +45,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'server',
-		'communicationTrialsCount',
 		'timeout',
 		'proxies',
 		'blockClosures',
@@ -355,7 +354,6 @@ PjBridge >> initialize [
 			receiver: self server;
 			selector: #stop;
 			yourself).
-	communicationTrialsCount := 100.
 	incomingMessages := OrderedCollection new.
 
 ]
@@ -702,9 +700,9 @@ PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock [
 { #category : #activity }
 PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeOutDuration: maxWaitDuration [
 	| waitTime |
-	waitTime := maxWaitDuration / communicationTrialsCount.
+	waitTime := maxWaitDuration / 100.
 	waitTime < self minimumStepDuration ifTrue: [waitTime := self minimumStepDuration].
-	communicationTrialsCount timesRepeat: [
+	100 timesRepeat: [
 		conditionBlock value ifTrue: [ ^actionBlock value ].
 		waitTime wait.
 	].
