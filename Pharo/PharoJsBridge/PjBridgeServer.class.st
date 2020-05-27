@@ -280,7 +280,14 @@ PjBridgeServer >> startOnPort: aPort [
 { #category : #stop }
 PjBridgeServer >> stop [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	self znServer stop
+	self znServer ifNotNil: [:srv | srv stop].
+
+]
+
+{ #category : #accessing }
+PjBridgeServer >> tearDown [
+	self stop.
+	self bridge: nil
 ]
 
 { #category : #accessing }

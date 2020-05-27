@@ -515,7 +515,7 @@ PjBridge >> server [
 { #category : #accessing }
 PjBridge >> server: aServer [
 	server := aServer.
-	aServer bridge: self
+	aServer ifNotNil: [aServer bridge: self]
 ]
 
 { #category : #accessing }
@@ -586,7 +586,8 @@ PjBridge >> startWithoutWaitingForClient [
 { #category : #public }
 PjBridge >> stop [
 	self client stop.
-	self server stop
+	self server stop.
+
 ]
 
 { #category : #activity }
@@ -598,6 +599,13 @@ PjBridge >> takeNextCallbackFromIncomingMessages [
 			self incomingMessages remove: cb.
 			^ cb ]
 		ifNone: [ ^ nil ]
+]
+
+{ #category : #public }
+PjBridge >> tearDown [ 
+	self stop.
+	self server tearDown.
+	self server: nil.
 ]
 
 { #category : #public }
