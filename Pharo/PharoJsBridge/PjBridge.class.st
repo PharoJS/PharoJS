@@ -372,24 +372,6 @@ PjBridge >> isListening [
 ]
 
 { #category : #public }
-PjBridge >> isServerIndexHtmlAvailable [
-	^ (ZnClient new
-		timeout: 1;
-		ifFail: [ String new ];
-		get: 'http://localhost:' , self port asString , '/')
-		= self server html
-]
-
-{ #category : #public }
-PjBridge >> isServerIndexJsAvailable [
-	^ (ZnClient new
-		timeout: 1;
-		ifFail: [ String new ];
-		get: 'http://localhost:' , self port asString , '/index.js')
-		= self server javascript
-]
-
-{ #category : #public }
 PjBridge >> isServerStarted [
 	^self server isStarted
 ]
@@ -397,15 +379,6 @@ PjBridge >> isServerStarted [
 { #category : #public }
 PjBridge >> isServerStopped [
 	^self server isStarted not
-]
-
-{ #category : #public }
-PjBridge >> isStartedCheckExternally [
-	^ (ZnClient new
-		timeout: 1;
-		ifFail: [ String new ];
-		get: 'http://localhost:' , self port asString , '/serverFingerPrint')
-		= self server fingerPrint
 ]
 
 { #category : #public }

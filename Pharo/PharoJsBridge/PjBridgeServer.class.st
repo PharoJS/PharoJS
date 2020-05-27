@@ -247,6 +247,7 @@ PjBridgeServer >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 
 { #category : #start }
 PjBridgeServer >> start [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	| attempts |
 	self isStarted
 		ifTrue: [ ^ self ].
@@ -274,6 +275,8 @@ PjBridgeServer >> startOnPort: aPort [
 
 { #category : #stop }
 PjBridgeServer >> stop [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	"Should be made blocking, asserting everything is cleaned up"
 	self znServer stop
 ]
 

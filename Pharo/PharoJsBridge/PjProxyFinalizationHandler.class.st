@@ -29,8 +29,7 @@ PjProxyFinalizationHandler >> bridge [
 
 { #category : #accessing }
 PjProxyFinalizationHandler >> bridge: aBridge [
-	weakBridgeArray at: 1 put: aBridge.
-	"clientFingerprint := aBridge clientFingerprint  "
+	weakBridgeArray at: 1 put: aBridge
 ]
 
 { #category : #finalization }
