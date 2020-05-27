@@ -20,8 +20,9 @@ Class {
 
 { #category : #accessing }
 PjBridgeServer class >> currentUsablePortNumber [
-	
-	^CurrentUsablePortNumber
+	CurrentUsablePortNumber
+		ifNil: [ CurrentUsablePortNumber := self minPortNumber ].
+	^ CurrentUsablePortNumber
 ]
 
 { #category : #accessing }
