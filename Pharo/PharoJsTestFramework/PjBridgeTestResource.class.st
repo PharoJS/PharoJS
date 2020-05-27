@@ -99,6 +99,10 @@ PjBridgeTestResource >> tearDown [
 			PjBridge bridge: nil ].
 	execEnv
 		ifNotNil: [ execEnv forkedProcesses
-				ifNotNil: [ :coll | coll do: [ :each | each terminate ] ] ].
+				ifNotNil: [ :coll | 
+					coll
+						do: [ :each | 
+							each isTerminated
+								ifFalse: [ each terminate ] ] ] ].
 	Smalltalk garbageCollect
 ]
