@@ -6,8 +6,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'weakBridgeArray',
-		'proxyJsName',
-		'clientFingerprint'
+		'proxyJsName'
 	],
 	#category : #'PharoJsBridge-Proxy'
 }
@@ -36,7 +35,7 @@ PjProxyFinalizationHandler >> bridge: aBridge [
 PjProxyFinalizationHandler >> cleanUpJsSide [
 	self bridge ifNil: [ ^self ].
 	self bridge isServerStopped ifTrue: [ ^self ].
-	self bridge deleteJsValue: self proxyJsName
+	self bridge deleteJsValue: self proxyJsName.
 ]
 
 { #category : #accessing }
