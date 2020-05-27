@@ -170,15 +170,18 @@ PjBridgeServer >> javascript: anObject [
 
 { #category : #logging }
 PjBridgeServer >> logSocketRead: aString [
-
-	Logger log: 'Received: ' , aString.
+	(self znServer newLogEvent: PjSocketLogEvent)
+		direction: 'read';
+		contents: aString;
+		emit
 ]
 
 { #category : #logging }
 PjBridgeServer >> logSocketWritten: aString [
-
-
-	Logger log: 'Sent: ' , aString.
+	(self znServer newLogEvent: PjSocketLogEvent)
+		direction: 'wrote';
+		contents: aString;
+		emit
 ]
 
 { #category : #'initialize-release' }
