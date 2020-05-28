@@ -124,11 +124,12 @@ PjBridge class >> stop [
 			Smalltalk garbageCollect ]
 ]
 
-{ #category : #concurrency }
+{ #category : #activity }
 PjBridge >> acceptIncomingMessageFromClient: aMessage [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	aMessage shouldEvaluateImmediately
 		ifTrue: [ aMessage processWithBridge: self.
+			monitor critical: [ monitor signal ].
 			^ self ].
 	monitor
 		critical: [ self incomingMessages add: aMessage.
@@ -250,9 +251,6 @@ PjBridge >> evalJavascript: javaScriptString [
 	resultForSentMessage := self resultForSentMessage: msg.
 	self executeCallbacksUntilDepletion.
 	^ resultForSentMessage
-	"	onTimeOutDo: [ ^ PjJavascriptError
-				signal: 'no response after ' , self timeout printString ]
-		timeOutDuration: self timeout."
 ]
 
 { #category : #public }
@@ -438,16 +436,12 @@ PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
 	self sendMessage: PjMessageReload new.
-	"self resetProxies. <= REMOVED
-	Ivo 2020may21 This is too late to finalize the proxies.
-	Instead proxies are taken care of in PjAppTestCase>>tearDown. (also see see resetProxiesWithImmediateFinalization)
-	Assume here that there are no proxies left. (client & bridge)
-	"
-	self resetProxiesImmediately. "huhm, some tests rely on this explicitly"
+	self resetProxiesImmediately.
 	self client reset.
 	self
 		when: [ self webSocket ~~ oldWebSocket ]
-		do: [ oldWebSocket isConnected ifTrue: [oldWebSocket close] ]
+		do: [ oldWebSocket isConnected
+				ifTrue: [ oldWebSocket close ] ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
 		timeOutDuration: self client startTimeout.
 	self waitForClientToStart
@@ -639,11 +633,12 @@ PjBridge >> waitForClientToStart [
 
 { #category : #activity }
 PjBridge >> waitForClientToStartFor: time [
-	self 
-		when: [self isConnected and: [self isClientIdReceived]] 
-		do: [^self] 
-		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
-		timeOutDuration: time
+	monitor
+		critical: [ monitor
+				waitUntil: [ self isClientIdReceived ]
+				maxMilliseconds: time asMilliSeconds ].
+	self isClientIdReceived
+		ifFalse: [ self error: 'Javascript interpreter NOT available' ]
 ]
 
 { #category : #activity }
