@@ -493,10 +493,13 @@ PjBridge >> sendMessage: aMessage [
 		do: []
 		onTimeOutDo: [ self inform: 'WebSocket is NOT available' ]
 		timeOutDuration: 100 milliSeconds."
-	
 
- self webSocket sendMessage: aMessage asPhxJsonString.
-			self server logSocketWritten: aMessage logDescription 
+	[ self webSocket
+		ifNotNil: [ :ws | 
+			ws sendMessage: aMessage asPhxJsonString.
+			self server logSocketWritten: aMessage logDescription ] ]
+		on: Error
+		do: [ :ex | ex return ]
 ]
 
 { #category : #accessing }
