@@ -135,7 +135,7 @@ PjTimingTest >> setUp [
 "	bridge client openBrowserInBackground: true.
 	self inform: 'Timing web browser should open in background'.
 	World doOneCycle;doOneCycle.
-	bridge appClass: PjTimingPlatformApp.
+	bridge initializeWithAppClass: PjTimingPlatformApp.
 	bridge timeout: 60 seconds.
 	exporter := bridge exporter.
 	exporter transpiler: PjTimingTestTranspiler new.

@@ -35,5 +35,5 @@ PjApplication class >> bridgeForDebug [
 { #category : #'*PharoJsBridge-App' }
 PjApplication class >> newBridgeClient [
 	<pharoJsSkip>
-	^self bridgeClientClass appClass: self
+	^self bridgeClientClass newWithAppClass: self
 ]

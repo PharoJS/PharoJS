@@ -50,7 +50,7 @@ PjAppWrapperForRunningInPharo class >> doesNotUnderstand: aMessage [
 { #category : #'bridge handling' }
 PjAppWrapperForRunningInPharo class >> newBridgeClient [
 	<pharoJsSkip>
-	^self bridgeClientClass appClass: self
+	^self bridgeClientClass newWithAppClass: self
 ]
 
 { #category : #'initialize - release' }

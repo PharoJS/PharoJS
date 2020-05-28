@@ -82,7 +82,7 @@ PjBridge class >> bridgeForAppClass: appClass [
 PjBridge class >> bridgeForAppClass: appClass client: bridgeClient [
 	^ self new
 			client: bridgeClient;
-			appClass: appClass;
+			initializeWithAppClass: appClass;
 			yourself
 ]
 
@@ -130,13 +130,6 @@ PjBridge >> acceptIncomingMessageFromClient: aMessage [
 		ifTrue: [ aMessage processWithBridge: self.
 			^ self ].
 	self incomingMessages add: aMessage
-]
-
-{ #category : #accessing }
-PjBridge >> appClass: aPharoJsAppClass [
-	self client appClass: aPharoJsAppClass.
-	self client bridge: self.
-
 ]
 
 { #category : #'closure handling' }
@@ -353,6 +346,13 @@ PjBridge >> initialize [
 	communicationTrialsCount := 100.
 "	incomingMessages := OrderedCollection new."
 	
+]
+
+{ #category : #accessing }
+PjBridge >> initializeWithAppClass: aPharoJsAppClass [
+	self client initializeWithAppClass: aPharoJsAppClass.
+	self client bridge: self.
+
 ]
 
 { #category : #activity }

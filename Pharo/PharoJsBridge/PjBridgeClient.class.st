@@ -15,23 +15,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjBridgeClient class >> appClass: pjAppClass [
+PjBridgeClient class >> newWithAppClass: pjAppClass [
 	^self new
-		appClass: pjAppClass;
+		initializeWithAppClass: pjAppClass;
 		yourself
 ]
 
 { #category : #accessing }
 PjBridgeClient >> appClass [
 	^ appClass ifNil: [self defaultAppClass ]
-]
-
-{ #category : #accessing }
-PjBridgeClient >> appClass: aPharoJsAppClass [
-	appClass := aPharoJsAppClass.
-	exporter := self exporterClass new.
-	self codeGenerator: self codeGeneratorClass new.
-
 ]
 
 { #category : #accessing }
@@ -67,7 +59,7 @@ PjBridgeClient >> codeGenerator: aCodeGenerator [
 	| decoratedAppClass |
 	codeGenerator := aCodeGenerator.
 	decoratedAppClass := codeGenerator decorateAppClass: appClass.
-	exporter appClass: decoratedAppClass.
+	exporter initializeWithAppClass: decoratedAppClass
 ]
 
 { #category : #'initialization-release' }
@@ -93,6 +85,14 @@ PjBridgeClient >> exporterClass [
 ]
 
 { #category : #accessing }
+PjBridgeClient >> initializeWithAppClass: aPharoJsAppClass [
+	appClass := aPharoJsAppClass.
+	exporter := self exporterClass new.
+	self codeGenerator: self codeGeneratorClass new.
+
+]
+
+{ #category : #accessing }
 PjBridgeClient >> jsGlobalNames [
 	^ (self appClass allSharedPoolsRecursive select: #isJavascriptGlobalsPool)
 			flatCollectAsSet: #classVarNames
@@ -105,7 +105,7 @@ PjBridgeClient >> pharoJsSelectorPrefix [
 
 { #category : #'initialization-release' }
 PjBridgeClient >> reset [
-	self appClass: self appClass.
+	self initializeWithAppClass: self appClass.
 	self bridge: self bridge.
 	self clientId: nil.
 	"Ensure transpiler is reset correctly.
