@@ -53,7 +53,8 @@ Class {
 		'runOnPharo',
 		'shouldStartJsInterpreter',
 		'transpiler',
-		'frames'
+		'frames',
+		'monitor'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -123,13 +124,15 @@ PjBridge class >> stop [
 			Smalltalk garbageCollect ]
 ]
 
-{ #category : #activity }
+{ #category : #concurrency }
 PjBridge >> acceptIncomingMessageFromClient: aMessage [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	aMessage shouldEvaluateImmediately
 		ifTrue: [ aMessage processWithBridge: self.
 			^ self ].
-	self incomingMessages add: aMessage
+	monitor
+		critical: [ self incomingMessages add: aMessage.
+			monitor signal ]
 ]
 
 { #category : #'closure handling' }
@@ -236,23 +239,20 @@ PjBridge >> evalBlock: aBlock [
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| msg |
+	| msg resultForSentMessage |
 	self isConnected
 		ifFalse: [ ^ nil ].
 	msg := PjMessageEvaluate newWithContents: javaScriptString.
 	self sendMessage: msg.
-	self
-		when: [ self isConnected
-				ifFalse: [ ^ self ].
-			(self incomingResponseMessageForSentMessage: msg) notNil ]
-		do: [ | resultForSentMessage |
-			resultForSentMessage := self resultForSentMessage: msg.
-			self executeCallbacksUntilDepletion.
-			^ resultForSentMessage ]
-		onTimeOutDo: [ ^ PjJavascriptError
+	monitor
+		critical: [ monitor
+				waitUntil: [ (self incomingResponseMessageForSentMessage: msg) notNil ] ].
+	resultForSentMessage := self resultForSentMessage: msg.
+	self executeCallbacksUntilDepletion.
+	^ resultForSentMessage
+	"	onTimeOutDo: [ ^ PjJavascriptError
 				signal: 'no response after ' , self timeout printString ]
-		timeOutDuration: self timeout.
-	^ self
+		timeOutDuration: self timeout."
 ]
 
 { #category : #public }
@@ -330,7 +330,6 @@ PjBridge >> incomingResponseMessageForSentMessage: aMsg [
 
 { #category : #initialization }
 PjBridge >> initialize [
-
 	super initialize.
 	frames := OrderedCollection with: OrderedCollection new.
 	runOnPharo := false.
@@ -344,8 +343,7 @@ PjBridge >> initialize [
 				selector: #stop;
 				yourself).
 	communicationTrialsCount := 100.
-"	incomingMessages := OrderedCollection new."
-	
+	monitor := Monitor new
 ]
 
 { #category : #accessing }
@@ -483,16 +481,13 @@ PjBridge >> resultForSentMessage: sentMsg [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	<T000322Sweep1>
 	(self incomingResponseMessageForSentMessage: sentMsg)
-		ifNotNil: [ :incMsg | |result2|
-			"executingCallbacks == true ifTrue: [ self halt ]."
+		ifNotNil: [ :incMsg | 
+			| result2 |
 			self incomingMessages remove: incMsg.
-			"RESULT IS BEING MANIPULATED FROM executeCallbacksUntilDepletion?????"
-"			incMsg id = 36 ifTrue: [ self halt ]."
 			result2 := self evalResponseMessage: incMsg.
 			result2 := result2 isClosure
 				ifTrue: [ result2 value ]
 				ifFalse: [ result2 ].
-		 
 			^ result2 ].
 	self error: 'this should not happen'
 ]

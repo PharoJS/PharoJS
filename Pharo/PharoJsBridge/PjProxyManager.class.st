@@ -8,7 +8,7 @@ Class {
 	#pools : [
 		'PjNodeGlobals'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Client-WebSocketDelegate'
 }
 
 { #category : #'instance creation' }

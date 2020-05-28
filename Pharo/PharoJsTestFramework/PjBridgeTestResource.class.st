@@ -100,13 +100,4 @@ PjBridgeTestResource >> tearDown [
 	self bridge
 		ifNotNil: [ self bridge tearDown.
 			PjBridge soleBridge: nil ].
-	
-	"execEnv
-		ifNotNil: [ execEnv forkedProcesses
-				ifNotNil: [ :coll | 
-					coll
-						do: [ :each | 
-							each isTerminated
-								ifFalse: [ each terminate ] ] ] ]."
-	Smalltalk garbageCollect
 ]
