@@ -488,12 +488,15 @@ PjBridge >> resultForSentMessage: sentMsg [
 
 { #category : #activity }
 PjBridge >> sendMessage: aMessage [
-	self
+	"self
 		when: [ self isConnected ]
-		do: [ self webSocket sendMessage: aMessage asPhxJsonString.
-			self server logSocketWritten: aMessage logDescription ]
+		do: []
 		onTimeOutDo: [ self inform: 'WebSocket is NOT available' ]
-		timeOutDuration: 100 milliSeconds
+		timeOutDuration: 100 milliSeconds."
+	
+
+ self webSocket sendMessage: aMessage asPhxJsonString.
+			self server logSocketWritten: aMessage logDescription 
 ]
 
 { #category : #accessing }
