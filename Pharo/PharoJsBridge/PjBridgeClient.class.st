@@ -143,7 +143,7 @@ PjBridgeClient >> startTimeout [
 { #category : #activity }
 PjBridgeClient >> stop [
 	"stop javascript interpreter"
-
+	self server ifNil: [ ^self ].
 	self server isWebSocketConnected
 		ifFalse: [ ^ self ].
 	self bridge websocketDelegateClassName ifNil: [ ^ self ].

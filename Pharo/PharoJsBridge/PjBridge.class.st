@@ -378,7 +378,7 @@ PjBridge >> isServerStarted [
 
 { #category : #public }
 PjBridge >> isServerStopped [
-	^self server isStarted not
+	^self server ifNil: [true] ifNotNil: [self server isStarted not]
 ]
 
 { #category : #public }
@@ -586,7 +586,7 @@ PjBridge >> startWithoutWaitingForClient [
 { #category : #public }
 PjBridge >> stop [
 	self client stop.
-	self server stop.
+	self server ifNotNil: [self server stop].
 
 ]
 
@@ -602,10 +602,11 @@ PjBridge >> takeNextCallbackFromIncomingMessages [
 ]
 
 { #category : #public }
-PjBridge >> tearDown [ 
+PjBridge >> tearDown [
 	self stop.
-	self server tearDown.
-	self server: nil.
+	self server
+		ifNotNil: [ self server tearDown.
+			self server: nil ]
 ]
 
 { #category : #public }
