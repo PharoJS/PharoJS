@@ -100,4 +100,5 @@ PjBridgeTestResource >> tearDown [
 	self bridge
 		ifNotNil: [ self bridge tearDown.
 			PjBridge soleBridge: nil ].
+	Smalltalk garbageCollect
 ]

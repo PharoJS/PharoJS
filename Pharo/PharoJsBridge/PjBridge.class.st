@@ -438,12 +438,12 @@ PjBridge >> resetClient [
 	self sendMessage: PjMessageReload new.
 	self resetProxiesImmediately.
 	self client reset.
-	self
+	"self
 		when: [ self webSocket ~~ oldWebSocket ]
 		do: [ oldWebSocket isConnected
 				ifTrue: [ oldWebSocket close ] ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
-		timeOutDuration: self client startTimeout.
+		timeOutDuration: self client startTimeout."
 	self waitForClientToStart
 ]
 
@@ -663,11 +663,6 @@ PjBridge >> webSocketUrlTag [
 { #category : #initialization }
 PjBridge >> websocketDelegateClassName [
 	^self client websocketDelegateClassName
-]
-
-{ #category : #activity }
-PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock [
-	^self when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeOutDuration: self timeout
 ]
 
 { #category : #activity }
