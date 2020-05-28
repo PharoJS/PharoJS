@@ -75,9 +75,8 @@ PjBridgeTestResource >> initializeWithAppClass: aClass [
 	PjBridge soleBridge: self bridge.
 	self bridge shouldStartJsInterpreter: false.
 	self setUpClient.
-	execEnv := ExecutionEnvironmentStub new.
-	execEnv	beActiveDuring: [ self bridge startWithoutWaitingForClient ].
-	 "self bridge startWithoutWaitingForClient " 
+	DefaultExecutionEnvironment
+		beActiveDuring: [ self bridge startWithoutWaitingForClient ]
 ]
 
 { #category : #running }

@@ -242,10 +242,6 @@ PjBridgeServer >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 		on: Error
 		do: [ :ex | 
 			self halt.
-			aWebSocket
-				sendMessage:
-					'Server says no: Invalid incoming message (Error: '
-						, (ex description ifNilOrEmpty: [ 'Unkown reason' ]) , ')'.
 			ex return ]
 ]
 
