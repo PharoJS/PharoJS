@@ -58,21 +58,6 @@ Class {
 	#category : #'PharoJsBridge-Kernel'
 }
 
-{ #category : #'bridge handling' }
-PjBridge class >> bridge [
-	^ PjProxyLocalBridge value
-	" the following is a hack to make debugging workable if there is only 1 bridge in existence "
-		ifNil: [ | instances |
-			instances := self allInstances select: #isServerStarted.
-			instances size = 1 ifTrue: [ instances first ] ifFalse: [ nil ]
-		]
-]
-
-{ #category : #'bridge handling' }
-PjBridge class >> bridge: aBridge [
-	PjProxyLocalBridge value: aBridge
-]
-
 { #category : #'instance creation' }
 PjBridge class >> bridgeForAppClass: appClass [
 	^ self bridgeForAppClass: appClass client: appClass newBridgeClient
@@ -106,6 +91,21 @@ PjBridge class >> openOn: portNumber title: title [
 	^ self new
 		openOn: portNumber title: title;
 		yourself
+]
+
+{ #category : #'bridge handling' }
+PjBridge class >> soleBridge [
+	^ PjProxyLocalBridge value
+	" the following is a hack to make debugging workable if there is only 1 bridge in existence "
+		ifNil: [ | instances |
+			instances := self allInstances select: #isServerStarted.
+			instances size = 1 ifTrue: [ instances first ] ifFalse: [ nil ]
+		]
+]
+
+{ #category : #'bridge handling' }
+PjBridge class >> soleBridge: aBridge [
+	PjProxyLocalBridge value: aBridge
 ]
 
 { #category : #'instance creation' }

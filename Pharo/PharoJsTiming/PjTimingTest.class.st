@@ -145,7 +145,7 @@ PjTimingTest >> setUp [
 	self transpiler addAllConversions: { PjIfTrueOptimization }.
 	nullBlock := self transpiler convertToJs: [  ].
 	bridge start.
-	PjBridge bridge: bridge.
+	PjBridge soleBridge: bridge.
 
 
 ]

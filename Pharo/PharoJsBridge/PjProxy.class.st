@@ -223,7 +223,7 @@ PjProxy >> jsBridge: aBlock [
 	proxySpecificBridge ifNotNil: [ : bridge |
 		^ aBlock value: bridge
 	].
-	PjBridge bridge ifNotNil: [ : bridge |
+	PjBridge soleBridge ifNotNil: [ : bridge |
 		^ aBlock value: bridge
 	].
 	self error: 'no bridge for proxy: ',jsName

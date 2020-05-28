@@ -72,7 +72,7 @@ PjBridgeTestResource >> initialize [
 PjBridgeTestResource >> initializeWithAppClass: aClass [
 	appClass := aClass.
 	self bridge: appClass bridge.
-	PjBridge bridge: self bridge.
+	PjBridge soleBridge: self bridge.
 	self bridge shouldStartJsInterpreter: false.
 	self setUpClient.
 	execEnv := ExecutionEnvironmentStub new.
@@ -100,7 +100,7 @@ PjBridgeTestResource >> tearDown [
 	super tearDown.
 	self bridge
 		ifNotNil: [ self bridge tearDown.
-			PjBridge bridge: nil ].
+			PjBridge soleBridge: nil ].
 	
 	"execEnv
 		ifNotNil: [ execEnv forkedProcesses
