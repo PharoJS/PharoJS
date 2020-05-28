@@ -117,9 +117,9 @@ PjBridge class >> startOn: portNumber title: title [
 
 { #category : #'bridge handling' }
 PjBridge class >> stop [
-	self bridge
-		ifNotNil: [ self bridge stop.
-			self bridge: nil.
+	self soleBridge
+		ifNotNil: [ self soleBridge stop.
+			self soleBridge: nil.
 			Smalltalk garbageCollect ]
 ]
 
@@ -169,7 +169,7 @@ PjBridge >> client [
 { #category : #accessing }
 PjBridge >> client: aClient [
 	client := aClient.
-	client bridge: self.
+	client initializeWithBridge:  self.
 	transpiler := aClient exporter transpiler.
 
 ]
@@ -351,7 +351,7 @@ PjBridge >> initialize [
 { #category : #accessing }
 PjBridge >> initializeWithAppClass: aPharoJsAppClass [
 	self client initializeWithAppClass: aPharoJsAppClass.
-	self client bridge: self.
+	self client initializeWithBridge: self.
 
 ]
 

@@ -32,13 +32,6 @@ PjBridgeClient >> bridge [
 ]
 
 { #category : #accessing }
-PjBridgeClient >> bridge: aBridge [
-	bridge := aBridge.
-	self codeGenerator bridge: self bridge
-
-]
-
-{ #category : #accessing }
 PjBridgeClient >> clientId [
 <PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	^ clientId
@@ -93,6 +86,13 @@ PjBridgeClient >> initializeWithAppClass: aPharoJsAppClass [
 ]
 
 { #category : #accessing }
+PjBridgeClient >> initializeWithBridge: aBridge [
+	bridge := aBridge.
+	self codeGenerator bridge: self bridge
+
+]
+
+{ #category : #accessing }
 PjBridgeClient >> jsGlobalNames [
 	^ (self appClass allSharedPoolsRecursive select: #isJavascriptGlobalsPool)
 			flatCollectAsSet: #classVarNames
@@ -106,7 +106,7 @@ PjBridgeClient >> pharoJsSelectorPrefix [
 { #category : #'initialization-release' }
 PjBridgeClient >> reset [
 	self initializeWithAppClass: self appClass.
-	self bridge: self bridge.
+	self initializeWithBridge:  self bridge.
 	self clientId: nil.
 	"Ensure transpiler is reset correctly.
 	Transpiler is driven by exporter"
