@@ -94,6 +94,31 @@ PjChronololgyTest >> testDuration [
 ]
 
 { #category : #testing }
+PjChronololgyTest >> testSubtractDateAndTime [
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 123 milliSeconds.
+		(later - origin) millisecondsCount
+	].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 54 seconds.
+		(later - origin) seconds
+	].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 12 minutes.
+		(later - origin) minutes
+	].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 3 hours.
+		(later - origin) hours
+	].	
+
+]
+
+{ #category : #testing }
 PjChronololgyTest >> testTime [
 	self assertBlock: [ Time now class == Time ].
 	self assertEquivalent: [ (Time hour: 5 minute: 30) asDateAndTime dayOfMonth].
