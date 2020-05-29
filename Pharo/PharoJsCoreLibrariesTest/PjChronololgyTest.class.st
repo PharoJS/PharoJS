@@ -16,6 +16,31 @@ PjChronololgyTest >> setUp [
 ]
 
 { #category : #testing }
+PjChronololgyTest >> testAddDurationToDateAndTime [
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 123 milliSeconds.
+		later milliSecond.].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 23 seconds.
+		later second.].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 45 minutes.
+		later minute.].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 7 hours.
+		later hour.].	
+	self assertEquivalent: [|origin later|
+		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
+		later := origin + 5 days.
+		later dayOfMonth.].	
+
+]
+
+{ #category : #testing }
 PjChronololgyTest >> testDateAndTimeArithmetic [
 	self evalBlock: [|reference|
 		reference := DateAndTime todayHour: 14 minute: 59 second: 33.

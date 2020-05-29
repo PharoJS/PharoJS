@@ -23,12 +23,14 @@ PjDuration class >> jsTranspilationImportMethods [
 
 { #category : #adding }
 PjDuration >> addDateAndTime: aDateAndTime [
-	^DateAndTime 
+	^(DateAndTime 
 		year: aDateAndTime year
 		month: aDateAndTime monthIndex
 		day: (aDateAndTime dayOfMonth + self days)
 		hour: (aDateAndTime hour24 + self hoursCount) 
 		minute: (aDateAndTime minute + self minutesCount)
-		second: (aDateAndTime second + self secondsCount)
+		second: (aDateAndTime second + self secondsCount))
+		setMilliseconds: (aDateAndTime getMilliseconds + self millisecondsCount);
+		yourself
 
 ]
