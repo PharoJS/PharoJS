@@ -88,10 +88,9 @@ PjBasicTest >> testEvalResult [
 	self checkBasic: 'a\b''c"d'.
 	self checkProxy: nil.
 	self
-		should: [ (self bridge
-				evalResponseMessage:
-					(PjMessageEvaluationResponse
-						newWithContents: '{"exception":"a Javascript error"}')) value ]
+		should: [ ((PjMessageEvaluationResponse
+				newWithContents: '{"exception":"a Javascript error"}')
+				getValueWithBridge: self bridge) value ]
 		raise: PjJavascriptError
 ]
 

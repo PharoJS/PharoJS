@@ -239,18 +239,11 @@ PjBridge >> evalBlock: aBlock [
 
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| msg resultForSentMessage |
+	| msg |
 	self isConnected
 		ifFalse: [ ^ nil ].
 	msg := PjMessageEvaluate newWithContents: javaScriptString.
-	self sendMessage: msg.
-	monitor
-		critical: [ monitor
-				waitUntil: [ (self incomingResponseMessageForSentMessage: msg) notNil ] ].
-	resultForSentMessage := self resultForSentMessage: msg.
-	self executeCallbacksUntilDepletion.
-	^ resultForSentMessage
+	^ self sendMessageAndWaitForResponse: msg
 ]
 
 { #category : #public }
@@ -271,16 +264,11 @@ PjBridge >> evalMessage: jsMessage [
 { #category : #public }
 PjBridge >> evalMessage: aMessage sentTo: receiverName [
 	| jsMessage |
-	jsMessage := PjJavascriptMessage receiverId: receiverName selector: aMessage selector arguments: aMessage arguments.
-	^self evalMessage: jsMessage
-
-]
-
-{ #category : #evaluating }
-PjBridge >> evalResponseMessage: aPjMessage [
-	^ self
-		evalResult: aPjMessage contents
-		parsed: aPjMessage contentsObject
+	jsMessage := PjJavascriptMessage
+		receiverId: receiverName
+		selector: aMessage selector
+		arguments: aMessage arguments.
+	^ self evalMessage: jsMessage
 ]
 
 { #category : #evaluating }
@@ -335,7 +323,8 @@ PjBridge >> initialize [
 				selector: #stop;
 				yourself).
 	communicationTrialsCount := 100.
-	monitor := Monitor new
+	monitor := Monitor new.
+	"self startCallbackLoop."
 ]
 
 { #category : #accessing }
@@ -465,35 +454,26 @@ PjBridge >> restart [
 ]
 
 { #category : #activity }
-PjBridge >> resultForSentMessage: sentMsg [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	<T000322Sweep1>
-	(self incomingResponseMessageForSentMessage: sentMsg)
-		ifNotNil: [ :incMsg | 
-			| result2 |
-			self incomingMessages remove: incMsg.
-			result2 := self evalResponseMessage: incMsg.
-			result2 := result2 isClosure
-				ifTrue: [ result2 value ]
-				ifFalse: [ result2 ].
-			^ result2 ].
-	self error: 'this should not happen'
-]
-
-{ #category : #activity }
 PjBridge >> sendMessage: aMessage [
-	"self
-		when: [ self isConnected ]
-		do: []
-		onTimeOutDo: [ self inform: 'WebSocket is NOT available' ]
-		timeOutDuration: 100 milliSeconds."
-
 	[ self webSocket
 		ifNotNil: [ :ws | 
 			ws sendMessage: aMessage asPhxJsonString.
 			self server logSocketWritten: aMessage logDescription ] ]
 		on: Error
 		do: [ :ex | ex return ]
+]
+
+{ #category : #public }
+PjBridge >> sendMessageAndWaitForResponse: msg [
+	| responseMsg resultForSentMessage |
+	self sendMessage: msg.
+	monitor
+		critical: [ monitor
+				waitUntil: [ responseMsg := self incomingResponseMessageForSentMessage: msg.
+					responseMsg notNil ] ].
+	resultForSentMessage := self valueFromResponseMessage: responseMsg.
+	self executeCallbacksUntilDepletion.
+	^ resultForSentMessage
 ]
 
 { #category : #accessing }
@@ -624,6 +604,17 @@ PjBridge >> titleForTest: aTest [
 { #category : #accessing }
 PjBridge >> transpiler [
 	^self exporter transpiler
+]
+
+{ #category : #activity }
+PjBridge >> valueFromResponseMessage: responseMsg [
+	| result |
+	self incomingMessages remove: responseMsg.
+	result := responseMsg getValueWithBridge: self.
+	result := result isClosure
+		ifTrue: [ result value ]
+		ifFalse: [ result ].
+	^ result
 ]
 
 { #category : #activity }

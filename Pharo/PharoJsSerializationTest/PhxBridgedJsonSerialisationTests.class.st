@@ -71,6 +71,15 @@ PhxBridgedJsonSerialisationTests >> testSerializeArray [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeAssociations [
+	self
+		testAllWithInstantiationBlock: [{ 'een' -> 1. 'twee' -> 2 }  asPhxJsonString ]
+		literal: '{"class":"Array","instance":[{"class":"Association","instance":{"key":"een","value":1}},{"class":"Association","instance":{"key":"twee","value":2}}]}'
+		testEq: false
+		test4Stages: false
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeBoolean [
 	self
 		testAllWithInstantiationBlock: [ true asPhxJsonString ]

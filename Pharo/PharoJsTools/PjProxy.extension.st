@@ -1,6 +1,15 @@
 Extension { #name : #PjProxy }
 
 { #category : #'*PharoJsTools-Inspector' }
+PjProxy >> asProxyInfo [
+	| pi |
+	pi := PjProxyInfo new.
+	pi oid: self oid.
+	pi globalName: jsName.
+	^ pi
+]
+
+{ #category : #'*PharoJsTools-Inspector' }
 PjProxy >> gefFieldValueFor: key [
 	^ self jsBridge: [ : bridge | 
 		bridge evalJavascript: jsName,'.',key
@@ -24,9 +33,12 @@ PjProxy >> gtInspectorProxyIn: composite [
 
 { #category : #'*PharoJsTools-Inspector' }
 PjProxy >> keysForProxy [
-	^ self jsBridge: [ : bridge |
-		[
-			bridge evalMessage: (Message selector: #keys: argument: self)  sentTo: PjCore javascriptName
-		] on: Error do: [ ^ #()]
-	]
+	^ self
+		jsBridge: [ :bridge | 
+			[ | msg |
+			msg := PjMessageGetKeys newWithId.
+			msg proxyInfo: self asProxyInfo.
+			bridge sendMessageAndWaitForResponse: msg ]
+				on: Error
+				do: [ ^ #() ] ]
 ]

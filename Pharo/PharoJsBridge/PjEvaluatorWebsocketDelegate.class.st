@@ -55,6 +55,7 @@ PjEvaluatorWebsocketDelegate class >> includeClasses [
 	^ {PhxJsonReader.
 	PjMessageDeleteGlobalVar.
 	PjMessageEvaluate.
+	PjMessageGetKeys.
 	PjMessageReload.
 	PjMessageTerminate}
 ]
@@ -115,12 +116,6 @@ PjEvaluatorWebsocketDelegate class >> terminate [
 	[ process exit ]
 		on: Error
 		do: [  ]
-]
-
-{ #category : #'initialize-release' }
-PjEvaluatorWebsocketDelegate >> addThisArgumentToBlock: aBlock [
-	<javascript: 'return function(){aBlock(this)}'>
-	
 ]
 
 { #category : #connecting }
@@ -191,7 +186,7 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation:
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> makeInspect [
 	^ self
-		addThisArgumentToBlock: [ :this | 
+		passJsThisArgumentToBlock: [ :this | 
 			self
 				tryToSendMessage:
 					(PjMessageInspect newWithId
@@ -226,6 +221,13 @@ PjEvaluatorWebsocketDelegate >> onOpen: event [
 			(PjMessageSetClientId newWithId
 				clientId: self id;
 				yourself)
+]
+
+{ #category : #'initialize-release' }
+PjEvaluatorWebsocketDelegate >> passJsThisArgumentToBlock: aBlock [
+"Maybe this method should be moved to PjCore?"
+	<javascript: 'return function(){aBlock(this)}'>
+	
 ]
 
 { #category : #connecting }

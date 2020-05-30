@@ -1,5 +1,5 @@
 Class {
-	#name : #PjMessageEvaluationResponse,
+	#name : #PjMessageGetKeysResponse,
 	#superclass : #PjMessageC2s,
 	#instVars : [
 		'inResponseToId'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #public }
-PjMessageEvaluationResponse >> contentsObject [
+PjMessageGetKeysResponse >> contentsObject [
 	<pharoJsSkip>
 	^ self contents isString
 		ifTrue: [ PjSTONReader from: self contents ]
@@ -16,22 +16,22 @@ PjMessageEvaluationResponse >> contentsObject [
 ]
 
 { #category : #public }
-PjMessageEvaluationResponse >> getValueWithBridge: aBridge [
-	^ aBridge evalResult: self contents parsed: self contentsObject
+PjMessageGetKeysResponse >> getValueWithBridge: aBridge [
+	^ self contents
 ]
 
 { #category : #accessing }
-PjMessageEvaluationResponse >> inResponseToId [
+PjMessageGetKeysResponse >> inResponseToId [
 	^ inResponseToId
 ]
 
 { #category : #accessing }
-PjMessageEvaluationResponse >> inResponseToId: anObject [
+PjMessageGetKeysResponse >> inResponseToId: anObject [
 	inResponseToId := anObject
 ]
 
 { #category : #printing }
-PjMessageEvaluationResponse >> logDescription [
+PjMessageGetKeysResponse >> logDescription [
 	^ String
 		streamContents: [ :ws | 
 			ws nextPutAll: self class name.
@@ -45,17 +45,11 @@ PjMessageEvaluationResponse >> logDescription [
 						ifNil: [ '-' ]).
 			ws nextPutAll: ' contents: '.
 			ws
-				nextPutAll:
-					(self contents
-						ifNotNil: [ :c | 
-							c isString
-								ifTrue: [ c ]
-								ifFalse: [ c logDescription ] ]
-						ifNil: [ '-' ]) ]
+				nextPutAll: self contents size asString , ' key-value pairs' ]
 ]
 
 { #category : #printing }
-PjMessageEvaluationResponse >> printOn: ws [
+PjMessageGetKeysResponse >> printOn: ws [
 	<pharoJsSkip>
 	super printOn: ws.
 	ws space.
