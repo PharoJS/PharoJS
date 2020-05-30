@@ -324,10 +324,16 @@ PjObject >> printString [
 { #category : #proxy }
 PjObject >> proxyResponse [
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| name |
-	name := PjProxyManager ensureObjectRegistered: self.
-	^ {('remove' -> (self instVarNamed: '$PjProxyRemove')).
-	('proxy' -> name)} asDictionary
+	| assoc p |
+	assoc := PjProxyManager ensureObjectRegistered: self.
+	
+	p := PjProxyInfo new.
+	p oid: assoc key.
+	p remove: (self instVarNamed: '$PjProxyRemove').
+	p globalName: assoc value.
+	^p
+	"^ {('remove' -> (self instVarNamed: '$PjProxyRemove')).
+	('proxy' -> name)} asDictionary"
 ]
 
 { #category : #'initialize-release' }

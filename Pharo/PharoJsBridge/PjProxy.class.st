@@ -46,6 +46,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'jsName',
+		'oid',
 		'closure',
 		'proxySpecificBridge'
 	],
@@ -53,31 +54,29 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjProxy class >> newProxyNamed: proxyName onBridge: aBridge [
-	^ ((proxyName beginsWith: '$_') ifTrue: [ PjProxy ] ifFalse: [ PjProxyForGlobal ]) new
-		jsName: proxyName onBridge: aBridge;
+PjProxy class >> newProxyNamed: proxyName onBridge: aBridge oid: anOid [
+	^ ((proxyName beginsWith: '$_')
+		ifTrue: [ PjProxy ]
+		ifFalse: [ PjProxyForGlobal ]) new
+		jsName: proxyName onBridge: aBridge oid: anOid;
 		yourself
 ]
 
 { #category : #'instance creation' }
-PjProxy class >> nilOrProxyNamed: proxyName onBridge: aBridge [
-	proxyName = #undefined
-		ifTrue: [ ^ nil ].
-	proxyName = #null
-		ifTrue: [ ^ nil ].
-	^ self proxyNamed: proxyName onBridge: aBridge
-]
-
-{ #category : #'instance creation' }
-PjProxy class >> proxyNamed: proxyName onBridge: aBridge [
-	|proxy|
-	aBridge ifNotNil: [
-		proxy := aBridge proxies at: proxyName ifAbsent: [nil].
-		proxy ifNotNil: [^ proxy].
-		proxy := PjProxy newProxyNamed: proxyName onBridge: aBridge.
-		^aBridge proxies at: proxyName put: proxy.
-	]
-
+PjProxy class >> proxyNamed: proxyName onBridge: aBridge oid: anOid [
+	| proxy |
+	aBridge
+		ifNotNil: [ proxy := aBridge proxies
+				detect: [ :p | p oid = anOid ]
+				ifNone: [ nil ].
+			proxy ifNotNil: [ ^ proxy ].
+			proxy := aBridge proxies at: proxyName ifAbsent: [ nil ].
+			proxy ifNotNil: [ ^ proxy ].
+			proxy := PjProxy
+				newProxyNamed: proxyName
+				onBridge: aBridge
+				oid: anOid.
+			^ aBridge proxies at: proxyName put: proxy ]
 ]
 
 { #category : #comparing }
@@ -97,15 +96,15 @@ PjProxy >> addEventListener: type block: listener [
 	| jsMessage |
 	^ self
 		jsBridge: [ :bridge | 
-			| bc |
-			bc := bridge blockClosure: listener.
+			| bcProxy |
+			bcProxy := bridge blockClosure: listener.
 			jsMessage := PjJavascriptMessage
 				receiverId: bridge websocketDelegateClassName
 				selector: #set:callback:to:
 				arguments:
 					{self.
 					type.
-					bc}.
+					bcProxy}.
 			bridge evalMessage: jsMessage ]
 ]
 
@@ -230,8 +229,9 @@ PjProxy >> jsBridge: aBlock [
 ]
 
 { #category : #'initialize-release' }
-PjProxy >> jsName: aString onBridge: aBridge [
+PjProxy >> jsName: aString onBridge: aBridge oid: anOid [
 	jsName := aString asSymbol.
+	oid := anOid asSymbol.
 	aBridge ifNotNil: [
 		| finalizer |
 		finalizer := PjProxyFinalizationHandler finalizerForProxyNamed: jsName onBridge: aBridge.
@@ -250,9 +250,27 @@ PjProxy >> name [
 	^ self doesNotUnderstand: (Message selector: #name)
 ]
 
+{ #category : #accessing }
+PjProxy >> oid [
+	^ oid
+]
+
+{ #category : #accessing }
+PjProxy >> oid: anObject [
+	oid := anObject
+]
+
 { #category : #'javascript generation' }
 PjProxy >> printJsOn: aStream [
 	aStream nextPutAll: jsName
+]
+
+{ #category : #printing }
+PjProxy >> printOn: ws [
+	super printOn: ws.
+	ws << ' (oid: '.
+	self oid ifNil: [ ws << '-' ] ifNotNil: [ ws << self oid ].
+	ws << ')'
 ]
 
 { #category : #'reflective operations' }

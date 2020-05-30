@@ -14,8 +14,14 @@ Class {
 
 { #category : #'instance creation' }
 PjMessage class >> newWithContents: contents [
-	^ self new
+	^ self newWithId
 		contents: contents;
+		yourself
+]
+
+{ #category : #'instance creation' }
+PjMessage class >> newWithId [
+	^ self new
 		id: self nextMessageId;
 		yourself
 ]

@@ -288,14 +288,15 @@ PjBridge >> evalResult: aString parsed: value [
 	value isLiteral ifTrue: [ ^ value ].
 	value isNumber ifTrue: [ ^ value ].
 	value isDictionary ifTrue: [ value isEmpty ifTrue: [ ^nil ] ].
-	value at: #remove ifPresent: [ 
+	(value isKindOf: PjProxyInfo ) ifTrue: [ ^value proxyForBridge: self ].
+"	value at: #remove ifPresent: [ 
 		| proxy |
 		proxy := PjProxy nilOrProxyNamed: (value at: #proxy) asSymbol onBridge: self.
 		proxy closure: nil.
 		^ true ].
 	value at: #proxy ifPresent: [ : name | | proxy |
 		proxy := PjProxy nilOrProxyNamed: name asSymbol onBridge: self.
-		^ proxy ].
+		^ proxy ]."
 	value at: #keys ifPresent: [ : map |
 		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
 	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].

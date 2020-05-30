@@ -2,8 +2,7 @@ Class {
 	#name : #PjProxyManager,
 	#superclass : #Object,
 	#classVars : [
-		'currentId',
-		'proxies'
+		'currentId'
 	],
 	#pools : [
 		'PjNodeGlobals'
@@ -12,67 +11,91 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjProxyManager class >> atProxyId: aProxyId put: anObject [
-	global at: aProxyId put: anObject.
-	self proxies at: aProxyId put: anObject.
-	anObject instVarNamed: '$_jsName' putHidden: aProxyId
+PjProxyManager class >> atGlobalVarName: globalId put: anObject [
+	global at: globalId put: anObject
 ]
 
 { #category : #'default instance' }
-PjProxyManager class >> deleteGlobalVarNamed: aVarName [
-	aVarName ifNil: [ ^ self ].
-	aVarName isEmpty
+PjProxyManager class >> deleteGlobalVarNamed: globalId [
+	globalId ifNil: [ ^ self ].
+	globalId isEmpty
 		ifTrue: [ ^ self ].
-	(global instVarNamed: aVarName)
+	(global instVarNamed: globalId)
 		ifNotNil: [ :obj | 
 			obj
-				ifNotNil: [ obj instVarNamed: '$_jsName' put: nil.
-					global removeKey: aVarName ] ]
+				ifNotNil: [ "self removeGlobalId: globalId fromObject: obj."
+					global removeKey: globalId ] ]
 ]
 
 { #category : #'instance creation' }
 PjProxyManager class >> ensureObjectRegistered: anObject [
-	| aProxyId |
-	aProxyId := anObject instVarNamed: '$_jsName'.
-	aProxyId
-		ifNil: [ aProxyId := '$_' , PjProxyManager nextId asString.
-			self atProxyId: aProxyId put: anObject ].
-	^ aProxyId
+	| oid globalId |
+	oid := self ensureOidOnObject: anObject.
+	globalId := PjProxyManager nextGlobalVarName.
+	self atGlobalVarName: globalId put: anObject.
+	^ oid -> globalId
+]
+
+{ #category : #'instance creation' }
+PjProxyManager class >> ensureOidOnObject: anObject [
+	^ (self getOidFrom: anObject)
+		ifNil: [ | oid |
+			oid := PjProxyManager nextOid.
+			self setOid: oid on: anObject.
+			oid ]
+]
+
+{ #category : #'instance creation' }
+PjProxyManager class >> getOidFrom: anObject [
+	^anObject instVarNamed: self oidVarName
 ]
 
 { #category : #'instance creation' }
 PjProxyManager class >> makeBlockClosureProxy: withThis stopPropagation: stop for: webSocketDelegate [
-	"<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>"
-
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| blockClosure proxyId |
-	proxyId := '$_' , self nextId asString.
+	| blockClosure oid |
+	oid := PjProxyManager nextOid.
 	blockClosure := [ :ev | 
-	| cbPayload target cb |
+	| target msg|
 	stop
 		ifTrue: [ ev stopPropagation ].
 	target := withThis
 		ifFalse: [ nil ]
 		ifTrue: [ ev target ifNil: [ ev sourceElement ] ].
-	cbPayload := {proxyId.
-	ev proxyResponse.
-	target proxyResponse}.
-	cb := {('cb' -> cbPayload)} asDictionary.
-	webSocketDelegate doCallBack: (JSON stringify: cb).
+	msg := PjMessageCallback newWithId.
+	msg receiverProxyInfo: blockClosure proxyResponse.
+	msg eventProxyInfo: ev proxyResponse.
+	msg eventTargetProxyInfo: target proxyResponse.
+	webSocketDelegate tryToSendMessage: msg.
 	true ].
 	blockClosure instVarNamed: '$PjRefCount' put: 0.
-	self atProxyId: proxyId put: blockClosure.
+	self setOid: oid on: blockClosure.
+	self atGlobalVarName: oid put: blockClosure.
 	^ blockClosure
 ]
 
 { #category : #'instance creation' }
-PjProxyManager class >> nextId [
+PjProxyManager class >> nextGlobalVarName [
+	^ '$_' , self nextIdNumber asString
+]
+
+{ #category : #'instance creation' }
+PjProxyManager class >> nextIdNumber [
 	currentId := currentId ifNil: [ 1 ] ifNotNil: [ :id | id + 1 ].
 	^ currentId
 ]
 
 { #category : #'instance creation' }
-PjProxyManager class >> proxies [
-	proxies ifNil: [ proxies := Dictionary new].
-	^ proxies
+PjProxyManager class >> nextOid [
+	^ '$_' , self nextIdNumber asString
+]
+
+{ #category : #'default instance' }
+PjProxyManager class >> oidVarName [
+	^ '$_oid'
+]
+
+{ #category : #'instance creation' }
+PjProxyManager class >> setOid: anOid on: anObject [
+	anObject instVarNamed: self oidVarName putHidden: anOid
 ]

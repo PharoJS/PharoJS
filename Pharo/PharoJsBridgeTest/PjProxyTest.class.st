@@ -169,7 +169,7 @@ PjProxyTest >> testProxyGarbageCollection [
 	| b jsName |
 	b := document body.
 	jsName := b javascriptName.
-	self assert: jsName equals: '$_2'.
+	self assert: jsName equals: '$_4'.
 	
 	"Following lines to mimic the effect of garbage collection in a deteministic way."
 	(self finalizationRegistry remove: b ifAbsent: [ nil ])

@@ -25,7 +25,8 @@ PjMessageDeleteGlobalVar >> logDescription [
 		streamContents: [ :ws | 
 			ws nextPutAll: self class name.
 			ws nextPutAll: ' id: '.
-			ws nextPutAll: self id printString.
+			ws
+				nextPutAll: (self id ifNil: [ '-' ] ifNotNil: [ self id printString ]).
 			ws nextPutAll: ' varName: '.
 			ws nextPutAll: self varName ]
 ]

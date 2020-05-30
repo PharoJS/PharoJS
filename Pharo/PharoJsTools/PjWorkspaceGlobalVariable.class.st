@@ -6,7 +6,7 @@ Class {
 
 { #category : #accessing }
 PjWorkspaceGlobalVariable >> bridge: aBridge [
-	value := PjProxy proxyNamed: key onBridge: aBridge
+	value := PjProxy proxyNamed: key onBridge: aBridge oid: key
 ]
 
 { #category : #'code generation' }

@@ -2,7 +2,8 @@ Class {
 	#name : #PjMessageResponse,
 	#superclass : #PjMessageC2s,
 	#instVars : [
-		'inResponseToId'
+		'inResponseToId',
+		'proxyInfo'
 	],
 	#category : #'PharoJsBridge-Proxy'
 }
@@ -10,7 +11,9 @@ Class {
 { #category : #public }
 PjMessageResponse >> contentsObject [
 	<pharoJsSkip>
-	^ PjSTONReader from: self contents
+	^ self contents isString
+		ifTrue: [ PjSTONReader from: self contents ]
+		ifFalse: [ self contents ]
 ]
 
 { #category : #accessing }
@@ -31,8 +34,6 @@ PjMessageResponse >> isCallback [
 		ifFalse: [ ^ false ].
 	(obj includesKey: #inspect)
 		ifTrue: [ ^ true ].
-	(obj includesKey: 'cb')
-		ifTrue: [ ^ true ].
 	^ false
 ]
 
@@ -50,7 +51,14 @@ PjMessageResponse >> logDescription [
 						ifNotNil: [ :aNumber | aNumber asString ]
 						ifNil: [ '-' ]).
 			ws nextPutAll: ' contents: '.
-			ws nextPutAll: (self contents ifNil: [ '-' ]) ]
+			ws
+				nextPutAll:
+					(self contents
+						ifNotNil: [ :c | 
+							c isString
+								ifTrue: [ c ]
+								ifFalse: [ c logDescription ] ]
+						ifNil: [ '-' ]) ]
 ]
 
 { #category : #printing }
@@ -69,8 +77,7 @@ PjMessageResponse >> processCallbackWithBridge: aBridge [
 	<pharoJsSkip>
 	(self contentsObject includesKey: #inspect)
 		ifTrue: [ self processInspectWithBridge: aBridge ].
-	(self contentsObject includesKey: #cb)
-		ifTrue: [ self processCbWithBridge: aBridge ]
+
 ]
 
 { #category : #testing }
@@ -79,10 +86,10 @@ PjMessageResponse >> processCbWithBridge: aBridge [
 	| array proxy args |
 	"will have its own dedicated PjMessaga class"
 	array := self contentsObject at: #cb.
-	proxy := PjProxy proxyNamed: array first onBridge: aBridge.
+	proxy := aBridge proxies detect: [ :p | p oid = array first ].
 	args := array allButFirst
 		collect: [ :each | aBridge evalResult: self contents parsed: each ].
-   proxy runBlockClosure: args first with: args second
+	proxy runBlockClosure: args first with: args second
 ]
 
 { #category : #testing }
@@ -94,4 +101,14 @@ PjMessageResponse >> processInspectWithBridge: aBridge [
 		evalResult: self contents
 		parsed: (self contentsObject at: #inspect).
 	 proxy inspect 
+]
+
+{ #category : #accessing }
+PjMessageResponse >> proxyInfo [
+	^ proxyInfo
+]
+
+{ #category : #accessing }
+PjMessageResponse >> proxyInfo: anObject [
+	proxyInfo := anObject
 ]

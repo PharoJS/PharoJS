@@ -13,7 +13,6 @@ PjMessageEvaluate >> evaluateInContext: aMessageContext [
 			resultString := wsd evalSafe: contents.
 			responseMsg := PjMessageResponse newWithContents: resultString.
 			responseMsg inResponseToId: self id.
-			"console log: responseMsg logDescription ."
 			wsd tryToSendMessage: responseMsg ]
 		for: 0
 ]

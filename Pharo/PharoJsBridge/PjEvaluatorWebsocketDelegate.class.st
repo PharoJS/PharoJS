@@ -61,34 +61,11 @@ PjEvaluatorWebsocketDelegate class >> includeClasses [
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
-	<javascript:
-	'"JSON Math WebSocket console global document history location navigator screen window localStorage module process require".split(" ").forEach(function(s){
-		try{if(global[s]){
-			Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}}catch(s){};
-	})'>
-]
-
-{ #category : #'as yet unclassified' }
-PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator: transpiler [
-
-	<pharoJsSkip>
-	^'
-	var self=this;
-	function PjBlockClosureProxy(ev){
-			callback(PjBlockClosureProxy.$_jsName,ev,this);
-			return true;
-		};
-	function callback(name,ev,jsThis) {
-		if (stop) ev.stopPropagation();
-		var cb = {cb : [name,
-								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(ev),
-								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]};
-	 console.log("**CB " , cb);
-		self.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify(cb));
-	}
-	PjBlockClosureProxy.$PjRefCount=0;
-	return PjBlockClosureProxy;
-	'
+	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
+		do: [ :each | 
+			(global at: each)
+				ifNotNil:
+					[ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
 ]
 
 { #category : #'defaut instance' }
@@ -163,10 +140,14 @@ PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> evalSafe: aString [
 	"<jsGenerator: #eval_jsGenerator:>"
+
 	| resultObject resultString |
 	resultObject := [ Object resultObject: (global eval: aString) ]
 		on: Error
 		do: [ :ex | {('exception' -> ex message)} asDictionary ].
+	console log: 'returning' with: resultObject.
+	resultObject class == PjProxyInfo
+		ifTrue: [ ^ resultObject ].
 	^ [ resultString := JSON stringify: resultObject.
 	resultObject
 		ifNotNil: [ resultString = 'null'
@@ -201,10 +182,8 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation: stop [
-	"<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>"
-
 	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	^PjProxyManager
+	^ PjProxyManager
 		makeBlockClosureProxy: withThis
 		stopPropagation: stop
 		for: self
@@ -247,7 +226,7 @@ PjEvaluatorWebsocketDelegate >> onOpen: event [
 	super onOpen: event.
 	self
 		tryToSendMessage:
-			(PjMessageSetClientId new
+			(PjMessageSetClientId newWithId
 				clientId: self id;
 				yourself)
 ]
