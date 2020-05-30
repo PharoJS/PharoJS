@@ -1,5 +1,5 @@
 Class {
-	#name : #PjMessageEvaluateResult,
+	#name : #PjMessageEvaluationResponse,
 	#superclass : #PjMessageC2s,
 	#instVars : [
 		'inResponseToId'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #public }
-PjMessageEvaluateResult >> contentsObject [
+PjMessageEvaluationResponse >> contentsObject [
 	<pharoJsSkip>
 	^ self contents isString
 		ifTrue: [ PjSTONReader from: self contents ]
@@ -16,17 +16,17 @@ PjMessageEvaluateResult >> contentsObject [
 ]
 
 { #category : #accessing }
-PjMessageEvaluateResult >> inResponseToId [
+PjMessageEvaluationResponse >> inResponseToId [
 	^ inResponseToId
 ]
 
 { #category : #accessing }
-PjMessageEvaluateResult >> inResponseToId: anObject [
+PjMessageEvaluationResponse >> inResponseToId: anObject [
 	inResponseToId := anObject
 ]
 
 { #category : #printing }
-PjMessageEvaluateResult >> logDescription [
+PjMessageEvaluationResponse >> logDescription [
 	^ String
 		streamContents: [ :ws | 
 			ws nextPutAll: self class name.
@@ -50,7 +50,7 @@ PjMessageEvaluateResult >> logDescription [
 ]
 
 { #category : #printing }
-PjMessageEvaluateResult >> printOn: ws [
+PjMessageEvaluationResponse >> printOn: ws [
 	<pharoJsSkip>
 	super printOn: ws.
 	ws space.

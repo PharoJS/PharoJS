@@ -94,7 +94,7 @@ PjBridgeTestCase >> checkBasic: value [
 	self
 		assert:
 			(self bridge
-				evalResponseMessage: (PjMessageEvaluateResult  newWithContents: value asJSON) )
+				evalResponseMessage: (PjMessageEvaluationResponse  newWithContents: value asJSON) )
 		equals: value
 ]
 
@@ -104,7 +104,7 @@ PjBridgeTestCase >> checkProxy: value [
 		assert:
 			(self bridge
 				evalResponseMessage:
-					(PjMessageEvaluateResult
+					(PjMessageEvaluationResponse
 						newWithContents:
 							(PjProxyInfo new
 								globalName: value asJSON;
