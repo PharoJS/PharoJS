@@ -117,6 +117,12 @@ PjEvaluatorWebsocketDelegate class >> terminate [
 		do: [  ]
 ]
 
+{ #category : #'initialize-release' }
+PjEvaluatorWebsocketDelegate >> addThisArgumentToBlock: aBlock [
+	<javascript: 'return function(){aBlock(this)}'>
+	
+]
+
 { #category : #connecting }
 PjEvaluatorWebsocketDelegate >> close [
 	shouldRetryToConnectToServer := false.
@@ -128,13 +134,6 @@ PjEvaluatorWebsocketDelegate >> connectTo: urlString [
 	shouldRetryToConnectToServer := true.
 	bridgeUrlString := urlString.
 	super connectTo: urlString
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
-	webSocket
-		send: (PjMessageResponse newWithContents: aResult) asPhxJsonString.
-	self logSent: aResult
 ]
 
 { #category : #'socket behavior' }
@@ -191,15 +190,13 @@ PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation:
 
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> makeInspect [
-"	<pharoJsSkip>
-	^'var wsd=this;
-	return function(){
-		wsd.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(this)}));
-		return this
-	}'"
-
-	^[self
-		doCallBack: (JSON stringify: {('inspect' -> self proxyResponse)} asDictionary)]
+	^ self
+		addThisArgumentToBlock: [ :this | 
+			self
+				tryToSendMessage:
+					(PjMessageInspect newWithId
+						subjectProxyInfo: this proxyResponse;
+						yourself) ]
 ]
 
 { #category : #connecting }

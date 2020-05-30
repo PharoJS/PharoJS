@@ -9,6 +9,11 @@ PjMessageC2s >> evaluateInContext: aMessageContext [
 	"self subclassResponsibility "
 ]
 
+{ #category : #accessing }
+PjMessageC2s >> inResponseToId [
+	^nil
+]
+
 { #category : #testing }
 PjMessageC2s >> isCallback [
 	^ false

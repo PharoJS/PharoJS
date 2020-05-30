@@ -300,6 +300,7 @@ PjBridge >> evalResult: aString parsed: value [
 	value at: #keys ifPresent: [ : map |
 		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
 	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
+	self halt.
 	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
 ]
 

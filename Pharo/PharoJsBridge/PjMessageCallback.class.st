@@ -29,11 +29,6 @@ PjMessageCallback >> eventTargetProxyInfo: anObject [
 	eventTargetProxyInfo := anObject
 ]
 
-{ #category : #accessing }
-PjMessageCallback >> inResponseToId [
-	^nil
-]
-
 { #category : #testing }
 PjMessageCallback >> isCallback [
 	^ true
@@ -74,7 +69,7 @@ PjMessageCallback >> printOn: ws [
 	self printDetailsOn: ws
 ]
 
-{ #category : #testing }
+{ #category : #public }
 PjMessageCallback >> processCallbackWithBridge: aBridge [
 	<pharoJsSkip>
 	| proxy eventProxy eventTargetProxy |

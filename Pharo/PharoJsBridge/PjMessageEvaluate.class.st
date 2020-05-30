@@ -11,7 +11,7 @@ PjMessageEvaluate >> evaluateInContext: aMessageContext [
 	self
 		timeout: [ | resultString responseMsg |
 			resultString := wsd evalSafe: contents.
-			responseMsg := PjMessageResponse newWithContents: resultString.
+			responseMsg := PjMessageEvaluateResult newWithContents: resultString.
 			responseMsg inResponseToId: self id.
 			wsd tryToSendMessage: responseMsg ]
 		for: 0
