@@ -97,7 +97,7 @@ PjProxy >> addEventListener: type block: listener [
 	^ self
 		jsBridge: [ :bridge | 
 			| bcProxy |
-			bcProxy := bridge blockClosure: listener.
+			bcProxy := bridge registerBlockClosure: listener.
 			jsMessage := PjJavascriptMessage
 				receiverId: bridge websocketDelegateClassName
 				selector: #set:callback:to:

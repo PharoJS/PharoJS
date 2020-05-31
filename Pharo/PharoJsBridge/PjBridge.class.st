@@ -137,30 +137,6 @@ PjBridge >> acceptIncomingMessageFromClient: aMessage [
 ]
 
 { #category : #'closure handling' }
-PjBridge >> blockClosure: aBlockClosure [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	^ self blockClosures
-		at: aBlockClosure
-		ifAbsentPut: [ | proxy thisArg includeEventTarget|
-			(aBlockClosure isKindOf: BlockClosure)
-				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
-			aBlockClosure hasMethodReturn
-				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
-			thisArg := aBlockClosure argumentNames
-				findFirst: [ :name | name = 'this' ].
-			includeEventTarget := thisArg > 0.
-			proxy := self
-				evalJavascript:
-					self websocketDelegateClassName , '.'
-						, transpiler pharoJsSelectorPrefix , 'default().'
-						, transpiler pharoJsSelectorPrefix , 'makeBlockClosureProxy_('
-						, includeEventTarget asString , ')'.
-			proxy closure: aBlockClosure.
-			proxy ]
-		
-]
-
-{ #category : #'closure handling' }
 PjBridge >> blockClosures [
 	^ blockClosures ifNil: [blockClosures := IdentityDictionary new]
 ]
@@ -269,22 +245,6 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 		selector: aMessage selector
 		arguments: aMessage arguments.
 	^ self evalMessage: jsMessage
-]
-
-{ #category : #evaluating }
-PjBridge >> evalResult: aString parsed: value [
-	"value isLiteral
-		ifTrue: [ ^ value ].
-	value isNumber
-		ifTrue: [ ^ value ].
-	value isDictionary
-		ifTrue: [ value isEmpty
-				ifTrue: [ ^ nil ] ].
-	(value isKindOf: PjProxyInfo)
-		ifTrue: [ ^ value proxyForBridge: self ].
-	self halt.
-	^ [ PjJavascriptError
-		signal: 'unrecognized response from browser:' , aString ]"
 ]
 
 { #category : #activity }
@@ -415,6 +375,30 @@ PjBridge >> port: portNumber [
 { #category : #accessing }
 PjBridge >> proxies [
 	^ proxies ifNil: [proxies := WeakValueDictionary new]
+]
+
+{ #category : #'closure handling' }
+PjBridge >> registerBlockClosure: aBlockClosure [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	^ self blockClosures
+		at: aBlockClosure
+		ifAbsentPut: [ | proxy thisArg includeEventTarget|
+			(aBlockClosure isKindOf: BlockClosure)
+				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
+			aBlockClosure hasMethodReturn
+				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
+			thisArg := aBlockClosure argumentNames
+				findFirst: [ :name | name = 'this' ].
+			includeEventTarget := thisArg > 0.
+			proxy := self
+				evalJavascript:
+					self websocketDelegateClassName , '.'
+						, transpiler pharoJsSelectorPrefix , 'default().'
+						, transpiler pharoJsSelectorPrefix , 'makeBlockClosureProxy_('
+						, includeEventTarget asString , ')'.
+			proxy closure: aBlockClosure.
+			proxy ]
+		
 ]
 
 { #category : #public }

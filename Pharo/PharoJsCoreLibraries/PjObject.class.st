@@ -86,18 +86,6 @@ PjObject class >> resultObject: result [
 	^ result ifNotNil: [ result proxyResponse ]
 ]
 
-{ #category : #proxy }
-PjObject class >> resultObject_jsGenerator: transpiler [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-"Ivo: obsolete"
-	<pharoJsSkip>
-	^ 'if (result != undefined) return result.'
-		, transpiler pharoJsSelectorPrefix
-		,
-			'proxyResponse();
-		return null;'
-]
-
 { #category : #'dictionary emulation' }
 PjObject class >> valuesDo_jsGenerator: transpiler [
 	<pharoJsSkip>
