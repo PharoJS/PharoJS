@@ -9,19 +9,16 @@ Class {
 
 { #category : #public }
 PjMessageGetKeys >> evaluateInContext: aMessageContext [
-	| wsd |
+	| wsd responseMsg jsObject assocs |
 	wsd := aMessageContext websocketDelegate.
-	self
-		timeout: [ | responseMsg jsObject assocs |
-			responseMsg := PjMessageGetKeysResponse newWithId.
-			jsObject := global instVarNamed: self proxyInfo globalName.
-			console log: 'get keys object:' with: jsObject.
-			assocs := self keyValuePairsOf: jsObject.
-			console log: 'get keys assocs:' with: assocs.
-			responseMsg contents: assocs.
-			responseMsg inResponseToId: self id.
-			wsd tryToSendMessage: responseMsg ]
-		for: 0
+	responseMsg := PjMessageGetKeysResponse newWithId.
+	jsObject := global instVarNamed: self proxyInfo globalName.
+	console log: 'get keys object:' with: jsObject.
+	assocs := self keyValuePairsOf: jsObject.
+	console log: 'get keys assocs:' with: assocs.
+	responseMsg contents: assocs.
+	responseMsg inResponseToId: self id.
+	wsd tryToSendMessage: responseMsg
 ]
 
 { #category : #public }

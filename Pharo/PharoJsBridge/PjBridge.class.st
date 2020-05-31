@@ -242,7 +242,7 @@ PjBridge >> evalJavascript: javaScriptString [
 	| msg |
 	self isConnected
 		ifFalse: [ ^ nil ].
-	msg := PjMessageEvaluate newWithContents: javaScriptString.
+	msg := PjMessageEvaluateJavascript newWithContents: javaScriptString.
 	^ self sendMessageAndWaitForResponse: msg
 ]
 
@@ -277,9 +277,7 @@ PjBridge >> evalResult: aString parsed: value [
 	value isNumber ifTrue: [ ^ value ].
 	value isDictionary ifTrue: [ value isEmpty ifTrue: [ ^nil ] ].
 	(value isKindOf: PjProxyInfo ) ifTrue: [ ^value proxyForBridge: self ].
-	value at: #keys ifPresent: [ : map |
-		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
-	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
+	"value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ]."
 	self halt.
 	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
 ]

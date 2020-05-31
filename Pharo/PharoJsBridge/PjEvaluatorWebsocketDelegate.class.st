@@ -54,7 +54,7 @@ PjEvaluatorWebsocketDelegate class >> default: newInstance [
 PjEvaluatorWebsocketDelegate class >> includeClasses [
 	^ {PhxJsonReader.
 	PjMessageDeleteGlobalVar.
-	PjMessageEvaluate.
+	PjMessageEvaluateJavascript.
 	PjMessageGetKeys.
 	PjMessageReload.
 	PjMessageTerminate}
@@ -129,27 +129,6 @@ PjEvaluatorWebsocketDelegate >> connectTo: urlString [
 	shouldRetryToConnectToServer := true.
 	bridgeUrlString := urlString.
 	super connectTo: urlString
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> evalSafe: aString [
-	"<jsGenerator: #eval_jsGenerator:>"
-
-	| resultObject resultString |
-	resultObject := [ Object resultObject: (global eval: aString) ]
-		on: Error
-		do: [ :ex | {('exception' -> ex message)} asDictionary ].
-	console log: 'returning' with: resultObject.
-	resultObject class == PjProxyInfo
-		ifTrue: [ ^ resultObject ].
-	^ [ resultString := JSON stringify: resultObject.
-	resultObject
-		ifNotNil: [ resultString = 'null'
-				ifTrue: [ resultString := resultObject toString ] ].
-	resultString ifNil: [ resultString := 'null' ].
-	resultString ]
-		on: Error
-		do: [ :ex | ex return: {('exception' -> ex message)} asDictionary ]
 ]
 
 { #category : #'initialize-release' }
