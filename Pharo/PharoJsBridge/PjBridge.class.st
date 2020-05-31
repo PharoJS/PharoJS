@@ -310,7 +310,7 @@ PjBridge >> isListening [
 
 { #category : #public }
 PjBridge >> isServerStarted [
-	^self server isStarted
+	^self server ifNil: [false] ifNotNil: [:s | s isStarted]
 ]
 
 { #category : #public }

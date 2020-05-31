@@ -62,11 +62,17 @@ PjEvaluatorWebsocketDelegate class >> includeClasses [
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
+	<javascript: 'this.pj_initializePrivate()'>
+	
+]
+
+{ #category : #'class initialization' }
+PjEvaluatorWebsocketDelegate class >> initializePrivate [
+
 	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
 		do: [ :each | 
 			(global at: each)
-				ifNotNil:
-					[ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
+				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
 ]
 
 { #category : #'defaut instance' }
