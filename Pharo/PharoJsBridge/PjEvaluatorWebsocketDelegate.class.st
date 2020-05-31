@@ -57,13 +57,18 @@ PjEvaluatorWebsocketDelegate class >> includeClasses [
 	PjMessageEvaluateJavascript.
 	PjMessageGetKeys.
 	PjMessageReload.
-	PjMessageTerminate}
+	PjMessageTerminate.
+	PjMessageSetEventListener.
+	PjMessageMakeBlockClosureProxy}
 ]
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
-	<javascript: 'this.pj_initializePrivate()'>
-	
+	Smalltalk at: 'PjBridge' ifPresent: [ ^ self ].
+	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
+		do: [ :each | 
+			(global at: each)
+				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
 ]
 
 { #category : #'class initialization' }

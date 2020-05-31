@@ -92,20 +92,16 @@ PjProxy >> = anObject [
 ]
 
 { #category : #'reflective operations' }
-PjProxy >> addEventListener: type block: listener [
-	| jsMessage |
+PjProxy >> addEventListener: type block: aBlock [
 	^ self
 		jsBridge: [ :bridge | 
-			| bcProxy |
-			bcProxy := bridge registerBlockClosure: listener.
-			jsMessage := PjJavascriptMessage
-				receiverId: bridge websocketDelegateClassName
-				selector: #set:callback:to:
-				arguments:
-					{self.
-					type.
-					bcProxy}.
-			bridge evalMessage: jsMessage ]
+			| bcProxy msg |
+			bcProxy := bridge ensureProxyForEventListenerBlock: aBlock.
+			msg := PjMessageSetEventListener newWithId.
+			msg targetProxyInfo: self asProxyInfo.
+			msg listenerProxyInfo: bcProxy asProxyInfo.
+			msg eventName: type.
+			bridge sendMessageAndWaitForResponse: msg ]
 ]
 
 { #category : #converting }

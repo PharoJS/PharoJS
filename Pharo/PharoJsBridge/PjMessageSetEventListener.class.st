@@ -11,10 +11,20 @@ Class {
 
 { #category : #public }
 PjMessageSetEventListener >> evaluateInContext: aMessageContext [
+	| result responseMsg |
+	result := self evaluateInContextPrivate: aMessageContext.
+	responseMsg := PjMessageEvaluationResponse
+		newWithContents: result proxyResponse.
+	responseMsg inResponseToId: self id.
+	aMessageContext websocketDelegate tryToSendMessage: responseMsg
+]
+
+{ #category : #public }
+PjMessageSetEventListener >> evaluateInContextPrivate: aMessageContext [
 	| targetObject listener fullTriggerName oldlistener |
 	fullTriggerName := 'on' , self eventName.
-	targetObject := self targetObject.
-	listener := self listener.
+	targetObject := self targetProxyInfo getJsObject.
+	listener := self listenerProxyInfo ifNotNil: [ :pi | pi getJsObject ].
 	oldlistener := targetObject instVarNamed: fullTriggerName.
 	targetObject instVarNamed: fullTriggerName put: listener.
 	listener
@@ -30,7 +40,7 @@ PjMessageSetEventListener >> evaluateInContext: aMessageContext [
 					(oldlistener instVarNamed: '$PjRefCount') == 0
 						ifTrue: [ oldlistener instVarNamed: '$PjProxyRemove' put: true.
 							^ oldlistener ] ] ].
-	^ true
+	^ 'true'
 ]
 
 { #category : #accessing }

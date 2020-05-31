@@ -71,7 +71,7 @@ PjProxyManager class >> makeBlockClosureProxy: withThis stopPropagation: stop fo
 	blockClosure instVarNamed: '$PjRefCount' put: 0.
 	self setOid: oid on: blockClosure.
 	self atGlobalVarName: oid put: blockClosure.
-	^ blockClosure
+	^ blockClosure proxyResponse
 ]
 
 { #category : #'instance creation' }

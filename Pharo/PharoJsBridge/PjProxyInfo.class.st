@@ -6,8 +6,16 @@ Class {
 		'oid',
 		'globalName'
 	],
+	#pools : [
+		'PjNodeGlobals'
+	],
 	#category : #'PharoJsBridge-Proxy'
 }
+
+{ #category : #public }
+PjProxyInfo >> getJsObject [
+	^ global instVarNamed: self globalName
+]
 
 { #category : #accessing }
 PjProxyInfo >> globalName [

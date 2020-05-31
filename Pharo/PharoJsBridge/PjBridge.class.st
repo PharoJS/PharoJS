@@ -197,6 +197,26 @@ PjBridge >> enableClientLogging [
 	self initializeWithClient: self client withClientLogging
 ]
 
+{ #category : #'closure handling' }
+PjBridge >> ensureProxyForEventListenerBlock: aBlockClosure [
+	^ self blockClosures
+		at: aBlockClosure
+		ifAbsentPut: [ | thisArg includeEventTarget msg proxy |
+			(aBlockClosure isKindOf: BlockClosure)
+				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
+			aBlockClosure hasMethodReturn
+				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
+			thisArg := aBlockClosure argumentNames
+				findFirst: [ :name | name = 'this' ].
+			includeEventTarget := thisArg > 0.
+			msg := PjMessageMakeBlockClosureProxy newWithId.
+			msg includeEventTarget: includeEventTarget.
+			msg stopPropagation: true.
+			proxy := self sendMessageAndWaitForResponse: msg.
+			proxy closure: aBlockClosure.
+			proxy ]
+]
+
 { #category : #public }
 PjBridge >> evalBlock: aBlock [
 	^self evalJavascript: (self convertToJs: aBlock asValuedBlock)
@@ -370,30 +390,6 @@ PjBridge >> port: portNumber [
 { #category : #accessing }
 PjBridge >> proxies [
 	^ proxies ifNil: [proxies := WeakValueDictionary new]
-]
-
-{ #category : #'closure handling' }
-PjBridge >> registerBlockClosure: aBlockClosure [
-	| wsdClass |
-	wsdClass := self websocketDelegateClass.
-	^ self blockClosures
-		at: aBlockClosure
-		ifAbsentPut: [ | proxy thisArg includeEventTarget |
-			(aBlockClosure isKindOf: BlockClosure)
-				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
-			aBlockClosure hasMethodReturn
-				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
-			thisArg := aBlockClosure argumentNames
-				findFirst: [ :name | name = 'this' ].
-			includeEventTarget := thisArg > 0.
-			"Ivo: Probably better to send a specialized PjMessage for performance, instead of transpiling?"
-			proxy := self
-				evalBlock: [ PjProxyManager
-						makeBlockClosureProxy: includeEventTarget
-						stopPropagation: true
-						for: wsdClass default ].
-			proxy closure: aBlockClosure.
-			proxy ]
 ]
 
 { #category : #public }

@@ -41,7 +41,7 @@ PjMessageCallback >> logDescription [
 			ws nextPutAll: self class name.
 			ws nextPutAll: ' id: '.
 			ws nextPutAll: self id asString.
-			ws space.
+			ws nextPutAll: ' '.
 			self printDetailsOn: ws ]
 ]
 
