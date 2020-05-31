@@ -124,7 +124,6 @@ PjBridge class >> stop [
 
 { #category : #activity }
 PjBridge >> acceptIncomingMessageFromClient: aMessage [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	aMessage shouldEvaluateImmediately
 		ifTrue: [ aMessage processWithBridge: self.
 			monitor critical: [ monitor signal ].
@@ -284,7 +283,8 @@ PjBridge >> incomingResponseMessageForSentMessage: aMsg [
 { #category : #initialization }
 PjBridge >> initialize [
 	super initialize.
-	incomingMessageFrames := OrderedCollection with: OrderedCollection new.
+	incomingMessageFrames := OrderedCollection
+		with: OrderedCollection new.
 	runOnPharo := false.
 	shouldStartJsInterpreter := true.
 	self server: self serverClass new.
@@ -295,8 +295,7 @@ PjBridge >> initialize [
 				receiver: self server;
 				selector: #stop;
 				yourself).
-	monitor := Monitor new.
-	"self startCallbackLoop."
+	monitor := Monitor new
 ]
 
 { #category : #accessing }

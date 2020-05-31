@@ -95,11 +95,12 @@ PjProxy >> = anObject [
 PjProxy >> addEventListener: type block: aBlock [
 	^ self
 		jsBridge: [ :bridge | 
-			| bcProxy msg |
-			bcProxy := bridge ensureProxyForEventListenerBlock: aBlock.
+			| bcProxyInfo msg |
+			bcProxyInfo := aBlock
+				ifNotNil: [ (bridge ensureProxyForEventListenerBlock: aBlock) asProxyInfo ].
 			msg := PjMessageSetEventListener newWithId.
 			msg targetProxyInfo: self asProxyInfo.
-			msg listenerProxyInfo: bcProxy asProxyInfo.
+			msg listenerProxyInfo: bcProxyInfo.
 			msg eventName: type.
 			bridge sendMessageAndWaitForResponse: msg ]
 ]
@@ -271,10 +272,7 @@ PjProxy >> printOn: ws [
 
 { #category : #'reflective operations' }
 PjProxy >> removeEventListener: type [
-	^ self jsBridge: [ : bridge |
-		bridge evalJavascript: bridge websocketDelegateClassName,
-			'.', bridge transpiler pharoJsSelectorPrefix, 'set_callback_to_(',jsName,',',type asJSON,',undefined);'
-	]
+	^ self addEventListener: type block: nil
 ]
 
 { #category : #'closure handling' }
