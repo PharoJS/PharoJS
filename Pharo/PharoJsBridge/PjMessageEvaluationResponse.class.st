@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'inResponseToId'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #public }
@@ -17,7 +17,22 @@ PjMessageEvaluationResponse >> contentsObject [
 
 { #category : #public }
 PjMessageEvaluationResponse >> getValueWithBridge: aBridge [
-	^ aBridge evalResult: self contents parsed: self contentsObject
+	"^ aBridge evalResult: self contents parsed: self contentsObject"
+
+	| value |
+	value := self contentsObject.
+	value isLiteral
+		ifTrue: [ ^ value ].
+	value isNumber
+		ifTrue: [ ^ value ].
+	value isDictionary
+		ifTrue: [ value isEmpty
+				ifTrue: [ ^ nil ] ].
+	(value isKindOf: PjProxyInfo)
+		ifTrue: [ ^ value proxyForBridge: aBridge ].
+	self halt.
+	^ [ PjJavascriptError
+		signal: 'unrecognized response from browser:' , contents ]
 ]
 
 { #category : #accessing }

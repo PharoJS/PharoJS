@@ -16,7 +16,7 @@ Class {
 	#classVars : [
 		'LastUsedPort'
 	],
-	#category : #'PharoJsBridge-Kernel'
+	#category : #'PharoJsBridge-Obsolete'
 }
 
 { #category : #accessing }

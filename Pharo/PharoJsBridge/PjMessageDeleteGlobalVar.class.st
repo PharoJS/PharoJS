@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'varName'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #'as yet unclassified' }

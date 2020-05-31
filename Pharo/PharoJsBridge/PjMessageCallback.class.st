@@ -6,7 +6,7 @@ Class {
 		'eventProxyInfo',
 		'eventTargetProxyInfo'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #accessing }

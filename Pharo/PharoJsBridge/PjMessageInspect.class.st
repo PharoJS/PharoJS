@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'subjectProxyInfo'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #testing }

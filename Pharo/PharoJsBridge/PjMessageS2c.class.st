@@ -1,7 +1,7 @@
 Class {
 	#name : #PjMessageS2c,
 	#superclass : #PjMessage,
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #public }

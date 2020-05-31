@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'proxyInfo'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #public }

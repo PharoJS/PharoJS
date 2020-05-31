@@ -18,7 +18,7 @@ Class {
 		'favicon',
 		'fingerPrint'
 	],
-	#category : #'PharoJsBridge-Kernel'
+	#category : #'PharoJsBridge-Obsolete'
 }
 
 { #category : #'instance-creation' }

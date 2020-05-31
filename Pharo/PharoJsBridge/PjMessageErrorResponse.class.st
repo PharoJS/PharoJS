@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'inResponseToId'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #accessing }

@@ -273,13 +273,18 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 
 { #category : #evaluating }
 PjBridge >> evalResult: aString parsed: value [
-	value isLiteral ifTrue: [ ^ value ].
-	value isNumber ifTrue: [ ^ value ].
-	value isDictionary ifTrue: [ value isEmpty ifTrue: [ ^nil ] ].
-	(value isKindOf: PjProxyInfo ) ifTrue: [ ^value proxyForBridge: self ].
-	"value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ]."
+	"value isLiteral
+		ifTrue: [ ^ value ].
+	value isNumber
+		ifTrue: [ ^ value ].
+	value isDictionary
+		ifTrue: [ value isEmpty
+				ifTrue: [ ^ nil ] ].
+	(value isKindOf: PjProxyInfo)
+		ifTrue: [ ^ value proxyForBridge: self ].
 	self halt.
-	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
+	^ [ PjJavascriptError
+		signal: 'unrecognized response from browser:' , aString ]"
 ]
 
 { #category : #activity }

@@ -9,7 +9,7 @@ Class {
 	#classVars : [
 		'currentId'
 	],
-	#category : #'PharoJsBridge-Proxy'
+	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #'instance creation' }
