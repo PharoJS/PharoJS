@@ -45,16 +45,14 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'server',
-		'communicationTrialsCount',
 		'timeout',
 		'proxies',
 		'blockClosures',
 		'client',
 		'runOnPharo',
 		'shouldStartJsInterpreter',
-		'transpiler',
-		'frames',
-		'monitor'
+		'monitor',
+		'incomingMessageFrames'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
@@ -67,7 +65,7 @@ PjBridge class >> bridgeForAppClass: appClass [
 { #category : #'instance creation' }
 PjBridge class >> bridgeForAppClass: appClass client: bridgeClient [
 	^ self new
-			client: bridgeClient;
+			initializeWithClient: bridgeClient;
 			initializeWithAppClass: appClass;
 			yourself
 ]
@@ -146,14 +144,6 @@ PjBridge >> client [
 	^ client
 ]
 
-{ #category : #accessing }
-PjBridge >> client: aClient [
-	client := aClient.
-	client initializeWithBridge:  self.
-	transpiler := aClient exporter transpiler.
-
-]
-
 { #category : #initialization }
 PjBridge >> clientTitle [
 	^self client title
@@ -197,14 +187,14 @@ PjBridge >> dnuJsString [
 
 { #category : #initialization }
 PjBridge >> doInNewFrame: aBlock [
-	frames add: OrderedCollection new.
+	incomingMessageFrames add: OrderedCollection new.
 	aBlock value.
-	frames removeLast.
+	incomingMessageFrames removeLast.
 ]
 
 { #category : #public }
 PjBridge >> enableClientLogging [
-	self client: self client withClientLogging
+	self initializeWithClient: self client withClientLogging
 ]
 
 { #category : #public }
@@ -262,7 +252,7 @@ PjBridge >> exporter [
 
 { #category : #accessing }
 PjBridge >> incomingMessages [
-	^frames last
+	^incomingMessageFrames last
 ]
 
 { #category : #evaluating }
@@ -274,7 +264,7 @@ PjBridge >> incomingResponseMessageForSentMessage: aMsg [
 { #category : #initialization }
 PjBridge >> initialize [
 	super initialize.
-	frames := OrderedCollection with: OrderedCollection new.
+	incomingMessageFrames := OrderedCollection with: OrderedCollection new.
 	runOnPharo := false.
 	shouldStartJsInterpreter := true.
 	self server: self serverClass new.
@@ -285,7 +275,6 @@ PjBridge >> initialize [
 				receiver: self server;
 				selector: #stop;
 				yourself).
-	communicationTrialsCount := 100.
 	monitor := Monitor new.
 	"self startCallbackLoop."
 ]
@@ -295,6 +284,12 @@ PjBridge >> initializeWithAppClass: aPharoJsAppClass [
 	self client initializeWithAppClass: aPharoJsAppClass.
 	self client initializeWithBridge: self.
 
+]
+
+{ #category : #accessing }
+PjBridge >> initializeWithClient: aClient [
+	client := aClient.
+	client initializeWithBridge: self
 ]
 
 { #category : #activity }
@@ -636,6 +631,11 @@ PjBridge >> webSocket [
 { #category : #accessing }
 PjBridge >> webSocketUrlTag [
 	^self server webSocketUrlTag
+]
+
+{ #category : #initialization }
+PjBridge >> websocketDelegateClass [
+	^self client websocketDelegateClass
 ]
 
 { #category : #initialization }

@@ -158,6 +158,11 @@ PjBridgeClient >> title [
 ]
 
 { #category : #accessing }
+PjBridgeClient >> websocketDelegateClass [
+	^self codeGenerator websocketDelegateClass
+]
+
+{ #category : #accessing }
 PjBridgeClient >> websocketDelegateClassName [
 	^self codeGenerator websocketDelegateClassName
 ]
