@@ -148,20 +148,6 @@ PjEvaluatorWebsocketDelegate >> logSent: aString [
 	console log: 'Sent: ',aString
 ]
 
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis [
-	^ self makeBlockClosureProxy: withThis stopPropagation: true
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation: stop [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	^ PjProxyManager
-		makeBlockClosureProxy: withThis
-		stopPropagation: stop
-		for: self
-]
-
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> makeInspect [
 	^ self
