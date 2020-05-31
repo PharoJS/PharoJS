@@ -374,10 +374,11 @@ PjBridge >> proxies [
 
 { #category : #'closure handling' }
 PjBridge >> registerBlockClosure: aBlockClosure [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	| wsdClass |
+	wsdClass := self websocketDelegateClass.
 	^ self blockClosures
 		at: aBlockClosure
-		ifAbsentPut: [ | proxy thisArg includeEventTarget|
+		ifAbsentPut: [ | proxy thisArg includeEventTarget |
 			(aBlockClosure isKindOf: BlockClosure)
 				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
 			aBlockClosure hasMethodReturn
@@ -385,15 +386,14 @@ PjBridge >> registerBlockClosure: aBlockClosure [
 			thisArg := aBlockClosure argumentNames
 				findFirst: [ :name | name = 'this' ].
 			includeEventTarget := thisArg > 0.
+			"Ivo: Probably better to send a specialized PjMessage for performance, instead of transpiling?"
 			proxy := self
-				evalJavascript:
-					self websocketDelegateClassName , '.'
-						, transpiler pharoJsSelectorPrefix , 'default().'
-						, transpiler pharoJsSelectorPrefix , 'makeBlockClosureProxy_('
-						, includeEventTarget asString , ')'.
+				evalBlock: [ PjProxyManager
+						makeBlockClosureProxy: includeEventTarget
+						stopPropagation: true
+						for: wsdClass default ].
 			proxy closure: aBlockClosure.
 			proxy ]
-		
 ]
 
 { #category : #public }
