@@ -85,8 +85,8 @@ PjBridgeTestCase >> assertJavascript: expressionString evaluatesTo: expectedResu
 PjBridgeTestCase >> checkBasic: value [
 	self
 		assert:
-			(self bridge
-				evalResult: (PjMessage newWithContents: value asJSON) asPhxJsonString)
+			((PjMessageEvaluationResponse newWithContents: value asJSON)
+				getValueWithBridge: self bridge)
 		equals: value
 ]
 
@@ -94,10 +94,11 @@ PjBridgeTestCase >> checkBasic: value [
 PjBridgeTestCase >> checkProxy: value [
 	self
 		assert:
-			(self bridge
-				evalResult:
-					(PjMessage newWithContents: '{"proxy":"' , value asJSON , '"}')
-						asPhxJsonString)
+			((PjMessageEvaluationResponse
+				newWithContents:
+					(PjProxyInfo new
+						globalName: value asJSON;
+						yourself)) getValueWithBridge: self bridge)
 		equals: value
 ]
 

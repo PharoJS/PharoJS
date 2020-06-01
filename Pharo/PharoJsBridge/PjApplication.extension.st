@@ -28,12 +28,12 @@ PjApplication class >> bridgeClientClass [
 { #category : #'*PharoJsBridge-App' }
 PjApplication class >> bridgeForDebug [
 	<pharoJsSkip>
-	^ self bridge withClientLogging
+	^ self bridge enableClientLogging
 
 ]
 
 { #category : #'*PharoJsBridge-App' }
 PjApplication class >> newBridgeClient [
 	<pharoJsSkip>
-	^self bridgeClientClass appClass: self
+	^self bridgeClientClass newWithAppClass: self
 ]

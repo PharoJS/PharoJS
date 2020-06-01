@@ -1,5 +1,10 @@
 Class {
 	#name : #PjMessageReload,
-	#superclass : #PjMessage,
-	#category : #'PharoJsBridge-Proxy'
+	#superclass : #PjMessageS2c,
+	#category : #'PharoJsBridge-Messages'
 }
+
+{ #category : #public }
+PjMessageReload >> evaluateInContext: aMessageContext [
+	aMessageContext websocketDelegate class reload
+]

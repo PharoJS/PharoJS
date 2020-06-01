@@ -10,16 +10,6 @@ Class {
 	#category : #'PharoJsBridge-Client-Kernel'
 }
 
-{ #category : #accessing }
-PjBrowserBridgeClient >> bridge: aBridge [
-	super bridge: aBridge.
-	self codeGenerator resetHtmlGenerator.
-	self server css: self codeGenerator css.
-	self server favicon: self codeGenerator favicon.
-	self server html: self codeGenerator html.
-
-]
-
 { #category : #'initialization-release' }
 PjBrowserBridgeClient >> defaultAppClass [
 	^PjWebApplication
@@ -34,6 +24,16 @@ PjBrowserBridgeClient >> exporterClass [
 PjBrowserBridgeClient >> initialize [
 	super initialize.
 	openBrowserInBackground := false.
+]
+
+{ #category : #accessing }
+PjBrowserBridgeClient >> initializeWithBridge: aBridge [
+	super initializeWithBridge: aBridge.
+	self codeGenerator resetHtmlGenerator.
+	self server css: self codeGenerator css.
+	self server favicon: self codeGenerator favicon.
+	self server html: self codeGenerator html.
+
 ]
 
 { #category : #accessing }

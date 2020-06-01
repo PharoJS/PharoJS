@@ -50,77 +50,39 @@ PjEvaluatorWebsocketDelegate class >> default: newInstance [
 
 ]
 
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate class >> eval_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^'var result;
-	try{
-		result = Object.', transpiler pharoJsSelectorPrefix,'resultObject_((function(){return global.eval(aString)})());
-	}catch(exception){
-		result={exception:exception.message};
-	}
-	try{
-		aString=JSON.stringify(result);
-		if(result!=null&&aString=="null") aString=result.toString(); 
-		return aString;
-	}catch(stringifyException){
-		return JSON.stringify({exception:stringifyException.message});
-	}'
+{ #category : #constants }
+PjEvaluatorWebsocketDelegate class >> includeClasses [
+	^ {PhxJsonReader.
+	PjMessageDeleteGlobalVar.
+	PjMessageEvaluateJavascript.
+	PjMessageGetKeys.
+	PjMessageReload.
+	PjMessageTerminate.
+	PjMessageSetEventListener.
+	PjMessageMakeBlockClosureProxy}
 ]
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
-	<javascript:
-	'"JSON Math WebSocket console global document history location navigator screen window localStorage module process require".split(" ").forEach(function(s){
-		if(global[s]){
-			try{Object.defineProperty(global[s],"$_jsName",{value:s,writable:true})}catch(s){};
-	}})'>
+	Smalltalk at: 'PjBridge' ifPresent: [ ^ self ].
+	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
+		do: [ :each | 
+			(global at: each)
+				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
 ]
 
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate class >> makeBlockClosureProxy_stopPropagation_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^'
-	var self=this;
-	function PjBlockClosureProxy(ev){
-			callback(PjBlockClosureProxy.$_jsName,ev,this);
-			return true;
-		};
-	function callback(name,ev,jsThis) {
-		if (stop) ev.stopPropagation();
-		self.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({cb : [name,
-								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(ev),
-								Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(withThis?jsThis:undefined)]}));
-	}
-	PjBlockClosureProxy.$PjRefCount=0;
-	return PjBlockClosureProxy;
-	'
-]
+{ #category : #'class initialization' }
+PjEvaluatorWebsocketDelegate class >> initializePrivate [
 
-{ #category : #'initialize-release' }
-PjEvaluatorWebsocketDelegate class >> makeInspect_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^'var wsd=this;
-	return function(){
-		wsd.', transpiler pharoJsSelectorPrefix, 'doCallBack_(JSON.stringify({inspect:Object.', transpiler pharoJsSelectorPrefix, 'resultObject_(this)}));
-		return this
-	}'
-]
-
-{ #category : #'pharojs support' }
-PjEvaluatorWebsocketDelegate class >> myExtraClasses [
-	^ {PhxJsonReader.
-	PjMessage.
-	PjMessageDeleteVar.
-	PjMessageEvaluate.
-	PjMessageReload.
-	PjMessageTerminate}
+	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
+		do: [ :each | 
+			(global at: each)
+				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
 ]
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
-	self closeDefault.
-	location reload: true.
+	self reload: true.
 	
 ]
 
@@ -135,25 +97,26 @@ true - Reloads the current page from the server."
 ]
 
 { #category : #'proxy support' }
-PjEvaluatorWebsocketDelegate class >> set: anObject callback: aString to: callback [
-	<javascript:
-	'aString="on"+aString;
-	console.log(aString);
-	var old=anObject[aString];
-	console.log(callback);
-	console.log(typeof callback);
-	console.log(old);
-	anObject[aString]=callback;
-	console.log(anObject[aString]);
-	if (callback && callback.hasOwnProperty("$PjRefCount")) {
-		++callback.$PjRefCount;
-	}
-	if (old && old.$PjRefCount && --old.$PjRefCount==0) {
-		old.$PjProxyRemove = true;
-		return old;
-	}
-	return true;
-	'>
+PjEvaluatorWebsocketDelegate class >> set: anObject callback: trigger to: callback [
+<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	| fullTriggerName oldCallback |
+	fullTriggerName := 'on' , trigger.
+	oldCallback := anObject instVarNamed: fullTriggerName.
+	anObject instVarNamed: fullTriggerName put: callback.
+	callback
+		ifNotNil: [ (callback hasOwnProperty: '$PjRefCount')
+				ifTrue: [ | currRefCnt |
+					currRefCnt := callback instVarNamed: '$PjRefCount'.
+					callback instVarNamed: '$PjRefCount' put: currRefCnt + 1 ] ].
+	oldCallback
+		ifNotNil: [ | currRefCnt |
+			currRefCnt := oldCallback instVarNamed: '$PjRefCount'.
+			currRefCnt > 0
+				ifTrue: [ oldCallback instVarNamed: '$PjRefCount' put: currRefCnt - 1.
+					(oldCallback instVarNamed: '$PjRefCount') == 0
+						ifTrue: [ oldCallback instVarNamed: '$PjProxyRemove' put: true.
+							^ oldCallback ] ] ].
+	^ true
 ]
 
 { #category : #'defaut instance' }
@@ -172,38 +135,11 @@ PjEvaluatorWebsocketDelegate >> close [
 	super close
 ]
 
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> command: aString [
-	<javascript:
-	'var top = (function(){return this})(),
-		match = aString.match(/^:(.)((\$_)?.*)/),
-		op = match[1],
-		name = match[2],
-		obj = top[name];
-	if (obj && op=="-") {
-		obj.$_jsName = undefined;
-		if (match[2])
-			delete top[name]
-	}'>
-]
-
 { #category : #connecting }
 PjEvaluatorWebsocketDelegate >> connectTo: urlString [
 	shouldRetryToConnectToServer := true.
 	bridgeUrlString := urlString.
 	super connectTo: urlString
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> doCallBack: aResult [
-	webSocket
-		send: (PjMessageResponse newWithContents: aResult) asPhxJsonString.
-	self logSent: aResult
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> eval: aString [
-	<jsGenerator: #eval_jsGenerator:>
 ]
 
 { #category : #'initialize-release' }
@@ -223,19 +159,15 @@ PjEvaluatorWebsocketDelegate >> logSent: aString [
 	console log: 'Sent: ',aString
 ]
 
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis [
-	^ self makeBlockClosureProxy: withThis stopPropagation: true
-]
-
-{ #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> makeBlockClosureProxy: withThis stopPropagation: stop [
-	<jsGenerator: #makeBlockClosureProxy_stopPropagation_jsGenerator:>
-]
-
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> makeInspect [
-	<jsGenerator: #makeInspect_jsGenerator:>
+	^ self
+		passJsThisArgumentToBlock: [ :this | 
+			self
+				tryToSendMessage:
+					(PjMessageInspect newWithId
+						subjectProxyInfo: this proxyResponse;
+						yourself) ]
 ]
 
 { #category : #connecting }
@@ -250,17 +182,28 @@ PjEvaluatorWebsocketDelegate >> onError: event [
 
 { #category : #'socket behavior' }
 PjEvaluatorWebsocketDelegate >> onMessage: event [
-	| jsonString aString msg |
+	| jsonString msg |
 	jsonString := event data.
 	msg := PhxJsonReader readFromString: jsonString.
-	aString := msg contents.
-	self logReceived: aString.
-	aString first = ':' ifTrue: [ ^ self command: aString ].
-	self timeout: [
-		aString := self eval: aString.
-		self isClosed ifFalse: [webSocket send: (PjMessageResponse newWithContents: aString) asPhxJsonString ].
-		self logSent: aString
-	] for: 0
+	self logReceived: msg logDescription.
+	msg evaluateInContext: self newMessageContext
+]
+
+{ #category : #'socket behavior' }
+PjEvaluatorWebsocketDelegate >> onOpen: event [
+	super onOpen: event.
+	self
+		tryToSendMessage:
+			(PjMessageSetClientId newWithId
+				clientId: self id;
+				yourself)
+]
+
+{ #category : #'initialize-release' }
+PjEvaluatorWebsocketDelegate >> passJsThisArgumentToBlock: aBlock [
+"Maybe this method should be moved to PjCore?"
+	<javascript: 'return function(){aBlock(this)}'>
+	
 ]
 
 { #category : #connecting }
@@ -270,6 +213,9 @@ PjEvaluatorWebsocketDelegate >> reconnect [
 ]
 
 { #category : #'socket behavior' }
-PjEvaluatorWebsocketDelegate >> timeout: aBlock for: milliseconds [
-	<javascript: 'setTimeout(aBlock,milliseconds)'>
+PjEvaluatorWebsocketDelegate >> tryToSendMessage: aMessage [
+	self isClosed
+		ifTrue: [ self logSent: 'Failed to send (websocket closed): ' , aMessage logDescription ]
+		ifFalse: [ webSocket send: aMessage asPhxJsonString.
+			self logSent: aMessage logDescription ]
 ]

@@ -3,7 +3,7 @@ A PjBridge is the facade that allows interacting (i.e. evaluting code) with a ja
 
 Example: 
 ""1) Start a bridge in a workspace""
-bridge := PjBridge startOn: 12345.
+bridge := PjBridge startOn: 12345 title: 'Example'.
 
 ""2) Open a web browser on http://localhost:12345""
 
@@ -45,35 +45,17 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'server',
-		'communicationTrialsCount',
-		'result',
 		'timeout',
-		'callbacks',
-		'executingCallbacks',
 		'proxies',
 		'blockClosures',
 		'client',
 		'runOnPharo',
 		'shouldStartJsInterpreter',
-		'transpiler'
+		'monitor',
+		'incomingMessageFrames'
 	],
 	#category : #'PharoJsBridge-Kernel'
 }
-
-{ #category : #'bridge handling' }
-PjBridge class >> bridge [
-	^ PjProxyLocalBridge value
-	" the following is a hack to make debugging workable if there is only 1 bridge in existence "
-		ifNil: [ | instances |
-			instances := self allInstances select: #isServerStarted.
-			instances size = 1 ifTrue: [ instances first ] ifFalse: [ nil ]
-		]
-]
-
-{ #category : #'bridge handling' }
-PjBridge class >> bridge: aBridge [
-	PjProxyLocalBridge value: aBridge
-]
 
 { #category : #'instance creation' }
 PjBridge class >> bridgeForAppClass: appClass [
@@ -83,8 +65,8 @@ PjBridge class >> bridgeForAppClass: appClass [
 { #category : #'instance creation' }
 PjBridge class >> bridgeForAppClass: appClass client: bridgeClient [
 	^ self new
-			client: bridgeClient;
-			appClass: appClass;
+			initializeWithClient: bridgeClient;
+			initializeWithAppClass: appClass;
 			yourself
 ]
 
@@ -110,9 +92,19 @@ PjBridge class >> openOn: portNumber title: title [
 		yourself
 ]
 
-{ #category : #'closure handling' }
-PjBridge class >> pollFor: aTime orUntil: aBlock [
-	^ self bridge pollFor: aTime orUntil: aBlock
+{ #category : #'bridge handling' }
+PjBridge class >> soleBridge [
+	^ PjProxyLocalBridge value
+	" the following is a hack to make debugging workable if there is only 1 bridge in existence "
+		ifNil: [ | instances |
+			instances := self allInstances select: #isServerStarted.
+			instances size = 1 ifTrue: [ instances first ] ifFalse: [ nil ]
+		]
+]
+
+{ #category : #'bridge handling' }
+PjBridge class >> soleBridge: aBridge [
+	PjProxyLocalBridge value: aBridge
 ]
 
 { #category : #'instance creation' }
@@ -124,30 +116,21 @@ PjBridge class >> startOn: portNumber title: title [
 
 { #category : #'bridge handling' }
 PjBridge class >> stop [
-	self bridge ifNotNil: [ self bridge stop . self bridge: nil.Smalltalk garbageCollect]
+	self soleBridge
+		ifNotNil: [ self soleBridge stop.
+			self soleBridge: nil.
+			Smalltalk garbageCollect ]
 ]
 
-{ #category : #accessing }
-PjBridge >> appClass: aPharoJsAppClass [
-	self client appClass: aPharoJsAppClass.
-	self client bridge: self.
-
-]
-
-{ #category : #'closure handling' }
-PjBridge >> blockClosure: aBlockClosure [
-	^ self blockClosures at: aBlockClosure ifAbsentPut: [
-		| proxy thisArg |
-		(aBlockClosure isKindOf: BlockClosure) ifFalse: [
-				^ PjJavascriptError signal: 'Must be a BlockClosure' ].
-		aBlockClosure hasMethodReturn ifTrue: [
-				^ PjJavascriptError signal: 'Block cannot have return' ].
-		thisArg := aBlockClosure argumentNames findFirst: [ : name | name='this' ].
-		proxy := self evalJavascript: self websocketDelegateClassName,
-			'.', transpiler pharoJsSelectorPrefix, 'default().', transpiler pharoJsSelectorPrefix, 'makeBlockClosureProxy_(',thisArg asString,')'.
-		proxy closure: aBlockClosure.
-		proxy
-	]
+{ #category : #activity }
+PjBridge >> acceptIncomingMessageFromClient: aMessage [
+	aMessage shouldEvaluateImmediately
+		ifTrue: [ aMessage processWithBridge: self.
+			monitor critical: [ monitor signal ].
+			^ self ].
+	monitor
+		critical: [ self incomingMessages add: aMessage.
+			monitor signal ]
 ]
 
 { #category : #'closure handling' }
@@ -158,14 +141,6 @@ PjBridge >> blockClosures [
 { #category : #accessing }
 PjBridge >> client [
 	^ client
-]
-
-{ #category : #accessing }
-PjBridge >> client: aClient [
-	client := aClient.
-	client bridge: self.
-	transpiler := aClient exporter transpiler.
-
 ]
 
 { #category : #initialization }
@@ -183,11 +158,6 @@ PjBridge >> defaultClientClass [
 	^self class defaultClientClass
 ]
 
-{ #category : #initialization }
-PjBridge >> defaultCommunicationTrialsCount [
-	^100
-]
-
 { #category : #'closure handling' }
 PjBridge >> deleteBlockClosure: aBlockClosure [
 	self blockClosures removeKey: aBlockClosure ifAbsent: [  ]
@@ -196,9 +166,11 @@ PjBridge >> deleteBlockClosure: aBlockClosure [
 { #category : #'bridge handling' }
 PjBridge >> deleteJsValue: jsName [
 	"Called by proxy finalizer see methode PjProxy>>jsName:onBridge:"
-	self proxies removeKey: jsName ifAbsent: [ ].
-	self isServerStopped ifTrue: [ ^self ].
-	self sendMessage: (PjMessageDeleteVar newWithContents: ':-',jsName).
+
+	self proxies removeKey: jsName ifAbsent: [  ].
+	self isServerStopped
+		ifTrue: [ ^ self ].
+	self sendMessage: (PjMessageDeleteGlobalVar newForVarName: jsName).
 	^ proxies
 ]
 
@@ -212,9 +184,36 @@ PjBridge >> dnuJsString [
 	^self transpiler dnuJsString
 ]
 
+{ #category : #initialization }
+PjBridge >> doInNewFrame: aBlock [
+	incomingMessageFrames add: OrderedCollection new.
+	aBlock value.
+	incomingMessageFrames removeLast.
+]
+
 { #category : #public }
-PjBridge >> ensureServerProcessAlive [
-	self server ensureProcessAlive
+PjBridge >> enableClientLogging [
+	self initializeWithClient: self client withClientLogging
+]
+
+{ #category : #'closure handling' }
+PjBridge >> ensureProxyForEventListenerBlock: aBlockClosure [
+	^ self blockClosures
+		at: aBlockClosure
+		ifAbsentPut: [ | thisArg includeEventTarget msg proxy |
+			(aBlockClosure isKindOf: BlockClosure)
+				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
+			aBlockClosure hasMethodReturn
+				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
+			thisArg := aBlockClosure argumentNames
+				findFirst: [ :name | name = 'this' ].
+			includeEventTarget := thisArg > 0.
+			msg := PjMessageMakeBlockClosureProxy newWithId.
+			msg includeEventTarget: includeEventTarget.
+			msg stopPropagation: true.
+			proxy := self sendMessageAndWaitForResponse: msg.
+			proxy closure: aBlockClosure.
+			proxy ]
 ]
 
 { #category : #public }
@@ -223,22 +222,13 @@ PjBridge >> evalBlock: aBlock [
 
 ]
 
-{ #category : #evaluating }
-PjBridge >> evalGetResult [
-	self
-		when: [
-			self isConnected ifFalse: [ ^ self ].
-			self isSyncDataAvailable] 
-		do: [self handOffResult: [ : val | ^ val ]]
-		onTimeOutDo: [ ^ PjJavascriptError signal: 'no response after ',self timeout printString ]	
-		timeOutDuration: self timeout
-]
-
 { #category : #public }
 PjBridge >> evalJavascript: javaScriptString [
-	self isConnected ifFalse: [ ^ nil ].
-	self sendMessage: (PjMessageEvaluate newWithContents: javaScriptString).
-	^ self evalGetResult
+	| msg |
+	self isConnected
+		ifFalse: [ ^ nil ].
+	msg := PjMessageEvaluateJavascript newWithContents: javaScriptString.
+	^ self sendMessageAndWaitForResponse: msg
 ]
 
 { #category : #public }
@@ -259,62 +249,19 @@ PjBridge >> evalMessage: jsMessage [
 { #category : #public }
 PjBridge >> evalMessage: aMessage sentTo: receiverName [
 	| jsMessage |
-	jsMessage := PjJavascriptMessage receiverId: receiverName selector: aMessage selector arguments: aMessage arguments.
-	^self evalMessage: jsMessage
-
+	jsMessage := PjJavascriptMessage
+		receiverId: receiverName
+		selector: aMessage selector
+		arguments: aMessage arguments.
+	^ self evalMessage: jsMessage
 ]
 
-{ #category : #public }
-PjBridge >> evalResult: serializedMessage [
-	| msg stonString |
-	msg := PhxJsonReader readFromString: serializedMessage.
-	stonString := msg contents.
-	self server logSocketRead: stonString.
-	^ self evalResult: stonString parsed: (PjSTONReader from: stonString)
-]
-
-{ #category : #evaluating }
-PjBridge >> evalResult: aString parsed: value [
-	value isLiteral ifTrue: [ ^ value ].
-	value isNumber ifTrue: [ ^ value ].
-	value at: #remove ifPresent: [ 
-		| proxy |
-		proxy := PjProxy nilOrProxyNamed: (value at: #proxy) asSymbol onBridge: self.
-		proxy closure: nil.
-		^ true ].
-	value at: #proxy ifPresent: [ : name | | proxy |
-		proxy := PjProxy nilOrProxyNamed: name asSymbol onBridge: self.
-		^ proxy ].
-	value at: #inspect ifPresent: [ : val |
-		| proxy |
-		proxy := self evalResult: aString parsed: val.
-		self scheduleCallback: [proxy inspect].
-		^ self ].
-	value at: #cb ifPresent: [ : array |
-		| proxy args |
-		proxy := PjProxy proxyNamed: array first onBridge: self.
-		args := array allButFirst collect: [ : each | self evalResult: aString parsed: each ].
-		self scheduleCallback: [ proxy runBlockClosure: args first with: args second ].
-		^ self ].
-	value at: #keys ifPresent: [ : map |
-		^ map collect: [ : val | self evalResult: aString parsed: val ] ].
-	value at: #exception ifPresent: [: message | ^ [ PjJavascriptError signal: message ] ].
-	^ [ PjJavascriptError signal: 'unrecognized response from browser:' , aString ]
-]
-
-{ #category : #evaluating }
-PjBridge >> executeAnyCallbacks [
-	executingCallbacks ifFalse: [
-		callbacks isEmpty ifFalse: [ | savedResult |
-			executingCallbacks := true.
-			savedResult := result.
-			result := self.
-			[callbacks isEmpty] whileFalse: [
-				callbacks removeFirst value
-			].
-			result := savedResult.
-			executingCallbacks := false
-	]]
+{ #category : #activity }
+PjBridge >> executeCallbacksUntilDepletion [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	[ self takeNextCallbackFromIncomingMessages
+		ifNil: [ ^ self ]
+		ifNotNil: [ :cb | self doInNewFrame: [cb processCallbackWithBridge: self] ] ] repeat
 ]
 
 { #category : #accessing }
@@ -322,47 +269,57 @@ PjBridge >> exporter [
 	^self client exporter
 ]
 
-{ #category : #activity }
-PjBridge >> handOffResult: aBlock [
-	result ~~ self ifTrue: [ | temp |
-		temp := result.
-		result := self.
-		temp isClosure ifTrue: [
-			aBlock value: temp value
-		] ifFalse: [
-			aBlock value: temp
-		]
-	]
+{ #category : #accessing }
+PjBridge >> incomingMessages [
+	^incomingMessageFrames last
+]
+
+{ #category : #evaluating }
+PjBridge >> incomingResponseMessageForSentMessage: aMsg [
+	^ self incomingMessages
+		detect: [ :msg | msg inResponseToId = aMsg id and: [ msg isCallback not ] ] ifNone: [ nil ]
 ]
 
 { #category : #initialization }
 PjBridge >> initialize [
 	super initialize.
-	executingCallbacks := false.
+	incomingMessageFrames := OrderedCollection
+		with: OrderedCollection new.
 	runOnPharo := false.
 	shouldStartJsInterpreter := true.
-	callbacks := OrderedCollection new.
 	self server: self serverClass new.
-	self finalizationRegistry add: self executor:
-		(ObjectFinalizer new
-			receiver: self server;
-			selector: #stop;
-			yourself).
-	communicationTrialsCount := self defaultCommunicationTrialsCount.
-	result := self.
+	self finalizationRegistry
+		add: self
+		executor:
+			(ObjectFinalizer new
+				receiver: self server;
+				selector: #stop;
+				yourself).
+	monitor := Monitor new
+]
 
+{ #category : #accessing }
+PjBridge >> initializeWithAppClass: aPharoJsAppClass [
+	self client initializeWithAppClass: aPharoJsAppClass.
+	self client initializeWithBridge: self.
+
+]
+
+{ #category : #accessing }
+PjBridge >> initializeWithClient: aClient [
+	client := aClient.
+	client initializeWithBridge: self
+]
+
+{ #category : #activity }
+PjBridge >> isClientIdReceived [
+	^ self client clientId notNil
 ]
 
 { #category : #public }
 PjBridge >> isConnected [
 	self webSocket ifNil: [ ^false ].
 	^self webSocket isConnected
-]
-
-{ #category : #activity }
-PjBridge >> isDataAvailable [
-	self isConnected ifFalse: [ ^false ].
-	^self webSocket stream isDataAvailable
 ]
 
 { #category : #public }
@@ -372,21 +329,12 @@ PjBridge >> isListening [
 
 { #category : #public }
 PjBridge >> isServerStarted [
-	^self server isRunning
+	^self server ifNil: [false] ifNotNil: [:s | s isStarted]
 ]
 
 { #category : #public }
 PjBridge >> isServerStopped [
-	^self isServerStarted not
-]
-
-{ #category : #evaluating }
-PjBridge >> isSyncDataAvailable [
-	[result == self and: [self isDataAvailable]] whileTrue: [
-		result := self evalResult: (self webSocket readMessage).
-	].
-	self executeAnyCallbacks.
-	^ result ~~ self
+	^self server ifNil: [true] ifNotNil: [self server isStarted not]
 ]
 
 { #category : #public }
@@ -428,15 +376,6 @@ PjBridge >> openOn: portNumber title: title [
 	self port: portNumber
 ]
 
-{ #category : #public }
-PjBridge >> pollFor: aTime orUntil: aBlock [
-	self
-		when: [ aBlock value ifNotNil: [ : value | ^ value ] ifNil: [self isSyncDataAvailable]] 
-		do: [ self handOffResult: []]
-		onTimeOutDo: [ ^ aBlock value ]	
-		timeOutDuration: aTime
-]
-
 { #category : #accessing }
 PjBridge >> port [
 	^self server port
@@ -456,28 +395,33 @@ PjBridge >> proxies [
 PjBridge >> resetClient [
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
-	self
-		sendMessage:
-			(PjMessageReload
-				newWithContents:
-					self websocketDelegateClassName , '.'
-						, transpiler pharoJsSelectorPrefix , 'reload_(true)').
-	self resetProxies.
+	self sendMessage: PjMessageReload new.
+	self resetProxiesImmediately.
 	self client reset.
-	self
+	"self
 		when: [ self webSocket ~~ oldWebSocket ]
-		do: [ oldWebSocket close ]
+		do: [ oldWebSocket isConnected
+				ifTrue: [ oldWebSocket close ] ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
-		timeOutDuration: self client startTimeout
+		timeOutDuration: self client startTimeout."
+	self waitForClientToStart
 ]
 
 { #category : #initialization }
-PjBridge >> resetProxies [
+PjBridge >> resetProxiesImmediately [
+	"Leaving this to garbage collection leads to inpredictable results,
+	because finalizations might occur in a next (reloaded) client JS session"
+	self proxies
+		do: [ :v | 
+			(self finalizationRegistry remove: v ifAbsent: [ nil ])
+				ifNotNil: [ :finalizerItem | "finalizerItem finalizeValues"
+					"For now, NOT executing the finalizations (which sends delete proxy messages to the client), because of unknown problems.
+					This should be made synchronous anyway by waiting for acknowledgement from client.
+					For now, removing them (inactivating) is enough, we only execute this method when we no further need the client."
+					].
+			true ].
 	proxies := nil.
-	"Ensure that proxies are actually suppressed which lead to releasing the objects on the JS side"
-	"This is achieved by calling BjBridge>>#cleanUpJsSide"
-	Smalltalk garbageCollect. 
-
+	"Smalltalk garbageCollect. "
 ]
 
 { #category : #public }
@@ -486,23 +430,27 @@ PjBridge >> restart [
 	self start
 ]
 
-{ #category : #evaluating }
-PjBridge >> scheduleCallback: aBlock [
-	callbacks ifNil: [ callbacks := OrderedCollection new ].
-	callbacks add: aBlock
-]
-
 { #category : #activity }
 PjBridge >> sendMessage: aMessage [
-"	| msg |
-	msg := PjMessage new.
-	msg contents: aString."
-	self
-		when: [ self isConnected ]
-		do: [ self webSocket sendMessage: aMessage asPhxJsonString.
-			self server logSocketWritten: aMessage logDescription ]
-		onTimeOutDo: [ self inform: 'WebSocket is NOT avaialble' ]
-		timeOutDuration: 100 milliSeconds
+	[ self webSocket
+		ifNotNil: [ :ws | 
+			ws sendMessage: aMessage asPhxJsonString.
+			self server logSocketWritten: aMessage logDescription ] ]
+		on: Error
+		do: [ :ex | ex return ]
+]
+
+{ #category : #public }
+PjBridge >> sendMessageAndWaitForResponse: msg [
+	| responseMsg resultForSentMessage |
+	self sendMessage: msg.
+	monitor
+		critical: [ monitor
+				waitUntil: [ responseMsg := self incomingResponseMessageForSentMessage: msg.
+					responseMsg notNil ] ].
+	resultForSentMessage := self valueFromResponseMessage: responseMsg.
+	self executeCallbacksUntilDepletion.
+	^ resultForSentMessage
 ]
 
 { #category : #accessing }
@@ -511,8 +459,9 @@ PjBridge >> server [
 ]
 
 { #category : #accessing }
-PjBridge >> server: anObject [
-	server := anObject
+PjBridge >> server: aServer [
+	server := aServer.
+	aServer ifNotNil: [aServer bridge: self]
 ]
 
 { #category : #accessing }
@@ -522,7 +471,7 @@ PjBridge >> serverAddress [
 
 { #category : #initialization }
 PjBridge >> serverClass [
-	^PjServer
+	^PjBridgeServer
 ]
 
 { #category : #accessing }
@@ -576,30 +525,34 @@ PjBridge >> startOn: portNumber title: title [
 
 { #category : #public }
 PjBridge >> startWithoutWaitingForClient [
-	self isServerStarted
-		ifTrue: [ ^ self ].
 	self server start.
-	self
-		when: [ self isServerStarted ]
-		do: [  ]
-		onTimeOutDo: [ self server start ]
-		timeOutDuration: 200 milliSeconds.
-	self waitForServerToStart.
 	self client start
 ]
 
 { #category : #public }
 PjBridge >> stop [
 	self client stop.
-	self stopServer.
+	self server ifNotNil: [self server stop].
 
 ]
 
 { #category : #activity }
-PjBridge >> stopServer [
-	self isServerStopped ifTrue: [ ^self ].
-	self server stop.
-	self waitForServerToStop 
+PjBridge >> takeNextCallbackFromIncomingMessages [
+	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
+	self incomingMessages
+		detect: [ :msg | msg isCallback ]
+		ifFound: [ :cb | 
+			self incomingMessages remove: cb.
+			^ cb ]
+		ifNone: [ ^ nil ]
+]
+
+{ #category : #public }
+PjBridge >> tearDown [
+	self stop.
+	self server
+		ifNotNil: [ self server tearDown.
+			self server: nil ]
 ]
 
 { #category : #public }
@@ -631,17 +584,29 @@ PjBridge >> transpiler [
 ]
 
 { #category : #activity }
+PjBridge >> valueFromResponseMessage: responseMsg [
+	| result |
+	self incomingMessages remove: responseMsg.
+	result := responseMsg getValueWithBridge: self.
+	result := result isClosure
+		ifTrue: [ result value ]
+		ifFalse: [ result ].
+	^ result
+]
+
+{ #category : #activity }
 PjBridge >> waitForClientToStart [
 	self waitForClientToStartFor: self client startTimeout
 ]
 
 { #category : #activity }
 PjBridge >> waitForClientToStartFor: time [
-	self 
-		when: [self isConnected] 
-		do: [^self] 
-		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
-		timeOutDuration: time
+	monitor
+		critical: [ monitor
+				waitUntil: [ self isClientIdReceived ]
+				maxMilliseconds: time asMilliSeconds ].
+	self isClientIdReceived
+		ifFalse: [ self error: 'Javascript interpreter NOT available' ]
 ]
 
 { #category : #activity }
@@ -651,24 +616,6 @@ PjBridge >> waitForClientToStartFor: time doing: aBlock [
 		do: [^self] 
 		onTimeOutDo: [self error: 'Javascript interpreter NOT available']
 		timeOutDuration: time
-]
-
-{ #category : #activity }
-PjBridge >> waitForServerToStart [
-	self 
-		when: [self isServerStarted] 
-		do: [^self] 
-		onTimeOutDo: [ self error: 'Server not ready' ]
-
-]
-
-{ #category : #activity }
-PjBridge >> waitForServerToStop [
-	self 
-		when: [self isServerStopped] 
-		do: [^self] 
-		onTimeOutDo: [ self error: 'Server not stopped yet' ]
-
 ]
 
 { #category : #accessing }
@@ -682,29 +629,24 @@ PjBridge >> webSocketUrlTag [
 ]
 
 { #category : #initialization }
+PjBridge >> websocketDelegateClass [
+	^self client websocketDelegateClass
+]
+
+{ #category : #initialization }
 PjBridge >> websocketDelegateClassName [
 	^self client websocketDelegateClassName
 ]
 
 { #category : #activity }
-PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock [
-	^self when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeOutDuration: self timeout
-]
-
-{ #category : #activity }
 PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeOutDuration: maxWaitDuration [
 	| waitTime |
-	waitTime := maxWaitDuration / communicationTrialsCount.
+	waitTime := maxWaitDuration / 100.
 	waitTime < self minimumStepDuration ifTrue: [waitTime := self minimumStepDuration].
-	communicationTrialsCount timesRepeat: [
+	100 timesRepeat: [
 		conditionBlock value ifTrue: [ ^actionBlock value ].
 		waitTime wait.
 	].
 	^failureBlock value.	
 
-]
-
-{ #category : #public }
-PjBridge >> withClientLogging [
-	self client: self client withClientLogging
 ]
