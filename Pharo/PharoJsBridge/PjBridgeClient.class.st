@@ -33,7 +33,6 @@ PjBridgeClient >> bridge [
 
 { #category : #accessing }
 PjBridgeClient >> clientId [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	^ clientId
 ]
 

@@ -52,11 +52,10 @@ PjProxyManager class >> getOidFrom: anObject [
 
 { #category : #'instance creation' }
 PjProxyManager class >> makeBlockClosureProxy: withThis stopPropagation: stop for: webSocketDelegate [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	| blockClosure oid |
 	oid := PjProxyManager nextOid.
 	blockClosure := [ :ev | 
-	| target msg|
+	| target msg |
 	stop
 		ifTrue: [ ev stopPropagation ].
 	target := withThis

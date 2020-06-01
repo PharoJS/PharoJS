@@ -17,8 +17,7 @@ PjMessageEvaluationResponse >> contentsObject [
 
 { #category : #public }
 PjMessageEvaluationResponse >> getValueWithBridge: aBridge [
-	"^ aBridge evalResult: self contents parsed: self contentsObject"
-
+	<PjTodo: 'Too much testing going here, further refactoring needed'>
 	| value |
 	value := self contentsObject.
 	value isLiteral
@@ -30,7 +29,6 @@ PjMessageEvaluationResponse >> getValueWithBridge: aBridge [
 				ifTrue: [ ^ nil ] ].
 	(value isKindOf: PjProxyInfo)
 		ifTrue: [ ^ value proxyForBridge: aBridge ].
-	self halt.
 	^ [ PjJavascriptError
 		signal: 'unrecognized response from browser:' , contents ]
 ]

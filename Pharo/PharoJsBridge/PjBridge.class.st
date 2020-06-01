@@ -165,6 +165,7 @@ PjBridge >> deleteBlockClosure: aBlockClosure [
 
 { #category : #'bridge handling' }
 PjBridge >> deleteJsValue: jsName [
+	<PjTodo: 'should use PjProxyInfo'>
 	"Called by proxy finalizer see methode PjProxy>>jsName:onBridge:"
 
 	self proxies removeKey: jsName ifAbsent: [  ].
@@ -258,7 +259,6 @@ PjBridge >> evalMessage: aMessage sentTo: receiverName [
 
 { #category : #activity }
 PjBridge >> executeCallbacksUntilDepletion [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	[ self takeNextCallbackFromIncomingMessages
 		ifNil: [ ^ self ]
 		ifNotNil: [ :cb | self doInNewFrame: [cb processCallbackWithBridge: self] ] ] repeat
@@ -538,7 +538,6 @@ PjBridge >> stop [
 
 { #category : #activity }
 PjBridge >> takeNextCallbackFromIncomingMessages [
-	<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
 	self incomingMessages
 		detect: [ :msg | msg isCallback ]
 		ifFound: [ :cb | 

@@ -16,6 +16,7 @@ PjMessageDeleteGlobalVar class >> newForVarName: jsName [
 
 { #category : #public }
 PjMessageDeleteGlobalVar >> evaluateInContext: aMessageContext [
+	<PjTodo: 'should use PjProxyInfo'>
 	PjProxyManager deleteGlobalVarNamed: self varName
 ]
 

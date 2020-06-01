@@ -64,7 +64,7 @@ PjEvaluatorWebsocketDelegate class >> includeClasses [
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
-	Smalltalk at: 'PjBridge' ifPresent: [ ^ self ].
+	Smalltalk at: #PjBridge ifPresent: [ ^ self ].
 	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
 		do: [ :each | 
 			(global at: each)
@@ -94,29 +94,6 @@ false - Default. Reloads the current page from the cache.
 true - Reloads the current page from the server."
 	location reload: aBoolean.
 	
-]
-
-{ #category : #'proxy support' }
-PjEvaluatorWebsocketDelegate class >> set: anObject callback: trigger to: callback [
-<PhxTicket: 'T#000322' name: 'Refactoring ParoJs PjBridge'>
-	| fullTriggerName oldCallback |
-	fullTriggerName := 'on' , trigger.
-	oldCallback := anObject instVarNamed: fullTriggerName.
-	anObject instVarNamed: fullTriggerName put: callback.
-	callback
-		ifNotNil: [ (callback hasOwnProperty: '$PjRefCount')
-				ifTrue: [ | currRefCnt |
-					currRefCnt := callback instVarNamed: '$PjRefCount'.
-					callback instVarNamed: '$PjRefCount' put: currRefCnt + 1 ] ].
-	oldCallback
-		ifNotNil: [ | currRefCnt |
-			currRefCnt := oldCallback instVarNamed: '$PjRefCount'.
-			currRefCnt > 0
-				ifTrue: [ oldCallback instVarNamed: '$PjRefCount' put: currRefCnt - 1.
-					(oldCallback instVarNamed: '$PjRefCount') == 0
-						ifTrue: [ oldCallback instVarNamed: '$PjProxyRemove' put: true.
-							^ oldCallback ] ] ].
-	^ true
 ]
 
 { #category : #'defaut instance' }
@@ -201,7 +178,7 @@ PjEvaluatorWebsocketDelegate >> onOpen: event [
 
 { #category : #'initialize-release' }
 PjEvaluatorWebsocketDelegate >> passJsThisArgumentToBlock: aBlock [
-"Maybe this method should be moved to PjCore?"
+	<PjTodo: 'Maybe this method should be moved to PjCore?'>
 	<javascript: 'return function(){aBlock(this)}'>
 	
 ]
