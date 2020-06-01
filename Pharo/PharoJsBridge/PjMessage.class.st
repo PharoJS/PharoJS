@@ -3,8 +3,7 @@ Class {
 	#superclass : #PjDomController,
 	#instVars : [
 		'contents',
-		'id',
-		'addresseeId'
+		'id'
 	],
 	#classVars : [
 		'currentId'
@@ -30,16 +29,6 @@ PjMessage class >> newWithId [
 PjMessage class >> nextMessageId [
 	currentId := currentId ifNil: [ 1 ] ifNotNil: [ :id | id + 1 ].
 	^ currentId
-]
-
-{ #category : #accessing }
-PjMessage >> addresseeId [
-	^ addresseeId
-]
-
-{ #category : #accessing }
-PjMessage >> addresseeId: anObject [
-	addresseeId := anObject
 ]
 
 { #category : #accessing }
@@ -94,9 +83,4 @@ PjMessage >> printOn: ws [
 	ws << 'id:'.
 	ws << self id.
 
-]
-
-{ #category : #'socket behavior' }
-PjMessage >> timeout: aBlock for: milliseconds [
-	<javascript: 'setTimeout(aBlock,milliseconds)'>
 ]

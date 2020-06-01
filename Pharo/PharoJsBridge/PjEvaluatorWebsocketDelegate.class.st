@@ -68,16 +68,16 @@ PjEvaluatorWebsocketDelegate class >> initialize [
 	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
 		do: [ :each | 
 			(global at: each)
-				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
+				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
 ]
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initializePrivate [
-
 	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
 		do: [ :each | 
 			(global at: each)
-				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidVarName putHidden: each ] ]
+				ifNotNil:
+					[ :obj | obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
 ]
 
 { #category : #'defaut instance' }

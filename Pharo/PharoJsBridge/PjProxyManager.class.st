@@ -21,10 +21,7 @@ PjProxyManager class >> deleteGlobalVarNamed: globalId [
 	globalId isEmpty
 		ifTrue: [ ^ self ].
 	(global instVarNamed: globalId)
-		ifNotNil: [ :obj | 
-			obj
-				ifNotNil: [ "self removeGlobalId: globalId fromObject: obj."
-					global removeKey: globalId ] ]
+		ifNotNil: [ :obj | obj ifNotNil: [ global removeKey: globalId ] ]
 ]
 
 { #category : #'instance creation' }
@@ -47,7 +44,7 @@ PjProxyManager class >> ensureOidOnObject: anObject [
 
 { #category : #'instance creation' }
 PjProxyManager class >> getOidFrom: anObject [
-	^anObject instVarNamed: self oidVarName
+	^anObject instVarNamed: self oidInstVarName
 ]
 
 { #category : #'instance creation' }
@@ -90,11 +87,11 @@ PjProxyManager class >> nextOid [
 ]
 
 { #category : #'default instance' }
-PjProxyManager class >> oidVarName [
+PjProxyManager class >> oidInstVarName [
 	^ '$_oid'
 ]
 
 { #category : #'instance creation' }
 PjProxyManager class >> setOid: anOid on: anObject [
-	anObject instVarNamed: self oidVarName putHidden: anOid
+	anObject instVarNamed: self oidInstVarName putHidden: anOid
 ]

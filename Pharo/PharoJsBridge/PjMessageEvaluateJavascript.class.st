@@ -7,8 +7,8 @@ Class {
 { #category : #public }
 PjMessageEvaluateJavascript >> evaluateInContext: aMessageContext [
 	self
-		timeout: [ self evaluateInContextPrivate: aMessageContext ]
-		for: 0
+		setTimeout: [ self evaluateInContextPrivate: aMessageContext ]
+		afterMilliseconds: 0
 ]
 
 { #category : #public }

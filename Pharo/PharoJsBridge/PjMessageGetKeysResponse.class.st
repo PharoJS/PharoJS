@@ -1,33 +1,12 @@
 Class {
 	#name : #PjMessageGetKeysResponse,
-	#superclass : #PjMessageC2s,
-	#instVars : [
-		'inResponseToId'
-	],
+	#superclass : #PjMessageC2sInResponseTo,
 	#category : #'PharoJsBridge-Messages'
 }
 
 { #category : #public }
-PjMessageGetKeysResponse >> contentsObject [
-	<pharoJsSkip>
-	^ self contents isString
-		ifTrue: [ PjSTONReader from: self contents ]
-		ifFalse: [ self contents ]
-]
-
-{ #category : #public }
 PjMessageGetKeysResponse >> getValueWithBridge: aBridge [
 	^ self contents
-]
-
-{ #category : #accessing }
-PjMessageGetKeysResponse >> inResponseToId [
-	^ inResponseToId
-]
-
-{ #category : #accessing }
-PjMessageGetKeysResponse >> inResponseToId: anObject [
-	inResponseToId := anObject
 ]
 
 { #category : #printing }
