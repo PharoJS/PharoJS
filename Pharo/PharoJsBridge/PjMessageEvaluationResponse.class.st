@@ -13,16 +13,16 @@ PjMessageEvaluationResponse >> contentsDescription [
 { #category : #public }
 PjMessageEvaluationResponse >> contentsObject [
 	<pharoJsSkip>
-"	^ self contents isString
+	^ self contents isString
 		ifTrue: [ PjSTONReader from: self contents ]
-		ifFalse: [ self contents ]"
+		ifFalse: [ self contents ]
 ]
 
 { #category : #public }
 PjMessageEvaluationResponse >> getValueWithBridge: aBridge [
 	<PjTodo: 'Too much testing going here, further refactoring needed'>
 	| value |
-	value := self contents.
+	value := self contentsObject.
 	value isLiteral
 		ifTrue: [ ^ value ].
 	value isNumber
