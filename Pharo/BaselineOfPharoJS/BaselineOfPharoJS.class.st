@@ -45,8 +45,11 @@ BaselineOfPharoJS >> baseline: spec [
 				spec requires: #(#PharoJsTranspilerOptimization 'PharoJsBridge' ). ];
 			package: 'PharoJsTools' with: [
 				spec requires: #('PharoJsBridge' ). ];
-			package: 'PharoJsTranspiler' with: [
-				spec requires: #('Equals' ). ];
+			package: 'PharoJsTranspiler' with: [|reqs|
+				reqs := OrderedCollection with: 'Equals'.
+				SystemVersion current major = 7 ifTrue: [ reqs add: 'PharoJsPharo7'  ].
+				SystemVersion current major = 8 ifTrue: [ reqs add: 'PharoJsPharo8'  ].
+				spec requires: reqs ];
 			package: 'PharoJsTranspilerOptimization' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsSerialization' with: [

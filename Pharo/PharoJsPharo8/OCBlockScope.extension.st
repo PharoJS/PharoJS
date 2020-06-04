@@ -1,6 +1,6 @@
 Extension { #name : #OCBlockScope }
 
-{ #category : #'*PharoJsCoreLibraries' }
+{ #category : #'*PharoJsPharo8' }
 OCBlockScope >> outerScopeLookupVar: name inContext: aContext [
 	^ self outerScope 
 		lookupVar: name
