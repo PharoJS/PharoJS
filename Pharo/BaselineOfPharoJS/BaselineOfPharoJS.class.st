@@ -51,7 +51,7 @@ BaselineOfPharoJS >> baseline: spec [
 				reqs := OrderedCollection with: 'Equals'.
 				SystemVersion current major = 7 ifTrue: [ reqs add: 'PharoJsPharo7'  ].
 				SystemVersion current major = 8 ifTrue: [ reqs add: 'PharoJsPharo8'  ].
-				spec requires: reqs ];
+				spec requires: reqs asArray ];
 			package: 'PharoJsTranspilerOptimization' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsSerialization' with: [
