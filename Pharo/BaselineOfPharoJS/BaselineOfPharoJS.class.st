@@ -23,6 +23,8 @@ BaselineOfPharoJS >> baseline: spec [
 				spec
 					repository: 'github://svenvc/zinc' ].
 		spec 
+			package: 'PharoJsPharo7';
+			package: 'PharoJsPharo8';
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsBridge' with: [
