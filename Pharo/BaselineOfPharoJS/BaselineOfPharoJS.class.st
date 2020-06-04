@@ -22,7 +22,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'Zinc-WebSocket-Core' with: [
 				spec
 					repository: 'github://svenvc/zinc' ].
-		spec 
+		spec
 			package: 'PharoJsPharo7';
 			package: 'PharoJsPharo8';
 			package: 'PharoJsApp' with: [
