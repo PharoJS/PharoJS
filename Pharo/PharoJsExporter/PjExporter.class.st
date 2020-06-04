@@ -57,10 +57,12 @@ PjExporter >> addClass: aClass [
 ]
 
 { #category : #adding }
-PjExporter >> addPackage: packageName [ 
-	| classesInPackage |
-	classesInPackage := SystemNavigation default allClassesInPackageNamed: packageName asString.
-	self addAllClasses: classesInPackage.
+PjExporter >> addPackage: packageName [
+	| package |
+	package := ClySystemEnvironment currentImage packageOrganizer
+		packageNamed: packageName asString
+		ifAbsent: [ ^ self ].
+	self addAllClasses: package classes
 ]
 
 { #category : #accessing }

@@ -37,11 +37,13 @@ PjClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 
 { #category : #public }
 PjClosedBlockClosure >> externalVariable: name fromContext: context [
-	|value scope|
-	scope := context sourceNode scope.
+	|value scope sourceNode |
+	sourceNode := (context method
+		sourceNodeForPC: context previousPcWithCorrectMapping)
+		enclosingMethodOrBlockNode.
+	scope := sourceNode scope.
 	value := scope lookupVar: name inContext: context.
 	^[value ifNil: [ scope outerScopeLookupVar: name inContext: context ]] on: Error do: [nil].
-
 ]
 
 { #category : #public }
@@ -53,6 +55,27 @@ PjClosedBlockClosure >> externalVariable: name fromMethod: method [
 PjClosedBlockClosure >> externalVariables [
 	^ externalVariables ifNil: [
 		externalVariables := self externalVariablesOf: self originalBlock]
+]
+
+{ #category : #public }
+PjClosedBlockClosure >> externalVariablesOf: aBlock [
+	| context method variables tempValue sourceNode |
+	variables := Dictionary new.
+	context := aBlock outerContext.
+	sourceNode := (context method
+		sourceNodeForPC: context previousPcWithCorrectMapping)
+		enclosingMethodOrBlockNode.
+	sourceNode scope allTempNames
+		do: [ :name | 
+			tempValue := self externalVariable: name fromContext: context.
+			variables at: name put: tempValue ].
+	method := aBlock home receiver.
+	method class allInstVarNames
+		do: [ :name | 
+			variables
+				at: name
+				put: (self externalVariable: name fromMethod: method) ].
+	^ variables
 ]
 
 { #category : #testing }

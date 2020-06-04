@@ -112,11 +112,24 @@ PjDependentTranspiler >> discoveredGlobalsPool: aClass [
 
 { #category : #loading }
 PjDependentTranspiler >> discoveredReferenceToClass: aClass [
+	"aClass == Random
+		ifTrue: [ self halt ].
+	aClass == SharedRandom
+		ifTrue: [ self halt ].
+	aClass == Color
+		ifTrue: [ self halt ].
+	aClass == TextColor
+		ifTrue: [ self halt ].
+	aClass == GTObjectPrinter
+		ifTrue: [ self halt ].
+	aClass == OrderedDictionary
+		ifTrue: [ self halt ]."
+		
 	^ self addClassToConvert: aClass
 ]
 
 { #category : #transpiling }
-PjDependentTranspiler >> generateCodeStringFrom: jsAst. [
+PjDependentTranspiler >> generateCodeStringFrom: jsAst [.
 	self convertAllClasses: classesToConvert.
 	super generateCodeStringFrom: jsAst.
 
