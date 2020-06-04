@@ -58,11 +58,8 @@ PjExporter >> addClass: aClass [
 
 { #category : #adding }
 PjExporter >> addPackage: packageName [
-	| package |
-	package := ClySystemEnvironment currentImage packageOrganizer
-		packageNamed: packageName asString
-		ifAbsent: [ ^ self ].
-	self addAllClasses: package classes
+	self
+		addAllClasses: (SystemOrganizer default classesInCategory: packageName asString)
 ]
 
 { #category : #accessing }
