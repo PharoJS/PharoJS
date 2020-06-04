@@ -14,7 +14,7 @@ PjSortedCollection class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
 		SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting: addAll: reSort sort:to: )).
-		SortedCollection class -> #( sortBlock: "sortUsing:").
+		SortedCollection class -> #( sortBlock: sortUsing:).
 		}
 ]
 
