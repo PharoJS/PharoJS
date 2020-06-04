@@ -22,9 +22,10 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'Zinc-WebSocket-Core' with: [
 				spec
 					repository: 'github://svenvc/zinc' ].
-		spec
-			package: 'PharoJsPharo7';
-			package: 'PharoJsPharo8';
+				
+		SystemVersion current major = 7 ifTrue: [ spec package: 'PharoJsPharo7' ].
+		SystemVersion current major = 8 ifTrue: [ spec package: 'PharoJsPharo8' ].
+		spec 
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsBridge' with: [
@@ -47,11 +48,8 @@ BaselineOfPharoJS >> baseline: spec [
 				spec requires: #(#PharoJsTranspilerOptimization 'PharoJsBridge' ). ];
 			package: 'PharoJsTools' with: [
 				spec requires: #('PharoJsBridge' ). ];
-			package: 'PharoJsTranspiler' with: [|reqs|
-				reqs := OrderedCollection with: 'Equals'.
-				SystemVersion current major = 7 ifTrue: [ reqs add: 'PharoJsPharo7'  ].
-				SystemVersion current major = 8 ifTrue: [ reqs add: 'PharoJsPharo8'  ].
-				spec requires: reqs asArray ];
+			package: 'PharoJsTranspiler' with: [
+				spec requires: #('Equals' ). ];
 			package: 'PharoJsTranspilerOptimization' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
 			package: 'PharoJsSerialization' with: [
