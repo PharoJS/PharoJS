@@ -39,8 +39,9 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 		Array -> #( isArray ).
 		ByteArray -> #( asString).
 		OrderedCollection -> #( join: addAllLast:).
+		Collection ->#(doWithIndex:).
 		SequenceableCollection -> #(
-			doWithIndex: withIndexDo: 
+			 withIndexDo: 
 			allButFirst allButFirst: allButLast allButLast:
 			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with: reverseDo: appendTo:
 		).

@@ -221,7 +221,7 @@ PjTranspiler >> does: last reference: first [
 			methodsReferencingFirst := SystemNavigation
 				globalRefsForPharoJS: first classToUseForJsConversion name.
 			methodsReferencingFirst asSet
-				collect: [ :each | each actualClass instanceSide ] ].
+				collect: [ :each | each methodClass instanceSide ] ].
 	(classesReferencingFirst includes: last)
 		ifTrue: [ ^ true ].
 	classesReferencingFirst
