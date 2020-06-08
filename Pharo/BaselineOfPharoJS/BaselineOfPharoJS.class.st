@@ -11,6 +11,9 @@ Class {
 BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
+
+	spec for: #'pharo7.x' do: [ spec package: 'PharoJsPharo7' ].
+	spec for: #'pharo8.x' do: [ spec package: 'PharoJsPharo8' ].	
 	spec for: #'common' do: [
 		spec 
 			baseline: 'PharoExtra' with: [
@@ -23,8 +26,6 @@ BaselineOfPharoJS >> baseline: spec [
 				spec
 					repository: 'github://svenvc/zinc' ].
 				
-		SystemVersion current major = 7 ifTrue: [ spec package: 'PharoJsPharo7' ].
-		SystemVersion current major = 8 ifTrue: [ spec package: 'PharoJsPharo8' ].
 		spec 
 			package: 'PharoJsApp' with: [
 				spec requires: #('PharoJsTranspiler' ). ];
