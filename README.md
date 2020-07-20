@@ -1,6 +1,6 @@
 # PharoJS: Develop in Pharo, Run on Javascript
 
-PharoJS is currently available for Pharo 7 only.
+PharoJS is currently available for Pharo 7 and Pharo 8.
 
 To install PharoJS, perform the following code in a playground:
 

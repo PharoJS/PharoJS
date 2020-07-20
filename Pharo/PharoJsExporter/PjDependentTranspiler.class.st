@@ -116,7 +116,7 @@ PjDependentTranspiler >> discoveredReferenceToClass: aClass [
 ]
 
 { #category : #transpiling }
-PjDependentTranspiler >> generateCodeStringFrom: jsAst. [
+PjDependentTranspiler >> generateCodeStringFrom: jsAst [.
 	self convertAllClasses: classesToConvert.
 	super generateCodeStringFrom: jsAst.
 

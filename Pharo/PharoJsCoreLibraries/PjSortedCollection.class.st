@@ -5,11 +5,16 @@ Class {
 }
 
 { #category : #'pharoJs support' }
+PjSortedCollection class >> jsSortUsing: aBlock [
+   ^ (self respondsTo: #sortUsing:) ifTrue: [ self sortUsing: aBlock] ifFalse: [ self new sortBlock: aBlock ]
+]
+
+{ #category : #'pharoJs support' }
 PjSortedCollection class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
-		SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting: addAll: reSort sort:to:)).
-		SortedCollection class -> #( sortBlock: ).
+		SortedCollection -> (SortedCollection selectors copyWithoutAll: #(collect: insert:before: indexForInserting: addAll: reSort sort:to: )).
+		SortedCollection class -> #( sortBlock: sortUsing:).
 		}
 ]
 

@@ -57,10 +57,9 @@ PjExporter >> addClass: aClass [
 ]
 
 { #category : #adding }
-PjExporter >> addPackage: packageName [ 
-	| classesInPackage |
-	classesInPackage := SystemNavigation default allClassesInPackageNamed: packageName asString.
-	self addAllClasses: classesInPackage.
+PjExporter >> addPackage: packageName [
+	self
+		addAllClasses: (SystemOrganizer default classesInCategory: packageName asString)
 ]
 
 { #category : #accessing }

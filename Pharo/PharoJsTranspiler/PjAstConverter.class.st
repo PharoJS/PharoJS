@@ -630,6 +630,15 @@ PjAstConverter >> visitLiteralNode: aRBLiteralValueNode [
 ]
 
 { #category : #visiting }
+PjAstConverter >> visitLiteralValueNode: aRBLiteralValueNode [ 
+	^ aRBLiteralValueNode value ifNil: [
+			PjNilNode new
+		] ifNotNil: [ : nonNil |
+			PjLiteralValueNode value: nonNil
+		]
+]
+
+{ #category : #visiting }
 PjAstConverter >> visitMessageNode: aRBMessageNode [ 
 	^ self visitMessageNode: aRBMessageNode isNonNil: false
 ]
