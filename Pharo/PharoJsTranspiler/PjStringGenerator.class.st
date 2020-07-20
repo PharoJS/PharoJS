@@ -353,7 +353,7 @@ PjStringGenerator >> visitFieldNode: aPjFieldNode [
 	| target isLiteral isNonNil |
 	target := aPjFieldNode target.
 	isLiteral := target isLiteralNode and: [ target value isInteger ].
-	isNonNil := isLiteral or: [ aPjFieldNode isNonNil ].
+	isNonNil := true"isLiteral or: [ aPjFieldNode isNonNil ]".
 	self
 		atPrecedence: MemberAccessPrecedence do: [
 			isNonNil ifTrue: [

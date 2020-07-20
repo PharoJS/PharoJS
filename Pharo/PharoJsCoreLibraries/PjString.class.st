@@ -237,11 +237,16 @@ PjString >> endsWith: suffix [
 ]
 
 { #category : #accessing }
+PjString >> findString: substring startingAt: start [
+	<javaScript: 'return this.indexOf(substring,start-1)+1'>
+]
+
+{ #category : #accessing }
 PjString >> first [
 	^self at: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjString >> first: n [
 	^ self js_substring: 0 to: n
 ]

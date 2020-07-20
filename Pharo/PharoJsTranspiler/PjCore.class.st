@@ -148,7 +148,7 @@ PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anOb
 		^ func js_apply: anObject args: args 
 	] ifFalse: [
 		type := anObject.
-		[ type notNil ] whileTrue: [
+		[ nil = type ] whileFalse: [
 			((type js_hasOwnProperty: selector) and: [
 				'function'  = (type js_at: selector) typeof ]) ifTrue: [
 				func := type js_at: selector.
