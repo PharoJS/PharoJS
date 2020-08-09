@@ -145,7 +145,21 @@ PjDictionaryTest >> testNonInterference [
 ]
 
 { #category : #testing }
-PjDictionaryTest >> testUseObjectsAsKeys [
+PjDictionaryTest >> testUseObjectsAsKeysForDictionary [
+	self assert: [
+		|dict firstKey secondKey| 
+		dict := Dictionary new.
+		firstKey :=  Object new.
+		dict at: firstKey put: 'A'.
+		secondKey := Object new.
+		dict at: secondKey put: 'B'.
+		dict at: firstKey
+	] evaluatesTo: 'A'.
+
+]
+
+{ #category : #testing }
+PjDictionaryTest >> testUseObjectsAsKeysForIdentityDictionary [
 	self assert: [
 		|dict firstKey secondKey| 
 		dict := IdentityDictionary new.
