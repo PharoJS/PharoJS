@@ -145,27 +145,27 @@ PjDictionaryTest >> testNonInterference [
 ]
 
 { #category : #testing }
-PjDictionaryTest >> testUseObjectsAsKeysForDictionary [
+PjDictionaryTest >> testUseEqualObjectsAsKeys [
 	self assert: [
 		|dict firstKey secondKey| 
 		dict := Dictionary new.
-		firstKey :=  Object new.
+		firstKey := PjObjectForDictTest data: 1.
 		dict at: firstKey put: 'A'.
-		secondKey := Object new.
+		secondKey := PjObjectForDictTest data: 1.
 		dict at: secondKey put: 'B'.
 		dict at: firstKey
-	] evaluatesTo: 'A'.
+	] evaluatesTo: 'B'.
 
 ]
 
 { #category : #testing }
-PjDictionaryTest >> testUseObjectsAsKeysForIdentityDictionary [
+PjDictionaryTest >> testUseNonEqualObjectsAsKeys [
 	self assert: [
 		|dict firstKey secondKey| 
-		dict := IdentityDictionary new.
-		firstKey :=  Object new.
+		dict := Dictionary new.
+		firstKey := PjObjectForDictTest data: 1.
 		dict at: firstKey put: 'A'.
-		secondKey := Object new.
+		secondKey := PjObjectForDictTest data: 2.
 		dict at: secondKey put: 'B'.
 		dict at: firstKey
 	] evaluatesTo: 'A'.

@@ -125,6 +125,19 @@ PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary [
+	self
+		testAllWithInstantiationBlock: [ | d |
+			d := IdentityDictionary new.
+			d at: 'a' put: 'abc'.
+			d at: 'b' put: '123'.
+			d asPhxJsonString ]
+		literal: '{"class":"IdentityDictionary","instance":{"a":"abc","b":"123"}}'
+		testEq: true
+		test4Stages: true
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeInstRefs [
 	"objects should be checked by identity!!!"
 
