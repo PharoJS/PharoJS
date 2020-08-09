@@ -143,3 +143,17 @@ PjDictionaryTest >> testNonInterference [
 	self assert: [document body classList add: 'hello'] evaluatesTo: nil.
 	self assert: [document body classList contains: 'hello'] evaluatesTo: true
 ]
+
+{ #category : #testing }
+PjDictionaryTest >> testUseObjectsAsKeys [
+	self assert: [
+		|dict firstKey secondKey| 
+		dict := IdentityDictionary new.
+		firstKey :=  Object new.
+		dict at: firstKey put: 'A'.
+		secondKey := Object new.
+		dict at: secondKey put: 'B'.
+		dict at: firstKey
+	] evaluatesTo: 'A'.
+
+]
