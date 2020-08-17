@@ -222,6 +222,11 @@ PjBridgeServer >> newDefaultZnServerDelegate [
 	^ d
 ]
 
+{ #category : #accessing }
+PjBridgeServer >> port [
+	^self znServer port
+]
+
 { #category : #public }
 PjBridgeServer >> port: aPortNumber [
 	self znServer port: aPortNumber

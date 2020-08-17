@@ -131,6 +131,11 @@ PjBridgeTestCase >> tearDown [
 
 ]
 
+{ #category : #testing }
+PjBridgeTestCase >> testBridgePort [
+	self assert: self bridge port equals: self bridge server port
+]
+
 { #category : #'test support' }
 PjBridgeTestCase >> transpileMethod: aMethod [
 	^ self bridge transpiler transpileMethodToString: aMethod
