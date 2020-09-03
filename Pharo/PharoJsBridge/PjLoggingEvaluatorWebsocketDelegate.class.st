@@ -109,5 +109,5 @@ PjLoggingEvaluatorWebsocketDelegate >> onError: event [
 { #category : #'socket behavior' }
 PjLoggingEvaluatorWebsocketDelegate >> onOpen: event [
 	super onOpen: event.
-	self log: 'Open.'
+	self log: 'Open (id: ' , self id , ')'
 ]

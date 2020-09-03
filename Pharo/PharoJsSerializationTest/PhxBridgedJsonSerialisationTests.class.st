@@ -71,6 +71,15 @@ PhxBridgedJsonSerialisationTests >> testSerializeArray [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeAssociations [
+	self
+		testAllWithInstantiationBlock: [{ 'een' -> 1. 'twee' -> 2 }  asPhxJsonString ]
+		literal: '{"class":"Array","instance":[{"class":"Association","instance":{"key":"een","value":1}},{"class":"Association","instance":{"key":"twee","value":2}}]}'
+		testEq: false
+		test4Stages: false
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeBoolean [
 	self
 		testAllWithInstantiationBlock: [ true asPhxJsonString ]
@@ -111,6 +120,19 @@ PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 	self
 		testAllWithInstantiationBlock: [ Object new asPhxJsonString ]
 		literal: '{"class":"Object","instance":{}}'
+		testEq: true
+		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary [
+	self
+		testAllWithInstantiationBlock: [ | d |
+			d := IdentityDictionary new.
+			d at: 'a' put: 'abc'.
+			d at: 'b' put: '123'.
+			d asPhxJsonString ]
+		literal: '{"class":"IdentityDictionary","instance":{"a":"abc","b":"123"}}'
 		testEq: true
 		test4Stages: true
 ]

@@ -15,7 +15,7 @@ PjProxyForGlobal class >> allJavascriptGlobals [
 
 { #category : #'instance creation' }
 PjProxyForGlobal class >> newProxyNamed: globalName [
-	^self newProxyNamed: globalName onBridge: nil
+	^ self newProxyNamed: globalName onBridge: nil oid: globalName
 ]
 
 { #category : #printing }

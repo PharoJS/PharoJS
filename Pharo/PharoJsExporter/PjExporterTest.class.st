@@ -39,7 +39,7 @@ PjExporterTest >> setUp [
 
 { #category : #testing }
 PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
-	exporter appClass: PjApplication.
+	exporter initializeWithAppClass: PjApplication.
 	exporter addClass: PjClassExtensionForTest.
 	jsCode := exporter javascriptCode.
 	self assertInstanceMethod: #isLiteral equals: '(){return 42}'.
@@ -49,7 +49,7 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 
 { #category : #testing }
 PjExporterTest >> testClassInheritanceOrder [
-	exporter appClass: PjApplication.
+	exporter initializeWithAppClass: PjApplication.
 	jsCode := exporter javascriptCode.
 	self assert: 'Object.', self pharoJsSelectorPrefix, 'subclass_(Error)' precedes: 'Error.', exporter transpiler pharoJsSelectorPrefix, 'subclass_'
 ]
@@ -57,7 +57,7 @@ PjExporterTest >> testClassInheritanceOrder [
 { #category : #testing }
 PjExporterTest >> testCoreClassedLoaded [
 	|pjPrefix|
-	exporter appClass: PjApplication.
+	exporter initializeWithAppClass: PjApplication.
 	pjPrefix := self pharoJsSelectorPrefix. " has to be done after an application has been set "
 	jsCode := exporter javascriptCode.
 	self assert: (jsCode includesSubstring: 'Object.', pjPrefix, 'subclass_("PjApplication")' ).
@@ -82,7 +82,7 @@ PjExporterTest >> testExportingClassesAndPackages [
 
 { #category : #testing }
 PjExporterTest >> testImportMethodsFromPharo [
-	exporter appClass: PjApplication.
+	exporter initializeWithAppClass: PjApplication.
 	exporter addClass: PjClassExtensionForTest.
 	jsCode := exporter javascriptCode.
 	#(yourself isArray isLiteral eqv:) do: [ : selector |
@@ -102,7 +102,7 @@ PjExporterTest >> testJsSelector [
 
 { #category : #testing }
 PjExporterTest >> testLaunchCodeAppearsAtTheEndOfExportedCode [
-	exporter appClass: PjApplication.
+	exporter initializeWithAppClass: PjApplication.
 	exporter launchBlock: [42].
 	jsCode := exporter javascriptCode.
 	self assert: (jsCode allButLast endsWith: 'return 42})();')
@@ -110,7 +110,7 @@ PjExporterTest >> testLaunchCodeAppearsAtTheEndOfExportedCode [
 
 { #category : #testing }
 PjExporterTest >> testMainClassIsAddedToClassesToExport [
-	exporter appClass: PjWebApplication.
+	exporter initializeWithAppClass: PjWebApplication.
 	self assert: (exporter classes includes: PjWebApplication).
 	self assert: exporter classes size > 1.
 

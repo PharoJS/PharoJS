@@ -3,18 +3,11 @@ Class {
 	#superclass : #TestResource,
 	#instVars : [
 		'bridge',
-		'appClass'
+		'appClass',
+		'execEnv'
 	],
 	#category : #'PharoJsTestFramework-Kernel'
 }
-
-{ #category : #'instance creation' }
-PjBridgeTestResource class >> appClass: aClass [
-	^self new
-		appClass: aClass;
-		yourself.
-
-]
 
 { #category : #running }
 PjBridgeTestResource class >> availableFor: aTestAsserter [
@@ -23,15 +16,10 @@ PjBridgeTestResource class >> availableFor: aTestAsserter [
 	self ensureFreshClient
 ]
 
-{ #category : #'instance creation' }
-PjBridgeTestResource class >> currentAppClass: aClass [
-	current := self appClass: aClass
-]
-
 { #category : #running }
 PjBridgeTestResource class >> ensureAppClassFor: aTestAsserter [
 	self current appClass == aTestAsserter appClassToExport ifTrue: [ ^self ].
-	self currentAppClass: aTestAsserter appClassToExport
+	self setCurrentWithNewForAppClass: aTestAsserter appClassToExport
 ]
 
 { #category : #running }
@@ -39,20 +27,21 @@ PjBridgeTestResource class >> ensureFreshClient [
 	self current ensureFreshClient
 ]
 
-{ #category : #accessing }
-PjBridgeTestResource >> appClass [
-	^appClass 
+{ #category : #'instance creation' }
+PjBridgeTestResource class >> newWithAppClass: aClass [
+	^ self new
+		initializeWithAppClass: aClass;
+		yourself
+]
+
+{ #category : #'instance creation' }
+PjBridgeTestResource class >> setCurrentWithNewForAppClass: aClass [
+	current := self newWithAppClass: aClass
 ]
 
 { #category : #accessing }
-PjBridgeTestResource >> appClass: aClass [
-	appClass := aClass.
-	self bridge: appClass bridge. 
-	PjBridge bridge: self bridge.
-	self bridge shouldStartJsInterpreter: false.
-	self setUpClient.
-	self bridge	startWithoutWaitingForClient.
-
+PjBridgeTestResource >> appClass [
+	^appClass 
 ]
 
 { #category : #accessing }
@@ -79,13 +68,25 @@ PjBridgeTestResource >> initialize [
 	self name: 'PharoJS Bridge TestResource'.
 ]
 
+{ #category : #accessing }
+PjBridgeTestResource >> initializeWithAppClass: aClass [
+	appClass := aClass.
+	self bridge: appClass bridge.
+	PjBridge soleBridge: self bridge.
+	self bridge shouldStartJsInterpreter: false.
+	self setUpClient.
+	DefaultExecutionEnvironment
+		beActiveDuring: [ self bridge startWithoutWaitingForClient ]
+]
+
 { #category : #running }
 PjBridgeTestResource >> resetClient [
-	"SUnit does terminate all threads forked while tests are run."
-	"See TestExecutionEnvironment>>#runTestCase:"
-	"So, first ensure server process is alive"
-	self bridge ensureServerProcessAlive.
 	self bridge resetClient
+]
+
+{ #category : #running }
+PjBridgeTestResource >> setUp [ 
+
 ]
 
 { #category : #running }
@@ -96,9 +97,8 @@ PjBridgeTestResource >> setUpClient [
 { #category : #running }
 PjBridgeTestResource >> tearDown [
 	super tearDown.
-	self bridge ifNotNil: [
-		self bridge stop.
-		PjBridge bridge: nil
-	].
-
+	self bridge
+		ifNotNil: [ self bridge tearDown.
+			PjBridge soleBridge: nil ].
+	Smalltalk garbageCollect
 ]
