@@ -357,6 +357,12 @@ PjNumber >> px [
 ]
 
 { #category : #converting }
+PjNumber >> radiansToDegrees [
+	^ self / RadiansPerDegree
+
+]
+
+{ #category : #converting }
 PjNumber >> rem [
 	<javascript: 'return this + "rem"'>
 ]
