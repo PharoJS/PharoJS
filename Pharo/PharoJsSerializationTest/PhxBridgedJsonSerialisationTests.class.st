@@ -62,18 +62,6 @@ PhxBridgedJsonSerialisationTests >> testAllWithInstantiationBlock: aBlock litera
 ]
 
 { #category : #tests }
-PhxBridgedJsonSerialisationTests >> testProperInstRefOrderWhenUsingCollections [
-	"this problem can be observed without JS side"
-
-	| obj problemObject string |
-	obj := Object new.
-	problemObject := {obj.
-	{obj}}.
-	string := problemObject asPhxJsonString.
-	self shouldnt: [ PhxJsonReader readFromString: string ] raise: Error
-]
-
-{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeArray [
 	self
 		testAllWithInstantiationBlock: [ {} asPhxJsonString ]
