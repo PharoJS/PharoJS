@@ -49,7 +49,8 @@ PjProxyTest >> testBlockClosures [
 	self assert: self bridge blockClosures size equals: 1.
 	document body removeEventListener: 'click'.
 	self assert:
-		self bridge blockClosures size equals: 0
+		self bridge blockClosures size equals: 0.
+	
 ]
 
 { #category : #testing }
@@ -106,6 +107,40 @@ PjProxyTest >> testClick [
 ]
 
 { #category : #testing }
+PjProxyTest >> testClickWithEventTarget [
+	| rectangle1 rectangle2 lastClickedRectangle count listenerBlock |
+	count := 0.
+	rectangle1 := document createElement: 'div'.
+	rectangle1 id: 'rect1'.
+	rectangle1 instVarNamed: #count put: 0.
+	rectangle2 := document createElement: 'div'.
+	rectangle2 id: 'rect2'.
+	rectangle2 instVarNamed: #count put: 0.
+	Smalltalk garbageCollect.
+	document body appendChild: rectangle1.
+	document body appendChild: rectangle2.
+	listenerBlock := [ :xev :this | 
+	| alsoRectangle |
+	alsoRectangle := this.
+	lastClickedRectangle := alsoRectangle.
+	count := count + 1.
+	alsoRectangle count: alsoRectangle count + 1 ].
+	rectangle1 addEventListener: 'click' block: listenerBlock.
+	rectangle2 addEventListener: 'click' block: listenerBlock.
+	rectangle1 dispatchEvent: (window MouseEvent new: #click).
+	self assert: (document getElementById: 'rect1') count equals: 1.
+	self assert: rectangle1 equals: lastClickedRectangle.
+	self assert: (document getElementById: 'rect2') count equals: 0.
+	self assert: count = 1.
+	rectangle2 dispatchEvent: (window MouseEvent new: #click).
+	Smalltalk garbageCollect.
+	self assert: rectangle2 equals: lastClickedRectangle.
+	self assert: (document getElementById: 'rect1') count equals: 1.
+	self assert: (document getElementById: 'rect2') count equals: 1.
+	self assert: count = 2
+]
+
+{ #category : #testing }
 PjProxyTest >> testGetElementById [
 	| rectangle |
 	rectangle := document createElement: 'div'.
@@ -127,6 +162,30 @@ PjProxyTest >> testIterateOverChildren [
 	container children withIndexDo: [ : each : index | 
 		each textContent: index].
 
+]
+
+{ #category : #testing }
+PjProxyTest >> testProxyGarbageCollection [
+	| b jsName |
+	b := document body.
+	jsName := b javascriptName.
+	self assert: jsName equals: '$_4'.
+	
+	"Following lines to mimic the effect of garbage collection in a deteministic way."
+	(self finalizationRegistry remove: b ifAbsent: [ nil ])
+		ifNotNil: [ :finalizerItem | finalizerItem finalizeValues ].
+	b := nil.
+	
+	self deny: (global includesKey: jsName)
+]
+
+{ #category : #testing }
+PjProxyTest >> testProxyMissingError [
+	"This test fails intermittently because of interfering garbage collection effects of released proxies"
+	self timeLimit: 60 seconds.
+	1 to: 10 by: 1 do: [ :num | 
+		document body children.
+		num milliSeconds wait ]
 ]
 
 { #category : #testing }

@@ -80,19 +80,6 @@ PjObject class >> nextIdentityHash [
 	^ nextIdentityHash := (nextIdentityHash ifNil: [12345]) hashMultiply
 ]
 
-{ #category : #proxy }
-PjObject class >> resultObject: result [
-	<jsGenerator: #resultObject_jsGenerator:>
-	
-]
-
-{ #category : #proxy }
-PjObject class >> resultObject_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^'if (result != undefined) return result.', transpiler pharoJsSelectorPrefix, 'proxyResponse();
-		return null;'
-]
-
 { #category : #'dictionary emulation' }
 PjObject class >> valuesDo_jsGenerator: transpiler [
 	<pharoJsSkip>
@@ -323,16 +310,14 @@ PjObject >> printString [
 
 { #category : #proxy }
 PjObject >> proxyResponse [
-	<javascript:
-	'var name = this.$_jsName;
-	if (!name) {
-		Object.$Pj_counter = (Object.$Pj_counter||0)+1;
-		name = "$_"+Object.$Pj_counter;
-		global[name]=this;
-		try{Object.defineProperty(this,"$_jsName",{value:name,writable:true})}catch(e){}
-	}
-	return { remove : this.$PjProxyRemove , proxy : name}
-	'>
+	<PjTodo: 'not sure if proxyResponse is a good name'>
+	| assoc p |
+	assoc := PjProxyManager ensureObjectRegistered: self.
+	p := PjProxyInfo new.
+	p oid: assoc key.
+	p remove: (self instVarNamed: '$PjProxyRemove').
+	p globalName: assoc value.
+	^ p
 ]
 
 { #category : #'initialize-release' }

@@ -15,10 +15,18 @@ Class {
 		'html',
 		'javascript',
 		'css',
-		'favicon'
+		'favicon',
+		'fingerPrint'
 	],
-	#category : #'PharoJsBridge-Kernel'
+	#category : #'PharoJsBridge-Obsolete'
 }
+
+{ #category : #'instance-creation' }
+PjParametrizableServerDelegate class >> new [
+	^ super new
+		initialize;
+		yourself
+]
 
 { #category : #accessing }
 PjParametrizableServerDelegate >> css [
@@ -40,22 +48,33 @@ PjParametrizableServerDelegate >> favicon: anObject [
 	favicon := anObject
 ]
 
+{ #category : #accessing }
+PjParametrizableServerDelegate >> fingerPrint [
+	^ fingerPrint
+]
+
+{ #category : #accessing }
+PjParametrizableServerDelegate >> fingerPrint: anObject [
+	fingerPrint := anObject
+]
+
 { #category : #handling }
 PjParametrizableServerDelegate >> handleRequest: request [
 	| entity prefix |
 	prefix := request uri isSlash
 		ifTrue: [ 'index.html' ]
 		ifFalse: [ request uri firstPathSegment ].
-	('index.html' = prefix and: self html isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity html: self html ].
-	('index.js' = prefix and: self javascript isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity javascript: self javascript ].
-	('index.css' = prefix and: self css isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity css: self css ].
-	('favicon.ico' = prefix and: self favicon isEmptyOrNil not) ifTrue: [
-		entity := ZnEntity favicon: self favicon ].
-	entity ifNotNil: [^ ZnResponse ok: entity].
-	
+	('index.html' = prefix and: self html isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity html: self html ].
+	('index.js' = prefix and: self javascript isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity javascript: self javascript ].
+	('index.css' = prefix and: self css isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity css: self css ].
+	('favicon.ico' = prefix and: self favicon isEmptyOrNil not)
+		ifTrue: [ entity := ZnEntity favicon: self favicon ].
+	'serverFingerPrint' = prefix
+		ifTrue: [ entity := ZnEntity html: self fingerPrint ].
+	entity ifNotNil: [ ^ ZnResponse ok: entity ].
 	^ ZnResponse notFound: request uri
 ]
 
@@ -67,6 +86,12 @@ PjParametrizableServerDelegate >> html [
 { #category : #accessing }
 PjParametrizableServerDelegate >> html: aString [
 	html := aString
+]
+
+{ #category : #'initialize-release' }
+PjParametrizableServerDelegate >> initialize [
+	super initialize.
+	fingerPrint := UUIDGenerator next asString
 ]
 
 { #category : #accessing }

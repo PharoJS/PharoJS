@@ -22,7 +22,7 @@ PjStatistics class >> statsForAll: appClasses [
 { #category : #statistics }
 PjStatistics class >> statsForApp: appClass [
 	| exporter actuallyExportedClasses methodsCount jsCode |
-	exporter := appClass exporterClass exporterForApp: appClass.
+	exporter := appClass exporterClass newWithAppClass: appClass.
 	jsCode := String streamContents: [ :stream | exporter writeJsCodeOn: stream ].
 	actuallyExportedClasses := exporter bootstrapClasses asSet
 		, exporter nonBootstrapClasses asSet collect: #classToUseForJsConversion.

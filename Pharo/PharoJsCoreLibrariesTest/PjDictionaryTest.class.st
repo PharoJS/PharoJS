@@ -143,3 +143,31 @@ PjDictionaryTest >> testNonInterference [
 	self assert: [document body classList add: 'hello'] evaluatesTo: nil.
 	self assert: [document body classList contains: 'hello'] evaluatesTo: true
 ]
+
+{ #category : #testing }
+PjDictionaryTest >> testUseEqualObjectsAsKeys [
+	self assert: [
+		|dict firstKey secondKey| 
+		dict := Dictionary new.
+		firstKey := PjObjectForDictTest data: 1.
+		dict at: firstKey put: 'A'.
+		secondKey := PjObjectForDictTest data: 1.
+		dict at: secondKey put: 'B'.
+		dict at: firstKey
+	] evaluatesTo: 'B'.
+
+]
+
+{ #category : #testing }
+PjDictionaryTest >> testUseNonEqualObjectsAsKeys [
+	self assert: [
+		|dict firstKey secondKey| 
+		dict := Dictionary new.
+		firstKey := PjObjectForDictTest data: 1.
+		dict at: firstKey put: 'A'.
+		secondKey := PjObjectForDictTest data: 2.
+		dict at: secondKey put: 'B'.
+		dict at: firstKey
+	] evaluatesTo: 'A'.
+
+]

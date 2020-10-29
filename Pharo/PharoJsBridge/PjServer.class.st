@@ -16,8 +16,13 @@ Class {
 	#classVars : [
 		'LastUsedPort'
 	],
-	#category : #'PharoJsBridge-Kernel'
+	#category : #'PharoJsBridge-Obsolete'
 }
+
+{ #category : #accessing }
+PjServer class >> portsCurrentlyInUse [
+	^(self allInstances select: #isRunning thenCollect: #port) asSet
+]
 
 { #category : #accessing }
 PjServer class >> webSocketUrlTag [
@@ -77,6 +82,11 @@ PjServer >> favicon [
 { #category : #accessing }
 PjServer >> favicon: jsString [
 	self delegate favicon: jsString
+]
+
+{ #category : #accessing }
+PjServer >> fingerPrint [
+	^self delegate fingerPrint
 ]
 
 { #category : #'request handling' }
@@ -205,10 +215,15 @@ PjServer >> serveConnectionOn: listeningSocket [
 { #category : #public }
 PjServer >> start [
 	| candidatePort usedPorts |
-	candidatePort := self nextPortNumber.
-	usedPorts := (self class allInstances select: #isRunning thenCollect: #port) asSet.
-	[ usedPorts includes: candidatePort ] whileTrue: [candidatePort := self nextPortNumber].
-	self port: candidatePort.
+	usedPorts := self class portsCurrentlyInUse.
+	[ candidatePort := self nextPortNumber.
+	usedPorts includes: candidatePort ] whileTrue.
+	self startOnPort: candidatePort
+]
+
+{ #category : #public }
+PjServer >> startOnPort: aPort [
+	self port: aPort.
 	super start
 ]
 

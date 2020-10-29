@@ -9,7 +9,7 @@ Class {
 
 { #category : #exporting }
 PjFileExporter class >> exportApp: aClass [
-	^ (self exporterForApp: aClass) writeFiles
+	^ (self newWithAppClass: aClass) writeFiles
 ]
 
 { #category : #files }

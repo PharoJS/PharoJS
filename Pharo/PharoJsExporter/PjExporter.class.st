@@ -28,9 +28,9 @@ PjExporter class >> coreClass [
 ]
 
 { #category : #'instance creation' }
-PjExporter class >> exporterForApp: aClass [
+PjExporter class >> newWithAppClass: aClass [
 	^self new
-		appClass: aClass;
+		initializeWithAppClass: aClass;
 		yourself
 ]
 
@@ -64,16 +64,7 @@ PjExporter >> addPackage: packageName [
 
 { #category : #accessing }
 PjExporter >> appClass [
-	^appClass.
-]
-
-{ #category : #accessing }
-PjExporter >> appClass: aClass [ 
-	appClass := aClass.
-	transpiler pharoJsSelectorPrefix: aClass pharoJsSelectorPrefix.
-	self addAllClasses: appClass appClasses.
-	self addAllPackages: appClass appPackages.
-
+	^ appClass
 ]
 
 { #category : #accessing }
@@ -124,6 +115,14 @@ PjExporter >> initialize [
 	self transpiler addAllOptionalConversions"Except: 0 to: 1/2".
 	self setUpForPolyfill.
 
+]
+
+{ #category : #accessing }
+PjExporter >> initializeWithAppClass: aClass [
+	appClass := aClass.
+	transpiler pharoJsSelectorPrefix: aClass pharoJsSelectorPrefix.
+	self addAllClasses: appClass appClasses.
+	self addAllPackages: appClass appPackages
 ]
 
 { #category : #testing }

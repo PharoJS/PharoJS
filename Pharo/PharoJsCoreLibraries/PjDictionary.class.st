@@ -32,6 +32,32 @@ PjDictionary >> asJsObject [
 	^jsObject
 ]
 
+{ #category : #'dictionary access' }
+PjDictionary >> at: key [
+	^super at: (self keyFrom: key)
+]
+
+{ #category : #'dictionary access' }
+PjDictionary >> at: key ifAbsent: aBlock [
+	^super at: (self keyFrom: key) ifAbsent: aBlock
+]
+
+{ #category : #'dictionary access' }
+PjDictionary >> at: key ifPresent: aBlock [
+	^super at: (self keyFrom: key) ifPresent: aBlock
+]
+
+{ #category : #'dictionary access' }
+PjDictionary >> at: key ifPresent: aBlock ifAbsent: anotherBlock [
+	^super at: (self keyFrom: key) ifPresent: aBlock ifAbsent: anotherBlock
+]
+
+{ #category : #'dictionary access' }
+PjDictionary >> at: key put: value [
+	^super at: (self keyFrom: key) put: value
+
+]
+
 { #category : #enumerating }
 PjDictionary >> collect: aBlock [
 	| resultDict |
@@ -40,4 +66,11 @@ PjDictionary >> collect: aBlock [
 		resultDict at: key put: (aBlock value: value)
 	].
 	^resultDict
+]
+
+{ #category : #'dictionary access' }
+PjDictionary >> keyFrom: anObject [
+	anObject class == String ifTrue: [ ^anObject ].
+	anObject class == Number ifTrue: [ ^anObject ].
+	^anObject hash
 ]

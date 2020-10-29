@@ -121,6 +121,7 @@ PjAppTestCase >> setUp [
 PjAppTestCase >> tearDown [
 	super tearDown.
 	self appClass resetCurrentInstance.
+	self bridge resetProxiesImmediately.
 	"bridgeResourceClass := nil"
 ]
 
