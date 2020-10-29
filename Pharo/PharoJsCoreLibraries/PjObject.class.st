@@ -248,6 +248,11 @@ PjObject >> isEmpty [
 	^ true
 ]
 
+{ #category : #'dictionary emulation' }
+PjObject >> isEmptyOrNil [
+	^ false
+]
+
 { #category : #testing }
 PjObject >> isJSPrimitiveType [
 	^ false

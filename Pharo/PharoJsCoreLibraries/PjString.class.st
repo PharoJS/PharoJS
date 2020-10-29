@@ -26,7 +26,7 @@ PjString class >> jsTranspilationImportMethods [
 				stringHash:initialHash: fromByteArray:
 			).
 			String -> #(
-				findTokens: 
+				findTokens: linesDo: lineIndicesDo:
 			).
 			Symbol -> #(
 				cull: value: 

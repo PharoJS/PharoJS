@@ -81,6 +81,11 @@ PjTArray >> asJsObject [
 	^jsObject
 ]
 
+{ #category : #converting }
+PjTArray >> asSortedCollection [
+	^ SortedCollection new addAll: self;yourself
+]
+
 { #category : #accessing }
 PjTArray >> at: i [
 	<javascript: 'return this[i-1]'>
@@ -131,6 +136,11 @@ PjTArray >> includes: x [
 { #category : #accessing }
 PjTArray >> indexOf: x [
 	<javascript: 'return this.indexOf(x)+1'>
+]
+
+{ #category : #accessing }
+PjTArray >> indexOf: x startingAt: n [
+	<javascript: 'return this.indexOf(x,n-1)+1'>
 ]
 
 { #category : #accessing }

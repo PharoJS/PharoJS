@@ -232,6 +232,11 @@ PjFunction >> valueWithEnoughArguments: anArray [
 	<javascript: 'return this.apply(this,anArray)'>
 ]
 
+{ #category : #evaluating }
+PjFunction >> valueWithPossibleArgs: args [
+	<javascript: 'return this.apply(null,args);'>
+]
+
 { #category : #looping }
 PjFunction >> whileFalse [
 	self whileFalse: []
