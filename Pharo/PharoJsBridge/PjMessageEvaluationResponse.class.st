@@ -6,7 +6,7 @@ Class {
 
 { #category : #printing }
 PjMessageEvaluationResponse >> contentsDescription [
-	<javascript: 'return JSON.stringify(contents)'>
+	<javascript: 'return JSON.stringify(this.contents)'>
 	^ contents displayString
 ]
 
