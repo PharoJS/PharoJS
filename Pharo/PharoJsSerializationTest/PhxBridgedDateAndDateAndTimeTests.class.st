@@ -5,22 +5,6 @@ Class {
 }
 
 { #category : #testing }
-PhxBridgedDateAndDateAndTimeTests >> _testDateAndTimeNow [
-	"remove underscore to launch easily"
-
-	self
-		evalBlock: [ | dt |
-			dt := DateAndTime now.
-			console log: 'DateAndTime now: ' with: dt.
-			console log: 'DateAndTime now toString: ' with: dt toString.
-			console log: 'DateAndTime now toISOString: ' with: dt toISOString.
-			console
-				log: 'Timezone offset in minutes: '
-				with: dt getTimezoneOffset ].
-	self halt
-]
-
-{ #category : #testing }
 PhxBridgedDateAndDateAndTimeTests >> testDateAndTimeNowEquivalence [
 	| pharoTs jsTsString jsTs |
 	pharoTs := DateAndTime now.
