@@ -4,25 +4,6 @@ Class {
 	#category : #PharoJsSerializationTest
 }
 
-{ #category : #tests }
-PhxBridgedJsonSerialisationTests >> _testSerializeDateAndTime [
-	self
-		assertAllWithInstantiationBlock: [ | d |
-			Date today.
-			d := DateAndTime
-				year: 2020
-				month: 04
-				day: 12
-				hour: 1
-				minute: 2
-				second: 3.
-			console log: d.
-			d asPhxJsonString ]
-		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
-		testEq: true
-		test4Stages: true
-]
-
 { #category : #private }
 PhxBridgedJsonSerialisationTests >> assertAllWithInstantiationBlock: aBlock literal: jsonString testEq: testEq test4Stages: test4Stages [
 	self assert: aBlock evaluatesTo: jsonString.
@@ -98,6 +79,43 @@ PhxBridgedJsonSerialisationTests >> testSerializeChallengingObject [
 	self
 		assertAllWithInstantiationBlock: [ PhxJsonTestResources challingingObjectAvoidingDateAndTime  asPhxJsonString ]
 		literal: PhxJsonTestResources challingingObjectAvoidingDateAndTime asPhxJsonString
+		testEq: true
+		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeDate [
+	<expectedFailure>
+	self fail: #ToDo.
+	self
+		assertAllWithInstantiationBlock: [ | d |
+			d := (DateAndTime
+				year: 2020
+				month: 04
+				day: 11
+				hour: 23
+				minute: 2
+				second: 3) asDate.
+			d asPhxJsonString ]
+		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
+		testEq: true
+		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeDateAndTime [
+	<expectedFailure>
+	self
+		assertAllWithInstantiationBlock: [ | d |
+			d := DateAndTime
+				year: 2020
+				month: 04
+				day: 11
+				hour: 23
+				minute: 2
+				second: 3.
+			d asPhxJsonString ]
+		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
 		testEq: true
 		test4Stages: true
 ]
