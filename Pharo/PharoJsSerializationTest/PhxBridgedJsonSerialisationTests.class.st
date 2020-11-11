@@ -43,6 +43,30 @@ PhxBridgedJsonSerialisationTests >> isEqualAfterWriteReadInJs: aBlock [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testMaterilizeCollectionOfObjectsReferencingEachOther [
+	| cClone bClone aInBClone aInCClone |
+	cClone := self evalBlock: [
+		| a b c |
+		a := #('A').
+		b := {'B'. a }.
+		c := {'C'. a. b }.
+		PhxJsonReader readFromString: c asPhxJsonString.].
+	self assert: cClone size equals: 3.
+	self assert: cClone first equals: 'C'.
+	aInCClone := cClone second.
+	self deny: aInCClone isNil.
+	self assert: aInCClone size equals: 1.
+	self assert: aInCClone first equals: 'A'.
+	bClone := cClone last.
+	self assert: bClone size equals: 2.
+	self assert: bClone first equals: 'B'.
+	aInBClone := bClone last.
+	self deny: aInBClone isNil.
+	self assert: aInBClone size equals: 1.
+	self assert: aInBClone first equals: 'A'.
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeArray [
 	self
 		assertAllWithInstantiationBlock: [ {} asPhxJsonString ]
