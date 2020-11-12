@@ -21,7 +21,7 @@ PjTArray classSide >> includes_jsGenerator: transpiler [
 		if (this.includes(x)) return true;
 		for(var i=this.length-1;i>=0;--i) if (x==this[i]) return true;
 		return false}		
-	for(var i=this.length-1;i>=0;--i) if (x.', transpiler pharoJsSelectorPrefix, '61_(this[i])) return true;
+	for(var i=this.length-1;i>=0;--i) if (x.', transpiler pharoJsSelectorPrefix, '61_61_(this[i])) return true;
 	return false'
 ]
 

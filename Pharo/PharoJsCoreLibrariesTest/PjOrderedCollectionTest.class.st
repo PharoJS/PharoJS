@@ -14,6 +14,17 @@ PjOrderedCollectionTest >> setUp [
 ]
 
 { #category : #testing }
+PjOrderedCollectionTest >> testCircularReference [
+	self deny: (collection includes: collection).
+	collection add: 'A'.
+	self deny: (collection includes: collection).
+	collection add: collection.
+	self assert: (collection includes: collection).
+	self assert: collection size equals: 2.
+
+]
+
+{ #category : #testing }
 PjOrderedCollectionTest >> testInsertElementBeforeFirstOne [
 	collection addAll: #(1 2 3).
 	collection insert: 0 before: 1.

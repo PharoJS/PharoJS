@@ -80,6 +80,13 @@ PjArrayTest >> testAtPut [
 ]
 
 { #category : #testing }
+PjArrayTest >> testCircularReference [
+	| array |
+	array := self bridge evalBlock: [#('X')].
+	self deny: (array includes: array).
+]
+
+{ #category : #testing }
 PjArrayTest >> testCollect [
 	| double |
 	double := self bridge
