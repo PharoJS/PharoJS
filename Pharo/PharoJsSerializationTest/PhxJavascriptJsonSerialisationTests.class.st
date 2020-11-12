@@ -31,6 +31,33 @@ PhxJavascriptJsonSerialisationTests >> testArraysCircularReferences [
 ]
 
 { #category : #tests }
+PhxJavascriptJsonSerialisationTests >> testDictionariesReferencingEachOther [
+	| cClone aClone bClone |
+	cClone := self evalBlock: [
+		| a b c |
+		a := Dictionary new.
+		a at: #name put: 'A'.
+		b := Dictionary new.
+		b at: #name put: 'B'.
+		b at: #a put: a.
+		c := Dictionary new.
+		c at: #name put: 'C'.
+		c at: #a put: a.
+		c at: #b put: b.
+		PhxJsonReader readFromString: c asPhxJsonString.
+		].
+	self assert: cClone size equals: 3.
+	aClone := cClone at: #a.
+	self assert: aClone size equals: 1.
+	self assert: (aClone at: #name) equals: 'A'.
+	bClone := cClone at: #b.
+	self assert: bClone size equals: 2.
+	self assert: (bClone at: #name) equals: 'B'.
+	self assert: (bClone at: #b) identicalTo: aClone.
+
+]
+
+{ #category : #tests }
 PhxJavascriptJsonSerialisationTests >> testDictionariesWithCircularReferences [
 	| cClone aClone bClone |
 	cClone := self evalBlock: [
@@ -90,40 +117,40 @@ PhxJavascriptJsonSerialisationTests >> testSetsCircularReferences [
 	| cClone aClone bClone |
 	cClone := self evalBlock: [
 		| a b c |
-		a := #('A') asSet.
+		a := {'A'} asSet.
 		b := {'B'} asSet.
 		c := {'C'} asSet.
-		{ a. b. c } do: [ : each |
-			each add: a.
-			each add: b.
-			each add: c.
-		].
+		a addAll: { b. c. }.
+		b addAll: { a. c. }.
+		c addAll: { a. b. }.
 		PhxJsonReader readFromString: c asPhxJsonString.
 		].	
-	aClone := cClone detect: [: each | each includes: 'A'].
-	bClone := cClone detect: [: each | each includes: 'B'].
+	aClone := cClone detect: [: each | each includes: 'A'] ifNone: [nil].
+	bClone := cClone detect: [: each | each includes: 'B'] ifNone: [nil].
 	{ aClone. bClone. cClone.} with: #(A B C) do: [ : each : name |
-		self assert: each size equals: 4.
+		self assert: each size equals: 3.
 		self assert: (each includes: name).
-		{ aClone. bClone. cClone.} do: [ : expectedElement |
-			self assert: (each includes: expectedElement) ]
 	].
 ]
 
 { #category : #tests }
 PhxJavascriptJsonSerialisationTests >> testSetsReferencingEachOther [
-	| cClone bClone |
+	| cClone bClone aInBClone aInCClone |
 	cClone := self evalBlock: [
 		| a b c |
-		a := #() asSet.
-		b := { a } asSet.
-		c := { a. b } asSet.
+		a := #('A') asSet.
+		b := {'B'. a } asSet.
+		c := {'C'. a. b } asSet.
 		PhxJsonReader readFromString: c asPhxJsonString.
 	].
-	self assert: cClone size equals: 2.
+	self assert: cClone size equals: 3.
+	self assert: (cClone includes: 'C').
 	self deny: (cClone includes: cClone).
-	bClone := cClone detect: [ : each | each size = 1 ].
+	bClone := cClone detect: [ : each | each includes: 'B' ] ifNone: [nil].
+	self assert: bClone size equals: 2.
 	self deny: (bClone includes: bClone).
-	self deny: (bClone includes: cClone).
-	
+	aInBClone := bClone detect: [ : each | each includes: 'A' ] ifNone: [nil].
+	self assert: aInBClone size equals: 1.
+	aInCClone := cClone detect: [ : each | each includes: 'A' ] ifNone: [nil].
+	self assert: aInBClone identicalTo: aInCClone.
 ]
