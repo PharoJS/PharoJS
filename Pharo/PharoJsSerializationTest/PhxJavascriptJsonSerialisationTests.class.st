@@ -32,6 +32,7 @@ PhxJavascriptJsonSerialisationTests >> testArraysCircularReferences [
 
 { #category : #tests }
 PhxJavascriptJsonSerialisationTests >> testDictionariesReferencingEachOther [
+	<expectedFailure>
 	| cClone aClone bClone |
 	cClone := self evalBlock: [
 		| a b c |
@@ -59,6 +60,7 @@ PhxJavascriptJsonSerialisationTests >> testDictionariesReferencingEachOther [
 
 { #category : #tests }
 PhxJavascriptJsonSerialisationTests >> testDictionariesWithCircularReferences [
+	<expectedFailure>
 	| cClone aClone bClone |
 	cClone := self evalBlock: [
 		| a b c |
@@ -114,6 +116,7 @@ PhxJavascriptJsonSerialisationTests >> testOrderedCollectionsCircularReferences 
 
 { #category : #tests }
 PhxJavascriptJsonSerialisationTests >> testSetsCircularReferences [
+	<expectedFailure>
 	| cClone aClone bClone identitySet |
 	cClone := self evalBlock: [
 		| a b c |
