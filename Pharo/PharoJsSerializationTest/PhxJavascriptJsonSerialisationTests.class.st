@@ -114,23 +114,26 @@ PhxJavascriptJsonSerialisationTests >> testOrderedCollectionsCircularReferences 
 
 { #category : #tests }
 PhxJavascriptJsonSerialisationTests >> testSetsCircularReferences [
-	| cClone aClone bClone |
+	| cClone aClone bClone identitySet |
 	cClone := self evalBlock: [
 		| a b c |
 		a := {'A'} asSet.
 		b := {'B'} asSet.
 		c := {'C'} asSet.
-		a addAll: { b. c. }.
-		b addAll: { a. c. }.
-		c addAll: { a. b. }.
+		{a. b. c} do: [ : each | each addAll: {a. b. c} ].
 		PhxJsonReader readFromString: c asPhxJsonString.
 		].	
 	aClone := cClone detect: [: each | each includes: 'A'] ifNone: [nil].
 	bClone := cClone detect: [: each | each includes: 'B'] ifNone: [nil].
 	{ aClone. bClone. cClone.} with: #(A B C) do: [ : each : name |
-		self assert: each size equals: 3.
+		self assert: each size equals: 4.
 		self assert: (each includes: name).
 	].
+	identitySet := IdentitySet new.
+	{aClone. bClone. cClone} do: [ : each | identitySet addAll: each ].
+	identitySet removeAll: #(A B C).
+	self assert: identitySet size equals: 3.
+	
 ]
 
 { #category : #tests }
