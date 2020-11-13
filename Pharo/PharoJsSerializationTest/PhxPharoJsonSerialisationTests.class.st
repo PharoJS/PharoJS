@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 PhxPharoJsonSerialisationTests >> testArraysCircularReferences [
 	| cClone aClone bClone a b c |
-	a := #('A' nil nil nil).
+	a := {'A'. nil. nil. nil}.
 	b := {'B'. nil. nil. nil }.
 	c := {'C'. nil. nil. nil }.
 	{ a. b. c } do: [ : each |
