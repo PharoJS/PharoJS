@@ -47,7 +47,7 @@ PjObject class >> jsTranspilationImportMethods [
 				isKindOf: error: respondsTo: isMemberOf: className
 				isNotNil notNil isString isClass isBlock isNumber isBehavior 
 				isCollection isArray isFloat isInteger isCharacter isSymbol isStream
-				isPjProxyOrNil isEmptyOrNil
+				isPjProxyOrNil
 			).
 		Collection -> #(
 				addAll: ifEmpty:ifNotEmpty: ifNotEmpty:ifEmpty: ifEmpty: ifNotEmpty: 
@@ -233,6 +233,11 @@ PjObject >> instVarNamed: aString putHidden: anObject [
 PjObject >> isEmpty [
 	self keysDo: [ ^ false ].
 	^ true
+]
+
+{ #category : #'dictionary emulation' }
+PjObject >> isEmptyOrNil [
+	^ false
 ]
 
 { #category : #testing }
