@@ -196,6 +196,8 @@ PjBasicTest >> testMethodsForNumbers [
 	self assertEquivalent: [0 sign].
 	self assertEquivalent: [4 sign].
 	self assertEquivalent: [-25 sign].
+	self assertEquivalent: [ 30 degreesToRadians ].
+	self assertEquivalent: [ 1.78 radiansToDegrees ].
 
 ]
 

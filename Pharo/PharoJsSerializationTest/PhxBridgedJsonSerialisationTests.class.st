@@ -4,23 +4,12 @@ Class {
 	#category : #PharoJsSerializationTest
 }
 
-{ #category : #tests }
-PhxBridgedJsonSerialisationTests >> _testSerializeDateAndTime [
-	self
-		testAllWithInstantiationBlock: [ | d |
-			Date today.
-			d := DateAndTime
-				year: 2020
-				month: 04
-				day: 12
-				hour: 1
-				minute: 2
-				second: 3.
-			console log: d.
-			d asPhxJsonString ]
-		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
-		testEq: true
-		test4Stages: true
+{ #category : #private }
+PhxBridgedJsonSerialisationTests >> assertAllWithInstantiationBlock: aBlock literal: jsonString testEq: testEq test4Stages: test4Stages [
+	self assert: aBlock evaluatesTo: jsonString.
+	testEq ifTrue: [self assertEquivalent: aBlock].
+	self isEqualAfterWriteReadInJs: aBlock.
+	test4Stages ifTrue: [self isEqualAfter4StageMarshalingInBothWorlds: aBlock]
 ]
 
 { #category : #private }
@@ -53,18 +42,10 @@ PhxBridgedJsonSerialisationTests >> isEqualAfterWriteReadInJs: aBlock [
 	self assert: jsonStringAfterWriteRead equals: jsonStringOfObject
 ]
 
-{ #category : #private }
-PhxBridgedJsonSerialisationTests >> testAllWithInstantiationBlock: aBlock literal: jsonString testEq: testEq test4Stages: test4Stages [
-	self assert: aBlock evaluatesTo: jsonString.
-	testEq ifTrue: [self assertEquivalent: aBlock].
-	self isEqualAfterWriteReadInJs: aBlock.
-	test4Stages ifTrue: [self isEqualAfter4StageMarshalingInBothWorlds: aBlock]
-]
-
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeArray [
 	self
-		testAllWithInstantiationBlock: [ {} asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ {} asPhxJsonString ]
 		literal: '{"class":"Array","instance":[]}'
 		testEq: true
 		test4Stages: true
@@ -73,7 +54,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeArray [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeAssociations [
 	self
-		testAllWithInstantiationBlock: [{ 'een' -> 1. 'twee' -> 2 }  asPhxJsonString ]
+		assertAllWithInstantiationBlock: [{ 'een' -> 1. 'twee' -> 2 }  asPhxJsonString ]
 		literal: '{"class":"Array","instance":[{"class":"Association","instance":{"key":"een","value":1}},{"class":"Association","instance":{"key":"twee","value":2}}]}'
 		testEq: false
 		test4Stages: false
@@ -82,12 +63,12 @@ PhxBridgedJsonSerialisationTests >> testSerializeAssociations [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeBoolean [
 	self
-		testAllWithInstantiationBlock: [ true asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ true asPhxJsonString ]
 		literal: 'true'
 		testEq: true
 		test4Stages: true.
 	self
-		testAllWithInstantiationBlock: [ false asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ false asPhxJsonString ]
 		literal: 'false'
 		testEq: true
 		test4Stages: true
@@ -96,8 +77,45 @@ PhxBridgedJsonSerialisationTests >> testSerializeBoolean [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeChallengingObject [
 	self
-		testAllWithInstantiationBlock: [ PhxJsonTestResources challingingObjectAvoidingDateAndTime  asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ PhxJsonTestResources challingingObjectAvoidingDateAndTime  asPhxJsonString ]
 		literal: PhxJsonTestResources challingingObjectAvoidingDateAndTime asPhxJsonString
+		testEq: true
+		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeDate [
+	<expectedFailure>
+	self fail: #ToDo.
+	self
+		assertAllWithInstantiationBlock: [ | d |
+			d := (DateAndTime
+				year: 2020
+				month: 04
+				day: 11
+				hour: 23
+				minute: 2
+				second: 3) asDate.
+			d asPhxJsonString ]
+		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
+		testEq: true
+		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeDateAndTime [
+	<expectedFailure>
+	self
+		assertAllWithInstantiationBlock: [ | d |
+			d := DateAndTime
+				year: 2020
+				month: 04
+				day: 11
+				hour: 23
+				minute: 2
+				second: 3.
+			d asPhxJsonString ]
+		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
 		testEq: true
 		test4Stages: true
 ]
@@ -105,7 +123,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeChallengingObject [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeDictionary [
 	self
-		testAllWithInstantiationBlock: [ | d |
+		assertAllWithInstantiationBlock: [ | d |
 			d := Dictionary new.
 			d at: 'a' put: 'abc'.
 			d at: 'b' put: '123'.
@@ -118,7 +136,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeDictionary [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 	self
-		testAllWithInstantiationBlock: [ Object new asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ Object new asPhxJsonString ]
 		literal: '{"class":"Object","instance":{}}'
 		testEq: true
 		test4Stages: true
@@ -127,7 +145,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary [
 	self
-		testAllWithInstantiationBlock: [ | d |
+		assertAllWithInstantiationBlock: [ | d |
 			d := IdentityDictionary new.
 			d at: 'a' put: 'abc'.
 			d at: 'b' put: '123'.
@@ -170,7 +188,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeInstRefsAvoidWhenDifferentInsta
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeNil [
 	self
-		testAllWithInstantiationBlock: [ nil asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ nil asPhxJsonString ]
 		literal: 'null'
 		testEq: true
 		test4Stages: true
@@ -179,12 +197,12 @@ PhxBridgedJsonSerialisationTests >> testSerializeNil [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeNumber [
 	self
-		testAllWithInstantiationBlock: [ 123456789 asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ 123456789 asPhxJsonString ]
 		literal: '123456789'
 		testEq: true
 		test4Stages: true.
 	self
-		testAllWithInstantiationBlock: [ 12345.6789 asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ 12345.6789 asPhxJsonString ]
 		literal: '12345.6789'
 		testEq: true
 		test4Stages: true
@@ -197,7 +215,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollection [
 	"Auto transpiled to Array."
 
 	self
-		testAllWithInstantiationBlock: [ OrderedCollection new asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ OrderedCollection new asPhxJsonString ]
 		literal: '{"class":"Array","instance":[]}'
 		testEq: false
 		test4Stages: false
@@ -206,7 +224,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollection [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeString [
 	self
-		testAllWithInstantiationBlock: [ PhxJsonTestResources challengingStringRequiringUnicodeAndEscapement
+		assertAllWithInstantiationBlock: [ PhxJsonTestResources challengingStringRequiringUnicodeAndEscapement
 				asPhxJsonString ]
 		literal:
 			PhxJsonTestResources challengingStringRequiringUnicodeAndEscapement

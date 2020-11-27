@@ -14,6 +14,17 @@ PjSetTest >> setUp [
 ]
 
 { #category : #testing }
+PjSetTest >> testCircularReference [
+	self deny: (set includes: set).
+	set add: 'A'.
+	self deny: (set includes: set).
+	set add: set.
+	self assert: (set includes: set).
+	self assert: set size equals: 2.
+
+]
+
+{ #category : #testing }
 PjSetTest >> testConverstionToSet [
 	self assert: set asSet == set
 ]

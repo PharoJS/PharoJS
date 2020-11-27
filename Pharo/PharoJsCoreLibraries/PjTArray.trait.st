@@ -62,6 +62,8 @@ PjTArray >> , other [
 
 { #category : #enumerating }
 PjTArray >> = anArray [
+	self == anArray ifTrue: [ ^true ].
+	(anArray isKindOf: Array) ifFalse: [^false].
 	self size = anArray size ifFalse: [ ^false ].
 	self with: anArray do: [ : myElement : otherElement|
 		myElement = otherElement ifFalse: [ ^false ]

@@ -1,6 +1,6 @@
 Extension { #name : #PjIdentityDictionary }
 
 { #category : #'*PharoJsSerialization' }
-PjIdentityDictionary classSide >> phxJsonClassName [
+PjIdentityDictionary class >> phxJsonClassName [
 	^ 'IdentityDictionary'
 ]
