@@ -143,16 +143,43 @@ PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 ]
 
 { #category : #tests }
-PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary [
+PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary1Entry [
+	self
+		assertAllWithInstantiationBlock: [ | d |
+			d := IdentityDictionary new.
+			d at: 'b' put: '123'.
+			d asPhxJsonString ]
+		literal: '{"class":"IdentityDictionary","instance":{"b":"123"}}'
+		testEq: true
+		test4Stages: true.
 	self
 		assertAllWithInstantiationBlock: [ | d |
 			d := IdentityDictionary new.
 			d at: 'a' put: 'abc'.
-			d at: 'b' put: '123'.
 			d asPhxJsonString ]
-		literal: '{"class":"IdentityDictionary","instance":{"a":"abc","b":"123"}}'
+		literal: '{"class":"IdentityDictionary","instance":{"a":"abc"}}'
 		testEq: true
 		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary2Entries [
+	"Entries in a dictionary are unordered. So, serialization may result into different valid results."
+	| serializationBlock validSerializationStrings jsSerialization pharoSerialization |
+	serializationBlock := [ | d |
+			d := IdentityDictionary new.
+			d at: 'a' put: 'abc'.
+			d at: 'b' put: '123'.
+			d asPhxJsonString ].
+	validSerializationStrings := #(
+		'{"class":"IdentityDictionary","instance":{"a":"abc","b":"123"}}'
+		'{"class":"IdentityDictionary","instance":{"b":"123","a":"abc"}}').
+	jsSerialization := self evalBlock: serializationBlock.
+	pharoSerialization := serializationBlock value.
+	{jsSerialization. pharoSerialization} do: [ : serialization |
+		self assert: (validSerializationStrings includes: serialization)
+	]
+
 ]
 
 { #category : #tests }
