@@ -44,16 +44,18 @@ PjClassSortingTest >> checkInitializationOrdered: sorted [
 
 { #category : #testing }
 PjClassSortingTest >> does: classB reference: classA [
+
 	| classesReferencingA |
-	classesReferencingA := cache
-		at: classA
-		ifAbsentPut: [ | methodsReferencingA |
-			methodsReferencingA := SystemNavigation
-				globalRefsForPharoJS: classA nameToUseForJsConversion.
-			methodsReferencingA asSet
-				collect: [ :each | each actualClass instanceSide ] ].
-	^ (classesReferencingA includes: classB)
-		or: [ classB sharedPools includes: classA ]
+	classesReferencingA := cache at: classA ifAbsentPut: [ 
+		                       | methodsReferencingA |
+		                       methodsReferencingA := SystemNavigation 
+			                                              globalRefsForPharoJS:
+			                                              classA
+				                                              nameToUseForJsConversion.
+		                       methodsReferencingA asSet collect: [ :each | 
+			                       each methodClass instanceSide ] ].
+	^ (classesReferencingA includes: classB) or: [ 
+		  classB sharedPools includes: classA ]
 ]
 
 { #category : #running }
