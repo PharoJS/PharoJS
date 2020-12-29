@@ -3,7 +3,7 @@ Extension { #name : #PjApplication }
 { #category : #'*PharoJsExporter-App' }
 PjApplication class >> appFolder [
 	<pharoJsSkip>
-	appFolder ifNil: [ appFolder := self defaultAppFolder ].
+	appFolder ifNil: [ appFolder := [self defaultAppFolder] on: Exception do: [ nil ] ].
 	self ifInvalidFolder: appFolder do:[self setUpAppFolder].
 	^appFolder	
 ]

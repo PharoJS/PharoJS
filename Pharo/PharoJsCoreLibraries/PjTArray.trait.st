@@ -74,8 +74,9 @@ PjTArray >> = anArray [
 { #category : #converting }
 PjTArray >> asJsObject [
 	| jsObject |
-	(self notEmpty and: [(self first isKindOf: Association) not]) ifTrue: [ 
-		^self
+	self isEmpty ifTrue: [ ^ self ].
+	(self first isKindOf: Association) ifFalse: [
+		^ self collect: [: each | each asJsObject ]
 	].
 	jsObject := Object new.
 	self do: [ : association |
@@ -115,6 +116,16 @@ PjTArray >> do: elementBlock separatedBy: separatorBlock [
 ]
 
 { #category : #accessing }
+PjTArray >> eighth [
+	<javascript: 'return this[7]'>
+]
+
+{ #category : #accessing }
+PjTArray >> fifth [
+	<javascript: 'return this[4]'>
+]
+
+{ #category : #accessing }
 PjTArray >> first [
 	<javascript: 'return this[0]'>
 ]
@@ -122,6 +133,11 @@ PjTArray >> first [
 { #category : #accessing }
 PjTArray >> first: n [
 	<javascript: 'return this.slice(0,n)'>
+]
+
+{ #category : #accessing }
+PjTArray >> fourth [
+	<javascript: 'return this[3]'>
 ]
 
 { #category : #testing }
@@ -165,6 +181,11 @@ PjTArray >> last: n [
 	<javascript: 'return this.slice(this.length-n)'>
 ]
 
+{ #category : #accessing }
+PjTArray >> ninth [
+	<javascript: 'return this[8]'>
+]
+
 { #category : #enumerating }
 PjTArray >> notEmpty [
 	<javascript: 'return this.length!=0'>
@@ -178,6 +199,16 @@ PjTArray >> second [
 { #category : #enumerating }
 PjTArray >> select: aBlock [
 	<jsGenerator: #select_jsGenerator:>
+]
+
+{ #category : #accessing }
+PjTArray >> seventh [
+	<javascript: 'return this[6]'>
+]
+
+{ #category : #accessing }
+PjTArray >> sixth [
+	<javascript: 'return this[5]'>
 ]
 
 { #category : #enumerating }
