@@ -66,6 +66,23 @@ PjAsJsObjectInJs >> testConvertingCompositeDictionary [
 ]
 
 { #category : #tests }
+PjAsJsObjectInJs >> testConvertingNestedDictionariesAndArrays [
+	| converted |
+	converted := self evalBlock: [
+		{ { 
+		#arrays -> { { #a -> 4. #b -> 5 }. false not. 3 negated. #(3 4 5)}.
+	} } asJsObject].
+	self assertBlock: [converted class == Array].
+	self assertBlock: [converted first class == Object].
+	self assertBlock: [(converted first at: #arrays) class == Array].
+	self assertBlock: [(converted first at: #arrays) first class == Object].
+	self assertBlock: [(converted first at: #arrays) second class == Boolean].
+	self assertBlock: [(converted first at: #arrays) third class == SmallInteger].
+	self assertBlock: [(converted first at: #arrays) fourth class == Array].
+
+]
+
+{ #category : #tests }
 PjAsJsObjectInJs >> testConvertingObjectWithNestedDictionaryAndArray [
 	| original converted |
 	original :=  self evalBlock: [PjObjectForTestingAsJsObject from:
