@@ -499,11 +499,9 @@ PjStringGenerator >> visitSelfNode: aPjASelf [
 
 { #category : #visiting }
 PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
-	| bracket |
-	bracket := aPjSequenceNode expressions size ~= 1.
-	bracket ifTrue: [self writeNonBrace: (self isAtStatementPrecedence ifTrue: ${ ifFalse: $()].
+	self isAtStatementPrecedence ifFalse: [self writeNonBrace:  $(].
 	aPjSequenceNode expressions do: [: expr |
-		wroteCloseBrace := false..
+		wroteCloseBrace := false.
 		expr acceptVisitor: self
 	] separatedBy: [
 		self isAtStatementPrecedence ifTrue: [
@@ -511,12 +509,8 @@ PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
 		] ifFalse: [
 			self nextPut: $,
 	]].
-	bracket ifTrue: [
-		self isAtStatementPrecedence ifTrue: [
-			self writeCloseBrace
-		] ifFalse: [
-			self writeNonBrace: $)
-	]]
+	self isAtStatementPrecedence
+		ifFalse: [ self writeNonBrace: $)]
 ]
 
 { #category : #visiting }

@@ -30,11 +30,12 @@ PjStringGenerator >> visitIfNilIfNotNilNode: aPjIfNilIfNotNilNode [
 		atPrecedence: EqualityPrecedence do: [ aPjIfNilIfNotNilNode test acceptVisitor: self ];
 		nextPutAll: '==';
 		nextPutAll: self class nilInJavascript;
-		writeNonBrace: $);
+		writeNonBrace: '){';
 		visit: then;
 		maybeWriteSemicolon;
-		nextPutAll: 'else ';
-		visit: else
+		nextPutAll: '}else{';
+		visit: else;
+		writeNonBrace: $}
 
 ]
 
@@ -50,8 +51,9 @@ PjStringGenerator >> visitIfNilNode: aPjIfNilNode [
 		atPrecedence: EqualityPrecedence do: [ aPjIfNilNode test acceptVisitor: self ];
 		nextPutAll: '==';
 		nextPutAll: self class nilInJavascript;
-		writeNonBrace: $);
-		visit: then
+		writeNonBrace: '){';
+		visit: then;
+		writeNonBrace: $}
 ]
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }
@@ -66,8 +68,9 @@ PjStringGenerator >> visitIfNotNilNode: aPjIfNotNilNode [
 		atPrecedence: EqualityPrecedence do: [ aPjIfNotNilNode test acceptVisitor: self ];
 		nextPutAll: '!=';
 		nextPutAll: self class nilInJavascript;
-		writeNonBrace: $);
-		visit: body
+		writeNonBrace: '){';
+		visit: body;
+		writeNonBrace: $}
 
 ]
 
@@ -81,11 +84,11 @@ PjStringGenerator >> visitIfTrueIfFalseNode: aPjIfTrueIfFalseNode [
 	self
 		nextPutAll: 'if(';
 		trueTest: aPjIfTrueIfFalseNode test;
-		writeNonBrace: $);
+		writeNonBrace: '){';
 		visit: aPjIfTrueIfFalseNode whenTrue;
-		maybeWriteSemicolon;
-		writeNonBrace: 'else '.
-	self visit: aPjIfTrueIfFalseNode whenFalse
+		writeNonBrace: '}else{';
+		visit: aPjIfTrueIfFalseNode whenFalse;
+		writeNonBrace: $}
 ]
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }
@@ -96,8 +99,9 @@ PjStringGenerator >> visitIfTrueNode: aPjIfTrueNode [
 	self
 		nextPutAll: 'if(';
 		trueTest: aPjIfTrueNode test;
-		writeNonBrace: $);
-		visit: aPjIfTrueNode whenTrue
+		writeNonBrace: '){';
+		visit: aPjIfTrueNode whenTrue;
+		writeNonBrace: $}
 
 ]
 
