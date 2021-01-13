@@ -21,11 +21,8 @@ PjIdentityDictionary >> at: key ifAbsent: aBlock [
 ]
 
 { #category : #'dictionary access' }
-PjIdentityDictionary >> at: key ifAbsentPut: newValue [
-	| value |
-	value := self at: key.
-	value ifNil: [^self at: key put: newValue].
-	^value
+PjIdentityDictionary >> at: key ifAbsentPut: aBlock [
+	^ self at: key ifAbsent: [ self at: key put: aBlock value ]
 ]
 
 { #category : #'dictionary access' }

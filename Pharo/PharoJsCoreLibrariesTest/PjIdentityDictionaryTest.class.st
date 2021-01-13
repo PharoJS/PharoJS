@@ -29,6 +29,10 @@ PjIdentityDictionaryTest >> testAtIfAbsentPut [
 		d := IdentityDictionary new.
 		d at: #x ifAbsentPut: 42.
 		d at: #x].
+	self assertEquivalent: [|d|
+		d := IdentityDictionary new.
+		d at: #x ifAbsentPut: [42].
+		d at: #x].
 
 ]
 
