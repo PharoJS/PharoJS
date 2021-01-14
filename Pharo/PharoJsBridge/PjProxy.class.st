@@ -270,6 +270,14 @@ PjProxy >> printOn: ws [
 	ws << ')'
 ]
 
+{ #category : #converting }
+PjProxy >> reifiedJsValue [
+	| size |
+	size := self size.
+	^ Array new: size streamContents: [: s |
+		1 to: size do: [: index | s nextPut: (self at: index)]]
+]
+
 { #category : #'reflective operations' }
 PjProxy >> removeEventListener: type [
 	^ self addEventListener: type block: nil

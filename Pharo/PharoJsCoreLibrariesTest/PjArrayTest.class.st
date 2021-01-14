@@ -270,6 +270,16 @@ PjArrayTest >> testReject [
 { #category : #testing }
 PjArrayTest >> testRemove [
 	self assertEquivalent: [ #(10 20 30 40) asOrderedCollection removeAt: 2 ].
+	self assertEquivalent: [ (#(10 20 30 40) asOrderedCollection removeAt: 2;yourself) asArray ].
+
+]
+
+{ #category : #testing }
+PjArrayTest >> testReversed [
+	self
+		assertEquivalent: [|array|
+			array := #(1 2 3 4).
+			array,array reversed].
 
 ]
 
