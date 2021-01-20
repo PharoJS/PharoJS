@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
-{ #category : #testing }
+{ #category : #running }
 PjSetTest >> setUp [
 	super setUp.
 	set := self evalBlock: [ Set new ]
@@ -26,7 +26,7 @@ PjSetTest >> testCircularReference [
 
 { #category : #testing }
 PjSetTest >> testConverstionToSet [
-	self assert: set asSet == set
+	self assert: set asSet identicalTo: set
 ]
 
 { #category : #testing }
