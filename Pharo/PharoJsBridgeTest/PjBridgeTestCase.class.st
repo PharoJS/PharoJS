@@ -42,7 +42,7 @@ PjBridgeTestCase >> addToDOM: html [
 { #category : #asserting }
 PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
 	| actualResult |
-	actualResult := (self bridge evalBlock: aBlock) reifiedJsValue.
+	actualResult := (self bridge evalBlock: aBlock) asLocalObject.
 	expectedResult isNumber
 		ifTrue: [ expectedResult isNaN
 				ifTrue: [ ^ self assert: actualResult isNaN ] ].
