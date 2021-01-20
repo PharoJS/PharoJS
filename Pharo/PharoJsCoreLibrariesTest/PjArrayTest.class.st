@@ -123,6 +123,14 @@ PjArrayTest >> testCollectPerformSymbol [
 ]
 
 { #category : #testing }
+PjArrayTest >> testConverstionToArray [
+	| collection |
+	collection := self evalBlock: [#(1 2 3 4)].
+	self deny: collection asArray identicalTo: collection.
+
+]
+
+{ #category : #testing }
 PjArrayTest >> testConverstionToSet [
 	| setFromArray |
 	setFromArray := self bridge evalBlock: [ #(10 20 30 40) asSet ].
