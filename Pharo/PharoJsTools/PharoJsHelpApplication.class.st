@@ -45,6 +45,6 @@ PharoJsHelpApplication class >> topicGlobalsAndPolyfills [
 'When code is running on Pharo, references to Javascript values such as the DOM need to be in scope.
 When code is running on Pharo or a Javascript engine, polyfills are used to sew together the application with other libraries.
 
-Both of these requirements are achieved by using Shared Pool Dictionaies.
+Both of these requirements are achieved by using Shared Pool Dictionaries.
 !' readStream nextChunkText
 ]
