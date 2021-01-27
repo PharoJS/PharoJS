@@ -5,7 +5,7 @@ Class {
 		'appJsSubFolder',
 		'appHtmlSubFolder'
 	],
-	#category : #'PharoJsExporter-Tests'
+	#category : #'PharoJsExporterTests-Tests'
 }
 
 { #category : #accessing }

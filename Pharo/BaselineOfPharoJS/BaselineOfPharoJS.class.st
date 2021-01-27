@@ -62,6 +62,8 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsTranspilerTests' with: [
 				spec requires: #('PharoJsTranspiler'). ]; 
 			package: 'PharoJsTranspilerOptimizationTests' with: [
-				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest). ]. 
+				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest). ];
+			package: 'PharoJsExporterTests' with: [
+				spec requires: #('PharoJsExporter' 'PharoJsTranspilerTests'). ]. 
 	]
 ]

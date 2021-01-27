@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'appClass'
 	],
-	#category : #'PharoJsExporter-Tests'
+	#category : #'PharoJsExporterTests-Tests'
 }
 
 { #category : #running }

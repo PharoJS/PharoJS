@@ -1,7 +1,7 @@
 Class {
 	#name : #PjDependentTranspilerTest,
 	#superclass : #PjPackageTranspilationTest,
-	#category : #'PharoJsExporter-Tests'
+	#category : #'PharoJsExporterTests-Tests'
 }
 
 { #category : #testing }

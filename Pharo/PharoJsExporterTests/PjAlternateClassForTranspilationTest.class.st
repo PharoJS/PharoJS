@@ -10,7 +10,7 @@ Class {
 	#pools : [
 		'PjDomGlobals'
 	],
-	#category : #'PharoJsExporter-Tests-Support'
+	#category : #'PharoJsExporterTests-Support'
 }
 
 { #category : #'initialization-release' }
