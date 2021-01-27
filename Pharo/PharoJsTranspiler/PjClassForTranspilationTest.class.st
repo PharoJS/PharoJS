@@ -116,6 +116,18 @@ PjClassForTranspilationTest >> add: op1 and: op2 [
 ]
 
 { #category : #any }
+PjClassForTranspilationTest >> alias [
+	<jsAlias: #myAlias>
+	^ 42
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> alias2 [
+	<jsAlias: #myAlias and: #anAlias>
+	^ 42
+]
+
+{ #category : #any }
 PjClassForTranspilationTest >> blockWithNamedParameter [
 "	self m2 ifNotNil: [ : foo | foo m2 ].
 "	^ self m1 ifNotNil: [ : foo | foo m1 ]
