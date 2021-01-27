@@ -73,7 +73,7 @@ PjExporterTest >> testExportingClassesAndPackages [
 	self assert: exporter classes size equals: 1.
 	exporter addAllClasses: {String. Array}.
 	self assert: exporter classes size equals: 3.
-	exporter addPackage: 'PharoJsExporter-Tests-Support'.
+	exporter addPackage: 'PharoJsExporterTests-Support'.
 	self assert: exporter classes size = 7.
 	exporter addAllPackages: {PjExporter category.  PjTranspiler category}.
 	self assert: exporter classes size > 10.
