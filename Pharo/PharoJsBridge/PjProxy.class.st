@@ -116,6 +116,14 @@ PjProxy >> asJsObjectUsing: converter [
 ]
 
 { #category : #converting }
+PjProxy >> asLocalObject [
+	| size |
+	size := self size.
+	^ Array new: size streamContents: [: s |
+		1 to: size do: [: index | s nextPut: (self at: index)]]
+]
+
+{ #category : #converting }
 PjProxy >> asRawJSONString [
 	^ self jsBridge: [ : bridge |
 		bridge evalJavascript: 'JSON.stringify(',jsName,')'

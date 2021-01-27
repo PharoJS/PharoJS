@@ -19,7 +19,7 @@ PjSortedCollectionTest >> atRandomAddAll: elements [
 
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjSortedCollectionTest >> setUp [
 	super setUp.
 	collection := self evalBlock: [ SortedCollection new ]

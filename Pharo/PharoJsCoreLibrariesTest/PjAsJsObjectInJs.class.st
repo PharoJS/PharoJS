@@ -85,6 +85,7 @@ PjAsJsObjectInJs >> testConvertingNestedDictionariesAndArrays [
 { #category : #tests }
 PjAsJsObjectInJs >> testConvertingObjectWithNestedDictionaryAndArray [
 	| original converted |
+	self bridge loadClass: PjObjectForTestingAsJsObject.
 	original :=  self evalBlock: [PjObjectForTestingAsJsObject from:
 		{ 
 		#plainArray -> #(1 2 3). 

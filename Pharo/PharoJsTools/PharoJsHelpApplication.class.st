@@ -29,10 +29,10 @@ PharoJsHelpApplication class >> topicApplication [
 	^HelpTopic
 		title: 'Introduction'
 		contents: 
-'To develop an application, whether a Single Page Application (SPA)  or simply code to support a conventional web page, create a class that is a subclass of PJApplication - usually a subclass of PjBrowserApplication or PjNodeApplication.
+'To develop an application, whether a Single Page Application (SPA)  or simply code to support a conventional web page, create a class that is a subclass of PjApplication - usually a subclass of PjBrowserApplication or PjNodeApplication.
 
 The subclasses define appropriate Javascript values to be referenced by proxies when code is running on Pharo.
-These are defined by shared pool disctionaries.!' readStream nextChunkText
+These are defined by shared pool dictionaries.!' readStream nextChunkText
 ]
 
 { #category : #pages }
@@ -45,6 +45,6 @@ PharoJsHelpApplication class >> topicGlobalsAndPolyfills [
 'When code is running on Pharo, references to Javascript values such as the DOM need to be in scope.
 When code is running on Pharo or a Javascript engine, polyfills are used to sew together the application with other libraries.
 
-Both of these requirements are achieved by using Shared Pool Dictionaies.
+Both of these requirements are achieved by using Shared Pool Dictionaries.
 !' readStream nextChunkText
 ]

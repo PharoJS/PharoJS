@@ -72,6 +72,11 @@ PjTArray >> = anArray [
 ]
 
 { #category : #converting }
+PjTArray >> asArray [
+	^ Array from: self
+]
+
+{ #category : #converting }
 PjTArray >> asJsObject [
 	| jsObject |
 	self isEmpty ifTrue: [ ^ self ].
@@ -189,6 +194,11 @@ PjTArray >> ninth [
 { #category : #enumerating }
 PjTArray >> notEmpty [
 	<javascript: 'return this.length!=0'>
+]
+
+{ #category : #converting }
+PjTArray >> reversed [
+	^ self asArray reverse
 ]
 
 { #category : #accessing }
