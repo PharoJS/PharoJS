@@ -104,6 +104,13 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 ]
 
 { #category : #testing }
+PjSingleClassTranspilationTest >> testMethodAlias [
+	self assert: self jsCode includes: 'i$(function _alias(){return 42},''myAlias'')'.
+	self assert: self jsCode includes: 'i$(function _alias2(){return 21},''myAlias2'',''andAlias2'')'.
+
+]
+
+{ #category : #testing }
 PjSingleClassTranspilationTest >> testNative [
 	| method |
 	method := self instanceMethod: #native.

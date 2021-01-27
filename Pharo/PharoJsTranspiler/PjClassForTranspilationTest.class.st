@@ -116,6 +116,55 @@ PjClassForTranspilationTest >> add: op1 and: op2 [
 ]
 
 { #category : #any }
+PjClassForTranspilationTest >> alias [
+	<jsAlias: #myAlias>
+	^ 42
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> alias1: arg [
+	<jsAlias: #myAlias1 >
+	^ arg + 1
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> alias1Caller [
+	<javascript: 'return this.myAlias1(41)'>
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> alias1Caller: arg [ 
+	<javascript: 'return this.myAlias1(arg)'>
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> alias2 [
+	<jsAlias: #myAlias2 and: #andAlias2>
+	^ 21
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> alias2Caller [
+	<javascript: 'return this.myAlias2() + this.andAlias2()'>
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> aliasCaller [
+	<javascript: 'return this.myAlias()'>
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> aliasSpecialName [
+	<jsAlias: #'_$$_special'>
+	^ 42
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> aliasSpecialNameCaller [
+	<javascript: 'return this._$$_special()'>
+]
+
+{ #category : #any }
 PjClassForTranspilationTest >> blockWithNamedParameter [
 "	self m2 ifNotNil: [ : foo | foo m2 ].
 "	^ self m1 ifNotNil: [ : foo | foo m1 ]
