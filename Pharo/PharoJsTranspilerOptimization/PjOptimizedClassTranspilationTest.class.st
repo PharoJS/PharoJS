@@ -14,11 +14,11 @@ PjOptimizedClassTranspilationTest >> setUp [
 PjOptimizedClassTranspilationTest >> testBlockTempNames [
 	self generateJsCodeForClasses: { PjClassForTranspilationTest }.
 	self assertInstanceMethod: #blockWithUnnamedParameter
-		equals: '(){var $1;if(($1=this._m1())==undefined)return 42;else return $1}'.
+		equals: '(){var $1;if(($1=this._m1())==undefined){return 42;}else{return $1}}'.
 	self assertInstanceMethod: #blockWithUnnamedParameterNonTail
 		equals: '(){var $1;return 3+(($1=this._m1())==undefined?42:$1)}'.
 	self assertInstanceMethod: #blockWithNamedParameter
-		equals: '(){var foo;',"'if((foo=this._m2())!=undefined)$asNil$(foo)._m2();',"'if((foo=this._m1())==undefined)return undefined;else return $asNil$(foo)._m1()}'.
+		equals: '(){var foo;if((foo=this._m1())==undefined){return undefined;}else{return $asNil$(foo)._m1()}}'.
 
 ]
 

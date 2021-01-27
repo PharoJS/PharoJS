@@ -157,7 +157,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 				expression: (self apply: y selector: #foo))
 			whenNotNil: tempVariable
 			whenNil: one .
-	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1}else{x}'.
+	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1;}else{x}'.
 
 	expectedAst := PjIfNilIfNotNilNode 
 			test: (PjAssignNode
@@ -165,7 +165,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 				expression: (self apply: y selector: #foo))
 			whenNotNil: (self apply: tempVariable selector: #foo nonNil: true)
 			whenNil: one.
-	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1}else{x._foo()}'
+	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1;}else{x._foo()}'
 
 ]
 
@@ -252,7 +252,7 @@ PjGenerationOptimizationTest >> testSequence [
 	self
 		assert: inputAst
 		asStringEquals:
-			'(function(){if(true==1){2;if(false==1){2}return 3}else{return function(){2;return 3}};2;return 3})'.
+			'(function(){if(true==1){2;if(false==1){2};return 3}else{return function(){2;return 3}};2;return 3})'.
 	inputAst := PjBlockNode
 		parameters: #(a)
 		locals: #(d)
@@ -271,7 +271,7 @@ PjGenerationOptimizationTest >> testSequence [
 			(PjReturnNode expression: (PjArgumentNode identifier: #a))}.
 	self
 		assert: inputAst
-		asStringEquals: '(function(a){var d;if(true==false)d=true;d=false;return a})'.
+		asStringEquals: '(function(a){var d;if(true==false){d=true};d=false;return a})'.
 	inputAst := PjBlockNode
 		parameters: #(a)
 		locals: #(d)
@@ -285,7 +285,7 @@ PjGenerationOptimizationTest >> testSequence [
 			(PjReturnNode expression: (PjArgumentNode identifier: #a))}.
 	self
 		assert: inputAst
-		asStringEquals: '(function(a){var d;if(true==false){}d=false;return a})'
+		asStringEquals: '(function(a){var d;if(true==false){};d=false;return a})'
 ]
 
 { #category : #testing }
