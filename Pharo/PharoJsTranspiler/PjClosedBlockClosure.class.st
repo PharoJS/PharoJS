@@ -16,7 +16,6 @@ Class {
 PjClosedBlockClosure class >> outerContext: aContext startpc: startpc numArgs: numArgs copiedValues: aCollection originalBlock: aBlock [
 	^(self outerContext: aContext startpc: startpc numArgs: numArgs copiedValues: aCollection)
 		originalBlock: aBlock;
-		externalVariables;
 		yourself
 ]
 
@@ -37,10 +36,7 @@ PjClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 
 { #category : #public }
 PjClosedBlockClosure >> enclosingScopeForContext: context [
-	| sourceNode |
-	sourceNode := context method sourceNodeForPC: context previousPcWithCorrectMapping.
-	^sourceNode enclosingMethodOrBlockNode scope
-
+	^context astScope
 ]
 
 { #category : #public }
@@ -58,8 +54,7 @@ PjClosedBlockClosure >> externalVariable: name fromMethod: method [
 
 { #category : #public }
 PjClosedBlockClosure >> externalVariables [
-	^ externalVariables ifNil: [
-		externalVariables := self externalVariablesOf: self originalBlock]
+	^ externalVariables
 ]
 
 { #category : #public }
@@ -92,8 +87,9 @@ PjClosedBlockClosure >> originalBlock [
 ]
 
 { #category : #accessing }
-PjClosedBlockClosure >> originalBlock: anObject [
-	originalBlock := anObject
+PjClosedBlockClosure >> originalBlock: aBlock [
+	originalBlock := aBlock.
+	externalVariables := self externalVariablesOf: originalBlock
 ]
 
 { #category : #accessing }
