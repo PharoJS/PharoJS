@@ -621,5 +621,5 @@ PjTranspiler >> writeMethodsOf: aClass named: unused with: reference [
 
 { #category : #transpiling }
 PjTranspiler >> writeNameForClass: aClass [
-	self nextPutAll: aClass nameToUseForJsConversion
+	self nextPutAll: aClass instanceSide nameToUseForJsConversion
 ]

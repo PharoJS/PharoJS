@@ -32,8 +32,8 @@ PjClassVariableNode >> poolReference [
 ]
 
 { #category : #accessing }
-PjClassVariableNode >> poolReference: aString [ 
-	poolReference := aString
+PjClassVariableNode >> poolReference: aClass [ 
+	poolReference := aClass instanceSide
 ]
 
 { #category : #converting }

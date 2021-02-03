@@ -552,7 +552,7 @@ PjAstConverter >> visitCascadeNode: aRBCascadeNode [
 { #category : #visiting }
 PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
 	| variableClass |
-	variableClass := aRBGlobalNode binding scope.
+	variableClass := aRBGlobalNode methodNode methodClass.
 	(variableClass instanceSide allClassVarNames includes: id)
 		ifTrue: [ self signal: 'class variable' ifClosedBlockReferences: id.
 			[ variableClass isNil
