@@ -479,9 +479,9 @@ PjAstConverter >> visitAllNodes: someRBNodes [
 ]
 
 { #category : #visiting }
-PjAstConverter >> visitArgumentNode: aRBArgumentNode [
-	(self checkFree: aRBArgumentNode) ifNotNil: [ : result | ^ result].
-	^PjArgumentNode identifier: aRBArgumentNode name
+PjAstConverter >> visitArgumentVariableNode: aRBVariableNode [ 
+	(self checkFree: aRBVariableNode) ifNotNil: [ : result | ^ result].
+	^PjArgumentNode identifier: aRBVariableNode name
 ]
 
 { #category : #visiting }
@@ -577,6 +577,11 @@ PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
 ]
 
 { #category : #visiting }
+PjAstConverter >> visitClassVariableNode: aRBVariableNode [ 
+	^self visitGlobalNode: aRBVariableNode
+]
+
+{ #category : #visiting }
 PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 	| global id |
 	id := aRBGlobalNode name.
@@ -588,6 +593,11 @@ PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 			^ PjGlobalNode identifier: id ].
 	self discoveredReferenceToClass: global.
 	^ PjClassNode identifier: global nameToUseForJsConversion
+]
+
+{ #category : #visiting }
+PjAstConverter >> visitGlobalVariableNode: aRBVariableNode [ 
+	^self visitGlobalNode: aRBVariableNode.
 ]
 
 { #category : #visiting }
@@ -738,7 +748,7 @@ PjAstConverter >> visitSuperNode: aRBSuperNode [
 ]
 
 { #category : #visiting }
-PjAstConverter >> visitTemporaryNode: aRBTemporaryNode [
+PjAstConverter >> visitTemporaryVariableNode: aRBTemporaryNode [
 	(self checkFree: aRBTemporaryNode) ifNotNil: [ : result | ^ result].
 	^PjTempVariableNode identifier: aRBTemporaryNode name
 ]
