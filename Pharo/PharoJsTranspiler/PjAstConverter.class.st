@@ -748,6 +748,12 @@ PjAstConverter >> visitSuperNode: aRBSuperNode [
 ]
 
 { #category : #visiting }
+PjAstConverter >> visitTemporaryNode: aRBTemporaryNode [
+	^self visitTemporaryVariableNode: aRBTemporaryNode
+	
+]
+
+{ #category : #visiting }
 PjAstConverter >> visitTemporaryVariableNode: aRBTemporaryNode [
 	(self checkFree: aRBTemporaryNode) ifNotNil: [ : result | ^ result].
 	^PjTempVariableNode identifier: aRBTemporaryNode name
