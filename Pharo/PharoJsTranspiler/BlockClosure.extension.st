@@ -54,7 +54,7 @@ BlockClosure >> copiedValuesForClosedBlock [
 ]
 
 { #category : #'*PharoJsTranspiler' }
-BlockClosure >> externalVariable: name fromContext: context [
+BlockClosure >> externalVariable: name fromContext: context andScope: scope [
 	^ PjJavascriptTranspilationError new messageText: 'free temp variable: ',name
 ]
 
@@ -70,18 +70,23 @@ BlockClosure >> externalVariables [
 
 { #category : #'*PharoJsTranspiler' }
 BlockClosure >> externalVariablesOf: aBlock [
-	| context method variables tempValue|
+
+	| context method variables tempValue scope |
 	variables := Dictionary new.
 	context := aBlock outerContext.
-	context sourceNode scope allTempNames do: [ : name |
-		tempValue := self externalVariable: name fromContext: context.
-		variables at: name put: tempValue].
+	scope := context sourceNode scope.
+	scope allTempNames do: [ :name | 
+		tempValue := self
+			             externalVariable: name
+			             fromContext: context
+			             andScope: scope.
+		variables at: name put: tempValue ].
 	method := aBlock home receiver.
-	method class allInstVarNames do: [ : name |
-		variables at: name put: (self externalVariable: name fromMethod: method)
-	].
+	method class allInstVarNames do: [ :name | 
+		variables
+			at: name
+			put: (self externalVariable: name fromMethod: method) ].
 	^ variables
-
 ]
 
 { #category : #'*PharoJsTranspiler' }
