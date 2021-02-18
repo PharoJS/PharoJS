@@ -7,12 +7,13 @@ BlockClosure >> arguments [
 
 { #category : #'*PharoJsTranspiler' }
 BlockClosure >> asClosedBlock [
-	^ PjClosedBlockClosure
-		outerContext: self outerContext
-		startpc: self startpc
-		numArgs: self numArgs
-		copiedValues: self copiedValuesForClosedBlock
-		originalBlock: self
+
+	^ self closedBlockClass
+		  outerContext: self outerContext
+		  startpc: self startpc
+		  numArgs: self numArgs
+		  copiedValues: self copiedValuesForClosedBlock
+		  originalBlock: self
 ]
 
 { #category : #'*PharoJsTranspiler' }
@@ -28,6 +29,11 @@ BlockClosure >> asValuedBlock [
 { #category : #'*PharoJsTranspiler' }
 BlockClosure >> asValuedBlockWithArgs: args [
 	^PjValuedClosedBlockClosure newFrom: self withArgs: args
+]
+
+{ #category : #'*PharoJsTranspiler' }
+BlockClosure >> closedBlockClass [
+	^PjClosedBlockClosure
 ]
 
 { #category : #'*PharoJsTranspiler' }
