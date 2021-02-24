@@ -10,7 +10,7 @@ BlockClosure >> asClosedBlock [
 
 	^ self closedBlockClass
 		  outerContext: self outerContext
-		  startpc: self startpc
+		  startpc: self basicStartpc
 		  numArgs: self numArgs
 		  copiedValues: self copiedValuesForClosedBlock
 		  originalBlock: self
@@ -29,6 +29,11 @@ BlockClosure >> asValuedBlock [
 { #category : #'*PharoJsTranspiler' }
 BlockClosure >> asValuedBlockWithArgs: args [
 	^PjValuedClosedBlockClosure newFrom: self withArgs: args
+]
+
+{ #category : #'*PharoJsTranspiler' }
+BlockClosure >> basicStartpc [
+	^startpc
 ]
 
 { #category : #'*PharoJsTranspiler' }
