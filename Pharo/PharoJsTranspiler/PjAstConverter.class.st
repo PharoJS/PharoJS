@@ -525,17 +525,17 @@ PjAstConverter >> visitBlockNode: aRBBlockNode [
 { #category : #visiting }
 PjAstConverter >> visitCascadeNode: aRBCascadeNode [
 
-	| expressions receiver |
+	| expressions receiver messageNode |
 	receiver := aRBCascadeNode receiver.
 	(receiver isSelfVariable or: [ receiver isSuperVariable ]) ifFalse: [ 
-		receiver := RBTemporaryNode named: self newTemp ].
+		receiver := PjTemporaryNode named: self newTemp ].
 	expressions := aRBCascadeNode messages collect: [ :each | 
-		               self
-			               visitMessageNode: (RBMessageNode
-					                receiver: receiver
-					                selector: each selector
-					                arguments: each arguments)
-			               isNonNil: true ].
+		               messageNode := RBMessageNode
+			                              receiver: receiver
+			                              selector: each selector
+			                              arguments: each arguments.
+		               messageNode parent: aRBCascadeNode parent.
+		               self visitMessageNode: messageNode isNonNil: true ].
 	receiver = aRBCascadeNode receiver ifFalse: [ 
 		expressions addFirst:
 			(PjAssignNode
