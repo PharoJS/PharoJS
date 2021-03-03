@@ -7,14 +7,19 @@ Class {
 	#name : #PjTestFileExporter,
 	#superclass : #PjFileExporter,
 	#instVars : [
-		'fileStream'
+		'writeStream'
 	],
 	#category : #'PharoJsExporter-Kernel'
 }
 
 { #category : #accessors }
 PjTestFileExporter >> contents [
-	^ self fileStream contents
+	^ self writeStream contents
+]
+
+{ #category : #testing }
+PjTestFileExporter >> exists [
+	^false
 ]
 
 { #category : #files }
@@ -23,16 +28,11 @@ PjTestFileExporter >> fileName [
 ]
 
 { #category : #accessors }
-PjTestFileExporter >> fileStream [
-	^ fileStream ifNil: [ fileStream := WriteStream with: '' ]
+PjTestFileExporter >> fileReferenceFrom: someFileName [
+	^self
 ]
 
-{ #category : #files }
-PjTestFileExporter >> fileStreamClass [
-	^ self
-]
-
-{ #category : #fileStreamEmulation }
-PjTestFileExporter >> newFileNamed: ignored do: aBlockClosure [ 
-	^ aBlockClosure value: self fileStream.
+{ #category : #accessors }
+PjTestFileExporter >> writeStream [
+	^ writeStream ifNil: [ writeStream := WriteStream with: '' ]
 ]

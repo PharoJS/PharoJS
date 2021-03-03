@@ -13,10 +13,89 @@ PjFileExporter class >> exportApp: aClass [
 ]
 
 { #category : #files }
-PjFileExporter >> createFileNamed: fName startingWith: beginning and: string ifEditableDo: aBlock [
-	| header match first100 |
-	match := string , ' *** DO NOT EDIT ***'.
-	header := [ :f | 
+PjFileExporter >> createFileNamed: someFileName startingWith: beginning and: string ifEditableDo: aBlock [
+	| fileReference |
+	fileReference := self fileReferenceFrom: someFileName.
+	fileReference exists ifTrue: [ 
+		self delete: fileReference ifMatches: string ].
+	self
+		writeInto: fileReference
+		match: string
+		startingWith: beginning
+		do: aBlock
+]
+
+{ #category : #files }
+PjFileExporter >> delete: fileReference ifMatches: string [
+	| fileStream first100 match |
+	fileReference exists ifFalse: [ ^self ].
+	fileStream := fileReference openForRead.
+	first100 := fileStream next: 100 into: (String new: 100).
+	fileStream close.
+	match := self matchFrom: string.
+	(first100 = ''
+						or: [ (first100 findString: match startingAt: 1 caseSensitive: true) > 0 ])
+						ifTrue: [ ^ self].
+		Error
+				signal:
+					fileReference pathString , ' exists and does not contain "' , string
+						, '" in the first 100 bytes'
+]
+
+{ #category : #files }
+PjFileExporter >> fileName [
+	^ self appClass appFullJsFileName
+]
+
+{ #category : #files }
+PjFileExporter >> fileReferenceFrom: someFileName [
+
+	^ someFileName asFileReference
+]
+
+{ #category : #files }
+PjFileExporter >> matchFrom: string [
+
+	^ string , ' *** DO NOT EDIT ***'
+]
+
+{ #category : #files }
+PjFileExporter >> writeFiles [
+	self writeJavascriptFileNamed: self fileName.
+]
+
+{ #category : #files }
+PjFileExporter >> writeInto: fileReference match: string startingWith: beginning  do: aBlock [
+	| fileStream |
+	fileStream := fileReference writeStream.
+	self
+		jsStream: fileStream
+		do: [ beginning
+				ifNotNil: [ self
+						nextPutAll: beginning;
+						cr ].
+			self
+				nextPutAll: (self matchFrom: string);
+				nextPutAll: ' on ';
+				nextPutAll: DateAndTime now asString.
+			OSPlatform current environment at: 'LOGNAME' ifPresent: [: name |
+				self nextPutAll: ' by ';nextPutAll: name
+			] ifAbsent: [
+				OSPlatform current environment at: 'USER' ifPresent: [: name |
+					self nextPutAll: ' by ';nextPutAll: name
+				] ifAbsent: [
+					OSPlatform current environment at: 'USERNAME' ifPresent: [: name |
+						self nextPutAll: ' by ';nextPutAll: name]]].
+			self cr.
+			self nextPutAll: '''use strict'';';cr.
+			aBlock value: fileStream ].
+	fileStream close
+	
+]
+
+{ #category : #files }
+PjFileExporter >> writeInto: f startingWith: beginning  do: aBlock [
+	| match |
 	self
 		jsStream: f
 		do: [ beginning
@@ -37,36 +116,8 @@ PjFileExporter >> createFileNamed: fName startingWith: beginning and: string ifE
 						self nextPutAll: ' by ';nextPutAll: name]]].
 			self cr.
 			self nextPutAll: '''use strict'';';cr.
-			aBlock value: f ] ].
-	[ ^ self fileStreamClass newFileNamed: fName do: header ]
-		on: FileExistsException
-		do: [ :exception | 
-			self fileStreamClass
-				readOnlyFileNamed: fName
-				do: [ :file | 
-					first100 := file next: 100 into: (String new: 100).
-					(first100 = ''
-						or: [ (first100 findString: match startingAt: 1 caseSensitive: true) > 0 ])
-						ifTrue: [ ^ self fileStreamClass forceNewFileNamed: fName do: header ] ].
-			Error
-				signal:
-					fName pathString , ' exists and does not contain "' , string
-						, '" in the first 100 bytes' ]
-]
-
-{ #category : #files }
-PjFileExporter >> fileName [
-	^ self appClass appFullJsFileName
-]
-
-{ #category : #files }
-PjFileExporter >> fileStreamClass [
-	^ FileStream
-]
-
-{ #category : #files }
-PjFileExporter >> writeFiles [
-	self writeJavascriptFileNamed: self fileName.
+			aBlock value: f ]
+	
 ]
 
 { #category : #files }
