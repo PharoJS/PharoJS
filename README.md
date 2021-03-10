@@ -1,8 +1,23 @@
 # PharoJS: Develop in Pharo, Run on Javascript
 
-PharoJS is currently available for Pharo 7 and Pharo 8.
+## Doc
 
-To install PharoJS, perform the following code in a playground:
+Learn more about PharoJS at: http://pharojs.org/
+
+## Install
+
+To install PharoJS, perform the code appropriate to your Pharo version in a playground:
+
+### Pharo 9
+
+<pre>
+Metacello new
+  baseline: 'PharoJS';
+  repository: 'github://PharoJS/PharoJS:Pharo9Compatibility';
+  load
+</pre>
+
+### Pharo 7 and Pharo 8
 
 <pre>
 Metacello new
@@ -10,9 +25,3 @@ Metacello new
   repository: 'github://PharoJS/PharoJS';
   load
 </pre>
-
-More doc is available at: http://pharojs.org/
-
-Updates to this repo are automatically pushed to:
-- the PharoJS dedicated Slack,
-- the `pharo-js` channel of in the Pharo Discord server. 
