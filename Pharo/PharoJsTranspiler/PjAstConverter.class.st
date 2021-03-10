@@ -105,6 +105,15 @@ PjAstConverter >> classForConversion: anObject [
 	classForConversion := anObject
 ]
 
+{ #category : #visiting }
+PjAstConverter >> classForVariable: aRBVariableNode [
+
+	| methodNode |
+	methodNode := aRBVariableNode methodNode.
+	methodNode ifNotNil: [ ^ methodNode methodClass ].
+	^ aRBVariableNode variable definingClass
+]
+
 { #category : #public }
 PjAstConverter >> convertAst: ast withPrimitive: anInteger [
 	methodPrimitive := anInteger.
@@ -550,9 +559,9 @@ PjAstConverter >> visitCascadeNode: aRBCascadeNode [
 ]
 
 { #category : #visiting }
-PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
+PjAstConverter >> visitClassOrPoolVariable: aRBVariableNode id: id [
 	| variableClass |
-	variableClass := aRBGlobalNode methodNode methodClass.
+	variableClass := self classForVariable: aRBVariableNode.
 	(variableClass instanceSide allClassVarNames includes: id)
 		ifTrue: [ self signal: 'class variable' ifClosedBlockReferences: id.
 			[ variableClass isNil
