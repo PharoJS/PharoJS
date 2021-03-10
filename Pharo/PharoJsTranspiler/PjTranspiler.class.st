@@ -597,7 +597,7 @@ PjTranspiler >> writeMethodsOf: aClass [
 				nextPutAll: ',';
 				writeNameForClass:  each
 		].
-		self nextPutAll: ')';cr.
+		self nextPutAll: ');';cr.
 
 ]
 
