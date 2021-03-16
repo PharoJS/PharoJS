@@ -2,7 +2,10 @@
 
 ## Doc
 
-Learn more about PharoJS at: http://pharojs.org/
+Learn more about PharoJS: 
+
+- Visit [PharoJS web site](https://pharojs.org/)
+- Chechout [PharoJS documentation repository](https://github.com/PharoJS/PharoJsDoc)
 
 ## Install
 
