@@ -9,18 +9,17 @@
         <img src="https://img.shields.io/badge/Pharo%20Smalltalk-9.0-ff69b4.svg"/></a>
     <a href="https://github.com/PharoJS?tab=followers" alt="GitHub followers">
         <img src="https://img.shields.io/github/followers/PharoJS.svg" /></a>
+    <a><img src="https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS" /></a>
     <a href="https://GitHub.com/PharoJS/PharoJS/stargazers/" alt="GitHub stars">
         <img src="https://img.shields.io/github/stars/PharoJS/PharoJS.svg" /></a>
-    <a href="https://twitter.com/PharoJS" alt="Twitter">
-        <img src="https://img.shields.io/twitter/follow/PharoJS" /></a>
+	<a href="https://twitter.com/PharoJS" alt="Twitter">
+        <img src="https://img.shields.io/twitter/follow/PharoJS.svg?style=flat&label=@PharoJS&logo=twitter&color=blue" /></a>
 </p>
 
 <!-- [![Build Status](https://dev.azure.com/nushell/nushell/_apis/build/status/nushell.nushell?branchName=main)](https://dev.azure.com/nushell/nushell/_build/latest?definitionId=2&branchName=main)
 [![Discord](https://img.shields.io/discord/601130461678272522.svg?logo=discord)](https://discord.gg/NtAbbGn)
-[![The Changelog #363](https://img.shields.io/badge/The%20Changelog-%23363-61c192.svg)](https://changelog.com/podcast/363)
-[![@nu_shell](https://img.shields.io/badge/twitter-@nu_shell-1DA1F3?style=flat-square)](https://twitter.com/nu_shell)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS)
-![GitHub contributors](https://img.shields.io/github/contributors/PharoJS/PharoJS) -->
+ -->
+
 
 
 ## Doc
@@ -28,7 +27,7 @@
 Learn more about PharoJS: 
 
 - Visit [PharoJS web site](https://pharojs.org/)
-- Chechout [PharoJS documentation repository](https://github.com/PharoJS/PharoJsDoc)
+- Checkout [PharoJS documentation repository](https://github.com/PharoJS/PharoJsDoc)
 
 ## Install
 
@@ -36,21 +35,21 @@ To install PharoJS, perform the code appropriate to your Pharo version in a play
 
 ### Pharo 9
 
-<pre>
+```smalltalk
 Metacello new
   baseline: 'PharoJS';
   repository: 'github://PharoJS/PharoJS:Pharo9Compatibility';
   load
-</pre>
+```
 
 ### Pharo 7 and Pharo 8
 
-<pre>
+```smalltalk
 Metacello new
   baseline: 'PharoJS';
   repository: 'github://PharoJS/PharoJS';
   load
-</pre>
+```
 
 ## Contributing
 
