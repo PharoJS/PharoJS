@@ -38,7 +38,7 @@ To install PharoJS, perform the code appropriate to your Pharo version in a play
 ```smalltalk
 Metacello new
   baseline: 'PharoJS';
-  repository: 'github://PharoJS/PharoJS:Pharo9Compatibility';
+  repository: 'github://PharoJS/PharoJS:pharo9';
   load
 ```
 
@@ -47,7 +47,7 @@ Metacello new
 ```smalltalk
 Metacello new
   baseline: 'PharoJS';
-  repository: 'github://PharoJS/PharoJS';
+  repository: 'github://PharoJS/PharoJS:pharo8';
   load
 ```
 
