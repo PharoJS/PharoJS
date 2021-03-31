@@ -10,6 +10,8 @@
     <a href="https://github.com/PharoJS?tab=followers" alt="GitHub followers">
         <img src="https://img.shields.io/github/followers/PharoJS.svg" /></a>
     <a><img src="https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS" /></a>
+    <a href="https://join.slack.com/t/pharojs/shared_invite/zt-os5ppigw-YnDyAn1dR0deyeOHesZlWg" rel="nofollow">
+	<img src="https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack" alt="Join our Slack!" style="max-width:100%;"></a>
     <a href="https://GitHub.com/PharoJS/PharoJS/stargazers/" alt="GitHub stars">
         <img src="https://img.shields.io/github/stars/PharoJS/PharoJS.svg" /></a>
 	<a href="https://twitter.com/PharoJS" alt="Twitter">
