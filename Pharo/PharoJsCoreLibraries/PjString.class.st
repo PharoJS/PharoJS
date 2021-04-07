@@ -333,6 +333,11 @@ PjString >> replaceFrom: start to: stop with: replacement startingAt: repStart [
 		return this.substring(0,start-1)+repl.join("")+this.substr(stop)'>
 ]
 
+{ #category : #converting }
+PjString >> reversed [
+	^ '' join: self asArray reverse
+]
+
 { #category : #accessing }
 PjString >> size [
 	^self js_at:#length

@@ -218,7 +218,10 @@ PjExporter >> writeCoreObject [
 		nextPutAll: '(){});';cr;
 		nextPutAll: 'Object.defineProperty(Object.prototype,"$def",{value:';cr;
 		nextPutAll: ' function $def(aFunc){';cr;
-		nextPutAll: '	Object.defineProperty(this,aFunc.name,{writable:true,value:aFunc})}})';cr;
+		nextPutAll: '    var args = Array.from(arguments),self=this;';cr;
+		nextPutAll: '    args[0]=aFunc.name;';cr;
+		nextPutAll: '    args.forEach(function(arg){';cr;
+		nextPutAll: '       Object.defineProperty(self,arg,{writable:true,value:aFunc})})}})';cr;
 		nextPutAll: 'Object.defineProperty(Object.prototype,"$$def",{value:';cr;
 		nextPutAll: ' function $$def(){';cr;
 		nextPutAll:	'   var v=Array.from(arguments),f=v[0];';cr;

@@ -465,6 +465,16 @@ PjTranspiler >> withMethodsOf: aClass do: aBlock [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> writeAliases: aRBMethodNode [
+	^ aRBMethodNode pragmas select: [: pragma |
+			pragma selector beginsWith: #jsAlias:
+		] thenDo:  [: pragma |
+			pragma arguments do: [: key |
+				self nextPut: $,; nextPutAll: key asString printString 
+		]]
+]
+
+{ #category : #transpiling }
 PjTranspiler >> writeClassDefinitionOf: aClass [
 	aClass needsClassDefinition ifFalse: [ ^self ].
 	self 
@@ -614,6 +624,7 @@ PjTranspiler >> writeMethodsOf: aClass named: unused with: reference [
 				nextPutAll: reference;
 				nextPutAll: '(';
 				transpileMethod: method;
+				writeAliases: method;
 				nextPutAll: ');';
 				cr
 	]]

@@ -65,7 +65,7 @@ PharoJsHelp class >> topicPjPlayground [
 		contents:
 'The PharoJS Playground lets you explore the browser side of an app.
 
-Access the PhariJS Playground from the world menu which will allow you to launch a playground for any app that you have in the image.
+Access the PharoJS Playground from the world menu which will allow you to launch a playground for any app that you have in the image.
 
 You can launch the app on Pharo, which means that all of your Pharo Smalltalk code will run in the Pharo image, but you can access the DOM, Javascript libraries, and other Javascript values via proxies visible as globals in the playground.
 

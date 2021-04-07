@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJsCoreLibrariesTest-Collections'
 }
 
-{ #category : #testing }
+{ #category : #running }
 PjOrderedCollectionTest >> setUp [
 	super setUp.
 	collection := self evalBlock: [ OrderedCollection new ]
@@ -21,6 +21,12 @@ PjOrderedCollectionTest >> testCircularReference [
 	collection add: collection.
 	self assert: (collection includes: collection).
 	self assert: collection size equals: 2.
+
+]
+
+{ #category : #tests }
+PjOrderedCollectionTest >> testConverstionToOrderedCollection [
+	self deny: collection asOrderedCollection identicalTo: collection.
 
 ]
 

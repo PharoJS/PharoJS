@@ -50,6 +50,13 @@ PjStringTest >> testLast [
 	self assert: ['CBA' last] evaluatesTo: 'A'.
 ]
 
+{ #category : #tests }
+PjStringTest >> testReversed [
+	self
+		assertEquivalent: ['abcd' reversed].
+
+]
+
 { #category : #testing }
 PjStringTest >> testSplit [
 	| splited |
