@@ -267,7 +267,7 @@ PjStringGenerationTest >> testOptimizedJsX [
 PjStringGenerationTest >> testPoolVariables [
 	| astAssignment poolVar |
 	poolVar := (PjPoolVariableNode identifier: #PoolVarForTest)
-		poolReference: 'cp$'.
+		poolReference: PjBrowserGlobals.
 	astAssignment := PjAssignNode target: poolVar expression: poolVar.
 	self
 		assert: astAssignment

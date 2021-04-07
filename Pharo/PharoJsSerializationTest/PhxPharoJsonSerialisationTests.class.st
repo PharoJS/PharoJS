@@ -140,20 +140,26 @@ PhxPharoJsonSerialisationTests >> testSetsCircularReferences [
 
 { #category : #tests }
 PhxPharoJsonSerialisationTests >> testSetsReferencingEachOther [
+
 	| cClone bClone a b c aInBClone aInCClone |
-	a := #('A') asSet.
-	b := { 'B'. a } asSet.
-	c := { 'C'. a. b } asSet.
+	a := #( 'AAAA' ) asSet.
+	b := { 
+		     'BBBB'.
+		     a } asSet.
+	c := { 
+		     'CCCC'.
+		     a.
+		     b } asSet.
 	cClone := PhxJsonReader readFromString: c asPhxJsonString.
 	self assert: cClone size equals: 3.
-	self assert: (cClone includes: 'C').
+	self assert: (cClone includes: 'CCCC').
 	self deny: (cClone includes: cClone).
-	bClone := cClone detect: [ : each | each size = 2 ].
-	self assert: (bClone includes: 'B').
+	bClone := cClone detect: [ :each | each size = 2 ].
+	self assert: (bClone includes: 'BBBB').
 	self deny: (bClone includes: bClone).
-	aInBClone := bClone detect: [ : each | each size = 1 ].
+	aInBClone := bClone detect: [ :each | each size = 1 ].
 	self assert: aInBClone size equals: 1.
-	self assert: (aInBClone includes: 'A').
-	aInCClone := cClone detect: [ : each | each size = 1 ].
-	self assert: aInBClone identicalTo: aInCClone.
+	self assert: (aInBClone includes: 'AAAA').
+	aInCClone := cClone detect: [ :each | each size = 1 ].
+	self assert: aInBClone identicalTo: aInCClone
 ]

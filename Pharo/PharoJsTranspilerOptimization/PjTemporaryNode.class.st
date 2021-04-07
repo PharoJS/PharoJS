@@ -5,7 +5,7 @@ Note: I'm in the RB AST heirarchy, not the PjJavascript AST heirarchy
 "
 Class {
 	#name : #PjTemporaryNode,
-	#superclass : #RBTemporaryNode,
+	#superclass : #RBVariableNode,
 	#instVars : [
 		'test',
 		'body'
@@ -16,4 +16,11 @@ Class {
 { #category : #testing }
 PjTemporaryNode >> isOptimizableAsContionalBlock [
 	^ true
+]
+
+{ #category : #initialization }
+PjTemporaryNode >> named: aName start: aPosition [
+	super named: aName start: aPosition.
+	variable := TemporaryVariable named: aName.
+
 ]

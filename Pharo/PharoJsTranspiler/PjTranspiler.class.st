@@ -221,7 +221,7 @@ PjTranspiler >> does: last reference: first [
 			methodsReferencingFirst := SystemNavigation
 				globalRefsForPharoJS: first classToUseForJsConversion name.
 			methodsReferencingFirst asSet
-				collect: [ :each | each actualClass instanceSide ] ].
+				collect: [ :each | each methodClass instanceSide ] ].
 	(classesReferencingFirst includes: last)
 		ifTrue: [ ^ true ].
 	classesReferencingFirst
@@ -607,7 +607,7 @@ PjTranspiler >> writeMethodsOf: aClass [
 				nextPutAll: ',';
 				writeNameForClass:  each
 		].
-		self nextPutAll: ')';cr.
+		self nextPutAll: ');';cr.
 
 ]
 
@@ -632,5 +632,5 @@ PjTranspiler >> writeMethodsOf: aClass named: unused with: reference [
 
 { #category : #transpiling }
 PjTranspiler >> writeNameForClass: aClass [
-	self nextPutAll: aClass nameToUseForJsConversion
+	self nextPutAll: aClass instanceSide nameToUseForJsConversion
 ]

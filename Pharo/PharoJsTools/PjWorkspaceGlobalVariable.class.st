@@ -6,7 +6,7 @@ Class {
 
 { #category : #accessing }
 PjWorkspaceGlobalVariable >> bridge: aBridge [
-	value := PjProxy proxyNamed: key onBridge: aBridge oid: key
+	value := PjProxy proxyNamed: self key onBridge: aBridge oid: self key
 ]
 
 { #category : #'code generation' }
@@ -17,7 +17,7 @@ PjWorkspaceGlobalVariable >> emitValue: methodBuilder [
 
 { #category : #accessing }
 PjWorkspaceGlobalVariable >> key: anObject [
-	key := anObject  asSymbol.
+	super key: anObject  asSymbol.
 
 ]
 

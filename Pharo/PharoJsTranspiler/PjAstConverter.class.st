@@ -105,6 +105,15 @@ PjAstConverter >> classForConversion: anObject [
 	classForConversion := anObject
 ]
 
+{ #category : #visiting }
+PjAstConverter >> classForVariable: aRBVariableNode [
+
+	| methodNode |
+	methodNode := aRBVariableNode methodNode.
+	methodNode ifNotNil: [ ^ methodNode methodClass ].
+	^ aRBVariableNode variable definingClass
+]
+
 { #category : #public }
 PjAstConverter >> convertAst: ast withPrimitive: anInteger [
 	methodPrimitive := anInteger.
@@ -181,7 +190,7 @@ PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
 { #category : #visiting }
 PjAstConverter >> handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode [ 
 	| jsCode forClass selector result |
-	forClass := aRBMethodNode scope outerScope outerScope getClass.
+	forClass := aRBMethodNode scope outerScope.
 	selector := aRBMethodNode selector.
 	jsCode := String streamContents: [: s |
 		s nextPutAll: 'return '.
@@ -479,9 +488,9 @@ PjAstConverter >> visitAllNodes: someRBNodes [
 ]
 
 { #category : #visiting }
-PjAstConverter >> visitArgumentNode: aRBArgumentNode [
-	(self checkFree: aRBArgumentNode) ifNotNil: [ : result | ^ result].
-	^PjArgumentNode identifier: aRBArgumentNode name
+PjAstConverter >> visitArgumentVariableNode: aRBVariableNode [ 
+	(self checkFree: aRBVariableNode) ifNotNil: [ : result | ^ result].
+	^PjArgumentNode identifier: aRBVariableNode name
 ]
 
 { #category : #visiting }
@@ -523,30 +532,36 @@ PjAstConverter >> visitBlockNode: aRBBlockNode [
 ]
 
 { #category : #visiting }
-PjAstConverter >> visitCascadeNode: aRBCascadeNode [ 
-	| expressions receiver |
+PjAstConverter >> visitCascadeNode: aRBCascadeNode [
+
+	| expressions receiver messageNode |
 	receiver := aRBCascadeNode receiver.
-	(receiver isSelf or: [ receiver isSuper ]) ifFalse: [
-		receiver := RBTemporaryNode named: self newTemp
-	].
-	expressions := aRBCascadeNode messages collect: [ : each | 
-		self visitMessageNode: (RBMessageNode receiver: receiver selector: each selector arguments: each arguments) isNonNil: true
-	].
-	receiver = aRBCascadeNode receiver ifFalse: [
-		expressions addFirst: (PjAssignNode 
-				target: (self visit: receiver)
-				expression: (PjApplyNode
-						func: (PjFieldNode
-								target: (self visit: aRBCascadeNode receiver)
-								selectorNode: nil isNonNil: false)
-						args: nil))].
-	^PjSequenceNode expressions: expressions.
+	(receiver isSelfVariable or: [ receiver isSuperVariable ]) ifFalse: [ 
+		receiver := PjTemporaryNode named: self newTemp ].
+	expressions := aRBCascadeNode messages collect: [ :each | 
+		               messageNode := RBMessageNode
+			                              receiver: receiver
+			                              selector: each selector
+			                              arguments: each arguments.
+		               messageNode parent: aRBCascadeNode parent.
+		               self visitMessageNode: messageNode isNonNil: true ].
+	receiver = aRBCascadeNode receiver ifFalse: [ 
+		expressions addFirst:
+			(PjAssignNode
+				 target: (self visit: receiver)
+				 expression: (PjApplyNode
+						  func: (PjFieldNode
+								   target: (self visit: aRBCascadeNode receiver)
+								   selectorNode: nil
+								   isNonNil: false)
+						  args: nil)) ].
+	^ PjSequenceNode expressions: expressions
 ]
 
 { #category : #visiting }
-PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
+PjAstConverter >> visitClassOrPoolVariable: aRBVariableNode id: id [
 	| variableClass |
-	variableClass := aRBGlobalNode binding scope getClass instanceSide.
+	variableClass := self classForVariable: aRBVariableNode.
 	(variableClass instanceSide allClassVarNames includes: id)
 		ifTrue: [ self signal: 'class variable' ifClosedBlockReferences: id.
 			[ variableClass isNil
@@ -571,6 +586,11 @@ PjAstConverter >> visitClassOrPoolVariable: aRBGlobalNode id: id [
 ]
 
 { #category : #visiting }
+PjAstConverter >> visitClassVariableNode: aRBVariableNode [ 
+	^self visitGlobalNode: aRBVariableNode
+]
+
+{ #category : #visiting }
 PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 	| global id |
 	id := aRBGlobalNode name.
@@ -582,6 +602,11 @@ PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 			^ PjGlobalNode identifier: id ].
 	self discoveredReferenceToClass: global.
 	^ PjClassNode identifier: global nameToUseForJsConversion
+]
+
+{ #category : #visiting }
+PjAstConverter >> visitGlobalVariableNode: aRBVariableNode [ 
+	^self visitGlobalNode: aRBVariableNode.
 ]
 
 { #category : #visiting }
@@ -733,6 +758,12 @@ PjAstConverter >> visitSuperNode: aRBSuperNode [
 
 { #category : #visiting }
 PjAstConverter >> visitTemporaryNode: aRBTemporaryNode [
+	^self visitTemporaryVariableNode: aRBTemporaryNode
+	
+]
+
+{ #category : #visiting }
+PjAstConverter >> visitTemporaryVariableNode: aRBTemporaryNode [
 	(self checkFree: aRBTemporaryNode) ifNotNil: [ : result | ^ result].
 	^PjTempVariableNode identifier: aRBTemporaryNode name
 ]

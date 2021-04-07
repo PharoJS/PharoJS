@@ -13,7 +13,7 @@ BaselineOfPharoJS >> baseline: spec [
 
 
 	spec for: #'pharo7.x' do: [ spec package: 'PharoJsPharo7' ].
-	spec for: #'pharo8.x' do: [ spec package: 'PharoJsPharo8' ].	
+	spec for: #(#'pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJsPharo8' ].	
 	spec for: #'common' do: [
 		spec 
 			baseline: 'PharoExtra' with: [
