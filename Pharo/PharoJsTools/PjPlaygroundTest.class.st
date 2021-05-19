@@ -41,6 +41,7 @@ PjPlaygroundTest >> setUp [
 { #category : #testing }
 PjPlaygroundTest >> startBridge [
 	playground bridge: PjWebApplication bridge.
+	playground bridge client openBrowserInBackground: true.
 	playground bridge start
 ]
 
