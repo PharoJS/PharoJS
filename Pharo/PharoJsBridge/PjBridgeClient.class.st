@@ -98,6 +98,12 @@ PjBridgeClient >> jsGlobalNames [
 ]
 
 { #category : #accessing }
+PjBridgeClient >> openBrowserInBackground: aBoolean [
+	"Useful only for Browser apps"
+	^self
+]
+
+{ #category : #accessing }
 PjBridgeClient >> pharoJsSelectorPrefix [
 	^ exporter transpiler pharoJsSelectorPrefix
 ]

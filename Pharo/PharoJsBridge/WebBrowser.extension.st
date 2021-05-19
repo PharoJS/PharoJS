@@ -26,15 +26,19 @@ WebBrowser class >> openBrowser: browserName on: anURLString inBackground: backg
 ]
 
 { #category : #'*PharoJsBridge' }
+WebBrowser class >> openInBackgroundUrl: anURLString [
+	^ self openBrowser: nil on: anURLString inBackground: true
+]
+
+{ #category : #'*PharoJsBridge' }
 WebBrowser class >> openOn: anURLString inBackground: backgroundFlag [
 	"Open the webbrowser on the given URL
-	
 	self openOn: 'http://pharojs.org' inBackground: false.
-
 	The backgroundFlag is true when the window of the browser should open behind the Pharo window.
 	"
+	backgroundFlag ifFalse: [ ^self openOn: anURLString ].
+	self webbrowserClassForPlatform openInBackgroundUrl: anURLString
 
-	^ self openBrowser: nil on: anURLString inBackground: backgroundFlag
 ]
 
 { #category : #'*PharoJsBridge' }

@@ -4,6 +4,8 @@ I am for browsers that have more resources than the CSS and HTML files that need
 Class {
 	#name : #PjFileBasedBrowserBridgeClient,
 	#superclass : #PjFileBasedBridgeClient,
+	#traits : 'PjTBrowserController',
+	#classTraits : 'PjTBrowserController classTrait',
 	#category : #'PharoJsBridge-Client-Kernel'
 }
 
@@ -14,10 +16,12 @@ PjFileBasedBrowserBridgeClient >> defaultAppClass [
 
 { #category : #activity }
 PjFileBasedBrowserBridgeClient >> openWebBrowserOn: appHtmlFileUrlString [
-	WebBrowser openOn: appHtmlFileUrlString
+	WebBrowser
+		openOn: self urlString
+		inBackground: self openBrowserInBackground
 ]
 
-{ #category : #activity }
-PjFileBasedBrowserBridgeClient >> startJsInterpreter [
-	self openWebBrowserOn: self appClass appHtmlUrlString
+{ #category : #accessing }
+PjFileBasedBrowserBridgeClient >> urlString [
+	^self appClass appHtmlUrlString
 ]

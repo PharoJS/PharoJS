@@ -4,11 +4,43 @@ I represent a web bridge client i.e. an interactive interpreter is launched upon
 Class {
 	#name : #PjBrowserBridgeClient,
 	#superclass : #PjBridgeClient,
-	#instVars : [
-		'openBrowserInBackground'
+	#traits : 'PjTBrowserController',
+	#classTraits : 'PjTBrowserController classTrait',
+	#classInstVars : [
+		'defaultWebBrowserName'
 	],
 	#category : #'PharoJsBridge-Client-Kernel'
 }
+
+{ #category : #accessing }
+PjBrowserBridgeClient class >> defaultWebBrowserName [
+	^defaultWebBrowserName ifNil: [ self safari ]
+]
+
+{ #category : #accessing }
+PjBrowserBridgeClient class >> defaultWebBrowserName: aString [
+	defaultWebBrowserName := aString
+]
+
+{ #category : #accessing }
+PjBrowserBridgeClient class >> firefox [
+	^#firefox
+]
+
+{ #category : #accessing }
+PjBrowserBridgeClient class >> makeFirefoxDefaultWebBrowser [
+	self defaultWebBrowserName: self firefox
+]
+
+{ #category : #accessing }
+PjBrowserBridgeClient class >> makeSafariDefaultWebBrowser [
+	self defaultWebBrowserName: self safari
+]
+
+{ #category : #accessing }
+PjBrowserBridgeClient class >> safari [
+	^#safari
+]
 
 { #category : #'initialization-release' }
 PjBrowserBridgeClient >> defaultAppClass [
@@ -18,12 +50,6 @@ PjBrowserBridgeClient >> defaultAppClass [
 { #category : #accessing }
 PjBrowserBridgeClient >> exporterClass [
 	^ PjExporter
-]
-
-{ #category : #'initialization-release' }
-PjBrowserBridgeClient >> initialize [
-	super initialize.
-	openBrowserInBackground := false.
 ]
 
 { #category : #accessing }
@@ -37,16 +63,6 @@ PjBrowserBridgeClient >> initializeWithBridge: aBridge [
 ]
 
 { #category : #accessing }
-PjBrowserBridgeClient >> openBrowserInBackground [
-	^ openBrowserInBackground
-]
-
-{ #category : #accessing }
-PjBrowserBridgeClient >> openBrowserInBackground: anObject [
-	openBrowserInBackground := anObject
-]
-
-{ #category : #activity }
 PjBrowserBridgeClient >> serverUrlString [
 	^self server urlString
 ]
@@ -60,9 +76,7 @@ PjBrowserBridgeClient >> start [
 	super start
 ]
 
-{ #category : #activity }
-PjBrowserBridgeClient >> startJsInterpreter [
-	WebBrowser
-		openOn: self serverUrlString
-		inBackground: self openBrowserInBackground
+{ #category : #accessing }
+PjBrowserBridgeClient >> urlString [
+	^self serverUrlString 
 ]

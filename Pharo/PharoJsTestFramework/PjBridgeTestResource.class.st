@@ -91,7 +91,7 @@ PjBridgeTestResource >> setUp [
 
 { #category : #running }
 PjBridgeTestResource >> setUpClient [
-	^self "Use default client"
+	^self bridge client openBrowserInBackground: true
 ]
 
 { #category : #running }

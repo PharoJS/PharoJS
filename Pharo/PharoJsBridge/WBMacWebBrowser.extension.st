@@ -23,6 +23,13 @@ WBMacWebBrowser class >> openBrowser: browserName on: anURLString inBackground: 
 ]
 
 { #category : #'*PharoJsBridge' }
+WBMacWebBrowser class >> openInBackgroundUrl: urlString [
+	| command |
+	command := 'open -a {1} -g {2}' format: { PjBrowserBridgeClient defaultWebBrowserName . urlString}.
+	^self system: command
+]
+
+{ #category : #'*PharoJsBridge' }
 WBMacWebBrowser class >> openTerminalWithNodeOn: theFileName inFolder: theFolder [
 	| cd |
 	cd := theFolder ifNil: [ '' ] ifNotNil: [ 'cd ',theFolder,'; ' ].
