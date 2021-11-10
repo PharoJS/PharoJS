@@ -77,6 +77,12 @@ PjBridgeServer >> css: anObject [
 ]
 
 { #category : #accessing }
+PjBridgeServer >> delegate [
+
+	^ znServer delegate
+]
+
+{ #category : #accessing }
 PjBridgeServer >> favicon [
 	^ favicon
 ]
@@ -122,7 +128,7 @@ PjBridgeServer >> indexHtmlResponse [
 { #category : #'initialize-release' }
 PjBridgeServer >> initialize [
 	super initialize.
-	znServer := self newDefaultZnServer.
+	znServer := self newZincServer.
 	fingerPrint := UUIDGenerator next asString.
 	
 ]
@@ -186,40 +192,40 @@ PjBridgeServer >> logSocketWritten: aString [
 ]
 
 { #category : #'initialize-release' }
-PjBridgeServer >> newDefaultZnServer [
-	| srv |
-	srv := ZnMultiThreadedServer new.
-	srv delegate: self newDefaultZnServerDelegate.
-	^ srv
+PjBridgeServer >> newServerDelegate [
+
+	| newDelegate |
+	newDelegate := self serverDelegateClass empty.
+	newDelegate map: '/' to: 'index.html'.
+	newDelegate
+		map: 'index.html'
+		to: [ :request | ZnResponse ok: (ZnEntity html: self html) ].
+	newDelegate
+		map: 'index.js'
+		to: [ :request | 
+		ZnResponse ok: (ZnEntity javascript: self javascript) ].
+	newDelegate
+		map: 'index.css'
+		to: [ :request | ZnResponse ok: (ZnEntity css: self css) ].
+	newDelegate map: 'favicon.ico' to: [ :request | 
+		self favicon
+			ifNil: [ ZnResponse notFound: request uri ]
+			ifNotNil: [ ZnResponse ok: (ZnEntity favicon: self favicon) ] ].
+	newDelegate
+		map: 'serverFingerPrint'
+		to: [ :request | ZnResponse ok: (ZnEntity text: self fingerPrint) ].
+	newDelegate
+		map: self webSocketUrlTag
+		to: (ZnWebSocketDelegate map: self webSocketUrlTag to: self).
+	^ newDelegate
 ]
 
 { #category : #'initialize-release' }
-PjBridgeServer >> newDefaultZnServerDelegate [
-	| d |
-	d := ZnDefaultServerDelegate empty.
-	d map: '/' to: 'index.html'.
-	d
-		map: 'index.html'
-		to: [ :request | ZnResponse ok: (ZnEntity html: self html) ].
-	d
-		map: 'index.js'
-		to: [ :request | ZnResponse ok: (ZnEntity javascript: self javascript) ].
-	d
-		map: 'index.css'
-		to: [ :request | ZnResponse ok: (ZnEntity css: self css) ].
-	d
-		map: 'favicon.ico'
-		to: [ :request | 
-			self favicon
-				ifNil: [ ZnResponse notFound: request uri ]
-				ifNotNil: [ ZnResponse ok: (ZnEntity favicon: self favicon) ] ].
-	d
-		map: 'serverFingerPrint'
-		to: [ :request | ZnResponse ok: (ZnEntity text: self fingerPrint) ].
-	d
-		map: self webSocketUrlTag
-		to: (ZnWebSocketDelegate map: self webSocketUrlTag to: self).
-	^ d
+PjBridgeServer >> newZincServer [
+	| srv |
+	srv := ZnMultiThreadedServer new.
+	srv delegate: self newServerDelegate.
+	^ srv
 ]
 
 { #category : #accessing }
@@ -248,6 +254,12 @@ PjBridgeServer >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 		do: [ :ex | 
 			self halt.
 			ex return ]
+]
+
+{ #category : #'initialize-release' }
+PjBridgeServer >> serverDelegateClass [
+
+	^ PjBridgeServerDelegate
 ]
 
 { #category : #start }
