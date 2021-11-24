@@ -18,13 +18,15 @@ Class {
 
 { #category : #'pharoJs support' }
 PjReadWriteStream class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^{PositionableStream -> #(
-				back isEmpty match: next: nextDelimited: peek peekBack peekFor:
-				position position: positionError reset resetContents setFrom:to:
-				setToEnd skip: upTo:
-			).
-		}
+	^ { (PositionableStream
+	   ->
+		   #( back isEmpty match: next: nextDelimited: peek peekBack
+		      peekFor: position position: positionError reset resetContents
+		      #setFrom:to: setToEnd skip: upTo:  ))
+		.
+		WriteStream -> #(<<) }
 ]
 
 { #category : #accessing }

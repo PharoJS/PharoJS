@@ -22,6 +22,11 @@ PjDependentTranspiler class >> lineEnding [
 	^Character lf
 ]
 
+{ #category : #'initailize-release' }
+PjDependentTranspiler >> addAlreadyDefinedClasses: classes [
+	alreadyDefinedClasses addAll: classes
+]
+
 { #category : #transpiling }
 PjDependentTranspiler >> addClassToConvert: aClass [
 	| addClass |

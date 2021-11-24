@@ -33,21 +33,21 @@ PjTArray classSide >> jsTranspilationImportMethods [
 
 { #category : #'pharoJs support' }
 PjTArray classSide >> jsTranspilationImportMethodsArray [
-	<pharoJsSkip>
-	^ self jsTranspilationImportMethodsCollection,
-	{
-		Array -> #( isArray ).
-		ByteArray -> #( asString).
-		OrderedCollection -> #( join: addAllLast:).
-		Collection ->#(doWithIndex:).
-		SequenceableCollection -> #(
-			 withIndexDo: 
-			allButFirst allButFirst: allButLast allButLast:
-			copyFrom:to: copyReplaceFrom:to:with: copyWith: copyWithFirst: copyWithoutIndex: from:to:put: grownBy: replaceFrom:to:with: reverseDo: appendTo:
-		).
-	 	ArrayedCollection class -> #(with: with:with: with:with:with: with:with:with:with:).
 
-	} 
+	<pharoJsSkip>
+	^ self jsTranspilationImportMethodsCollection , { 
+		  (Array -> #( isArray )).
+		  (ByteArray -> #( asString )).
+		  (OrderedCollection -> #( join: addAllLast: )).
+		  (Collection -> #( doWithIndex: )).
+		  (SequenceableCollection
+		   ->
+			   #( withIndexDo: allButFirst allButFirst: allButLast allButLast:
+			      #copyFrom:to: #copyReplaceFrom:to:with:
+			      copyWith: copyWithFirst: copyWithoutIndex: #from:to:put:
+			      grownBy: #replaceFrom:to:with: reverseDo: appendTo: putOn:)).
+		  (ArrayedCollection class
+		   -> #( with: #with:with: #with:with:with: #with:with:with:with: )) }
 ]
 
 { #category : #enumerating }
