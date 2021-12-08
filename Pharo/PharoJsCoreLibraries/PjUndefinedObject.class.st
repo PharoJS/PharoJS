@@ -26,12 +26,11 @@ PjUndefinedObject class >> javascriptName [
 
 { #category : #'pharoJs support' }
 PjUndefinedObject class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^{UndefinedObject -> #(
-				isNil ifNil: ifNotNil: ifNil:ifNotNil: ifNotNil:ifNil:
-				isNotNil notNil isEmptyOrNil 
-			).
-		}
+	^ { (UndefinedObject
+	   -> #( isNil ifNil: ifNotNil: #ifNil:ifNotNil: #ifNotNil:ifNil:
+		      isNotNil notNil isEmptyOrNil isLiteral printOn: )) }
 ]
 
 { #category : #initialize }

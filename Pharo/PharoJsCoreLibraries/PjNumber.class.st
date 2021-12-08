@@ -65,20 +65,36 @@ PjNumber class >> javascriptInitialize [
 
 { #category : #'pharoJs support' }
 PjNumber class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
 	| selectorsForChronology numberSelectors |
-	selectorsForChronology := #(year years week weeks day days hour hours minute minutes second seconds milliSecond milliSeconds),
-		(Number selectorsInProtocol: '*PharoExtra-Chronology').
-	numberSelectors := selectorsForChronology, #(floorLog: negated reciprocal log: asInteger asNumber squared even odd fractionPart integerPart // strictlyPositive positive negative raisedToInteger: raisedTo: isNumber isZero quo: rem:).
-	^ self jsTranspilationImportMethodsMagnitude,
-			{(Number -> numberSelectors).
-			Number class -> #(one).
-			(Integer -> #(asCharacter isPowerOfTwo)).
-			(SmallInteger -> #(highBit basicIdentityHash identityHash hashMultiply hash)).
-			(Float -> #(isInfinite rounded asFloat)).
-			(Float class
-				->
-					#(denormalized e emax emin epsilon fmax fmin fminDenormalized fminNormalized halfPi infinity maxExactInteger nan negativeInfinity negativeZero one pi precision radix threePi twoPi zero))}
+	selectorsForChronology := #( year years week weeks day days hour hours
+	                             minute minutes second seconds milliSecond
+	                             milliSeconds )
+	                          ,
+	                          (Number selectorsInProtocol:
+		                           '*PharoExtra-Chronology').
+	numberSelectors := selectorsForChronology
+	                   ,
+		                   #( floorLog: negated reciprocal log: asInteger
+		                      asNumber squared even odd fractionPart
+		                      integerPart // strictlyPositive
+		                      positive negative raisedToInteger:
+		                      raisedTo: isNumber isZero quo: rem: ).
+	^ self jsTranspilationImportMethodsMagnitude , { 
+		  (Number -> numberSelectors).
+		  (Number class -> #( one )).
+		  (Integer -> #( asCharacter isPowerOfTwo isLiteral)).
+		  (SmallInteger
+		   -> #( highBit basicIdentityHash identityHash hashMultiply
+		      hash )).
+		  (Float -> #( isInfinite rounded asFloat isSelfEvaluating)).
+		  (Float class
+		   ->
+			   #( denormalized e emax emin epsilon fmax fmin fminDenormalized
+			      fminNormalized halfPi infinity maxExactInteger
+			      nan negativeInfinity negativeZero one pi precision radix
+			      threePi twoPi zero )) }
 ]
 
 { #category : #arithmetics }
@@ -339,6 +355,12 @@ PjNumber >> pc [
 { #category : #converting }
 PjNumber >> percnt [
 	<javascript: 'return this + "%"'>
+]
+
+{ #category : #printing }
+PjNumber >> printOn: aStream [
+	aStream nextPutAll: self js_toString
+	
 ]
 
 { #category : #proxy }

@@ -19,25 +19,16 @@ PjString class >> defaultSize [
 
 { #category : #'pharoJs support' }
 PjString class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^ self jsTranspilationImportMethodsArray,
-	{
-			String class -> #(
-				stringHash:initialHash: fromByteArray:
-			).
-			String -> #(
-				findTokens: linesDo: lineIndicesDo:
-			).
-			Symbol -> #(
-				cull: value: 
-			).
-			Character class -> #(
-				cr escape lf linefeed space tab
-			).
-			Character -> #(
-				isVowel isCharacter to:
-			).
-		}
+	^ self jsTranspilationImportMethodsArray , { 
+		  (String class -> #( #stringHash:initialHash:
+		      fromByteArray: )).
+		  (String
+		   -> #( findTokens: linesDo: lineIndicesDo: printOn: storeOn: isLiteral)).
+		  (Symbol -> #( cull: value: )).
+		  (Character class -> #( cr escape lf linefeed space tab )).
+		  (Character -> #( isVowel isCharacter to: )) }
 ]
 
 { #category : #'instance creation' }
@@ -280,6 +271,11 @@ PjString >> isJSPrimitiveType [
 PjString >> isLetter [
 	^self letterCharCodes includes: (self js_charCodeAt: 0)
 
+]
+
+{ #category : #testing }
+PjString >> isSelfEvaluating [ 
+	^true
 ]
 
 { #category : #testing }

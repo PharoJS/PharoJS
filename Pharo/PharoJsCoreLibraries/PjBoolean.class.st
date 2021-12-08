@@ -19,12 +19,9 @@ PjBoolean class >> identityHash_jsGenerator: transpiler [
 
 { #category : #'pharoJs support' }
 PjBoolean class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^ {
-			Boolean -> #(
-				==> eqv: 
-			).
-		}
+	^ { (Boolean -> #( ==> eqv: isLiteral)) }
 ]
 
 { #category : #'logical operations' }
@@ -103,6 +100,12 @@ PjBoolean >> not [
 { #category : #controlling }
 PjBoolean >> or: aBlock [
 	<javascript: 'if(this==true){return true}else{return aBlock()}'>
+]
+
+{ #category : #printing }
+PjBoolean >> printOn: aStream [
+
+	aStream nextPutAll: self asString 
 ]
 
 { #category : #proxy }

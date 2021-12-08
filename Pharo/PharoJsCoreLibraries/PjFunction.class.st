@@ -189,6 +189,12 @@ PjFunction >> on: exception do: handlerAction [
 	<jsGenerator: #on_do_jsGenerator:>
 ]
 
+{ #category : #printing }
+PjFunction >> printOn: aStream [
+
+	aStream nextPutAll: 'a Block'
+]
+
 { #category : #'Behavior: reflection' }
 PjFunction >> superclass [
 	self == Object ifTrue: [ ^nil ].

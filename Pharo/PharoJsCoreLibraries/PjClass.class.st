@@ -83,6 +83,12 @@ PjClass >> newFromJsonString: jsonString [
 " here so that ordinary Javascript 'classes' will respond to the message"
 ]
 
+{ #category : #printing }
+PjClass >> printOn: aStream [
+
+	aStream nextPutAll: self name 
+]
+
 { #category : #'Behavior: reflection' }
 PjClass >> prototype [
 	^ self js_at: #prototype

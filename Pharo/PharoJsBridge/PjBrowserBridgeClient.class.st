@@ -29,11 +29,14 @@ PjBrowserBridgeClient class >> firefox [
 
 { #category : #accessing }
 PjBrowserBridgeClient class >> makeFirefoxDefaultWebBrowser [
+	<script>
+
 	self defaultWebBrowserName: self firefox
 ]
 
 { #category : #accessing }
 PjBrowserBridgeClient class >> makeSafariDefaultWebBrowser [
+	<script>
 	self defaultWebBrowserName: self safari
 ]
 

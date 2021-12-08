@@ -36,16 +36,20 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 
 	<pharoJsSkip>
 	^ self jsTranspilationImportMethodsCollection , { 
-		  (Array -> #( isArray )).
+		  (Array
+		   ->
+			   #( isArray printOn: shouldBePrintedAsLiteral
+			      printAsLiteralFormOn: isSelfEvaluating
+			      printAsSelfEvaluatingFormOn: )).
 		  (ByteArray -> #( asString )).
 		  (OrderedCollection -> #( join: addAllLast: )).
-		  (Collection -> #( doWithIndex: )).
+		  (Collection -> #( doWithIndex: printElementsOn:)).
 		  (SequenceableCollection
 		   ->
 			   #( withIndexDo: allButFirst allButFirst: allButLast allButLast:
 			      #copyFrom:to: #copyReplaceFrom:to:with:
 			      copyWith: copyWithFirst: copyWithoutIndex: #from:to:put:
-			      grownBy: #replaceFrom:to:with: reverseDo: appendTo: putOn:)).
+			      grownBy: #replaceFrom:to:with: reverseDo: appendTo: putOn: )).
 		  (ArrayedCollection class
 		   -> #( with: #with:with: #with:with:with: #with:with:with:with: )) }
 ]

@@ -38,27 +38,23 @@ PjObject class >> allEnumeratableKeysDo_jsGenerator: transpiler [
 
 { #category : #'pharoJs support' }
 PjObject class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^{ProtoObject -> #(
-				isNil ifNil: ifNotNil: ifNil:ifNotNil: ifNotNil:ifNil:
-			).
-		Object -> #(
-				-> as: asOrderedCollection
-				isKindOf: error: respondsTo: isMemberOf: className
-				isNotNil notNil isString isClass isBlock isNumber isBehavior 
-				isCollection isArray isFloat isInteger isCharacter isSymbol isStream
-				isPjProxyOrNil
-			).
-		Collection -> #(
-				addAll: ifEmpty:ifNotEmpty: ifNotEmpty:ifEmpty: ifEmpty: ifNotEmpty: 
- 			).
-		Dictionary -> #(
-				do: 
-			).
-		Dictionary class -> #(
-				newFrom: newFromPairs: 
-			).
-		}
+	^ { 
+		  (ProtoObject
+		   -> #( isNil ifNil: ifNotNil: #ifNil:ifNotNil: #ifNotNil:ifNil: )).
+		  (Object
+		   ->
+			   #( -> as: asOrderedCollection isKindOf: error: respondsTo:
+			      isMemberOf: className isNotNil notNil isString isClass
+			      isBlock isNumber isBehavior isCollection isArray isFloat
+			      isInteger isCharacter isSymbol isStream isPjProxyOrNil
+			      printOn: shouldBePrintedAsLiteral isLiteral isSelfEvaluating )).
+		  (Collection
+		   -> #( addAll: #ifEmpty:ifNotEmpty: #ifNotEmpty:ifEmpty:
+			      ifEmpty: ifNotEmpty: )).
+		  (Dictionary -> #( do: )).
+		  (Dictionary class -> #( newFrom: newFromPairs: )) }
 ]
 
 { #category : #'dictionary emulation' }
@@ -301,11 +297,8 @@ PjObject >> postCopy [
 
 { #category : #printing }
 PjObject >> printString [
-	| jsResponse |
-	jsResponse := self js_toString.
-	(jsResponse isEmpty or: [jsResponse beginsWith: $[ ]) ifFalse: [ ^jsResponse ]. 
-	self className first isVowel ifTrue: [ ^'an ', self className ].
-	^'a ', self className
+
+	^String streamContents: [ : stream | self printOn: stream ]
 ]
 
 { #category : #proxy }
