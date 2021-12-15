@@ -25,7 +25,8 @@ PjString class >> jsTranspilationImportMethods [
 		  (String class -> #( #stringHash:initialHash:
 		      fromByteArray: )).
 		  (String
-		   -> #( findTokens: linesDo: lineIndicesDo: printOn: storeOn: isLiteral)).
+		   ->
+		   #( findTokens: linesDo: lineIndicesDo: printOn: storeOn: isLiteral shouldBePrintedAsLiteral)).
 		  (Symbol -> #( cull: value: )).
 		  (Character class -> #( cr escape lf linefeed space tab )).
 		  (Character -> #( isVowel isCharacter to: )) }
@@ -332,6 +333,11 @@ PjString >> replaceFrom: start to: stop with: replacement startingAt: repStart [
 { #category : #converting }
 PjString >> reversed [
 	^ '' join: self asArray reverse
+]
+
+{ #category : #testing }
+PjString >> shouldBePrintedAsLiteral [
+	^true
 ]
 
 { #category : #accessing }

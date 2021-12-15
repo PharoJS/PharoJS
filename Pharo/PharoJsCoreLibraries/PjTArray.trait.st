@@ -38,12 +38,12 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 	^ self jsTranspilationImportMethodsCollection , { 
 		  (Array
 		   ->
-			   #( isArray printOn: shouldBePrintedAsLiteral
-			      printAsLiteralFormOn: isSelfEvaluating
-			      printAsSelfEvaluatingFormOn: )).
+			   #( isArray shouldBePrintedAsLiteral
+			      printAsLiteralFormOn: isSelfEvaluating printAsSelfEvaluatingFormOn:
+			      isLiteral )).
 		  (ByteArray -> #( asString )).
 		  (OrderedCollection -> #( join: addAllLast: )).
-		  (Collection -> #( doWithIndex: printElementsOn:)).
+		  (Collection -> #( doWithIndex: printElementsOn: printNameOn: )).
 		  (SequenceableCollection
 		   ->
 			   #( withIndexDo: allButFirst allButFirst: allButLast allButLast:

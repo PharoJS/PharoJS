@@ -15,7 +15,7 @@ PjObjectTest >> testNewObjectHasNoEnumeratableKeys [
 PjObjectTest >> testPrintString [
 
 	self assert: [ Object new printString ] evaluatesTo: 'an Object'.
-	self assert: [ PjSet new printString ] evaluatesTo: 'a PjSet'.
+	self assert: [ PjSet new printString ] evaluatesTo: 'a PjSet()'.
 	self
 		assert: [ 'hello world' printString ]
 		evaluatesTo: '''hello world'''.
@@ -34,7 +34,7 @@ PjObjectTest >> testPrintString [
 		evaluatesTo: '#(1 2 3 nil true ''nil'' ''symbol'')'.
 	self
 		assert: [ 
-		#( #( 1 2 3 nil ) #(  ) #( true #nil #symbol ) ) printString]
+		#( #( 1 2 3 nil ) #(  ) #( true #nil #symbol ) ) printString ]
 		evaluatesTo: '#(#(1 2 3 nil) #() #(true ''nil'' ''symbol''))'.
 	self
 		assert: [ 
@@ -45,9 +45,9 @@ PjObjectTest >> testPrintString [
 				12.4.
 				#someSymbol.
 				(true and: [ false ]).
-				[  ] } printString]
+				[ 42 factorial ] } printString ]
 		evaluatesTo:
-		'an Array(an Object #(true nil) nil 12.4 ''someSymbol'' false [] )'
+		'an Array(an Object #(true nil) nil 12.4 ''someSymbol'' false a Block)'
 ]
 
 { #category : #testing }

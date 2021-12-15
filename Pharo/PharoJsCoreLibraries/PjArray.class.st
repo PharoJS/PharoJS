@@ -54,6 +54,21 @@ PjArray >> at: i put: x [
 	<javascript: 'return this[i-1]=x'>
 ]
 
+{ #category : #printing }
+PjArray >> printOn: aStream [
+
+	"Merging printOn: methods of Array and Collection because JS Array directly inherits from Object"
+
+	self shouldBePrintedAsLiteral ifTrue: [ 
+		self printAsLiteralFormOn: aStream.
+		^ self ].
+	self isSelfEvaluating ifTrue: [ 
+		self printAsSelfEvaluatingFormOn: aStream.
+		^ self ].
+	self printNameOn: aStream.
+	self printElementsOn: aStream
+]
+
 { #category : #accessing }
 PjArray >> readStream [
 	^ PjArrayStream on: self
