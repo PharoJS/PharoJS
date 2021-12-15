@@ -39,12 +39,15 @@ PjExporterTest >> setUp [
 
 { #category : #testing }
 PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
+
 	exporter initializeWithAppClass: PjApplication.
 	exporter addClass: PjClassExtensionForTest.
 	jsCode := exporter javascriptCode.
-	self assertInstanceMethod: #isLiteral equals: '(){return 42}'.
-	self assert: (jsCode splitOn: 'i$(function ', self pharoJsSelectorPrefix,'isLiteral') size equals: 2.
-
+	self assertInstanceMethod: #foo equals: '(){return 42}'.
+	self
+		assert: (jsCode splitOn:
+				 'i$(function ' , self pharoJsSelectorPrefix , 'foo') size
+		equals: 2
 ]
 
 { #category : #testing }
