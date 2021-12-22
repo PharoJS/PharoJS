@@ -359,8 +359,11 @@ PjNumber >> percnt [
 
 { #category : #printing }
 PjNumber >> printOn: aStream [
+
+	self isNaN ifTrue: [ ^ aStream nextPutAll: 'Float nan' ].
+	self isInfinite ifTrue: [ 
+		^ aStream nextPutAll: 'Float infinity' ].
 	aStream nextPutAll: self js_toString
-	
 ]
 
 { #category : #proxy }

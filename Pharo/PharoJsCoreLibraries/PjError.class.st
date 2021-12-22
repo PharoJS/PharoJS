@@ -17,6 +17,13 @@ PjError class >> javascriptInitialize [
 	self instVarNamed: #stackTraceLimit put: 100 
 ]
 
+{ #category : #'pharoJs support' }
+PjError class >> jsTranspilationImportMethods [
+
+	<pharoJsSkip>
+	^ { (Exception -> #( defaultDescription description )) }
+]
+
 { #category : #'instance creation' }
 PjError class >> signal [
 	^self new signal
