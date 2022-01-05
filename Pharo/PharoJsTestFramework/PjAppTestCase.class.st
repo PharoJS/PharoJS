@@ -1,6 +1,6 @@
 Class {
 	#name : #PjAppTestCase,
-	#superclass : #TestCase,
+	#superclass : #ParametrizedTestCase,
 	#traits : 'PjTWaitUntilReady + PjTAppRunsInPharo',
 	#classTraits : 'PjTWaitUntilReady classTrait + PjTAppRunsInPharo classTrait',
 	#instVars : [
