@@ -9,6 +9,11 @@ Class {
 	#category : #'PharoJsCoreLibraries-Chronology'
 }
 
+{ #category : #'instance creation' }
+PjDateAndTime class >> fromString: aString [
+	<javascript: 'return new this(aString)'>
+]
+
 { #category : #'pharoJs support' }
 PjDateAndTime class >> javascriptName [
 	<pharoJsSkip>
@@ -17,8 +22,12 @@ PjDateAndTime class >> javascriptName [
 
 { #category : #'pharoJs support' }
 PjDateAndTime class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^{DateAndTime class-> #(todayHour:minute: tomorrowHour:minute:)}
+	^ { 
+		  (DateAndTime class
+		   -> #( #todayHour:minute: #tomorrowHour:minute: )).
+		  (DateAndTime -> #( daysInYear )) }
 ]
 
 { #category : #'instance creation' }
@@ -117,6 +126,25 @@ PjDateAndTime >> monthIndex [
 { #category : #accessing }
 PjDateAndTime >> monthIndex: anInteger [
 	^self month: anInteger - 1
+]
+
+{ #category : #printing }
+PjDateAndTime >> printString [
+
+	<javascript: 'let d = Math.abs(this.getTimezoneOffset());
+	d = [
+    "0" + (this.getMonth() + 1),
+    "0" + this.getDate(),
+    "0" + this.getHours(),
+    "0" + this.getMinutes(),
+    "0" + this.getSeconds(),
+		"0" + (d/60|0),
+		"0" + d%60
+  ].map(component => component.slice(-2)); // take last 2 digits of every component
+
+  // join the components into date
+  return ("000"+ this.getFullYear()).slice(-4)+"-"+d.slice(0, 2).join("-") + "T" + d.slice(2,5).join(":") + (this.getTimezoneOffset()<0?"+":"-") + d.slice(-2).join(":")'>
+	
 ]
 
 { #category : #accessing }

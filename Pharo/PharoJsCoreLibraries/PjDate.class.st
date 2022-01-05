@@ -9,6 +9,11 @@ Class {
 	#category : #'PharoJsCoreLibraries-Chronology'
 }
 
+{ #category : #'instance creation' }
+PjDate class >> fromString: aString [
+	<javascript: 'return new this(aString)'>
+]
+
 { #category : #'pharoJs support' }
 PjDate class >> javascriptName [
 	<pharoJsSkip>
