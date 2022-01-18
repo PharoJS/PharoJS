@@ -38,6 +38,7 @@ PhxJsonReader >> classNameForJsonClassName: jsonClassName [
 if(jsonClassName == "Dictionary") { return "PjDictionary"}
 if(jsonClassName == "Association") { return "PjAssociation"}
 if(jsonClassName == "IdentityDictionary") { return "PjIdentityDictionary"}
+if(jsonClassName == "Set") { return "PjSet"}
 return jsonClassName;'>
 	^ jsonClassName
 ]
