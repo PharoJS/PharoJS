@@ -329,7 +329,7 @@ PjBridgeServer >> value: aWebSocket [
 		runWith:
 			[ :aMessage | self safelyHandleMessage: aMessage forSocket: aWebSocket ] ]
 		on: Error
-		do: [ self webSocket: nil ]	
+		do: [ "self webSocket: nil" ]	
 ]
 
 { #category : #accessing }
