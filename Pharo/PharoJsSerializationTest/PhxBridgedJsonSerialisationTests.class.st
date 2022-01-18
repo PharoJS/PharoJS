@@ -6,10 +6,17 @@ Class {
 
 { #category : #private }
 PhxBridgedJsonSerialisationTests >> assertAllWithInstantiationBlock: aBlock literal: jsonString testEq: testEq test4Stages: test4Stages [
-	self assert: aBlock evaluatesTo: jsonString.
-	testEq ifTrue: [self assertEquivalent: aBlock].
+
+	| instanceProxy |
+	instanceProxy := self evalBlock: aBlock.
+	self
+		assert: [ instanceProxy asPhxJsonString ]
+		evaluatesTo: jsonString.
+
+	testEq ifTrue: [ self assertEquivalent: aBlock ].
 	self isEqualAfterWriteReadInJs: aBlock.
-	test4Stages ifTrue: [self isEqualAfter4StageMarshalingInBothWorlds: aBlock]
+	test4Stages ifTrue: [ 
+		self isEqualAfter4StageMarshalingInBothWorlds: aBlock ]
 ]
 
 { #category : #private }
@@ -61,10 +68,10 @@ PhxBridgedJsonSerialisationTests >> testSerializeArray [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeAssociations [
 	self
-		assertAllWithInstantiationBlock: [{ 'een' -> 1. 'twee' -> 2 }  asPhxJsonString ]
+		assertAllWithInstantiationBlock: [{ 'een' -> 1. 'twee' -> 2 }  ]
 		literal: '{"class":"Array","instance":[{"class":"Association","instance":{"key":"een","value":1}},{"class":"Association","instance":{"key":"twee","value":2}}]}'
 		testEq: false
-		test4Stages: false
+		test4Stages: true
 ]
 
 { #category : #tests }
@@ -135,38 +142,41 @@ PhxBridgedJsonSerialisationTests >> testSerializeDictionary [
 			d := Dictionary new.
 			d at: 'a' put: 'abc'.
 			d at: 'b' put: '123'.
-			d asPhxJsonString ]
+			d ]
 		literal: '{"class":"Dictionary","instance":{"a":"abc","b":"123"}}'
-		testEq: true
+		testEq: false "#assertEquivalent: doesn't work for this type of object"
 		test4Stages: true
 ]
 
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 	self
-		assertAllWithInstantiationBlock: [ Object new asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ Object new  ]
 		literal: '{"class":"Object","instance":{}}'
-		testEq: true
+		testEq: false "#assertEquivalent: doesn't work for this type of object"
 		test4Stages: true
 ]
 
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary1Entry [
+
 	self
-		assertAllWithInstantiationBlock: [ | d |
+		assertAllWithInstantiationBlock: [ 
+			| d |
 			d := IdentityDictionary new.
 			d at: 'b' put: '123'.
-			d asPhxJsonString ]
+			d ]
 		literal: '{"class":"IdentityDictionary","instance":{"b":"123"}}'
-		testEq: true
+		testEq: false "#assertEquivalent: doesn't work for this type of object"
 		test4Stages: true.
 	self
-		assertAllWithInstantiationBlock: [ | d |
+		assertAllWithInstantiationBlock: [ 
+			| d |
 			d := IdentityDictionary new.
 			d at: 'a' put: 'abc'.
-			d asPhxJsonString ]
+			d ]
 		literal: '{"class":"IdentityDictionary","instance":{"a":"abc"}}'
-		testEq: true
+		testEq: false "#assertEquivalent: doesn't work for this type of object"
 		test4Stages: true
 ]
 
@@ -246,14 +256,23 @@ PhxBridgedJsonSerialisationTests >> testSerializeNumber [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollection [
 	"On js side, OrderedCollection does not exist!!! "
-
 	"Auto transpiled to Array."
 
 	self
-		assertAllWithInstantiationBlock: [ OrderedCollection new asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ OrderedCollection new ]
 		literal: '{"class":"Array","instance":[]}'
-		testEq: false
-		test4Stages: false
+		testEq: false "don't test because it's an Array client side"
+		test4Stages: true
+]
+
+{ #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeSimpleObject [
+
+	self
+		assertAllWithInstantiationBlock: [ PhxJsonTestResources testOrg1 ]
+		literal: PhxJsonTestResources testOrg1 asPhxJsonString
+		testEq: false "#assertEquivalent: doesn't work for this type of object"
+		test4Stages: true
 ]
 
 { #category : #tests }
