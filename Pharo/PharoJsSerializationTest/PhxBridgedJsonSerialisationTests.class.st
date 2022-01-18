@@ -14,17 +14,19 @@ PhxBridgedJsonSerialisationTests >> assertAllWithInstantiationBlock: aBlock lite
 
 { #category : #private }
 PhxBridgedJsonSerialisationTests >> isEqualAfter4StageMarshalingInBothWorlds: aBlock [
+
 	| jsonStringOfObject objectProxy serializedInJsWorld materializedObjectSmalltalk serializedInSmalltalkWorld stringifiedAfterMaterializedInJsWorld |
 	objectProxy := self evalBlock: aBlock.
-	serializedInJsWorld := self
-		evalBlock: [ objectProxy asPhxJsonString ].
-	materializedObjectSmalltalk := PhxJsonReader
-		readFromString: serializedInJsWorld.
+	serializedInJsWorld := self evalBlock: [ objectProxy asPhxJsonString ].
+	materializedObjectSmalltalk := PhxJsonReader readFromString:
+		                               serializedInJsWorld.
 	serializedInSmalltalkWorld := materializedObjectSmalltalk
-		asPhxJsonString.
-	stringifiedAfterMaterializedInJsWorld := self
-		evalBlock: [ JSON
-				stringify: (PhxJsonReader readFromString: serializedInSmalltalkWorld) ].
+		                              asPhxJsonString.
+	stringifiedAfterMaterializedInJsWorld := self evalBlock: [ 
+		                                         JSON stringify:
+			                                         (PhxJsonReader 
+				                                          readFromString:
+				                                          serializedInSmalltalkWorld) ].
 	jsonStringOfObject := self evalBlock: [ JSON stringify: objectProxy ].
 	self
 		assert: stringifiedAfterMaterializedInJsWorld
@@ -33,19 +35,24 @@ PhxBridgedJsonSerialisationTests >> isEqualAfter4StageMarshalingInBothWorlds: aB
 
 { #category : #private }
 PhxBridgedJsonSerialisationTests >> isEqualAfterWriteReadInJs: aBlock [
-	| jsonStringAfterWriteRead jsonStringOfObject objectProxy |
-	objectProxy := self evalBlock: aBlock.
-	jsonStringAfterWriteRead := self
-		evalBlock: [ JSON
-				stringify: (PhxJsonReader readFromString: objectProxy asPhxJsonString) ].
-	jsonStringOfObject := self evalBlock: [ JSON stringify: objectProxy ].
+
+	| jsonStringAfterWriteRead jsonStringOfObject instanceProxy instanceJsonInJsWorld |
+	instanceProxy := self evalBlock: aBlock.
+	instanceJsonInJsWorld := self evalBlock: [ 
+		                         instanceProxy asPhxJsonString ].
+	jsonStringAfterWriteRead := self evalBlock: [ 
+		                            JSON stringify:
+			                            (PhxJsonReader readFromString:
+				                             instanceProxy asPhxJsonString) ].
+	jsonStringOfObject := self evalBlock: [ 
+		                      JSON stringify: instanceProxy ].
 	self assert: jsonStringAfterWriteRead equals: jsonStringOfObject
 ]
 
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeArray [
 	self
-		assertAllWithInstantiationBlock: [ {} asPhxJsonString ]
+		assertAllWithInstantiationBlock:  [{}]  
 		literal: '{"class":"Array","instance":[]}'
 		testEq: true
 		test4Stages: true
@@ -63,12 +70,12 @@ PhxBridgedJsonSerialisationTests >> testSerializeAssociations [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeBoolean [
 	self
-		assertAllWithInstantiationBlock: [ true asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ true  ]
 		literal: 'true'
 		testEq: true
 		test4Stages: true.
 	self
-		assertAllWithInstantiationBlock: [ false asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ false  ]
 		literal: 'false'
 		testEq: true
 		test4Stages: true
@@ -77,9 +84,9 @@ PhxBridgedJsonSerialisationTests >> testSerializeBoolean [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeChallengingObject [
 	self
-		assertAllWithInstantiationBlock: [ PhxJsonTestResources challingingObjectAvoidingDateAndTime  asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ PhxJsonTestResources challingingObjectAvoidingDateAndTime  ]
 		literal: PhxJsonTestResources challingingObjectAvoidingDateAndTime asPhxJsonString
-		testEq: true
+		testEq: false
 		test4Stages: true
 ]
 
@@ -96,7 +103,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeDate [
 				hour: 23
 				minute: 2
 				second: 3) asDate.
-			d asPhxJsonString ]
+			d  ]
 		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
 		testEq: true
 		test4Stages: true
@@ -105,6 +112,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeDate [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeDateAndTime [
 	<expectedFailure>
+	self fail: #ToDo.
 	self
 		assertAllWithInstantiationBlock: [ | d |
 			d := DateAndTime
@@ -114,7 +122,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeDateAndTime [
 				hour: 23
 				minute: 2
 				second: 3.
-			d asPhxJsonString ]
+			d  ]
 		literal: '{"class":"DateAndTime","instance":"2020-04-11T23:02:03.000Z"}'
 		testEq: true
 		test4Stages: true
@@ -170,7 +178,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary2Entries [
 			d := IdentityDictionary new.
 			d at: 'a' put: 'abc'.
 			d at: 'b' put: '123'.
-			d asPhxJsonString ].
+			d asPhxJsonString  ].
 	validSerializationStrings := #(
 		'{"class":"IdentityDictionary","instance":{"a":"abc","b":"123"}}'
 		'{"class":"IdentityDictionary","instance":{"b":"123","a":"abc"}}').
@@ -215,7 +223,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeInstRefsAvoidWhenDifferentInsta
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeNil [
 	self
-		assertAllWithInstantiationBlock: [ nil asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ nil  ]
 		literal: 'null'
 		testEq: true
 		test4Stages: true
@@ -224,12 +232,12 @@ PhxBridgedJsonSerialisationTests >> testSerializeNil [
 { #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeNumber [
 	self
-		assertAllWithInstantiationBlock: [ 123456789 asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ 123456789  ]
 		literal: '123456789'
 		testEq: true
 		test4Stages: true.
 	self
-		assertAllWithInstantiationBlock: [ 12345.6789 asPhxJsonString ]
+		assertAllWithInstantiationBlock: [ 12345.6789  ]
 		literal: '12345.6789'
 		testEq: true
 		test4Stages: true
@@ -252,7 +260,7 @@ PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollection [
 PhxBridgedJsonSerialisationTests >> testSerializeString [
 	self
 		assertAllWithInstantiationBlock: [ PhxJsonTestResources challengingStringRequiringUnicodeAndEscapement
-				asPhxJsonString ]
+				 ]
 		literal:
 			PhxJsonTestResources challengingStringRequiringUnicodeAndEscapement
 				asPhxJsonString

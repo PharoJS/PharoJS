@@ -36,6 +36,8 @@ PhxJsonReader >> classNameForJsonClassName: jsonClassName [
 	<javascript:
 		'if(jsonClassName == "DateAndTime") { return "Date"}
 if(jsonClassName == "Dictionary") { return "PjDictionary"}
+if(jsonClassName == "Association") { return "PjAssociation"}
+if(jsonClassName == "IdentityDictionary") { return "PjIdentityDictionary"}
 return jsonClassName;'>
 	^ jsonClassName
 ]
