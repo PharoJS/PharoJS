@@ -1,3 +1,6 @@
+"
+Trait for closed block closure handling
+"
 Trait {
 	#name : #PjTClosedBlockClosure,
 	#instVars : [
