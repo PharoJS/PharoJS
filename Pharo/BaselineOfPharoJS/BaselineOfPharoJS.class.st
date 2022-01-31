@@ -11,20 +11,10 @@ Class {
 BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
-
 	spec for: #'pharo7.x' do: [ spec package: 'PharoJsPharo7' ].
 	spec for: #(#'pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJsPharo8' ].	
 	spec for: #'common' do: [
-		spec 
-			baseline: 'PharoExtra' with: [
-				spec
-					repository: 'github://bouraqadi/PharoMisc' ];
-			baseline: 'Equals' with: [
-				spec
-					repository: 'github://bouraqadi/PharoMisc' ];
-			package: 'Zinc-WebSocket-Core' with: [
-				spec
-					repository: 'github://svenvc/zinc' ].
+		self prerequisites: spec.
 				
 		spec 
 			package: 'PharoJsApp' with: [
@@ -66,4 +56,18 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsExporterTests' with: [
 				spec requires: #('PharoJsExporter' 'PharoJsTranspilerTests'). ]. 
 	]
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> prerequisites: spec [
+	"Add the projects prerequisite definitions to the given spec"	
+
+	"Baselines"
+	spec
+		baseline: 'PharoExtra' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
+		baseline: 'Equals' with: [ spec repository: 'github://bouraqadi/PharoMisc' ].
+		
+	"Packages"	
+	spec
+		package: 'Zinc-WebSocket-Core' with: [ spec repository: 'github://svenvc/zinc' ]
 ]
