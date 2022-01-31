@@ -34,7 +34,6 @@ PjExporterTest >> pharoJsSelectorPrefix [
 PjExporterTest >> setUp [
 	super setUp.
 	exporter := PjExporter new.
-
 ]
 
 { #category : #testing }
@@ -67,7 +66,6 @@ PjExporterTest >> testCoreClassedLoaded [
 	self deny: (jsCode includesSubstring: 'function Object()' ).
 	self assert: (jsCode includes: 'c$(function ', pjPrefix, 'new' before: 'PjApplication' ).
 	self deny: (jsCode includes: 'PjApplication' before: 'c$(function ',pjPrefix,'new' ).
-
 ]
 
 { #category : #testing }
@@ -80,7 +78,6 @@ PjExporterTest >> testExportingClassesAndPackages [
 	self assert: exporter classes size = 7.
 	exporter addAllPackages: {PjExporter category.  PjTranspiler category}.
 	self assert: exporter classes size > 10.
-
 ]
 
 { #category : #testing }
@@ -100,7 +97,6 @@ PjExporterTest >> testJsSelector [
 	| contents |
 	contents := (PjTestFileExporter exportApp: PjTestClassForPolyfill) contents.
 	self assert: (contents includesSubstring: 'function alt_m(').
-
 ]
 
 { #category : #testing }
@@ -116,7 +112,6 @@ PjExporterTest >> testMainClassIsAddedToClassesToExport [
 	exporter initializeWithAppClass: PjWebApplication.
 	self assert: (exporter classes includes: PjWebApplication).
 	self assert: exporter classes size > 1.
-
 ]
 
 { #category : #testing }
@@ -131,7 +126,6 @@ PjExporterTest >> testPolyfills [
 	foobar := contents findString: ' Foobar=Smalltalk.require("foobar")'.
 	bar := contents findString: 'Bar=Foobar.Bar'.
 	self assert: foobar<bar.
-
 ]
 
 { #category : #testing }

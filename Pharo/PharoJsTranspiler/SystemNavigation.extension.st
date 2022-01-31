@@ -6,5 +6,4 @@ SystemNavigation class >> globalRefsForPharoJS: aClassOrLiteral [
 			self default allGlobalRefsOn: aClassOrLiteral
 		] ifFalse: [
 			self default classRefsToClassName: aClassOrLiteral]
-
 ]

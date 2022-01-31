@@ -256,7 +256,6 @@ PjRbBenchmark >> schedule [
 { #category : #initialize }
 PjRbBenchmark >> start [
     ^self start: false
-
 ]
 
 { #category : #initialize }

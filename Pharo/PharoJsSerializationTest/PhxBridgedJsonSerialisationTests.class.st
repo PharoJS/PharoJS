@@ -179,7 +179,6 @@ PhxBridgedJsonSerialisationTests >> testSerializeIdentityDictionary2Entries [
 	{jsSerialization. pharoSerialization} do: [ : serialization |
 		self assert: (validSerializationStrings includes: serialization)
 	]
-
 ]
 
 { #category : #tests }

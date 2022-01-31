@@ -11,7 +11,6 @@ Class {
 { #category : #writing }
 PhxJsonWriter >> << aString [
 	string := string , aString
-	
 ]
 
 { #category : #writing }

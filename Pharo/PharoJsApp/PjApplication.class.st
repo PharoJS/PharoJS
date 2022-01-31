@@ -71,7 +71,6 @@ PjApplication class >> resetCurrentInstance [
 PjApplication class >> setupCode [
 	<pharoJsSkip>
 		^''
-
 ]
 
 { #category : #'start-stop application' }
@@ -89,7 +88,6 @@ PjApplication class >> startInstance [
 PjApplication class >> stop [
 	self currentInstance ifNil: [^self].
 	self currentInstance stop.
-
 ]
 
 { #category : #'start-stop application' }

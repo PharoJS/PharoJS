@@ -16,7 +16,6 @@ PjIfNilOptimization >> convertReceiver: receiverNode args: aCollection [
 	^PjIfNilNode 
 		test: (self inExpressionDo: [self visit: receiverNode])
 		whenNil: (self visitInlineBlock: aCollection first).
-	
 ]
 
 { #category : #accessing }

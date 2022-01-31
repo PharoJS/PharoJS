@@ -4,7 +4,6 @@ Extension { #name : #PjApplication }
 PjApplication class >> bridge [
 	<pharoJsSkip>
 	^ PjBridge bridgeForAppClass: self
-
 ]
 
 { #category : #'*PharoJsBridge-App' }
@@ -29,7 +28,6 @@ PjApplication class >> bridgeClientClass [
 PjApplication class >> bridgeForDebug [
 	<pharoJsSkip>
 	^ self bridge enableClientLogging
-
 ]
 
 { #category : #'*PharoJsBridge-App' }

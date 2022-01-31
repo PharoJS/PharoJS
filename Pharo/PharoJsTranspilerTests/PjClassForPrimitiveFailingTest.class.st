@@ -11,5 +11,4 @@ PjClassForPrimitiveFailingTest >> * aNumber [
 	whatIsAPrimitive."
 
 	<primitive: 49>
-
 ]

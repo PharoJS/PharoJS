@@ -90,7 +90,6 @@ PjFileExporter >> writeInto: fileReference match: string startingWith: beginning
 			self nextPutAll: '''use strict'';';cr.
 			aBlock value: fileStream ].
 	fileStream close
-	
 ]
 
 { #category : #files }
@@ -117,7 +116,6 @@ PjFileExporter >> writeInto: f startingWith: beginning  do: aBlock [
 			self cr.
 			self nextPutAll: '''use strict'';';cr.
 			aBlock value: f ]
-	
 ]
 
 { #category : #files }

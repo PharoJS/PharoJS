@@ -38,5 +38,4 @@ PjSocketLogEvent >> printContentsOn: stream [
 			nextPutAll: '... ';
 			print: contents size;
 			nextPut: $B].
-
 ]

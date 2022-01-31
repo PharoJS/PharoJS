@@ -15,7 +15,6 @@ PjDictionary class >> jsTranspilationImportMethods [
 	^{
 		Dictionary -> #(at:ifAbsentPut:).
 	}
-
 ]
 
 { #category : #converting }
@@ -55,7 +54,6 @@ PjDictionary >> at: key ifPresent: aBlock ifAbsent: anotherBlock [
 { #category : #'dictionary access' }
 PjDictionary >> at: key put: value [
 	^super at: (self keyFrom: key) put: value
-
 ]
 
 { #category : #enumerating }

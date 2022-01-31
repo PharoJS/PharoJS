@@ -16,7 +16,6 @@ PjGenerationOptimizationTest >> testAnd [
 			whenTrue: one
 			whenFalse: falseNode}.
 	self assert:  inputAst asStringEquals: 'this._foo_(true==y&&1)'.
-
 ]
 
 { #category : #testing }
@@ -32,7 +31,6 @@ PjGenerationOptimizationTest >> testIfFalse [
 		whenFalse: one).
 	self assert:  inputAst asStringEquals: 'if(false==y){1}'.
 	self assert:  returnAst asStringEquals: 'return true==y?undefined:1'
-
 ]
 
 { #category : #testing }
@@ -51,7 +49,6 @@ PjGenerationOptimizationTest >> testIfNil [
 			test: (self apply: y selector: #foo)
 			whenNil: one.
 	self assert: inputAst asStringEquals: 'if($asNil$(y)._foo()==undefined){1}'.
-
 ]
 
 { #category : #testing }
@@ -70,7 +67,6 @@ PjGenerationOptimizationTest >> testIfNilCaseForIfNilIfNotNil [
 	self
 		assert: expectedAst
 		asStringEquals: 'return ($1=$asNil$(y)._foo())==undefined?1:$1'
-
 ]
 
 { #category : #testing }
@@ -122,8 +118,6 @@ PjGenerationOptimizationTest >> testIfNotNil [
 	self
 		assert: expectedAst
 		asStringEquals: 'if(y!=undefined){return 1}'.
-
-
 ]
 
 { #category : #testing }
@@ -166,7 +160,6 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 			whenNotNil: (self apply: tempVariable selector: #foo nonNil: true)
 			whenNil: one.
 	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1;}else{x._foo()}'
-
 ]
 
 { #category : #testing }
@@ -177,7 +170,6 @@ PjGenerationOptimizationTest >> testIfTrue [
 		test: y
 		whenTrue: one.
 	self assert:  inputAst asStringEquals: 'if(true==y){1}'.
-
 ]
 
 { #category : #testing }
@@ -191,7 +183,6 @@ PjGenerationOptimizationTest >> testIfTrueIfFalse [
 	returnAst := PjReturnNode expression: inputAst.
 	self assert:  inputAst asStringEquals: 'if(true==y){1}else{2}'.
 	self assert:  returnAst asStringEquals: 'return true==y?1:2'
-
 ]
 
 { #category : #testing }
@@ -206,7 +197,6 @@ PjGenerationOptimizationTest >> testOr [
 			whenTrue: trueNode
 			whenFalse: one}.
 	self assert:  inputAst asStringEquals: 'this._foo_(true==y||1)'.
-
 ]
 
 { #category : #testing }
@@ -344,7 +334,6 @@ PjGenerationOptimizationTest >> testToDo [
 				PjReturnNode expression: a
 			})
 		asStringEquals: 'for(var x=1,$1=a;x>=$1;x+=-2){$in=x;return a}'.
-
 ]
 
 { #category : #testing }
@@ -375,5 +364,4 @@ PjGenerationOptimizationTest >> testWhile [
 	self
 		assert: (PjWhileNode test: (PjSequenceNode expressions: {selfNode. in}) not body:  {})
 		asStringEquals: 'while(false==(this,$in)){}'.
-
 ]

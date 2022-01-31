@@ -14,14 +14,12 @@ PjSet class >> jsTranspilationImportMethods [
 PjSet >> addFirst: element [
 	(self includes: element) ifTrue: [ ^element ].
 	^super addFirst: element
-	
 ]
 
 { #category : #enumerating }
 PjSet >> addLast: element [
 	(self includes: element) ifTrue: [ ^element ].
 	^super addLast: element
-	
 ]
 
 { #category : #enumerating }

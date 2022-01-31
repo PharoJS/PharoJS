@@ -14,7 +14,7 @@ Class {
 
 { #category : #'instance creation' }
 PjString class >> defaultSize [
-	^10 
+	^10
 ]
 
 { #category : #'pharoJs support' }
@@ -271,7 +271,6 @@ PjString >> isJSPrimitiveType [
 { #category : #testing }
 PjString >> isLetter [
 	^self letterCharCodes includes: (self js_charCodeAt: 0)
-
 ]
 
 { #category : #testing }

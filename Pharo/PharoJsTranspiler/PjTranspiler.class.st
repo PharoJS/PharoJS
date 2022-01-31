@@ -72,7 +72,6 @@ PjTranspiler >> addAllOptionalConversionsExcept: low to: high [
 	discard := aCollection copyFrom: (low*aCollection size) asInteger+1 to: (high*aCollection size) asInteger.
 	self addAllConversions: (aCollection reject: [: each | discard includes: each ]).
 	discard inspect.
-
 ]
 
 { #category : #accessing }
@@ -104,13 +103,11 @@ PjTranspiler >> convertAllClasses: classes writeDnu: aBoolean [
 	self 
 		enableWriteDnu: aBoolean
 		during: [self convertAllClasses: classes].
-	
 ]
 
 { #category : #transpiling }
 PjTranspiler >> convertAndWriteClosedBlock: valuedBlock [ 
 	self convertAndWriteClosedBlock: valuedBlock with: [ ]
-
 ]
 
 { #category : #transpiling }
@@ -138,7 +135,6 @@ PjTranspiler >> convertClass: aClass [
 	self writeClassInheritanceLinksOf: actualClassToConvert.
 	self writeMethodsOf: actualClassToConvert.
 	self writeClassInitializeOf: actualClassToConvert.
-
 ]
 
 { #category : #transpiling }
@@ -172,7 +168,7 @@ PjTranspiler >> coreClass [
 
 { #category : #initialization }
 PjTranspiler >> defaultConverterClass [
-	^PjAstConverter 
+	^PjAstConverter
 ]
 
 { #category : #initialization }
@@ -187,7 +183,7 @@ PjTranspiler >> defaultMessageConversions [
 
 { #category : #transpiling }
 PjTranspiler >> disableWriteDnuDuring: aBlockClosure [ 
-	^self enableWriteDnu: false during: aBlockClosure 
+	^self enableWriteDnu: false during: aBlockClosure
 ]
 
 { #category : #loading }
@@ -242,7 +238,7 @@ PjTranspiler >> enableWriteDnu: aBoolean during: aBlockClosure [
 
 { #category : #transpiling }
 PjTranspiler >> enableWriteDnuDuring: aBlockClosure [ 
-	^self enableWriteDnu: true during: aBlockClosure 
+	^self enableWriteDnu: true during: aBlockClosure
 ]
 
 { #category : #loading }
@@ -269,7 +265,6 @@ PjTranspiler >> initialize [
 	poolsUsed := IdentityDictionary new.
 	classesReferencingCache := IdentityDictionary new.
 	self pharoJsSelectorPrefix: '_'.
-
 ]
 
 { #category : #accessing }
@@ -284,7 +279,7 @@ PjTranspiler >> jsStream [
 
 { #category : #accessing }
 PjTranspiler >> lineEnding [
-	^self class lineEnding 
+	^self class lineEnding
 ]
 
 { #category : #ordering }
@@ -297,7 +292,6 @@ PjTranspiler >> moveHighestPriorityClassesIn: initialClasses to: orderedClasses 
 	(nextClasses includes: PjObject) ifTrue: [ nextClasses size > 1 ifTrue: [self halt] ].
 	initialClasses removeAll: nextClasses.
 	orderedClasses addAll: nextClasses.
-
 ]
 
 { #category : #outputing }
@@ -372,7 +366,6 @@ PjTranspiler >> pharoJsSelectorPrefix [
 { #category : #transpiling }
 PjTranspiler >> pharoJsSelectorPrefix: newSelectorsPrefix [
 	pharoJsSelectorPrefix := newSelectorsPrefix.
-
 ]
 
 { #category : #transpiling }
@@ -420,7 +413,6 @@ PjTranspiler >> should: first occurBefore: last with: doesReferenceBlock [
 	(last javascriptInheritsFrom: first) ifTrue: [ ^true ].
 	(first javascriptInheritsFrom: last) ifTrue: [ ^false ].
 	^ doesReferenceBlock value: first value: last
-
 ]
 
 { #category : #transpiling }
@@ -461,7 +453,6 @@ PjTranspiler >> transpileMethodToString: aMethod [
 PjTranspiler >> withMethodsOf: aClass do: aBlock [
 	aClass selectorsWithExplicitOrigin do: [ : selector |
 		 aBlock value: (aClass compiledMethodAt: selector) ]
-
 ]
 
 { #category : #transpiling }
@@ -493,7 +484,6 @@ PjTranspiler >> writeClassInheritanceLinksOf: aClass [
 		writeNameForClass: aClass;
 		nextPutAll: '");' ;
 		cr.
-
 ]
 
 { #category : #transpiling }
@@ -531,7 +521,6 @@ PjTranspiler >> writeClassVariableDeclarationsOf: aClass [
 			]
 		].
 	count > 0 ifTrue: [self nextPutAll: 'null;';cr].
-
 ]
 
 { #category : #transpiling }
@@ -608,7 +597,6 @@ PjTranspiler >> writeMethodsOf: aClass [
 				writeNameForClass:  each
 		].
 		self nextPutAll: ');';cr.
-
 ]
 
 { #category : #transpiling }

@@ -38,7 +38,6 @@ PjAppWrapperForRunningInPharo class >> appPackages [
 PjAppWrapperForRunningInPharo class >> bridge [
 	<pharoJsSkip>
 	^ PjBridge bridgeForAppClass: self
-
 ]
 
 { #category : #'reflective operations' }

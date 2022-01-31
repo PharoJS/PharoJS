@@ -36,7 +36,7 @@ PjDisjointForceDirectedGraphExample >> createSimulationWith: data [
 	strength := distance strength: [ : d | d score ].
 	simulation force: 'link' with: strength.
  	simulation force: 'charge' with: d3 forceManyBody.
-   simulation force: 'center' with: d3 forceCenter.	
+   simulation force: 'center' with: d3 forceCenter.
 ]
 
 { #category : #initialization }
@@ -59,7 +59,6 @@ PjDisjointForceDirectedGraphExample >> createSvg [
 	obj := obj join: 'circle'.
 	obj := obj attr: 'r' with: 5.
 	svgNodes := obj attr: 'fill' with: [self randomColor].
-
 ]
 
 { #category : #initialization }
@@ -158,5 +157,4 @@ PjDisjointForceDirectedGraphExample >> updateDisplay [
 	w := (self maxOf: nodes_x)  - min_x + 10.
 	h := (self maxOf: nodes_y)  - min_y + 10.
    svg attr: 'viewBox' bounds: {min_x. min_y. w. h}.
-
 ]

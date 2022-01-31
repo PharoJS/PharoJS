@@ -63,7 +63,6 @@ PjClassSortingTest >> setUp [
 	super setUp.
 	cache := IdentityDictionary new.
 	transpiler := PjTranspiler new.
-
 ]
 
 { #category : #testing }
@@ -103,7 +102,6 @@ PjClassSortingTest >> testClassIntializationOrdering [
 	sorted := transpiler orderForInitialization: classes.
 	self checkInitializationOrdered: sorted.
 	self checkInheritanceOrdered: sorted.
-
 ]
 
 { #category : #testing }

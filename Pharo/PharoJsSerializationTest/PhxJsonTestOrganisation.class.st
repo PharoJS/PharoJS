@@ -17,7 +17,6 @@ PhxJsonTestOrganisation >> code [
 { #category : #accessing }
 PhxJsonTestOrganisation >> code: anObject [
 	code := anObject.
-	
 ]
 
 { #category : #accessing }
@@ -38,5 +37,4 @@ PhxJsonTestOrganisation >> name [
 { #category : #accessing }
 PhxJsonTestOrganisation >> name: anObject [
 	name := anObject.
-	
 ]

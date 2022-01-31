@@ -19,7 +19,6 @@ PjProxyTest >> testArrayEquality [
 	self assertBlock: [ {true. 'two'. nil. 3.14.}] equalsBlock: [ {true. 'two'. nil. 3.14.} ].
 	self assertBlock: [ {{true. 'two'}. nil. 3.14.}] equalsBlock: [ {{true. 'two'}. nil. 3.14.} ].
 	self denyBlock: [ {{true. 'two'}. nil. 3.14.}] equalsBlock: [ {{false. 'abc'}. nil. 3.14.} ].
-
 ]
 
 { #category : #testing }
@@ -27,7 +26,6 @@ PjProxyTest >> testAsJson [
 	self assert: 42 asJSON equals: '42'.
 	self assert: 'a\b"c' asJSON equals: '"a\\b\"c"'.
 	self assert: nil asJSON equals: 'undefined'.
-
 ]
 
 { #category : #testing }
@@ -50,7 +48,6 @@ PjProxyTest >> testBlockClosures [
 	document body removeEventListener: 'click'.
 	self assert:
 		self bridge blockClosures size equals: 0.
-	
 ]
 
 { #category : #testing }
@@ -161,7 +158,6 @@ PjProxyTest >> testIterateOverChildren [
 	self assert: container children size equals: 10.
 	container children withIndexDo: [ : each : index | 
 		each textContent: index].
-
 ]
 
 { #category : #testing }

@@ -36,7 +36,6 @@ PjStringGenerator >> visitIfNilIfNotNilNode: aPjIfNilIfNotNilNode [
 		nextPutAll: '}else{';
 		visit: else;
 		writeNonBrace: $}
-
 ]
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }
@@ -71,7 +70,6 @@ PjStringGenerator >> visitIfNotNilNode: aPjIfNotNilNode [
 		writeNonBrace: '){';
 		visit: body;
 		writeNonBrace: $}
-
 ]
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }
@@ -102,7 +100,6 @@ PjStringGenerator >> visitIfTrueNode: aPjIfTrueNode [
 		writeNonBrace: '){';
 		visit: aPjIfTrueNode whenTrue;
 		writeNonBrace: $}
-
 ]
 
 { #category : #'*PharoJsTranspilerOptimization-Optimizations' }

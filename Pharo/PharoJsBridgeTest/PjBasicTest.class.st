@@ -11,15 +11,12 @@ PjBasicTest >> testBasicEquality [
 	self assertBlock: [ 'one two three' ] equalsBlock: [ 'one two three' ].
 	self assertBlock: [ 'one two three' ] equalsBlock: [ 'one ', 'two', ' three' ].
 	self denyBlock: [ 'one two three' ] equalsBlock: [ 'one three' ].
-
-
 ]
 
 { #category : #testing }
 PjBasicTest >> testBooleanMethods [
 	self assertEquivalent: [true asBit].
 	self assertEquivalent: [false asBit].
-
 ]
 
 { #category : #testing }
@@ -38,7 +35,6 @@ PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
 	self assert: o2 x equals: 77.
 	self assert: o2 y equals: 88.
 	self assert: o2 z equals: 99.
-
 ]
 
 { #category : #testing }
@@ -61,13 +57,11 @@ PjBasicTest >> testClosure [
 		coll do: [  : each | tot := tot + each value ].
 		tot
 	].
-
 ]
 
 { #category : #testing }
 PjBasicTest >> testDifferentIdentities [
 	self assertEquivalent: [false ~~ true].
-
 ]
 
 { #category : #testing }
@@ -76,7 +70,6 @@ PjBasicTest >> testEqualityAndDifferenceWithNil [
 	self assertEquivalent: [0~=nil].
 	self assertEquivalent: [nil=0].
 	self assertEquivalent: [nil~=0].
-
 ]
 
 { #category : #testing }
@@ -105,7 +98,6 @@ PjBasicTest >> testExceptionHandling [
 			[3+4]on: Error do: [exceptionSignaled := true].
 			exceptionSignaled]
 	  evaluatesTo: false.
-
 ]
 
 { #category : #testing }
@@ -118,13 +110,11 @@ PjBasicTest >> testHash [
 	self assert: ['abc' hash ] evaluatesTo: 135459374. " not the same as on Pharo, but uses same code with different initialization "
 	self assertEquivalent: [|x| x:= Object new. x hash = x hash].
 	self assertEquivalent: [|x y| x:= Object new. y:= Object new. x hash ~= y hash].
-
 ]
 
 { #category : #testing }
 PjBasicTest >> testIdentity [
 	self assertEquivalent: [false == false].
-
 ]
 
 { #category : #testing }
@@ -146,8 +136,6 @@ PjBasicTest >> testIfTrueIfFalse [
 	self assertEquivalent: [false ifTrue: [1] ifFalse: [2]].
 	self assertEquivalent: [true ifFalse: [2] ifTrue: [1]].
 	self assertEquivalent: [false ifFalse: [2] ifTrue: [1]].
-
-
 ]
 
 { #category : #testing }
@@ -161,7 +149,6 @@ PjBasicTest >> testJavascriptSemanticsComparisons [
 	self assert: [0>nil] evaluatesTo: false.
 	self assert: [0<=nil] evaluatesTo: false.
 	self assert: [0<nil] evaluatesTo: false.
-
 ]
 
 { #category : #testing }
@@ -185,7 +172,6 @@ PjBasicTest >> testMethodsForBitManipulation [
 	self assertEquivalent: [1234567 highBit].
 	self assertEquivalent: [12300000 lowBit].
 	self assertEquivalent: [-12300000 lowBit].
-
 ]
 
 { #category : #testing }
@@ -198,7 +184,6 @@ PjBasicTest >> testMethodsForNumbers [
 	self assertEquivalent: [-25 sign].
 	self assertEquivalent: [ 30 degreesToRadians ].
 	self assertEquivalent: [ 1.78 radiansToDegrees ].
-
 ]
 
 { #category : #testing }
@@ -207,7 +192,6 @@ PjBasicTest >> testMultilineConstants [
 			and that' size].
 	self assertEquivalent: [#(1 2 3
 			4 5 6) size].
-
 ]
 
 { #category : #testing }
@@ -235,7 +219,6 @@ PjBasicTest >> testNumber [
 	self assertEquivalent: [ x negated * x ]. " -Infinity "
 	self assertEquivalent: [ x * x * 0 ]. " NaN "
 	self assertEquivalent: [ (x * x * 0) isNaN ]. " NaN "
-
 ]
 
 { #category : #testing }
@@ -264,7 +247,6 @@ PjBasicTest >> testSimpleMathOperations [
 	self assertEquivalent: [(3 * 4) odd].
 	self assertEquivalent: [(3 + 4) even].
 	self assertEquivalent: [(3 * 4) even].
-
 ]
 
 { #category : #testing }
@@ -274,7 +256,6 @@ PjBasicTest >> testTimesRepeat [
 			counter := 0.
 			5 timesRepeat: [counter := counter + 1].
 			counter].
-
 ]
 
 { #category : #tests }
@@ -282,19 +263,16 @@ PjBasicTest >> testUnicode [
 	self assert: $€ asJSON equals: '"\u20AC"'.
 	self assert: 'ab€cd' asJSON equals: '"ab\u20ACcd"'.
 	self checkBasic: 'ab€cd'.
-
 ]
 
 { #category : #testing }
 PjBasicTest >> testValueBlock0Arg [
 	self assertEquivalent: [[1+2] value].
-
 ]
 
 { #category : #testing }
 PjBasicTest >> testValueBlock1Arg [
 	self assertEquivalent: [[ : x | x + 2] value: 1].
-
 ]
 
 { #category : #testing }

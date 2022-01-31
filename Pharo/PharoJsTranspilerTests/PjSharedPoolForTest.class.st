@@ -15,6 +15,4 @@ PjSharedPoolForTest class >> initialize [
 	A := #sharedA.
 	B := #sharedB.
 	C := #sharedC.
-
-
 ]

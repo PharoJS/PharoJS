@@ -28,7 +28,6 @@ PjConversionOptimizationTest >> testAnd [
 	self assertContentsOf: [ ^ y and: 1] convertsTo: returnAst.
 	self assertContentsOf: [ y and: [1]] convertsTo: expectedAst.
 	self assertContentsOf: [ y and: 1] convertsTo: expectedAst.
-	
 ]
 
 { #category : #testing }
@@ -165,7 +164,6 @@ PjConversionOptimizationTest >> testBlockReturns1 [
 	self
 		assertContentsOf: [ [ 3. 2. (1 ifTrue: [ 2 ] ifFalse: [ 1 ]) ifTrue: [ 2 ] ifFalse: [ 1 ] ] ]
 		convertsTo: expectedAst.
-
 ]
 
 { #category : #testing }
@@ -184,7 +182,6 @@ PjConversionOptimizationTest >> testComparisons [
 	self assertContentsOf: [ x~~y ] convertsTo: (PjBinaryNode operator: #!== left: x right: y).
 	self assertContentsOf: [ x==y ] convertsTo: (PjBinaryNode operator: #=== left: x right: y).
 	self assertContentsOf: [ 1~=y ] convertsTo: (PjBinaryNode operator: #!= left: one right: y).
-
 ]
 
 { #category : #testing }
@@ -203,7 +200,6 @@ PjConversionOptimizationTest >> testIfFalse [
 	self assertContentsOf: [ ^ y ifFalse: 1] convertsTo: returnAst.
 	self assertContentsOf: [ y ifFalse: [1]] convertsTo: expectedAst.
 	self assertContentsOf: [ y ifFalse: 1] convertsTo: expectedAst.
-	
 ]
 
 { #category : #testing }
@@ -224,7 +220,6 @@ PjConversionOptimizationTest >> testIfFalseifTrue [
 		whenFalse: two. 
 	self assertContentsOf: [ y not ifFalse: [2] ifTrue: [1]] convertsTo: expectedAst.
 	self assertContentsOf: [ y not ifFalse: 2 ifTrue: 1] convertsTo: expectedAst.
-	
 ]
 
 { #category : #testing }
@@ -318,7 +313,6 @@ PjConversionOptimizationTest >> testIfNotNil [
 		whenNotNil: (PjReturnNode expression: (PjArgumentNode identifier: #x))
 		whenNil: returnNil.
 	self assertContentsOf: [ ^ y ifNotNil: [: x | x]] convertsTo: expectedAst.
-
 ]
 
 { #category : #testing }
@@ -364,7 +358,6 @@ PjConversionOptimizationTest >> testIfTrue [
 		test: y
 		whenTrue: (PjSequenceNode expressions: {one. two}).
 	self assertContentsOf: [ y ifTrue: [1. 2.] ] convertsTo: expectedAst.
-	
 ]
 
 { #category : #testing }
@@ -384,7 +377,6 @@ PjConversionOptimizationTest >> testIfTrueIfFalse [
 	self assertContentsOf: [ y ifTrue: 1 ifFalse: 2] convertsTo: expectedAst.
 	self assertContentsOf: [ ^ y ifTrue: [1] ifFalse: [2]] convertsTo: returnAst.
 	self assertContentsOf: [ ^ y ifTrue: 1 ifFalse: 2] convertsTo: returnAst.
-
 ]
 
 { #category : #testing }
@@ -469,7 +461,6 @@ PjConversionOptimizationTest >> testInlineBlockTempvars [
 			by:nil
 			body:{PjAssignNode target:(PjTempVariableNode identifier:#w) expression:PjNilNode new.PjTempVariableNode identifier:#w}}.
 	self assertContentsOf: block convertsTo: expectedAst.
-
 ]
 
 { #category : #testing }
@@ -540,7 +531,6 @@ PjConversionOptimizationTest >> testOr [
 	self assertContentsOf: [ ^ y or: 1] convertsTo: returnAst.
 	self assertContentsOf: [ y or: [1]] convertsTo: expectedAst.
 	self assertContentsOf: [ y or: 1] convertsTo: expectedAst.
-	
 ]
 
 { #category : #testing }
@@ -550,7 +540,6 @@ PjConversionOptimizationTest >> testStringConcatenation [
 	self assertContentsOf: [ 'hello',1 ] convertsTo: (PjBinaryNode operator: #+ left: helloString right: one).
 	self assertContentsOf: [ 1,'hello' ] convertsTo: (PjApplyNode receiver: one selector: #, args: {helloString}).
 	self assertContentsOf: [ 'hello',1,2 ] convertsTo: (PjBinaryNode operator: #+ left: (PjBinaryNode operator: #+ left: helloString right: one) right: two).
-
 ]
 
 { #category : #testing }
@@ -585,7 +574,6 @@ PjConversionOptimizationTest >> testTimesRepeat [
 					target: a
 					expression: one
 			}).
-
 ]
 
 { #category : #testing }
@@ -650,7 +638,6 @@ PjConversionOptimizationTest >> testToDo [
 					expression: xNode.
 				PjReturnNode expression: a
 			}).
-
 ]
 
 { #category : #testing }
@@ -688,5 +675,4 @@ PjConversionOptimizationTest >> testWhile [
 	self
 		assertContentsOf: [ self foo: [[self. in] whileFalse] ]
 		convertsTo: (PjApplyNode receiver: selfNode selector: #foo: args: (PjBlockNode parameters: #() locals: #() body: {PjWhileNode test: (PjSequenceNode expressions: {selfNodeInBlock. in}) not body:  {}}) asOrderedCollection).
-
 ]

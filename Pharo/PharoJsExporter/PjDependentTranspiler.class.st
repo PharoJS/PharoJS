@@ -90,7 +90,6 @@ PjDependentTranspiler >> convertMethodAst: aMethod [
 		converter
 			classForConversion: aMethod methodClass classToUseForJsConversion;
 			convertAst: aMethod ast withPrimitive: aMethod primitive]
-
 ]
 
 { #category : #transpiling }
@@ -124,8 +123,6 @@ PjDependentTranspiler >> discoveredReferenceToClass: aClass [
 PjDependentTranspiler >> generateCodeStringFrom: jsAst [.
 	self convertAllClasses: classesToConvert.
 	super generateCodeStringFrom: jsAst.
-
-
 ]
 
 { #category : #transpiling }
@@ -155,7 +152,6 @@ PjDependentTranspiler >> initialize [
 	alreadyInheritanceLinkedClasses := Set new.
 	alreadyVariablesDeclaredClasses := Set new.
 	globalPools := Set new.
-
 ]
 
 { #category : #invalidating }
@@ -170,7 +166,6 @@ PjDependentTranspiler >> invalidateClass: aClass [
 { #category : #invalidating }
 PjDependentTranspiler >> invalidateMethod: aMethod [
 	convertedMethods removeKey: aMethod ifAbsent: [].
-
 ]
 
 { #category : #invalidating }
@@ -210,33 +205,28 @@ PjDependentTranspiler >> withMethodsOf: aClass do: aBlock [
 				methodsToOutput add: (class compiledMethodAt: aSymbol) ]]].
 	methodsToOutput sort: [: l : r | l selector < r selector ].
 	methodsToOutput do: aBlock.
-
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> writeClassDefinitionOf: aClass [
 	alreadyDefinedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassDefinitionOf: aClass.
-
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> writeClassInheritanceLinksOf: aClass [
 	alreadyInheritanceLinkedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassInheritanceLinksOf: aClass.
-
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> writeClassInitializeOf: aClass [
 	alreadyInitializedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassInitializeOf: aClass.
-
 ]
 
 { #category : #transpiling }
 PjDependentTranspiler >> writeClassVariableDeclarationsOf: aClass [
 	alreadyVariablesDeclaredClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassVariableDeclarationsOf: aClass.
-
 ]

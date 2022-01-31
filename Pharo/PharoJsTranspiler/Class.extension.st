@@ -20,7 +20,6 @@ Class >> convertToJavascriptAstUsing: aPjAstConverter [
 { #category : #'*PharoJsTranspiler' }
 Class >> convertToJsUsing: transpiler [
 	transpiler convertClass: self.
-
 ]
 
 { #category : #'*PharoJsTranspiler' }

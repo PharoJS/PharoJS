@@ -19,7 +19,6 @@ PjIfTrueIfFalseOptimization >> convertReceiver: receiverNode args: aCollection [
 		test: test
 		whenTrue: first
 		whenFalse: second
-		
 ]
 
 { #category : #accessing }

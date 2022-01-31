@@ -24,7 +24,6 @@ PjDomControllerPharoTest >> currentApp [
 	^self appClass
 		start; 
 		currentInstance.
-
 ]
 
 { #category : #testing }

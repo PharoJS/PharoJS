@@ -17,5 +17,4 @@ Class {
 { #category : #'class initialization' }
 PjSuperClassForTranspilationTest class >> initialize [
 	B := #superB.
-
 ]

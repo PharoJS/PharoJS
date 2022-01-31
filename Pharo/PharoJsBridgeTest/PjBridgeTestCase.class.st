@@ -128,7 +128,6 @@ PjBridgeTestCase >> tearDown [
 	super tearDown.
 	classFactory ifNotNil: [ classFactory cleanUp ].
 	Author uniqueInstance fullName: authorInitialName.
-
 ]
 
 { #category : #testing }

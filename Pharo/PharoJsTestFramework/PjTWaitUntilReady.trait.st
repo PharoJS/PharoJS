@@ -20,7 +20,7 @@ PjTWaitUntilReady >> stepDuration [
 
 { #category : #waiting }
 PjTWaitUntilReady >> waitUntil: conditionBlock [
-	self waitUntil: conditionBlock timeOut: self defaultWaitTimeOutDuration 
+	self waitUntil: conditionBlock timeOut: self defaultWaitTimeOutDuration
 ]
 
 { #category : #waiting }
@@ -41,7 +41,7 @@ PjTWaitUntilReady >> waitUntil: conditionBlock timeOut: maxToWait ifTimeOutDo: t
 
 { #category : #waiting }
 PjTWaitUntilReady >> waitWhile: conditionBlock [
-	self waitWhile: conditionBlock timeOut: self defaultWaitTimeOutDuration 
+	self waitWhile: conditionBlock timeOut: self defaultWaitTimeOutDuration
 ]
 
 { #category : #waiting }

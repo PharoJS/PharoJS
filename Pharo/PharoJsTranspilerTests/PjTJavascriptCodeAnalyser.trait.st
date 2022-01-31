@@ -90,7 +90,6 @@ PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 	end := self jsCode findString: (String with: self lineEnding) startingAt: start.
 	end = 0 ifTrue: [ end := self jsCode size + 1 ].
 	^ self jsCode copyFrom: start-1+aString size to: end-3
-
 ]
 
 { #category : #writing }

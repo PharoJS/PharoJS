@@ -16,7 +16,6 @@ PjHtmlGeneratorTest >> assert: aString equalsIgnoringLineEndings: aString2 [
 PjHtmlGeneratorTest >> setUp [
 	super setUp.
 	generator := PjHtmlGenerator new.
-
 ]
 
 { #category : #testing }

@@ -22,21 +22,20 @@ Class {
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> closeDefault [
 	self default close.
-
 ]
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> connectDefaultToTag: tagString [ 
 	| newInstance |
 	newInstance := self connectToTag: tagString.
-	self default: newInstance 
+	self default: newInstance
 ]
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> connectDefaultToUrl: urlString [
 	| newInstance |
 	newInstance := self connectToUrl: urlString.
-	self default: newInstance 
+	self default: newInstance
 ]
 
 { #category : #'defaut instance' }
@@ -47,7 +46,6 @@ PjEvaluatorWebsocketDelegate class >> default [
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> default: newInstance [
 	default := newInstance.
-
 ]
 
 { #category : #constants }
@@ -83,7 +81,6 @@ PjEvaluatorWebsocketDelegate class >> initializePrivate [
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
 	self reload: true.
-	
 ]
 
 { #category : #'defaut instance' }
@@ -93,7 +90,6 @@ PjEvaluatorWebsocketDelegate class >> reload: aBoolean [
 false - Default. Reloads the current page from the cache.
 true - Reloads the current page from the server."
 	location reload: aBoolean.
-	
 ]
 
 { #category : #'defaut instance' }
@@ -123,7 +119,6 @@ PjEvaluatorWebsocketDelegate >> connectTo: urlString [
 PjEvaluatorWebsocketDelegate >> initialize [
 	super initialize.
 	Object prototype instVarNamed: PjCore pharoJsSelectorPrefix, 'inspect' putHidden: self makeInspect.
-
 ]
 
 { #category : #'socket behavior' }
@@ -180,7 +175,6 @@ PjEvaluatorWebsocketDelegate >> onOpen: event [
 PjEvaluatorWebsocketDelegate >> passJsThisArgumentToBlock: aBlock [
 	<PjTodo: 'Maybe this method should be moved to PjCore?'>
 	<javascript: 'return function(){aBlock(this)}'>
-	
 ]
 
 { #category : #connecting }

@@ -19,8 +19,6 @@ PjAstTest >> testAstArraySimilarility [
 	self deny: (astArray1 isSimilarTo: astArray3).
 	self deny: (astArray2 isSimilarTo: astArray3).
 	self deny:  (astArray4 isSimilarTo: astArray5).
-	
-	
 ]
 
 { #category : #testing }
@@ -47,10 +45,6 @@ PjAstTest >> testAstMessageSimilarility [
 	self deny:  (astCall3 isSimilarTo: astCall4).
 	self deny:  (astCall3 isSimilarTo: astCall5).
 	self deny:  (astCall4 isSimilarTo: astCall5).
-	
-	
-	
-	
 ]
 
 { #category : #testing }
@@ -58,6 +52,4 @@ PjAstTest >> testAstSelfSimilarility [
 	self assert: (selfNode isSimilarTo: PjSelfNode new). "keep the creation"
 	self deny: (selfNode isSimilarTo: two).
 	self deny: (two isSimilarTo: selfNode).
-	
-	
 ]

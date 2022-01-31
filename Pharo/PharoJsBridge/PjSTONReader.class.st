@@ -31,7 +31,6 @@ PjSTONReader >> parseConstantDo: block [
 		ifTrue: [
 			^ self match: 'NaN' do: [ block value: Float nan ] ].
 	super parseConstantDo: block.
-
 ]
 
 { #category : #'parsing-internal' }

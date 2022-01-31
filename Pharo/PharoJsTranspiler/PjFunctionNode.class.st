@@ -14,7 +14,7 @@ Class {
 
 { #category : #creating }
 PjFunctionNode class >> parameters: parameters locals: locals body: body [
-	^ self new parameters: parameters asArray; locals: locals asArray; body: body asJsAstBody; yourself 
+	^ self new parameters: parameters asArray; locals: locals asArray; body: body asJsAstBody; yourself
 ]
 
 { #category : #visiting }

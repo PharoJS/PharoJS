@@ -10,7 +10,6 @@ PjDependentTranspilerTest >> testBootstrapClasses [
 	self generateJsCodeForClasses: PjExporter bootstrapClasses..
 	self assert: PjObject protoSetBefore: PjString.
 	self assert: PjObject protoSetBefore: PjError.
-
 ]
 
 { #category : #testing }
@@ -23,7 +22,6 @@ PjDependentTranspilerTest >> testClassOrdering [
 	self assert: PjSharedPoolForTest protoSetBefore: PjSuperClassForTranspilationTest.
 	self assert: PjClassEForPackageTranspilationTest protoSetBefore: PjAlternateClassForTranspilationTest.
 	self assert: PjSharedPoolForTest initializedBefore: PjAlternateClassForTranspilationTest.
-
 ]
 
 { #category : #testing }
@@ -35,7 +33,6 @@ PjDependentTranspilerTest >> testIncludeMethods [
 	self assert: (self instanceMethod: #order:selector:) equals: '(aNumber,aString){this._order_(aNumber);this.selector=aString;return this}'.
 	self assert: (self classMethod: #javascriptName) equals: nil. "because of pragma"
 	self assert: (self classMethod: #exampleForTest) equals: '(){return this}'.
-
 ]
 
 { #category : #accessing }

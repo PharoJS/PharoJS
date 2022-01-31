@@ -17,5 +17,5 @@ PhysicsSimTest >> testAppInitialSetup [
 { #category : #testing }
 PhysicsSimTest >> testResetDeleteMobileBodiesOnly [
 	self clickElementById: #resetButton.
-	self assert: app bodies size equals: 1. 
+	self assert: app bodies size equals: 1.
 ]

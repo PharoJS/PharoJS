@@ -67,6 +67,4 @@ PhysicsSim >> setupAndStartRendering [
 					#wireframes -> false.
 					#background -> 'transparent'}} asJsObject.
 	self matterJsRoot Render run: render
-
-
 ]

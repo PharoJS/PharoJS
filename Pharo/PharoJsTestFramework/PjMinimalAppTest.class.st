@@ -22,5 +22,4 @@ PjMinimalAppTest >> testResetApp [
 	self assert: [window instVarNamed:#forTest] evaluatesTo: 3.
 	self resetApp.
 	self assert: [window instVarNamed:#forTest] evaluatesTo: nil.
-
 ]

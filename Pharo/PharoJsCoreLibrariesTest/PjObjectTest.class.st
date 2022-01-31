@@ -8,7 +8,6 @@ Class {
 PjObjectTest >> testNewObjectHasNoEnumeratableKeys [
 	"This is important for many JS third party libraries"
 	self assertBlock: [ Object new allEnumeratableKeys isEmpty ] .
-
 ]
 
 { #category : #testing }
@@ -81,7 +80,6 @@ PjObjectTest >> testPrintStringNumbers [
 	self
 		assert: [ Float nan printString ]
 		evaluatesTo: 'Float nan'.
-
 ]
 
 { #category : #testing }

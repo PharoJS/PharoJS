@@ -53,8 +53,6 @@ PjReadWriteStream >> initialize [
 	array := OrderedCollection with: (collection := self emptyCollection).
 	readLimit := 0.
 	position := 0.
-
-
 ]
 
 { #category : #accessing }
@@ -91,11 +89,9 @@ PjReadWriteStream >> nextPutAll: aCollection [
 PjReadWriteStream >> on: temp [
 	self load: temp.
 	self reset.
-
 ]
 
 { #category : #accessing }
 PjReadWriteStream >> skip: n [
 	position := position + n.
-
 ]

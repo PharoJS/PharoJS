@@ -14,7 +14,7 @@ Class {
 
 { #category : #'initialization-release' }
 PjError class >> javascriptInitialize [
-	self instVarNamed: #stackTraceLimit put: 100 
+	self instVarNamed: #stackTraceLimit put: 100
 ]
 
 { #category : #'pharoJs support' }

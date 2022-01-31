@@ -8,14 +8,12 @@ Class {
 PjAliasTest >> setUp [
 	super setUp.
 	self bridge loadClass: PjClassForTranspilationTest.
-
 ]
 
 { #category : #testing }
 PjAliasTest >> testAlias2Methods0Arg [
 	self assert:	 [PjClassForTranspilationTest new alias2] evaluatesTo: 21.
 	self assert:	 [PjClassForTranspilationTest new alias2Caller] evaluatesTo: 42.
-
 ]
 
 { #category : #testing }

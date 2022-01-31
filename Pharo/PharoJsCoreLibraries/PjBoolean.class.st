@@ -73,8 +73,7 @@ PjBoolean >> ifFalse: aBlock [
 
 { #category : #controlling }
 PjBoolean >> ifFalse: falseBlock ifTrue: trueBlock [
-	^self ifTrue: trueBlock ifFalse: falseBlock 
-	
+	^self ifTrue: trueBlock ifFalse: falseBlock
 ]
 
 { #category : #controlling }
@@ -105,7 +104,7 @@ PjBoolean >> or: aBlock [
 { #category : #printing }
 PjBoolean >> printOn: aStream [
 
-	aStream nextPutAll: self asString 
+	aStream nextPutAll: self asString
 ]
 
 { #category : #proxy }

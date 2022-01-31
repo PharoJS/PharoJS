@@ -13,7 +13,6 @@ Class {
 { #category : #testing }
 PjTranspilationClassCompilationTest >> assert: codeString1 appearsBefore: codeString2 [
 	self assert: (self jsCode includes: codeString1 before: codeString2 )
-
 ]
 
 { #category : #testing }
@@ -25,7 +24,6 @@ PjTranspilationClassCompilationTest >> assert: aString includes: mName then: mSt
 	self assert: pString > pName.
 	pEnd := aString findString: '}' startingAt: pName.
 	self assert: pString < pEnd.
-
 ]
 
 { #category : #testing }

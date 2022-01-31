@@ -82,7 +82,6 @@ PjPlayground class >> popUpMenu [
 	builder pragmaCollector filter: [ : prg | prg selector = #pharoJsMenuOn:];reset.
 	self pharoJsMenuOn: builder.
 	builder menu popUpInWorld.
-
 ]
 
 { #category : #actions }
@@ -90,7 +89,6 @@ PjPlayground >> actOnBrowserClosing: ann [
 	
 	super actOnBrowserClosing: ann.
 	bridge ifNotNil: [bridge stop]
-
 ]
 
 { #category : #accessing }
@@ -152,7 +150,7 @@ PjPlayground >> codeIn: a [
 
 { #category : #building }
 PjPlayground >> codePresentationIn: composite [
-	^ composite custom: (PjPresentation onPlayground: self) 
+	^ composite custom: (PjPresentation onPlayground: self)
 ]
 
 { #category : #initialization }
@@ -257,5 +255,4 @@ PjPlayground >> setupProxies [
 			dict add: (self makeJsGlobal: jsGlobalName)].
 	self setBindings: dict.
 	bridge setExtraBindings: dict.
-
 ]

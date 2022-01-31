@@ -55,13 +55,11 @@ BlockClosure >> convertToJsUsing: aPjTranspiler [
 BlockClosure >> copiedValues [
 	^(1 to: self numCopiedValues) collect: [: index | 
 		self copiedValueAt: index].
-	
 ]
 
 { #category : #'*PharoJsTranspiler' }
 BlockClosure >> copiedValuesForClosedBlock [
 	^self copiedValues collect: [ : each | each copy ]
-	
 ]
 
 { #category : #'*PharoJsTranspiler' }

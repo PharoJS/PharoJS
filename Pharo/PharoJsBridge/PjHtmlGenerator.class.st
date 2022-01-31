@@ -181,19 +181,16 @@ PjHtmlGenerator >> addTextInput: id hint: hintString on: eventName do: javaScrip
 { #category : #public }
 PjHtmlGenerator >> addTextInput: id hint: hintString onKeyDownDo: javaScript [
 	self addTextInput: id hint: hintString on: 'keydown' do: javaScript
-
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addTextInput: id hint: hintString onKeyPressDo: javaScript [
 	self addTextInput: id hint: hintString on: 'keypress' do: javaScript
-
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addTextInput: id hint: hintString onKeyUpDo: javaScript [
 	self addTextInput: id hint: hintString on: 'keyup' do: javaScript
-
 ]
 
 { #category : #public }
@@ -227,7 +224,7 @@ PjHtmlGenerator >> html [
 		nextPutAll: '</body>';
 		cr;
 		nextPutAll: '</html>'.
-	^htmlStream contents 
+	^htmlStream contents
 ]
 
 { #category : #'initialize-release' }
@@ -256,7 +253,6 @@ PjHtmlGenerator >> loadFrom: aString [
 		bodyStream nextPutAll: '<!-- no body tag in file -->'
 	] ifTrue: [
 		bodyStream nextPutAll: (aString copyFrom: bAngle+1 to: bEnd-1)].
-
 ]
 
 { #category : #public }

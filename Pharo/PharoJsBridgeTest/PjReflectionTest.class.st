@@ -50,7 +50,6 @@ PjReflectionTest >> testReflection [
 	self assertEquivalent: [true respondsTo: #not].
 	self assertEquivalent: [true respondsTo: #ifTrue:].
 	self assertEquivalent: [42 respondsTo: #<=].
-
 ]
 
 { #category : #testing }

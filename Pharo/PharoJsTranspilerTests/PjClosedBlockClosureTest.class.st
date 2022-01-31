@@ -19,7 +19,6 @@ PjClosedBlockClosureTest >> testBlockFreeVariables [
 	instVar := 17.
 	self assert: block asClosedBlock externalVariables equals: {#x->x. #instVar->instVar. #block->block. #closedBlock-> closedBlock. #testSelector->testSelector. #expectedFails->expectedFails} asDictionary.
 	self assert: closedBlock externalVariables equals: {#x->1. #instVar->42. #block->block. #closedBlock-> nil. #testSelector->testSelector. #expectedFails->expectedFails} asDictionary.
-
 ]
 
 { #category : #testing }

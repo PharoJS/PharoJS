@@ -72,5 +72,4 @@ PjSortedCollection >> replaceFrom: start to: stop with: replacement startingAt: 
 	repStop := repStart + stop - start.
 	repStart to: repStop do: [ : otherIndex |
 		self add: (replacement at: otherIndex)  ]
-
 ]

@@ -52,7 +52,6 @@ PjBlockTranspilationTest >> testBlock2Args [
 	self 
 		assertStBlock: [ : x : y | {x. y}]
 		convertsTo: '(function(x,y){return [x,y]})'
-
 ]
 
 { #category : #testing }
@@ -120,7 +119,6 @@ PjBlockTranspilationTest >> testBlockWithExternalVariables [
 	self 
 		assertStBlock: ([ : x1 | [ x1 ]] value: 42) asClosedBlock
 		convertsTo: '(function(x1){return function(){return x1}})(42)'.
-
 ]
 
 { #category : #testing }
@@ -151,7 +149,6 @@ PjBlockTranspilationTest >> testBlockWithNestedScopes [
 	self 
 		assertStBlock: (self openBlock: 42) asClosedBlock
 		convertsTo: '(function(x,y,instVar){return function(v){var w;return [v,w,x,y,instVar,123]}})(42,undefined,1492)'.
-
 ]
 
 { #category : #testing }
@@ -163,7 +160,6 @@ PjBlockTranspilationTest >> testBlockWithNestedScopesToFix [
 	self 
 		assertStBlock: ([ :y| [ |w| w:=17. [ { w.y.2} ] ] ] value: 4) value
 		convertsTo: '(function(w,y){return function(){return [w,y,2]}})(17,4)'.
-
 ]
 
 { #category : #testing }
@@ -175,7 +171,6 @@ PjBlockTranspilationTest >> testBlockWithReferencedScopes [
 	self 
 		assertStBlock: [|w| w := superClosed value.{w.x. 123}] asClosedBlock
 		convertsTo: '(function(superClosed,x){return function(){var w;w=$asNil$(superClosed)._value();return [w,x,123]}})((function(y){return function(){return y}})(17),1337)'.
-
 ]
 
 { #category : #testing }
@@ -186,5 +181,4 @@ PjBlockTranspilationTest >> testValuedBlock [
 	self 
 		assertStBlock: ([: a : b | ] asValuedBlockWithArgs: { 23. self class })
 		convertsTo: '(function(a,b){return undefined})(23,',self className,')'.
-
 ]

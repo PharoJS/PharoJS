@@ -32,5 +32,4 @@ PjDuration >> addDateAndTime: aDateAndTime [
 		second: (aDateAndTime second + self secondsCount))
 		setMilliseconds: (aDateAndTime getMilliseconds + self millisecondsCount);
 		yourself
-
 ]

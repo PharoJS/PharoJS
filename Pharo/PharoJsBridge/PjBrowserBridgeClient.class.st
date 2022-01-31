@@ -62,7 +62,6 @@ PjBrowserBridgeClient >> initializeWithBridge: aBridge [
 	self server css: self codeGenerator css.
 	self server favicon: self codeGenerator favicon.
 	self server html: self codeGenerator html.
-
 ]
 
 { #category : #accessing }
@@ -81,5 +80,5 @@ PjBrowserBridgeClient >> start [
 
 { #category : #accessing }
 PjBrowserBridgeClient >> urlString [
-	^self serverUrlString 
+	^self serverUrlString
 ]

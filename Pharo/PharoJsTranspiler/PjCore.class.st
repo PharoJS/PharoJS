@@ -99,7 +99,6 @@ PjCore class >> initObject [
 	((self js_at: #theClassClass) js_at: #prototype) 
 		js_at: #__proto__
 		put: (BlockClosure js_at: #prototype).
-
 ]
 
 { #category : #'throw support' }
@@ -116,7 +115,6 @@ PjCore class >> initializeCore [
 	self initObject.
 	self messageClass: self.
 	self metaclassClass: self.
-
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -407,7 +405,6 @@ PjCore class >> registerDnuForAll: anArray [
 { #category : #'doesNotUnderstand support' }
 PjCore class >> selector: selector arguments: args [
 	<jsGenerator: #selector_arguments_jsGenerator:>
-
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -421,13 +418,11 @@ PjCore class >> selector_arguments_jsGenerator: transpiler [
 			arguments: args,
 			', transpiler pharoJsSelectorPrefix, 'arguments: function(){return this.arguments}
 		}'
-
 ]
 
 { #category : #'reflection support' }
 PjCore class >> subclassSelector [
 	<jsGenerator: #subclassSelector_jsGenerator:>
-
 ]
 
 { #category : #'reflection support' }

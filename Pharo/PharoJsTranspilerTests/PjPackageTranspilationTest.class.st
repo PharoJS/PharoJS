@@ -19,7 +19,6 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWith: codeString before: 
 	self deny: firstIndex = 0.
 	lastIndex := self jsCode indexOfSubCollection: lastClass nameToUseForJsConversion, codeString.
 	self assert: firstIndex < lastIndex.
-	
 ]
 
 { #category : #testing }
@@ -29,7 +28,6 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWithPrefix: codeString be
 	self deny: firstIndex = 0.
 	lastIndex := self jsCode indexOfSubCollection: codeString, lastClass nameToUseForJsConversion.
 	self assert: firstIndex < lastIndex.
-	
 ]
 
 { #category : #testing }
@@ -40,7 +38,6 @@ PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
 { #category : #testing }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
 	self assert: firstClass inCodeWithPrefix: '._subclass_("' before: lastClass.
-
 ]
 
 { #category : #testing }
@@ -59,8 +56,6 @@ PjPackageTranspilationTest >> testClientClassUsesJavascriptNameOfReferencedClass
 	}.
 	self assert: self jsCode includes: PjClassAForReferenceTranspilationTest javascriptName.
 	self deny: self jsCode includes: PjClassAForReferenceTranspilationTest name.
-	
-	
 ]
 
 { #category : #testing }
@@ -82,7 +77,6 @@ PjPackageTranspilationTest >> testDuplicateClasses [
 	classInitializationString := className, '._initialize();'.
 	{classDefintionString. classInitializationString} do: [:each |
 		self assert: (jsCode allRangesOfSubstring: each) size equals: 1] .
-
 ]
 
 { #category : #testing }

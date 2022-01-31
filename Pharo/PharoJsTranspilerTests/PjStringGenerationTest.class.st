@@ -48,7 +48,6 @@ PjStringGenerationTest >> testArray [
 	self
 		assert: (PjArrayNode expressions: { one. two. self apply: x selector: #foo })
 		asStringEquals: '[1,2,$asNil$(x)._foo()]'.
-
 ]
 
 { #category : #testing }
@@ -61,7 +60,6 @@ PjStringGenerationTest >> testBlock [
 				PjReturnNode expression: (PjArgumentNode identifier: #a)
 			})
 		asStringEquals: '(function(a,$for){var d,$in;$in=$for;return a})'.
-
 ]
 
 { #category : #testing }
@@ -179,7 +177,6 @@ x',(String with: Character null)) asStringEquals: '"\x07a\\b\"\rx\x00"'.
 	self assert: (PjLiteralValueNode value: 'a\b"',(String with: (Character value:257)) ) asStringEquals: '"a\\b\"\u0101"'.
 	self assert: (PjLiteralValueNode value: (String with: Character null),'a\b"
 xようこそy',(String with: (Character value:257)) ) asStringEquals: '"\x00a\\b\"\rx\u3088\u3046\u3053\u305Dy\u0101"'.
-
 ]
 
 { #category : #testing }
@@ -227,7 +224,6 @@ PjStringGenerationTest >> testObject [
 	self
 		assert: (PjObjectNode dictionary: { #a -> selfNode. #* -> nilNode } asDictionary)
 		asStringEquals: '{"*":undefined,a:this}'.
-
 ]
 
 { #category : #testing }
@@ -337,7 +333,6 @@ PjStringGenerationTest >> testReservedWords [
 	self
 		assert: (PjInstanceVariableNode identifier: #prototype )
 		asStringEquals: '.$prototype'.
-
 ]
 
 { #category : #testing }
@@ -378,5 +373,4 @@ PjStringGenerationTest >> testUnparsedString [
 	self
 		assert: (PjUnparsedStringNode string: 'a.b^c')
 		asStringEquals: 'a.b^c'.
-
 ]

@@ -23,5 +23,4 @@ PjProxyForGlobal >> printOn: aStream [
 	aStream
 		nextPutAll: 'a Proxy for ';
 		nextPutAll: jsName
-
 ]

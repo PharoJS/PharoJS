@@ -17,5 +17,4 @@ PjTAppRunsInPharo >> currentApp [
 	^self appClass
 		start; 
 		currentInstance.
-
 ]

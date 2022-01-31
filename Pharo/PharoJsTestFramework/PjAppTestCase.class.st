@@ -80,7 +80,7 @@ PjAppTestCase >> debug [
 
 { #category : #running }
 PjAppTestCase >> debugBridgeResourceClass [
-	^PjDebugBridgeTestResource 
+	^PjDebugBridgeTestResource
 ]
 
 { #category : #accessing }
@@ -114,7 +114,6 @@ PjAppTestCase >> runCaseAsFailure: aSemaphore [
 PjAppTestCase >> setUp [
 	super setUp.
 	self waitWhile: [ (app := self currentApp) isNil ] timeOut: self timeOutForAppStartUp.
-
 ]
 
 { #category : #testing }

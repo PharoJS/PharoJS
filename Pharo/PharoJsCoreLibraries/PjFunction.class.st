@@ -46,7 +46,6 @@ PjFunction class >> on_do_jsGenerator: transpiler [
 PjFunction >> assert [
 
 	self value ifFalse: [AssertionFailure signal: 'Assertion failed']
-
 ]
 
 { #category : #'instance creation' }

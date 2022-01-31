@@ -50,7 +50,6 @@ PjClassForTranspilationTest class >> click: ev [
 { #category : #any }
 PjClassForTranspilationTest class >> initialize [
 	A := #testA.
-
 ]
 
 { #category : #'pharojs support' }
@@ -88,7 +87,6 @@ PjClassForTranspilationTest class >> m1 [
 	X := prototype.
 	S := S.
 	C := C.
-
 ]
 
 { #category : #any }
@@ -103,7 +101,6 @@ PjClassForTranspilationTest class >> setupMessage [
 			] ifFalse: [
 				'Sorry, ']) ,
 		'Click anywhere'
-
 ]
 
 { #category : #any }
@@ -222,7 +219,6 @@ PjClassForTranspilationTest >> m1 [
 	X := prototype.
 	S := S.
 	C := C.
-
 ]
 
 { #category : #any }
@@ -249,7 +245,6 @@ PjClassForTranspilationTest >> methodWithPoolVars [
 	S := S.
 	X := X.
 	Y := Y.
-
 ]
 
 { #category : #any }
@@ -277,14 +272,12 @@ PjClassForTranspilationTest >> optimizeAtTest [
 { #category : #any }
 PjClassForTranspilationTest >> toDoWithObjectAsParameter [
 	1 to: 10 do: Object
-
 ]
 
 { #category : #any }
 PjClassForTranspilationTest >> whileAtEnd [
 	self m: [:x|	[ x m1 ] whileTrue].
 	[ self m2 ] whileTrue.
-
 ]
 
 { #category : #any }

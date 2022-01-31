@@ -17,5 +17,4 @@ PjIncrementalJavascriptTest >> testPolyfillLoad [
 	bridge loadClass: PjMinimalNodeApplication.
 	contents := bridge lastJavascript.
 	self deny: (contents includesSubstring: ' WebSocket=Smalltalk.require("ws")').
-
 ]

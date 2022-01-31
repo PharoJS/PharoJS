@@ -33,7 +33,6 @@ PjAppPathTest >> testNilHtmlFolderAndNilJsFolder [
 	appClass appJsSubFolder: nil.
 	self assert: appClass appFullHtmlFolderPath equals: appClass appFolder.
 	self assert: appClass appFullJsFolderPath equals: appClass appFullHtmlFolderPath.
-	
 ]
 
 { #category : #running }
@@ -42,7 +41,6 @@ PjAppPathTest >> testNilHtmlFolderFolderButNotNilJsFolder [
 	appClass appJsSubFolder: 'js'.
 	self assert: appClass appFullHtmlFolderPath equals: appClass appFolder.
 	self assert: appClass appFullJsFolderPath equals: appClass appFullHtmlFolderPath / 'js'.
-	
 ]
 
 { #category : #running }
@@ -51,7 +49,6 @@ PjAppPathTest >> testNotNilHtmlFolderAndNotNilJsFolder [
 	appClass appJsSubFolder: 'js'.
 	self assert: appClass appFullHtmlFolderPath equals: appClass appFolder/'www'.
 	self assert: appClass appFullJsFolderPath equals: appClass appFullHtmlFolderPath / 'js'.
-	
 ]
 
 { #category : #running }
@@ -60,5 +57,4 @@ PjAppPathTest >> testNotNilHtmlFolderButNilJsFolder [
 	appClass appJsSubFolder: nil.
 	self assert: appClass appFullHtmlFolderPath equals: appClass appFolder/ 'www'.
 	self assert: appClass appFullJsFolderPath equals: appClass appFullHtmlFolderPath.
-	
 ]

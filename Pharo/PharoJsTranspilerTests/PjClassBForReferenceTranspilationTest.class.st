@@ -6,5 +6,5 @@ Class {
 
 { #category : #any }
 PjClassBForReferenceTranspilationTest >> m [
-	^PjClassAForReferenceTranspilationTest 
+	^PjClassAForReferenceTranspilationTest
 ]

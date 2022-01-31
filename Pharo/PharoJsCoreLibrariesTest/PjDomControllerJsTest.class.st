@@ -16,5 +16,4 @@ PjDomControllerJsTest >> currentApp [
 	| jsMessage |
 	jsMessage := PjJavascriptMessage receiverId: self appClass name selector: #currentInstance arguments: #().
 	^self bridge evalMessage: jsMessage
-
 ]

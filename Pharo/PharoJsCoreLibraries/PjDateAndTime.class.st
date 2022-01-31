@@ -43,14 +43,11 @@ PjDateAndTime class >> todayHour: hour minute: minute second: second [
 		setMinutes: minute;
 		setSeconds: second;
 		yourself
-	
-
 ]
 
 { #category : #'instance creation' }
 PjDateAndTime class >> tomorrowHour: hour minute: minute second: second [
 	^(self todayHour: hour minute: minute second: second) + 1 day
-
 ]
 
 { #category : #'instance creation' }
@@ -65,7 +62,7 @@ PjDateAndTime >> + otherObject [
 
 { #category : #arithmetics }
 PjDateAndTime >> - anObject [
-	^anObject subtractFromDateAndTime: self 
+	^anObject subtractFromDateAndTime: self
 ]
 
 { #category : #converting }
@@ -91,7 +88,6 @@ PjDateAndTime >> dayOfWeek [
 { #category : #accessing }
 PjDateAndTime >> hour [
 	^self hour24
-
 ]
 
 { #category : #accessing }
@@ -144,7 +140,6 @@ PjDateAndTime >> printString [
 
   // join the components into date
   return ("000"+ this.getFullYear()).slice(-4)+"-"+d.slice(0, 2).join("-") + "T" + d.slice(2,5).join(":") + (this.getTimezoneOffset()<0?"+":"-") + d.slice(-2).join(":")'>
-	
 ]
 
 { #category : #accessing }

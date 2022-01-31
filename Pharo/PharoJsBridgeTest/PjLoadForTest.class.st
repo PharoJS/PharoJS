@@ -44,7 +44,6 @@ PjLoadForTest class >> setupClassVars [
 	self classVarNames do: [: key |
 		self classVarNamed: key put: key,' value'
 	].
-
 ]
 
 { #category : #any }

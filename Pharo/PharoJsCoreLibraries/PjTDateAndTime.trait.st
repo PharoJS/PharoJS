@@ -34,7 +34,6 @@ PjTDateAndTime >> dayOfWeek [
 { #category : #accessing }
 PjTDateAndTime >> hour [
 	^self hour24
-
 ]
 
 { #category : #accessing }

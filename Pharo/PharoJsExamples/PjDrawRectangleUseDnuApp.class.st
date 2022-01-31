@@ -55,5 +55,4 @@ PjDrawRectangleUseDnuApp >> subscribeToDeviceEvents [
     	 'load', 'deviceready', 'offline', and 'online'."
 	super subscribeToDeviceEvents.
 	document addEventListener: 'load' block: [: ev | self onLoad].
-
 ]

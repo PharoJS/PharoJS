@@ -110,10 +110,6 @@ PjBasicConverterTest >> testBlockRelatedFlags [
 	self deny: converter hasInBlockSelfReferences.
 	self deny: converter isInBlock.
 	self deny: converter hasNonLocalReturns.
-
-
-
-
 ]
 
 { #category : #testing }
@@ -164,7 +160,6 @@ PjBasicConverterTest >> testExpressionNonLocalReturns [
 
 	converter preventNonLocalReturns.
 	self failConverting: [ { ^1 } ].
-
 ]
 
 { #category : #testing }

@@ -75,5 +75,4 @@ PjMessageConverter >> removeConversion: aConversion [
 	(conversions at: aConversion selector
 		ifAbsent: [^ self])
 			remove: aConversion ifAbsent: []
-
 ]

@@ -59,5 +59,4 @@ PjWebAppTestCase >> newEvent: eventName [
 	event := document createEvent: #HTMLEvents.
    event initEvent: eventName with: true with: true.
 	^event
-
 ]

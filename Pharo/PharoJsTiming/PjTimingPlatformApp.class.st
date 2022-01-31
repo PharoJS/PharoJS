@@ -39,7 +39,6 @@ PjTimingPlatformApp class >> findBaseIterations: aBlock and: aBlock2 min: mintim
 		console log: iterations.
 		iterations := iterations * 2 // 3
 	].
-
 ]
 
 { #category : #timing }
@@ -69,7 +68,6 @@ PjTimingPlatformApp class >> playgroundDoNotList [
 
 { #category : #'start-stop application' }
 PjTimingPlatformApp class >> start [
-
 ]
 
 { #category : #timing }

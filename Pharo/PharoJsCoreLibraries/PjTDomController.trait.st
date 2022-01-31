@@ -63,7 +63,6 @@ PjTDomController >> body [
 { #category : #creating }
 PjTDomController >> createElement: tagString [ 
 	^self document createElement: tagString.
-
 ]
 
 { #category : #creating }
@@ -110,7 +109,7 @@ PjTDomController >> cssClassesReplaceAll: oldCssClasses byAll: newClasses elemen
 
 { #category : #css }
 PjTDomController >> cssClassesString: elementId [
-	^ self cssClassesStringElement: (self elementAt: elementId) 
+	^ self cssClassesStringElement: (self elementAt: elementId)
 ]
 
 { #category : #css }
@@ -143,7 +142,7 @@ PjTDomController >> elementAt: childId in: container [
 	"Method querySelector: Returns the first child element that matches a specified 
 	CSS selector(s) of an element. To search for an element by Id, we need to use
 	a sharp (#) as prefix. A dot (.) should be used for searching by class"
-	^container querySelector: '#', childId. 
+	^container querySelector: '#', childId.
 ]
 
 { #category : #visibility }
@@ -193,13 +192,11 @@ PjTDomController >> onClick: elementId in: container do: aBlock [
 	| element |
 	element := self elementAt: elementId in: container.
 	self onClickElement: element do: aBlock
-
 ]
 
 { #category : #'event init' }
 PjTDomController >> onClickElement: element do: aBlock [
 	element addEventListener: #click block: [ aBlock cull: element ].
-
 ]
 
 { #category : #'event init' }

@@ -71,7 +71,6 @@ PjServer >> executePlainRequest: request sendReponseThrough: stream and: socket 
 		ifCurtailed: [ 
 			self logServerGeneric: 'Destroying socket'.
 			socket destroy ]
-
 ]
 
 { #category : #accessing }
@@ -100,7 +99,6 @@ PjServer >> handleRequest: request forWebSocketOn: stream [
 	self augmentResponse: response forRequest: request.
 	self writeResponse: response on: stream timing: timing.
 	response useConnection: stream
-		
 ]
 
 { #category : #accessing }
@@ -117,7 +115,6 @@ PjServer >> html: htmlString [
 PjServer >> initialize [
 	super initialize.
 	self delegate: self delegateClass new
-
 ]
 
 { #category : #testing }
@@ -148,7 +145,6 @@ PjServer >> logSocketRead: aString [
 		direction: 'read';
 		contents: aString;
 		emit.
-
 ]
 
 { #category : #logging }
@@ -158,7 +154,6 @@ PjServer >> logSocketWritten: aString [
 		direction: 'wrote';
 		contents: aString;
 		emit.
-
 ]
 
 { #category : #logging }
@@ -254,5 +249,5 @@ PjServer >> webSocket [
 
 { #category : #accessing }
 PjServer >> webSocketUrlTag [
-	^self class webSocketUrlTag 
+	^self class webSocketUrlTag
 ]

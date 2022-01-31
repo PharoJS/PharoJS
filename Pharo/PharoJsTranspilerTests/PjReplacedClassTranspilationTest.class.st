@@ -24,5 +24,4 @@ PjReplacedClassTranspilationTest >> testClassReplacement [
 	self assert: self jsCode includes: '_m2()'.
 	self assert: self jsCode includes: 'c$(function _c1()'.
 	self assert: self jsCode includes: 'c$(function _c2()'.
-
 ]

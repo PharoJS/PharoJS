@@ -22,7 +22,6 @@ PjIfNotNilOptimization >> convertReceiver: receiverNode args: aCollection [
 						target: (PjArgumentNode identifier: variableId)
 						expression: (self visit: receiverNode)])
 			whenNotNil: (self visitInlineBlock: notNilBlockNode)
-
 ]
 
 { #category : #accessing }

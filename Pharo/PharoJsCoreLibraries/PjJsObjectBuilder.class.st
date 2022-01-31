@@ -10,7 +10,6 @@ Class {
 { #category : #converting }
 PjJsObjectBuilder class >> convert: anObject [
 	^self new convert: anObject
-
 ]
 
 { #category : #converting }

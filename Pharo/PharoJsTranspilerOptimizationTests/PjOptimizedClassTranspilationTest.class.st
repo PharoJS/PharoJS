@@ -19,7 +19,6 @@ PjOptimizedClassTranspilationTest >> testBlockTempNames [
 		equals: '(){var $1;return 3+(($1=this._m1())==undefined?42:$1)}'.
 	self assertInstanceMethod: #blockWithNamedParameter
 		equals: '(){var foo;if((foo=this._m1())==undefined){return undefined;}else{return $asNil$(foo)._m1()}}'.
-
 ]
 
 { #category : #testing }
@@ -29,7 +28,6 @@ PjOptimizedClassTranspilationTest >> testBlocksAndReturns [
 		equals: '(){this._m_(function(x){while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return 42}'.
 	self assertInstanceMethod: #whileAtEnd
 		equals: '(){this._m_(function(x){while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return this}'.
-
 ]
 
 { #category : #testing }
@@ -39,5 +37,4 @@ PjOptimizedClassTranspilationTest >> testSubIf [
 		equals: '(){return $asNil$((this===JsClass?"":"Sorry, "))._44_("Click anywhere")}'.
 	self assertClassMethod: #click:
 		equals: '(ev){var m,$1;var $_err_$={};try{m=($1=this._setupMessage())==undefined?',PjCore throwFunctionName,'($_err_$=this):$1;return m}catch(e){if(e===$_err_$)return e;throw e}}'.
-
 ]

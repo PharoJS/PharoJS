@@ -20,7 +20,6 @@ PjIdentityDictionaryTest >> testAtIfAbsent [
 	self assertEquivalent: [|d|
 		d := IdentityDictionary new.
 		d at: #x ifAbsent: [42]].
-
 ]
 
 { #category : #testing }
@@ -33,7 +32,6 @@ PjIdentityDictionaryTest >> testAtIfAbsentPut [
 		d := IdentityDictionary new.
 		d at: #x ifAbsentPut: [42].
 		d at: #x].
-
 ]
 
 { #category : #testing }
@@ -61,7 +59,6 @@ PjIdentityDictionaryTest >> testAtIfEmpty [
 		d := IdentityDictionary new.
 		d at: #x put: 4.
 		d ifNotEmpty: [ 3 ] ifEmpty: [42]].
-
 ]
 
 { #category : #testing }
@@ -74,7 +71,6 @@ PjIdentityDictionaryTest >> testAtPut [
 		d := IdentityDictionary new.
 		d at: #x put: 42.
 		d size]
-
 ]
 
 { #category : #testing }
@@ -108,7 +104,6 @@ PjIdentityDictionaryTest >> testNewFromPairs [
 	| d |
 	d := self bridge
 		evalBlock: [ IdentityDictionary newFromPairs: #(#x 17 #y 42) ].
-
 ]
 
 { #category : #testing }
@@ -129,5 +124,4 @@ PjIdentityDictionaryTest >> testUseObjectsAsKeysForIdentityDictionary [
 		dict at: secondKey put: 'B'.
 		dict at: firstKey
 	] evaluatesTo: 'A'.
-
 ]

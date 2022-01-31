@@ -17,12 +17,10 @@ PjClassExtensionTranspilationTest >> testClassExtension [
 	self assert: self jsCode includes: 'instanceMethod'.
 	PjClassForTranspilationTest selectorsDo: [: selector |
 		self deny: self jsCode includes: selector]
-
 ]
 
 { #category : #testing }
 PjClassExtensionTranspilationTest >> testJavascriptInitialize [
 	self assertClassMethod: #javascriptInitialize equals: '(){return this}'.
 	self assert: self jsCode includes: PjClassForTranspilationTest name, '._javascriptInitialize()'.
-
 ]

@@ -45,7 +45,6 @@ PjProxyFinalizationHandler >> finalizer [
 			receiver: self;
 			selector: #cleanUpJsSide
 			yourself.
-
 ]
 
 { #category : #'initialize-release' }

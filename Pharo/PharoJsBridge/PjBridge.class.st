@@ -177,7 +177,7 @@ PjBridge >> deleteJsValue: jsName [
 
 { #category : #evaluating }
 PjBridge >> disableWriteDnuDuring: aBlockClosure [ 
-	^self transpiler disableWriteDnuDuring: aBlockClosure 
+	^self transpiler disableWriteDnuDuring: aBlockClosure
 ]
 
 { #category : #evaluating }
@@ -220,7 +220,6 @@ PjBridge >> ensureProxyForEventListenerBlock: aBlockClosure [
 { #category : #public }
 PjBridge >> evalBlock: aBlock [
 	^self evalJavascript: (self convertToJs: aBlock asValuedBlock)
-
 ]
 
 { #category : #public }
@@ -238,13 +237,11 @@ PjBridge >> evalJavascriptWithDnuFrom: aBlock [
 	jsBlockCode := self disableWriteDnuDuring: aBlock.
 	jsDnuCode := self dnuJsString.
 	^self evalJavascript: jsDnuCode, jsBlockCode
-
 ]
 
 { #category : #public }
 PjBridge >> evalMessage: jsMessage [
 	^self evalJavascriptWithDnuFrom: [self convertToJs: jsMessage].
-
 ]
 
 { #category : #public }
@@ -302,7 +299,6 @@ PjBridge >> initialize [
 PjBridge >> initializeWithAppClass: aPharoJsAppClass [
 	self client initializeWithAppClass: aPharoJsAppClass.
 	self client initializeWithBridge: self.
-
 ]
 
 { #category : #accessing }
@@ -343,14 +339,12 @@ PjBridge >> loadAllClasses: classes [
 	javaScriptClassesDefinition := self exporter convertAllClassesToJs: classes.
 	self evalJavascript: javaScriptClassesDefinition.
 	^classes
-
 ]
 
 { #category : #public }
 PjBridge >> loadClass: aClass [
 	self loadAllClasses: {aClass}.
 	^aClass
-	
 ]
 
 { #category : #activity }
@@ -508,7 +502,6 @@ PjBridge >> shouldStartJsInterpreter: aBoolean [
 PjBridge >> start [
 	self startWithoutWaitingForClient.
 	self waitForClientToStart.
-
 ]
 
 { #category : #public }
@@ -533,7 +526,6 @@ PjBridge >> startWithoutWaitingForClient [
 PjBridge >> stop [
 	self client stop.
 	self server ifNotNil: [self server stop].
-
 ]
 
 { #category : #activity }
@@ -559,7 +551,6 @@ PjBridge >> terminateClient [
 	self isConnected ifFalse: [ ^self ].  
 	self client stop.
 	self webSocket close.
-
 ]
 
 { #category : #evaluating }
@@ -646,6 +637,5 @@ PjBridge >> when: conditionBlock do: actionBlock onTimeOutDo: failureBlock timeO
 		conditionBlock value ifTrue: [ ^actionBlock value ].
 		waitTime wait.
 	].
-	^failureBlock value.	
-
+	^failureBlock value.
 ]

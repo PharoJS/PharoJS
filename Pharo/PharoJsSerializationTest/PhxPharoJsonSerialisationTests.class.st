@@ -52,7 +52,6 @@ PhxPharoJsonSerialisationTests >> testDictionariesReferencingEachOther [
 	self assert: (bClone at: #name) equals: 'B'.
 	aInBClone := bClone at: #a.
 	self assert: aInBClone identicalTo: aInCClone.
-
 ]
 
 { #category : #tests }

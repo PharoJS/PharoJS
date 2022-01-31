@@ -19,5 +19,4 @@ PjSharedPoolDefinitionTranspilationTest >> testClassVariables [
 	self assert: self jsCode includes: className, '.$$def('.
 	self assert: self jsCode includes: 'cp$.A=cp$.B=cp$.C=cp$.X=null;'.
 	self assert: self jsCode includes: 'cp$.A="sharedA"'.
-
 ]

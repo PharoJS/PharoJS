@@ -26,5 +26,4 @@ PjCoreTranspilationTest >> testOptimizedJsAt [
 	method := self classMethod: #makePharoJsSelector:.
 	self assert: (method indexOfSubCollection: asNil,'(aSelector[0])._61_(') > 0.
 	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache.hasOwnProperty(aSelector))._ifTrue_(') > 0.
-
 ]

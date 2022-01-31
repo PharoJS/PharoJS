@@ -7,7 +7,7 @@ Dictionary class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jso
 	reader addKnownObject: newDict.
 	jsonObject keysAndValuesDo: [ :key :value | 
 		newDict at: key put: (reader readFromJsObjectOrDictionary: value) ].
-	^ newDict 
+	^ newDict
 ]
 
 { #category : #'*PharoJsSerialization' }

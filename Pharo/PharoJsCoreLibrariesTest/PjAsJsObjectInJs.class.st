@@ -8,19 +8,16 @@ Class {
 PjAsJsObjectInJs >> testBoolean [
 	self assertBlock: [ true asJsObject == true].
 	self assertBlock: [ false asJsObject == false].
-
 ]
 
 { #category : #tests }
 PjAsJsObjectInJs >> testConvertingADictionary [
 	self assertBlock: [{ #a -> 1. #b -> 2. #c -> 3 } asDictionary asJsObject class == Object].
-
 ]
 
 { #category : #tests }
 PjAsJsObjectInJs >> testConvertingAnAssociationArray [
 	self assertBlock: [{ #a -> 1. #b -> 2. #c -> 3 } asJsObject class == Object].
-
 ]
 
 { #category : #tests }
@@ -44,7 +41,6 @@ PjAsJsObjectInJs >> testConvertingCompositeArray [
 	self assertBlock: [convertedDict class == Object].
 	#(x y) with: #(0 3.14) do: [ : iv : expectedValue | 
 		self assert: (convertedDict at: iv) equals: expectedValue].
-		
 ]
 
 { #category : #tests }
@@ -62,7 +58,6 @@ PjAsJsObjectInJs >> testConvertingCompositeDictionary [
 	self assertBlock: [(converted at: #object) class == Object].
 	self assertBlock: [(converted at: #associationArray) class == Object].
 	self assertBlock: [(converted at: #dict) class == Object].
-
 ]
 
 { #category : #tests }
@@ -79,7 +74,6 @@ PjAsJsObjectInJs >> testConvertingNestedDictionariesAndArrays [
 	self assertBlock: [(converted first at: #arrays) second class == Boolean].
 	self assertBlock: [(converted first at: #arrays) third class == SmallInteger].
 	self assertBlock: [(converted first at: #arrays) fourth class == Array].
-
 ]
 
 { #category : #tests }
@@ -104,7 +98,6 @@ PjAsJsObjectInJs >> testConvertingObjectWithNestedDictionaryAndArray [
 	self assertBlock: [converted dict class == Dictionary].
 	self assertBlock: [converted object == original object].
 	self assertBlock: [converted object class == Object].
-
 ]
 
 { #category : #tests }
@@ -117,18 +110,15 @@ PjAsJsObjectInJs >> testIfnil [
 { #category : #tests }
 PjAsJsObjectInJs >> testIgnoreArrayOfNonAssociations [
 	self assertBlock: [#(1 2 3) asJsObject class == Array].
-
 ]
 
 { #category : #tests }
 PjAsJsObjectInJs >> testNumber [
 	self assertBlock: [ 3.14 asJsObject == 3.14].
 	self assertBlock: [ 42 asJsObject == 42].
-
 ]
 
 { #category : #tests }
 PjAsJsObjectInJs >> testString [
 	self assertBlock: [ 'Smalltalk Rocks!' asJsObject == 'Smalltalk Rocks!'].
-
 ]

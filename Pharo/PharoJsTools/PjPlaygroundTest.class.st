@@ -35,7 +35,6 @@ PjPlaygroundTest >> setUp [
 	super setUp.
 	playground := PjPlayground new.
 	playground label: 'PharoJS Playground Test'.
-
 ]
 
 { #category : #testing }

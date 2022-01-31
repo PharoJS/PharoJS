@@ -72,7 +72,7 @@ PjTranspilationTest >> setUp [
 
 { #category : #accessing }
 PjTranspilationTest >> transpilerClass [
-	^PjTranspiler 
+	^PjTranspiler
 ]
 
 { #category : #writing }

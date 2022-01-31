@@ -33,7 +33,6 @@ PjAstConverter class >> jsCodeGeneratorPragmaKeyword [
 	"The argument of the pragma is a selector for class side message that generates javascript code that is used as the body of the method.
 	The smalltalk code if any is simply ignored."
 	^#jsGenerator:
-
 ]
 
 { #category : #accessing }
@@ -41,7 +40,6 @@ PjAstConverter class >> jsCodePragmaKeyword [
 	"The argument of the pragma provides javascript code that is used as the body of the method.
 	The smalltalk code if any is simply ignored."
 	^#javascript:
-
 ]
 
 { #category : #accessing }
@@ -49,7 +47,6 @@ PjAstConverter class >> jsLiteralGeneratorPragmaKeyword [
 	"The argument of the pragma is a selector for class side message that generates javascript code that is used as the body of the method.
 	The smalltalk code if any is simply ignored."
 	^#jsLiteralGenerator
-
 ]
 
 { #category : #conversions }
@@ -59,8 +56,7 @@ PjAstConverter >> addAllConversions: aCollection [
 
 { #category : #'initialize-release' }
 PjAstConverter >> addAllMessageConversions: conversions [
-	self messageConverter addAllConversions: conversions 
-	
+	self messageConverter addAllConversions: conversions
 ]
 
 { #category : #accessing }
@@ -290,7 +286,6 @@ PjAstConverter >> initialize [
 	self allowReturnsInBlocks.
 	extraBindings := Dictionary new.
 	self reset.
-
 ]
 
 { #category : #testing }
@@ -380,8 +375,7 @@ PjAstConverter >> removeAllConversions: aCollection [
 
 { #category : #'initialize-release' }
 PjAstConverter >> removeAllMessageConversions: conversions [
-	self messageConverter removeAllConversions: conversions 
-	
+	self messageConverter removeAllConversions: conversions
 ]
 
 { #category : #public }
@@ -391,7 +385,6 @@ PjAstConverter >> reset [
 	pushingReturnClass := nil.
 	tempNumber := 0.
 	tempMaxNumber := 0
-
 ]
 
 { #category : #'initialize-release' }
@@ -418,7 +411,6 @@ PjAstConverter >> signal: varType ifClosedBlockReferences: id [
 	blockClosureAnalyser
 		ifNotNil: [ PjJavascriptTranspilationError
 				signal: 'reference to ', varType, ' in block: ' , id ].
-	
 ]
 
 { #category : #accessing }
@@ -484,7 +476,6 @@ PjAstConverter >> visitAllNodes: someRBNodes [
 	lastExpression := self returnNodeWith: someRBNodes last.
 	expressions addLast: lastExpression.
 	^ PjSequenceNode expressions: expressions
-
 ]
 
 { #category : #visiting }
@@ -503,7 +494,6 @@ PjAstConverter >> visitAssignmentNode: aRBAssignmentNode [
 	^PjAssignNode 
 		target:  (aRBAssignmentNode variable acceptVisitor: self) 
 		expression: (self inExpressionDo: [aRBAssignmentNode value acceptVisitor: self]).
-
 ]
 
 { #category : #visiting }
@@ -623,7 +613,6 @@ PjAstConverter >> visitInlineBlock: aRBProgramNode [
 			statements addFirst: (RBAssignmentNode variable: variable value: RBLiteralValueNode new).
 	]].
 	^ (self visitAllNodes: statements) asSimpleNode.
-
 ]
 
 { #category : #visiting }
@@ -753,13 +742,11 @@ PjAstConverter >> visitSuperNode: aRBSuperNode [
 	inBlock := self isInBlock.
 	inBlock ifTrue: [ self hasInBlockSelfReferences: true ].
 	^(PjSuperNode inBlock: inBlock) myClass: self classForConversion
-
 ]
 
 { #category : #visiting }
 PjAstConverter >> visitTemporaryNode: aRBTemporaryNode [
 	^self visitTemporaryVariableNode: aRBTemporaryNode
-	
 ]
 
 { #category : #visiting }
@@ -780,7 +767,6 @@ PjAstConverter >> visitVariableNode: aRBVariableNode [
 	extraBindings at: id ifPresent: [: value |
 		(value isKindOf: PjProxy) ifTrue: [ ^ PjGlobalNode identifier: id ]].
 	self transpilationError: 'undefined variable "' , aRBVariableNode name , '"'.
-
 ]
 
 { #category : #'non-nil handling' }

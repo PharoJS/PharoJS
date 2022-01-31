@@ -60,7 +60,6 @@ PjNumber class >> javascriptInitialize [
 	NegativeInfinity := Number instVarNamed: #NEGATIVE_INFINITY.
 	NaN := Number instVarNamed: #NaN.
 	NegativeZero := 1.0 / NegativeInfinity.
-
 ]
 
 { #category : #'pharoJs support' }
@@ -236,7 +235,6 @@ PjNumber >> cos [
 { #category : #converting }
 PjNumber >> degreesToRadians [
 	^ self * RadiansPerDegree
-
 ]
 
 { #category : #converting }
@@ -384,7 +382,6 @@ PjNumber >> px [
 { #category : #converting }
 PjNumber >> radiansToDegrees [
 	^ self / RadiansPerDegree
-
 ]
 
 { #category : #converting }

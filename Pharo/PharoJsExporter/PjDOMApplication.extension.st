@@ -4,7 +4,6 @@ Extension { #name : #PjDOMApplication }
 PjDOMApplication class >> appFullHtmlFileName [
 	<pharoJsSkip>
 	^self appFullHtmlFolderPath / self appHtmlFileName
-
 ]
 
 { #category : #'*PharoJsExporter-App' }
@@ -14,7 +13,6 @@ PjDOMApplication class >> appFullHtmlFolderPath [
 		^self appFolder / subfolder 
 	].
 	^self appFolder
-
 ]
 
 { #category : #'*PharoJsExporter-App' }
@@ -24,7 +22,6 @@ PjDOMApplication class >> appFullJsFolderPath [
 		^self appFullHtmlFolderPath / subfolder 
 	].
 	^self appFullHtmlFolderPath
-
 ]
 
 { #category : #'*PharoJsExporter-App' }

@@ -54,7 +54,6 @@ PjMessage >> id: anObject [
 { #category : #'initialize-release' }
 PjMessage >> initialize [
 	super initialize.
-
 ]
 
 { #category : #printing }
@@ -82,5 +81,4 @@ PjMessage >> printOn: ws [
 	ws space.
 	ws << 'id:'.
 	ws << self id.
-
 ]

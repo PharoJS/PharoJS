@@ -86,7 +86,7 @@ PjClass >> newFromJsonString: jsonString [
 { #category : #printing }
 PjClass >> printOn: aStream [
 
-	aStream nextPutAll: self name 
+	aStream nextPutAll: self name
 ]
 
 { #category : #'Behavior: reflection' }

@@ -16,7 +16,7 @@ PharoJSTutorial >> pjPlayground [
 
 You can access it from the world menu or do the following:
 "
-	PjPlayground popUpMenu' 
+	PjPlayground popUpMenu'
 ]
 
 { #category : #lessons }

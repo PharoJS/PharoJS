@@ -24,7 +24,6 @@ PjMessageConversionTest >> convert: selector receiver: aLiteral args: args [
 PjMessageConversionTest >> setUp [
 	super setUp.
 	converter := PjMessageConverter new.
-	
 ]
 
 { #category : #testing }

@@ -25,7 +25,6 @@ PjTimingTest class >> gatherStatistics [
 "	self gatherStatistics "
 	self runTests.
 	self stats inspect.
-
 ]
 
 { #category : #'initialize-release' }
@@ -56,7 +55,6 @@ PjTimingTest class >> ratio: aString  betterThan: factor for:  aTest [
 { #category : #'initialize-release' }
 PjTimingTest class >> reset [
 	stats := Dictionary new.
-
 ]
 
 { #category : #stats }
@@ -87,7 +85,7 @@ PjTimingTest class >> stats [
 			].
 			aStream cr
 		]
-	]	
+	]
 ]
 
 { #category : #stats }
@@ -146,14 +144,11 @@ PjTimingTest >> setUp [
 	nullBlock := self transpiler convertToJs: [  ].
 	bridge start.
 	PjBridge soleBridge: bridge.
-
-
 ]
 
 { #category : #running }
 PjTimingTest >> tearDown [
 	bridge stop.
-
 ]
 
 { #category : #testing }

@@ -72,7 +72,6 @@ PjIdentityDictionary >> keysAndValuesDo: twoArgsBlock [
 	}
 	return this;
 	'>
-
 ]
 
 { #category : #'initialize-release' }

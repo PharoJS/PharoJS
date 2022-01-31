@@ -9,7 +9,6 @@ PjStringTest >> testConversion [
 	self assertEquivalent: ['the Eiffel Tower' asUppercase].
 	self assertEquivalent: ['the Eiffel Tower' asLowercase].
 	self assertEquivalent: ['the Eiffel Tower' capitalized].
-
 ]
 
 { #category : #testing }
@@ -19,7 +18,6 @@ PjStringTest >> testConversionToNumbers [
 	self assertEquivalent: ['3.14' asNumber].
 	self assertEquivalent: ['2xyz' asNumber].
 	self assertEquivalent: ['1.41xyz' asNumber].
-
 ]
 
 { #category : #testing }
@@ -41,7 +39,6 @@ PjStringTest >> testIsLetter [
 	self assertBlock: [letters allSatisfy: [: char |char isLetter]].
 	nonLetters := Character allByteCharacters copyWithoutAll: letters.
 	self assertBlock: [nonLetters noneSatisfy: [: char |  char isLetter]].
-		
 ]
 
 { #category : #testing }
@@ -54,7 +51,6 @@ PjStringTest >> testLast [
 PjStringTest >> testReversed [
 	self
 		assertEquivalent: ['abcd' reversed].
-
 ]
 
 { #category : #testing }

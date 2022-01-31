@@ -12,7 +12,6 @@ Class {
 { #category : #converting }
 PjJsAtConversion >> convertReceiver: receiver args: args [
 	^PjFieldNode target: (self visit: receiver) selectorNode: (self visit: args first) isNonNil: true
-
 ]
 
 { #category : #accessing }

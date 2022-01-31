@@ -20,7 +20,7 @@ Object class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObj
 	reader addKnownObject: obj.
 	jsonObject
 		keysAndValuesDo: [ :k :v | obj instVarNamed: k put: (reader readFromJsObjectOrDictionary: v) ].
-	^ obj 
+	^ obj
 ]
 
 { #category : #'*PharoJsSerialization' }

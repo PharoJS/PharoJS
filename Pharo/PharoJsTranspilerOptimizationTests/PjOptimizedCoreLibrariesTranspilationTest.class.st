@@ -20,5 +20,4 @@ PjOptimizedCoreLibrariesTranspilationTest >> testPjLoggingEvaluatorWebSocketDele
 PjOptimizedCoreLibrariesTranspilationTest >> testPjStringClass [
 	self jsCode: (self convertClass: PjString).
 self assertInstanceMethod: #isLetter equals: '(){return $asNil$(this._letterCharCodes())._includes_(this.charCodeAt(0))}'
-
 ]

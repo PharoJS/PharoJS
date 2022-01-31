@@ -36,8 +36,7 @@ PjChronololgyTest >> testAddDurationToDateAndTime [
 	self assertEquivalent: [|origin later|
 		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
 		later := origin + 5 days.
-		later dayOfMonth.].	
-
+		later dayOfMonth.].
 ]
 
 { #category : #testing }
@@ -54,7 +53,6 @@ PjChronololgyTest >> testDateAndTimeArithmetic [
 	self assertEquivalent: [window plus1Sec hour12 = 2].
 	self assertEquivalent: [window plus1Sec minute = 59].
 	self assertEquivalent: [window plus1Sec second = 34].
-
 ]
 
 { #category : #testing }
@@ -80,7 +78,6 @@ PjChronololgyTest >> testDateAndTimeCreation [
 	self assert: window tomorrow monthIndex equals: Date tomorrow monthIndex.
 	self assert: window tomorrow dayOfMonth equals: Date tomorrow dayOfMonth.
 	self assert: window tomorrow dayOfWeek equals: Date tomorrow dayOfWeek.
-	
 ]
 
 { #category : #testing }
@@ -90,7 +87,6 @@ PjChronololgyTest >> testDuration [
 	self assertEquivalent: [ Duration zero hours].
 	self assertEquivalent: [ Duration zero minutes].
 	self assertEquivalent: [ 1 month monthsCount].
-
 ]
 
 { #category : #testing }
@@ -114,8 +110,7 @@ PjChronololgyTest >> testSubtractDateAndTime [
 		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
 		later := origin + 3 hours.
 		(later - origin) hours
-	].	
-
+	].
 ]
 
 { #category : #testing }
@@ -148,5 +143,4 @@ PjChronololgyTest >> testTime [
 	self assertEquivalent: [ (Time hour: 12 minute: 0 second: 0) hour12 ].
 	self assertEquivalent: [ (Time hour: 13 minute: 0 second: 0) hour12 ].
 	self assertEquivalent: [ (Time hour: 23 minute: 0 second: 0) hour12 ].
-
 ]

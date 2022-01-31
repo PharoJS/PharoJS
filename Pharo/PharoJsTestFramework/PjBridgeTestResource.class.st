@@ -41,7 +41,7 @@ PjBridgeTestResource class >> setCurrentWithNewForAppClass: aClass [
 
 { #category : #accessing }
 PjBridgeTestResource >> appClass [
-	^appClass 
+	^appClass
 ]
 
 { #category : #accessing }
@@ -52,7 +52,6 @@ PjBridgeTestResource >> bridge [
 { #category : #accessing }
 PjBridgeTestResource >> bridge: aBridge [
 	bridge := aBridge.
-
 ]
 
 { #category : #running }
@@ -85,8 +84,7 @@ PjBridgeTestResource >> resetClient [
 ]
 
 { #category : #running }
-PjBridgeTestResource >> setUp [ 
-
+PjBridgeTestResource >> setUp [
 ]
 
 { #category : #running }

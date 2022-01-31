@@ -34,9 +34,8 @@ PjAstConverterTest >> discoveredMessage: aString [
 	" just here so tests don't fail "
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjAstConverterTest >> discoveredReferenceToClass: aClass [
-
 ]
 
 { #category : #testing }
@@ -48,5 +47,4 @@ PjAstConverterTest >> failConverting: aBlock [
 PjAstConverterTest >> setUp [
 	super setUp.
 	converter := PjAstConverter new transpiler: self;yourself.
-
 ]

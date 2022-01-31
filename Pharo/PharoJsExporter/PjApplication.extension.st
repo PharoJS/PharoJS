@@ -5,7 +5,7 @@ PjApplication class >> appFolder [
 	<pharoJsSkip>
 	appFolder ifNil: [ appFolder := [self defaultAppFolder] on: Exception do: [ nil ] ].
 	self ifInvalidFolder: appFolder do:[self setUpAppFolder].
-	^appFolder	
+	^appFolder
 ]
 
 { #category : #'*PharoJsExporter-App' }
@@ -18,7 +18,6 @@ PjApplication class >> appFolder: anObject [
 PjApplication class >> appFullJsFileName [
 	<pharoJsSkip>
 	^self appFullJsFolderPath / self appJsFileName
-
 ]
 
 { #category : #'*PharoJsExporter-App' }
@@ -28,7 +27,6 @@ PjApplication class >> appFullJsFolderPath [
 		^self appFolder / subfolder 
 	].
 	^self appFolder
-
 ]
 
 { #category : #'*PharoJsExporter-App' }
@@ -81,7 +79,6 @@ PjApplication class >> exportApp: version [
 	<pharoJsSkip>
 	exportVersion := version.
 	self exportApp.
-
 ]
 
 { #category : #'*PharoJsExporter-App' }
@@ -122,7 +119,6 @@ PjApplication class >> polyfill: aPolyfillClass withTranspiler: aTranspiler unle
 		^ true
 	].
 	^ false
-
 ]
 
 { #category : #'*PharoJsExporter' }
@@ -131,7 +127,6 @@ PjApplication class >> repository [
 	| packageName |
 	packageName := self package name.
 	^IceRepository registry  detect: [: repo | repo includesPackageNamed: packageName].
-
 ]
 
 { #category : #'*PharoJsExporter' }

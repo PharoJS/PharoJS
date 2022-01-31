@@ -18,7 +18,6 @@ PjAssociationTest >> testEqualityForAssociations [
 	self assertEquivalent: [(3->5)=(3->5)].
 	self assertEquivalent: [(1->5)=(2->8)].
 	self assertEquivalent: [(3->8)=(3->8)].
-
 ]
 
 { #category : #testing }
@@ -33,7 +32,6 @@ PjAssociationTest >> testEqualityForKeys [
 		a := 4->1.
 		b := 6->2.
 		a key = b key].
-
 ]
 
 { #category : #testing }
@@ -48,5 +46,4 @@ PjAssociationTest >> testEqualityForValues [
 		a := 4->1.
 		b := 6->2.
 		a value = b value].
-
 ]

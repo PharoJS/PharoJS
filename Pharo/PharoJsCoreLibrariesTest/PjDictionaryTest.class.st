@@ -20,7 +20,6 @@ PjDictionaryTest >> testAtIfAbsent [
 	self assertEquivalent: [|d|
 		d := Dictionary new.
 		d at: #x ifAbsent: [42]].
-
 ]
 
 { #category : #testing }
@@ -29,7 +28,6 @@ PjDictionaryTest >> testAtIfAbsentPut [
 		d := Dictionary new.
 		d at: #x ifAbsentPut: 42.
 		d at: #x].
-
 ]
 
 { #category : #testing }
@@ -57,7 +55,6 @@ PjDictionaryTest >> testAtIfEmpty [
 		d := Dictionary new.
 		d at: #x put: 4.
 		d ifNotEmpty: [ 3 ] ifEmpty: [42]].
-
 ]
 
 { #category : #testing }
@@ -155,7 +152,6 @@ PjDictionaryTest >> testUseEqualObjectsAsKeys [
 		dict at: secondKey put: 'B'.
 		dict at: firstKey
 	] evaluatesTo: 'B'.
-
 ]
 
 { #category : #testing }
@@ -169,5 +165,4 @@ PjDictionaryTest >> testUseNonEqualObjectsAsKeys [
 		dict at: secondKey put: 'B'.
 		dict at: firstKey
 	] evaluatesTo: 'A'.
-
 ]

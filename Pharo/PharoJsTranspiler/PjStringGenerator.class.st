@@ -136,7 +136,7 @@ PjStringGenerator class >> initialize [
 
 { #category : #accessing }
 PjStringGenerator class >> memberAccessPrecedence [
-	^MemberAccessPrecedence 
+	^MemberAccessPrecedence
 ]
 
 { #category : #'Javascript names' }
@@ -180,7 +180,6 @@ PjStringGenerator >> asString: aPjAST on: aStream [
 	currentPrecedenceLevel := -1.
 	currentlyDoingAssignment := false.
 	aPjAST acceptVisitor: self.
-
 ]
 
 { #category : #precedence }
@@ -345,7 +344,6 @@ PjStringGenerator >> visitClassVariableNode: aPjClassVariableNode [
 		writeNonBrace: (aPjClassVariableNode poolReferenceWith: transpiler);
 		nextPut: $.;
 		writeVariable: aPjClassVariableNode identifier escapingIfIn: JsReservedWordsForInstanceVariables.
-
 ]
 
 { #category : #visiting }
@@ -453,7 +451,6 @@ PjStringGenerator >> visitNonLocalReturnNode: aPjNonLocalReturnNode [
 		writeNonBrace: $=;
 		visit: aPjNonLocalReturnNode expression.
 	self isAtStatementPrecedence ifFalse: [ self nextPut: $)]
-
 ]
 
 { #category : #visiting }
@@ -600,7 +597,6 @@ PjStringGenerator >> writeFunctionHeader: aPjFunctionNode includeName: aBoolean 
 		nextPut: $(;
 		writeSafeNames: aPjFunctionNode parameters;
 		nextPut: $).
-
 ]
 
 { #category : #writing }
@@ -617,7 +613,6 @@ PjStringGenerator >> writeFunctionLocals: aPjFunctionNode [
 				nextPutAll: '=this'
 		].
 		self nextPut: $;
-	
 ]
 
 { #category : #writing }
@@ -639,7 +634,6 @@ PjStringGenerator >> writeNonBrace: aCharacterOrString [
 		self nextPut: aCharacterOrString
 	].
 	wroteCloseBrace := false.
-
 ]
 
 { #category : #writing }

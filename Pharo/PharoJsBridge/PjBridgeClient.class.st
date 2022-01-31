@@ -81,14 +81,12 @@ PjBridgeClient >> initializeWithAppClass: aPharoJsAppClass [
 	appClass := aPharoJsAppClass.
 	exporter := self exporterClass new.
 	self codeGenerator: self codeGeneratorClass new.
-
 ]
 
 { #category : #accessing }
 PjBridgeClient >> initializeWithBridge: aBridge [
 	bridge := aBridge.
 	self codeGenerator bridge: self bridge
-
 ]
 
 { #category : #accessing }
@@ -115,7 +113,7 @@ PjBridgeClient >> reset [
 	self clientId: nil.
 	"Ensure transpiler is reset correctly.
 	Transpiler is driven by exporter"
-	String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ] 
+	String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ]
 ]
 
 { #category : #accessing }
@@ -126,7 +124,6 @@ PjBridgeClient >> server [
 { #category : #accessing }
 PjBridgeClient >> shouldStartJsInterpreter [
 	^ self bridge shouldStartJsInterpreter
-		
 ]
 
 { #category : #activity }
@@ -175,5 +172,4 @@ PjBridgeClient >> websocketDelegateClassName [
 { #category : #accessing }
 PjBridgeClient >> withClientLogging [
 	self codeGenerator: self codeGenerator withClientLogging.
-
 ]

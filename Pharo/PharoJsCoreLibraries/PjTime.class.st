@@ -51,7 +51,6 @@ PjTime class >> millisecondClockValue [
 	<javascript: 'if(typeof performance=="object") return performance.now();
 if(typeof process=="object"){var hr=process.hrtime();return hr[0]*1000+hr[1]/1000000}
 return Date.now()'>
-
 ]
 
 { #category : #'instance creation' }
@@ -70,7 +69,6 @@ PjTime class >> seconds: seconds nanoSeconds: nanoCount [
 	^self basicNew
 		seconds: seconds nanoSeconds: nanoCount;
 		yourself
-
 ]
 
 { #category : #converting }
@@ -96,7 +94,6 @@ PjTime >> dayOfWeek [
 { #category : #accessing }
 PjTime >> hour [
 	^self hour24
-
 ]
 
 { #category : #accessing }
@@ -145,14 +142,12 @@ PjTime >> seconds: secondCount [
 	minuteSecondsCount := secondCount rem: SecondsInHour.
 	self setMinutes: (minuteSecondsCount quo: SecondsInMinute).
 	self setSeconds: (minuteSecondsCount rem: SecondsInMinute).
-
 ]
 
 { #category : #private }
 PjTime >> seconds: secondCount nanoSeconds: nanoCount [ 
 	self seconds: secondCount.
 	self setMilliseconds: nanoCount//1000000
-
 ]
 
 { #category : #private }

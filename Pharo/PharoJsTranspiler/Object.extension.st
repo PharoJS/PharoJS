@@ -2,7 +2,7 @@ Extension { #name : #Object }
 
 { #category : #'*PharoJsTranspiler' }
 Object >> asJSON [
-	^ String streamContents: [:s | self printJsOn: s] 
+	^ String streamContents: [:s | self printJsOn: s]
 ]
 
 { #category : #'*PharoJsTranspiler' }

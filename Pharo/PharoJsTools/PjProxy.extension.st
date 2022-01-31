@@ -28,7 +28,6 @@ PjProxy >> gtInspectorProxyIn: composite [
 		column: 'Key' evaluated: #key;
 		column: 'Value' evaluated: #value;
 		send: #value.
-
 ]
 
 { #category : #'*PharoJsTools-Inspector' }

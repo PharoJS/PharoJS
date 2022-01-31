@@ -13,7 +13,7 @@ PjTStreamWriter classSide >> jsNativePrefix [
 
 { #category : #'writing low-level' }
 PjTStreamWriter >> cr [
-	self jsStream nextPut: self lineEnding 
+	self jsStream nextPut: self lineEnding
 ]
 
 { #category : #accessing }
@@ -48,7 +48,7 @@ PjTStreamWriter >> print: anObject [
 
 { #category : #'writing low-level' }
 PjTStreamWriter >> space [
-	self jsStream space 
+	self jsStream space
 ]
 
 { #category : #writing }

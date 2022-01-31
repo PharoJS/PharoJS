@@ -26,7 +26,6 @@ PjObject class >> addDnuSupportFor: selector [
 			throw "Does not understand message " + selector;};
 	'>
 	self flag: #todo "see JbObject>>#registerDNU:"
-
 ]
 
 { #category : #reflection }
@@ -205,7 +204,6 @@ PjObject >> includesKey: key [
 
 { #category : #'initialize-release' }
 PjObject >> initialize [
-	
 ]
 
 { #category : #introspection }
@@ -315,7 +313,6 @@ PjObject >> proxyResponse [
 
 { #category : #'initialize-release' }
 PjObject >> release [
-	
 ]
 
 { #category : #'dictionary emulation' }

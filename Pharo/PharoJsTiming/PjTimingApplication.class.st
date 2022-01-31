@@ -43,7 +43,6 @@ PjTimingApplication class >> allTimingOn: timer [
 		PjDbPlanner projectionTest: 100
 	] ratio: 0.0003.
 	self on: timer time: 'Richards' with: [ PjRbBenchmark start ] ratio: 0.00005.
-
 ]
 
 { #category : #timings }
@@ -73,7 +72,6 @@ PjTimingApplication class >> makeObject [
 
 { #category : #timings }
 PjTimingApplication class >> nodeTimingOn: timer [
-
 ]
 
 { #category : #running }

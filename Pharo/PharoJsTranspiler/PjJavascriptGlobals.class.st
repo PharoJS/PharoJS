@@ -14,7 +14,6 @@ Class {
 { #category : #polyfill }
 PjJavascriptGlobals class >> browserPolyfill: aTranspiler [
 	<pharoJsSkip>
-
 ]
 
 { #category : #polyfill }

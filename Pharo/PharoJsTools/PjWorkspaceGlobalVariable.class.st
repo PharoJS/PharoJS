@@ -18,7 +18,6 @@ PjWorkspaceGlobalVariable >> emitValue: methodBuilder [
 { #category : #accessing }
 PjWorkspaceGlobalVariable >> key: anObject [
 	super key: anObject  asSymbol.
-
 ]
 
 { #category : #accessing }

@@ -13,5 +13,4 @@ Trait {
 PjTAppFolderSharingSubclass classSide >> appFolder [
 	<pharoJsSkip>
 	^self superclass appFolder
-
 ]

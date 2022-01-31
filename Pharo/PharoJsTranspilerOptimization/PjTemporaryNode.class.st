@@ -22,5 +22,4 @@ PjTemporaryNode >> isOptimizableAsContionalBlock [
 PjTemporaryNode >> named: aName start: aPosition [
 	super named: aName start: aPosition.
 	variable := TemporaryVariable named: aName.
-
 ]

@@ -25,5 +25,5 @@ PjTBrowserController >> startJsInterpreter [
 
 { #category : #accessing }
 PjTBrowserController >> urlString [
-	self explicitRequirement 
+	self explicitRequirement
 ]

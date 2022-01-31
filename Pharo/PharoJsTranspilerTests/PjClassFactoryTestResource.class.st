@@ -26,7 +26,6 @@ PjClassFactoryTestResource >> setUp [
 	Author uniqueInstance fullName: 'PharoJS'.
 	classFactory := ClassFactoryForTestCase new.
 	defaultClass := classFactory silentlyNewClassInCategory: classFactory packageName.
-
 ]
 
 { #category : #running }
@@ -34,5 +33,4 @@ PjClassFactoryTestResource >> tearDown [
 	super tearDown.
 	classFactory cleanUp.
 	Author uniqueInstance fullName: authorInitialName.
-
 ]

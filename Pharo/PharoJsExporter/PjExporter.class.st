@@ -114,7 +114,6 @@ PjExporter >> initialize [
 	self transpiler: self transpilerClass new.
 	self transpiler addAllOptionalConversions"Except: 0 to: 1/2".
 	self setUpForPolyfill.
-
 ]
 
 { #category : #accessing }
@@ -180,12 +179,11 @@ PjExporter >> nonBootstrapClasses [
 { #category : #'initialize-release' }
 PjExporter >> setUpForPolyfill [
 	self transpiler beforeCodeOutputHook: [: pools | self writeGlobalsPolyfills: pools]
-
 ]
 
 { #category : #accessing }
 PjExporter >> setupCode [
-	^self appClass setupCode 
+	^self appClass setupCode
 ]
 
 { #category : #accessing }
@@ -257,7 +255,6 @@ PjExporter >> writeGlobalsPolyfills: pools [
 			withTranspiler: self transpiler
 			unlessIn: globalsPools
 	].
-
 ]
 
 { #category : #writing }
@@ -282,7 +279,6 @@ PjExporter >> writeJsCoreAndBootstrap [
 { #category : #writing }
 PjExporter >> writeLaunchCode [
 	self transpiler convertAndWriteClosedBlock: self launchBlock.
-
 ]
 
 { #category : #writing }

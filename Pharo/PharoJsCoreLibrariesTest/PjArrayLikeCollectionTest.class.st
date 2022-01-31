@@ -26,7 +26,6 @@ PjArrayLikeCollectionTest >> setUp [
 { #category : #testing }
 PjArrayLikeCollectionTest >> testAllButFirst [
 	self assert: collection allButFirst size equals: collection size - 1.
-
 ]
 
 { #category : #testing }

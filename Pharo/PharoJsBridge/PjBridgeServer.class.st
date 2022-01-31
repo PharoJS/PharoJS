@@ -130,7 +130,6 @@ PjBridgeServer >> initialize [
 	super initialize.
 	znServer := self newZincServer.
 	fingerPrint := UUIDGenerator next asString.
-	
 ]
 
 { #category : #testing }
@@ -329,7 +328,7 @@ PjBridgeServer >> value: aWebSocket [
 		runWith:
 			[ :aMessage | self safelyHandleMessage: aMessage forSocket: aWebSocket ] ]
 		on: Error
-		do: [ self webSocket: nil ]	
+		do: [ self webSocket: nil ]
 ]
 
 { #category : #accessing }
@@ -344,7 +343,7 @@ PjBridgeServer >> webSocket: anObject [
 
 { #category : #accessing }
 PjBridgeServer >> webSocketUrlTag [
-	^self class webSocketUrlTag 
+	^self class webSocketUrlTag
 ]
 
 { #category : #accessing }

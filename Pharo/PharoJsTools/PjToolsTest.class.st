@@ -22,6 +22,4 @@ PjToolsTest >> testClassAbstract [
 	self assert: PjToolsTest2b subclassResponsibilitySet isEmpty.
 	self assert: PjToolsTest2b classSubclassResponsibilitySet equals: #(c1) asSet.
 	self assert: PjToolsTest2b isAbstract.
-
-	
 ]

@@ -7,7 +7,6 @@ Class {
 { #category : #testing }
 PjAppTestCaseTest >> assertHasArrayAPI: jsArrayLikeClass [
 	self assert: (jsArrayLikeClass prototype js_hasOwnProperty: '_first')
-
 ]
 
 { #category : #testing }
@@ -40,7 +39,6 @@ PjAppTestCaseTest >> testDebug [
 		self assert: PjDebugBridgeTestResource current bridge isNil.
 		self assert: PjBridgeTestResource current bridge isNil.
 	].
-
 ]
 
 { #category : #testing }
@@ -52,7 +50,7 @@ PjAppTestCaseTest >> testExportedCodeOfAppRunningJsSideIsComplete [
 	jsMessage := PjJavascriptMessage receiverId: #Smalltalk selector: #at: arguments: {PjNonMinmialAppRunningOnJsTest appClass name}.
 	remoteAppClass := bridge evalMessage: jsMessage.
 	self deny: remoteAppClass isNil.
-	self deny: remoteAppClass currentInstance isNil 
+	self deny: remoteAppClass currentInstance isNil
 ]
 
 { #category : #testing }

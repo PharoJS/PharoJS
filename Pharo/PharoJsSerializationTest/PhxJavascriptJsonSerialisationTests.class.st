@@ -55,7 +55,6 @@ PhxJavascriptJsonSerialisationTests >> testDictionariesReferencingEachOther [
 	self assert: bClone size equals: 2.
 	self assert: (bClone at: #name) equals: 'B'.
 	self assert: (bClone at: #b) identicalTo: aClone.
-
 ]
 
 { #category : #tests }
@@ -136,7 +135,6 @@ PhxJavascriptJsonSerialisationTests >> testSetsCircularReferences [
 	{aClone. bClone. cClone} do: [ : each | identitySet addAll: each ].
 	identitySet removeAll: #(A B C).
 	self assert: identitySet size equals: 3.
-	
 ]
 
 { #category : #tests }

@@ -9,7 +9,6 @@ PjAsJsObjectInPharo >> testBasicObjects [
 	{ 'abc'. true. false. nil. 3.14. 2000. $a } do: [ : each |
 		self assert: each asJsObject == each
 	]
-	
 ]
 
 { #category : #tests }
@@ -40,7 +39,6 @@ PjAsJsObjectInPharo >> testConvertingCompositeArray [
 	self assert: ((converted at: #object) isKindOf: Dictionary).
 	self assert: ((converted at: #associationArray) isKindOf: Dictionary).
 	self assert: ((converted at: #dict) isKindOf: Dictionary).
-		
 ]
 
 { #category : #tests }
@@ -57,7 +55,6 @@ PjAsJsObjectInPharo >> testConvertingCompositeDictionary [
 	self assert: ((converted at: #object) isKindOf: Dictionary).
 	self assert: ((converted at: #associationArray) isKindOf: Dictionary).
 	self assert: ((converted at: #dict) isKindOf: Dictionary).
-		
 ]
 
 { #category : #tests }
@@ -77,7 +74,6 @@ PjAsJsObjectInPharo >> testConvertingObjectWithNestedDictionaryAndArray [
 	self assert: ((converted at: #objectWithIvs) isKindOf: Dictionary).
 	self assert: ((converted at: #associationArray) isKindOf: Dictionary).
 	self assert: ((converted at: #dict) isKindOf: Dictionary).
-		
 ]
 
 { #category : #tests }

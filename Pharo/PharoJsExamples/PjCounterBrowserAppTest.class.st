@@ -20,7 +20,6 @@ PjCounterBrowserAppTest >> setUp [
 	countDisplay := app countDisplay.
 	resetButton := app resetButton.
 	incrementButton := app incrementButton.
-	
 ]
 
 { #category : #testing }
@@ -29,7 +28,6 @@ PjCounterBrowserAppTest >> testClickOnIncrementButtonIncreasesCountAndUpdatesDis
 		incrementButton click.
 		self assert: countDisplay innerHTML equals: expectedCount asString
 	]
-
 ]
 
 { #category : #testing }
@@ -37,7 +35,6 @@ PjCounterBrowserAppTest >> testClickOnResetButtonSetsCountTo0 [
 	3 timesRepeat: [incrementButton click.].
 	resetButton click.
 	self assert: countDisplay innerHTML equals: '0'
-
 ]
 
 { #category : #testing }

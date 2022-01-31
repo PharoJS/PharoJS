@@ -11,7 +11,6 @@ PjPrimitiveTranspilationTest >> testPrimitiveFailing [
 			PjClassForPrimitiveFailingTest.
 		}
 	] raise: PjJavascriptTranspilationError description: 'fail for primitive'
-
 ]
 
 { #category : #testing }

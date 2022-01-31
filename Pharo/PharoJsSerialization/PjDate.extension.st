@@ -9,7 +9,6 @@ PjDate class >> instantiateWithPhxJsonReader: reader instanceJsonObject: str [
     return new Date(y,m,d);'>"
 
 	<javascript: 'return new Date(str);'>
-	
 ]
 
 { #category : #'*PharoJsSerialization' }

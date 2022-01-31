@@ -38,7 +38,6 @@ WebBrowser class >> openOn: anURLString inBackground: backgroundFlag [
 	"
 	backgroundFlag ifFalse: [ ^self openOn: anURLString ].
 	self webbrowserClassForPlatform openInBackgroundUrl: anURLString
-
 ]
 
 { #category : #'*PharoJsBridge' }

@@ -47,7 +47,6 @@ PjInfrastructureTest >> testIs [
 	self assertEquivalent: [[] isClass].
 	self assertEquivalent: [Object isBehavior].
 	self assertEquivalent: [Object isClass].
-
 ]
 
 { #category : #testing }
@@ -61,7 +60,6 @@ PjInfrastructureTest >> testJSSelector [
 	self assert: [PjCore makePharoJsSelector: prefix, 'foo'] evaluatesTo: prefix, 'foo'.
 	self assert: [PjCore makePharoJsSelector: prefix, 'foo_'] evaluatesTo: prefix, 'foo_'.
 	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: prefix, '$foo_'.
-
 ]
 
 { #category : #testing }
@@ -72,7 +70,6 @@ PjInfrastructureTest >> testSTSelector [
 	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, '44_'] evaluatesTo: ','.
 	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo'] evaluatesTo: 'foo'.
 	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo_'] evaluatesTo: 'foo:'.
-
 ]
 
 { #category : #testing }

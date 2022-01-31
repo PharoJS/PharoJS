@@ -17,7 +17,7 @@ PjBridgeAppClassDecorator class >> rawAppClass: anAppClass [
 
 { #category : #accessing }
 PjBridgeAppClassDecorator class >> websocketDelegateClass [
-	^PjEvaluatorWebsocketDelegate 
+	^PjEvaluatorWebsocketDelegate
 ]
 
 { #category : #accessing }

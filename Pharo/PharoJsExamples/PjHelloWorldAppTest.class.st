@@ -22,7 +22,6 @@ PjHelloWorldAppTest >> setUp [
 	nameInput := document getElementById: #nameTextInput.
 	sayHelloButton := document getElementById: #sayHelloButton.
 	greetingMessageContainer := document getElementById: #greetingMessageContainer.
-
 ]
 
 { #category : #testing }
@@ -32,5 +31,4 @@ PjHelloWorldAppTest >> testSayHello [
 		self clickElement: sayHelloButton.
 		self assert: (greetingMessageContainer innerHTML endsWith: name)
 	]
-
 ]

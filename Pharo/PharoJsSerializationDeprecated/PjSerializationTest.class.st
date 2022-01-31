@@ -36,7 +36,6 @@ PjSerializationTest >> testCollectionsOfBasicTypes [
 		s := SortedCollection new.
 		s addAll: #(310 22 13).
 		PjSerializationTestSupport assertCollection: s ].
-
 ]
 
 { #category : #testing }
@@ -58,7 +57,6 @@ PjSerializationTest >> testCollectionsOfComplexTypes [
 		c2 b: c1.
 		PjSerializationTestSupport assertComplexObject: c2.
 		].
-
 ]
 
 { #category : #testing }
@@ -70,7 +68,6 @@ PjSerializationTest >> testDuration [
 	self assertBlock: [ PjSerializationTestSupport assertDuration: 2 hours].
 	self assertBlock: [ PjSerializationTestSupport assertDuration: 30 minutes].
 	self assertBlock: [ PjSerializationTestSupport assertDuration: 10 seconds].
-
 ]
 
 { #category : #testing }
@@ -94,7 +91,6 @@ PjSerializationTest >> testTime [
 		PjSerializationTestSupport assertTime: (Time hour: 13 minute: 0 second: 0)].
 	self assertBlock: [ 
 		PjSerializationTestSupport assertTime: (Time hour: 23 minute: 59 second: 30)].
-
 ]
 
 { #category : #testing }
@@ -108,6 +104,4 @@ PjSerializationTest >> testTimeDetailledSerialization [
 	self assert: clone hour24 equals: now hour24.
 	self assert: clone minute equals: now minute.
 	self assert: clone second equals: now second.
-	
-
 ]

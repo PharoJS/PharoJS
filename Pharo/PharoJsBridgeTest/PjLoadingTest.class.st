@@ -43,14 +43,12 @@ PjLoadingTest >> testEvalBlock [
 	self
 		assert: (self bridge evalBlock: [ PjLoadForTest new z ])
 		equals: 'Z value'.
-
 ]
 
 { #category : #testing }
 PjLoadingTest >> testLiteralGeneration [
 	self assertEquivalent: [ PjLoadForTest literal ].
 	self assertEquivalent: [ PjLoadForTest new literal ].
-
 ]
 
 { #category : #testing }

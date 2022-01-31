@@ -6,7 +6,6 @@ Class {
 
 { #category : #initializing }
 PjClientForInitializationTest class >> initialize [
-
 ]
 
 { #category : #any }

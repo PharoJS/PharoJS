@@ -6,12 +6,10 @@ Class {
 
 { #category : #initializing }
 PjClientForJavascriptInitializationTest class >> initialize [
-
 ]
 
 { #category : #initializing }
 PjClientForJavascriptInitializationTest class >> javascriptInitialize [
-
 ]
 
 { #category : #any }

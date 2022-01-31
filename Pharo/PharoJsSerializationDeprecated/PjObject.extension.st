@@ -12,7 +12,6 @@ PjObject class >> newFromMaterialized: serializationArray [
 		ivIndex := ivIndex + 2.
 	].
 	^restored
-
 ]
 
 { #category : #'*PharoJsSerializationDeprecated' }

@@ -18,7 +18,6 @@ PjCounterTest >> testIncrementIncreasesCountBy1 [
 			counter increment.
 		self assert: counter count equals: expectedCount
 	]
-
 ]
 
 { #category : #testing }
@@ -31,5 +30,4 @@ PjCounterTest >> testResetSetsCountTo0 [
 	3 timesRepeat: [counter increment].
 	counter reset.
 	self assert: counter count equals: 0
-
 ]

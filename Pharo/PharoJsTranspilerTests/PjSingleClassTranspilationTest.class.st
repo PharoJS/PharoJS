@@ -37,7 +37,6 @@ PjSingleClassTranspilationTest >> testCascade [
 	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype._isNil.call(this),',self classToTranspile superclass name,'.prototype._yourself.call(this))}'.
 	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x)._foo()),$1._bar(),$1._yourself())}'.
 	self assertInstanceMethod: #cascadeNested equals: '(){return (this._m1(),this._m_((this._m1(),this._m2())),this._yourself())}'.
-
 ]
 
 { #category : #testing }
@@ -55,7 +54,6 @@ PjSingleClassTranspilationTest >> testClassAndPoolVariableDefinition [
 	self assert: self jsCode includes: superVarsHolder,'.S'.
 	self deny: self jsCode includes: 'cp$.S'.
 	self assert: self jsCode includes: '=cp$.A'.
-
 ]
 
 { #category : #testing }
@@ -74,13 +72,11 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 	self assert: (self jsCode endsWith: className, '._initialize();').
 	self assertClassMethod: #javascriptName equals: nil.
 	self assertClassMethod: #methodWithJsGenerator equals: '(){', (self classToTranspile classMethod_jsGenerator: transpiler),'}'
-
 ]
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testCompose [
 	self assertInstanceMethod: #composedCalls equals: '(){return $asNil$($asNil$(this._m1())._m_(4))._m2()}'.
-
 ]
 
 { #category : #testing }
@@ -100,14 +96,12 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 	self deny: self jsCode includes: 'ThisShouldBeSkipped'.
 	self assertInstanceMethod: #m: equals: '($in){console.log("abc")}'.
 	self assertInstanceMethod: #instanceMethodWithJsGenerator equals:  '(){', (self classToTranspile instanceMethod_jsGenerator: transpiler), '}'.
-
 ]
 
 { #category : #testing }
 PjSingleClassTranspilationTest >> testMethodAlias [
 	self assert: self jsCode includes: 'i$(function _alias(){return 42},''myAlias'')'.
 	self assert: self jsCode includes: 'i$(function _alias2(){return 21},''myAlias2'',''andAlias2'')'.
-
 ]
 
 { #category : #testing }
@@ -119,7 +113,6 @@ PjSingleClassTranspilationTest >> testNative [
 	self assert: method includes: 'x=x["a.b"]'.
 	self assert: method includes: 'x[4]=42'.
 	self assert: method includes: 'x.m(17)'.
-
 ]
 
 { #category : #testing }

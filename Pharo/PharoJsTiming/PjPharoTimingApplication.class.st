@@ -31,10 +31,9 @@ PjPharoTimingApplication >> iterations [
 	^ iterations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> log: aString [
 	Transcript show: aString;cr.
-
 ]
 
 { #category : #'as yet unclassified' }

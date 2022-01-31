@@ -88,7 +88,6 @@ PjClientCodeGenerator >> generateHtmlUsing: aHtmlGenerator [
 		aHtmlGenerator add: 'h2' contents: self titleString.
 	].
 	aHtmlGenerator addScriptUrl: 'index.js'.
-
 ]
 
 { #category : #public }
