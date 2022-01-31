@@ -12,19 +12,20 @@ BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
 	spec for: #'pharo7.x' do: [ spec package: 'PharoJsPharo7' ].
-	spec for: #(#'pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJsPharo8' ].	
+	spec for: #(#'pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJsPharo8' ].
+		
 	spec for: #'common' do: [
 		self prerequisites: spec.
 		
 		"Transpiler"
 		spec package: 'PharoJs-Base-Transpiler' with: [ spec requires: #('Equals' ). ];
-			  package: 'PharoJsTranspilerTests' with: [ spec requires: #('PharoJs-Base-Transpiler'). ]. 
+			  package: 'PharoJs-Base-Transpiler-Tests' with: [ spec requires: #('PharoJs-Base-Transpiler'). ]. 
 		
-		"Transpiler optimizations"		"PharoJsTranspiler"
+		"Transpiler optimizations"		 
 		spec 
 			package: 'PharoJsTranspilerOptimization' with: [ spec requires: #('PharoJs-Base-Transpiler' ). ];
 			package: 'PharoJsTranspilerOptimizationTests' with: [
-				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest PharoJsTranspilerTests). ].
+				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests'). ].
 		
 		"Other"
 		spec 
@@ -37,7 +38,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: #PharoJsCoreLibraries with: [
 				spec requires: #('PharoJs-Base-Transpiler' 'PharoExtra' ) ];
 			package: #PharoJsCoreLibrariesTest with: [
-				spec requires: #(#PharoJsCoreLibraries 'PharoJsBridge' 'PharoJsTestFramework' #PharoJsBridgeTest PharoJsTranspilerTests) ];
+				spec requires: #(#PharoJsCoreLibraries 'PharoJsBridge' 'PharoJsTestFramework' #PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests') ];
 			package: 'PharoJsExamples' with: [
 				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' 'PharoJsExporter') ];
 			package: #PharoJsExporter with: [
@@ -59,7 +60,7 @@ BaselineOfPharoJS >> baseline: spec [
 				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' ) ]; 
 
 			package: 'PharoJsExporterTests' with: [
-				spec requires: #('PharoJsExporter' 'PharoJsTranspilerTests') ]. 
+				spec requires: #('PharoJsExporter' 'PharoJs-Base-Transpiler-Tests') ]. 
 	]
 ]
 
