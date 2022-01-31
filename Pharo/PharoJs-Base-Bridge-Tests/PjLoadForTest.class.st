@@ -12,7 +12,7 @@ Class {
 	#pools : [
 		'PjUniversalGlobals'
 	],
-	#category : #'PharoJsBridgeTest-Support'
+	#category : #'PharoJs-Base-Bridge-Tests-Support'
 }
 
 { #category : #any }

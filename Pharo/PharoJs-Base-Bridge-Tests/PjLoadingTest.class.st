@@ -4,7 +4,7 @@ Class {
 	#pools : [
 		'PjBrowserGlobals'
 	],
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #testing }

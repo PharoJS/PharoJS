@@ -25,7 +25,7 @@ BaselineOfPharoJS >> baseline: spec [
 		spec 
 			package: 'PharoJsTranspilerOptimization' with: [ spec requires: #('PharoJs-Base-Transpiler' ). ];
 			package: 'PharoJsTranspilerOptimizationTests' with: [
-				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests'). ].
+				spec requires: #('PharoJsTranspilerOptimization' 'PharoJs-Base-Bridge-Tests' 'PharoJs-Base-Transpiler-Tests'). ].
 		
 		"App"
 		spec 
@@ -34,17 +34,16 @@ BaselineOfPharoJS >> baseline: spec [
 			
 		"Bridge"	  
 		spec 	
-			package: 'PharoJs-Base-Bridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJs-Base-App' 'Zinc-WebSocket-Core' 'PharoJsSerialization') ].
+			package: 'PharoJs-Base-Bridge' with: [ spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJs-Base-App' 'Zinc-WebSocket-Core' 'PharoJsSerialization') ];	
+			package: 'PharoJs-Base-Bridge-Tests' with: [ spec requires: #('PharoJsTestFramework' 'PharoJs-Base-Bridge' ) ].
+
 		
 		"Other"
-		spec	
-			package: #PharoJsBridgeTest with: [
-				spec requires: #('PharoJsTestFramework' 'PharoJs-Base-Bridge' ) ];
+		spec
 			package: #PharoJsCoreLibraries with: [
 				spec requires: #('PharoJs-Base-Transpiler' 'PharoExtra' ) ];
 			package: #PharoJsCoreLibrariesTest with: [
-				spec requires: #(#PharoJsCoreLibraries 'PharoJsTestFramework' #PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests') ];
+				spec requires: #(#PharoJsCoreLibraries 'PharoJsTestFramework' ''PharoJs-Base-Bridge-Tests'' 'PharoJs-Base-Transpiler-Tests') ];
 			package: 'PharoJsExamples' with: [
 				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' 'PharoJsExporter') ];
 			package: #PharoJsExporter with: [
@@ -61,7 +60,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsSerialization' with: [
 				spec requires: #('PharoJsCoreLibraries')]; 
 			package: 'PharoJsSerializationTest' with: [
-				spec requires: #('PharoJsSerialization' 'PharoJsBridgeTest')]; 
+				spec requires: #('PharoJsSerialization' 'PharoJs-Base-Bridge-Tests')]; 
 			package: 'PharoJsSerializationDeprecated' with: [
 				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' ) ]; 
 

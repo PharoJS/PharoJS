@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'lastJavascript'
 	],
-	#category : #'PharoJsBridgeTest-Support'
+	#category : #'PharoJs-Base-Bridge-Tests-Support'
 }
 
 { #category : #public }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'generator'
 	],
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #asserting }

@@ -5,7 +5,7 @@ Class {
 		'classFactory',
 		'authorInitialName'
 	],
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #running }

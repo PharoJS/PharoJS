@@ -1,7 +1,7 @@
 Class {
 	#name : #PjPerformTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #tests }

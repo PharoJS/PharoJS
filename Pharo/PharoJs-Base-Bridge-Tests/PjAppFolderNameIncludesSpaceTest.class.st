@@ -3,7 +3,7 @@ Class {
 	#superclass : #PjWebAppTestCase,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #'suite parameters' }

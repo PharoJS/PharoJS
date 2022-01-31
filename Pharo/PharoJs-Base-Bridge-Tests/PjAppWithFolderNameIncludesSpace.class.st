@@ -1,7 +1,7 @@
 Class {
 	#name : #PjAppWithFolderNameIncludesSpace,
 	#superclass : #PjFileBasedWebApp,
-	#category : #'PharoJsBridgeTest-Support'
+	#category : #'PharoJs-Base-Bridge-Tests-Support'
 }
 
 { #category : #exporting }

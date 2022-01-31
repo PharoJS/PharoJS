@@ -1,7 +1,7 @@
 Class {
 	#name : #PjSTONReaderTest,
 	#superclass : #TestCase,
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #private }

@@ -5,7 +5,7 @@ Class {
 		'PjDomGlobals',
 		'PjUniversalGlobals'
 	],
-	#category : #'PharoJsBridgeTest-Tests'
+	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #testing }
