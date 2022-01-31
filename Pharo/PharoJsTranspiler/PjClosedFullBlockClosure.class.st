@@ -1,3 +1,6 @@
+"
+I represent a closed full block closure
+"
 Class {
 	#name : #PjClosedFullBlockClosure,
 	#superclass : #FullBlockClosure,
