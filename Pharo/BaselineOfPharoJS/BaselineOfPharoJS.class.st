@@ -39,7 +39,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: #PharoJsCoreLibrariesTest with: [
 				spec requires: #(#PharoJsCoreLibraries 'PharoJsBridge' 'PharoJsTestFramework' #PharoJsBridgeTest PharoJsTranspilerTests) ];
 			package: 'PharoJsExamples' with: [
-				spec requires: #('PharoJs-Base-App' 'PharoJsTranspiler' 'PharoJsTestFramework' 'PharoJsExporter') ];
+				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' 'PharoJsExporter') ];
 			package: #PharoJsExporter with: [
 				spec requires: #('PharoJs-Base-Transpiler' 'PharoJs-Base-App' ). ];
 			package: 'PharoJsStatistics' with: [
