@@ -16,7 +16,7 @@ Class {
 		'status',
 		'exportVersion'
 	],
-	#category : #PharoJsApp
+	#category : #'PharoJs-Base-App'
 }
 
 { #category : #description }

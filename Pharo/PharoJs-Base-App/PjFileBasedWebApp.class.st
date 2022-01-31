@@ -4,5 +4,5 @@ I am a web app that rely on a HTML file. My JS code is exported to a JS file tha
 Class {
 	#name : #PjFileBasedWebApp,
 	#superclass : #PjWebApplication,
-	#category : #PharoJsApp
+	#category : #'PharoJs-Base-App'
 }

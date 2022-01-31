@@ -8,7 +8,7 @@ Class {
 	#pools : [
 		'PjNodeGlobals'
 	],
-	#category : #PharoJsApp
+	#category : #'PharoJs-Base-App'
 }
 
 { #category : #accessing }

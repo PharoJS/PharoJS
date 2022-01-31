@@ -8,7 +8,7 @@ Class {
 	#pools : [
 		'PjBrowserGlobals'
 	],
-	#category : #PharoJsApp
+	#category : #'PharoJs-Base-App'
 }
 
 { #category : #'start-stop application' }

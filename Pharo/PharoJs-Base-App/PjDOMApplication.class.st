@@ -15,7 +15,7 @@ Class {
 		'cssFile',
 		'htmlFile'
 	],
-	#category : #PharoJsApp
+	#category : #'PharoJs-Base-App'
 }
 
 { #category : #description }
