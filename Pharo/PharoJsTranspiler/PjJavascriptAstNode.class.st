@@ -12,7 +12,7 @@ Class {
 	#instVars : [
 		'myClass'
 	],
-	#category : #'PharoJsTranspiler-Kernel'
+	#category : #'PharoJsTranspiler-AST'
 }
 
 { #category : #creating }
