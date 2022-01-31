@@ -1,3 +1,6 @@
+"
+I am a pool variable for visiting with a subclass of PjASTVisitor
+"
 Class {
 	#name : #PjPoolVariableNode,
 	#superclass : #PjClassVariableNode,
