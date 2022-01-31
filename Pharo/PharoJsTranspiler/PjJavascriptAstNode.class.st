@@ -40,7 +40,7 @@ PjJavascriptAstNode >> canPropogateReturns [
 	^ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjJavascriptAstNode >> expressions [
 	^ { self }
 ]
