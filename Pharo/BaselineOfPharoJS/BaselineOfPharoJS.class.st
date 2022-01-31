@@ -4,7 +4,7 @@ Baseline managing the PharoJS project on Git
 Class {
 	#name : #BaselineOfPharoJS,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfPharoJS
+	#category : #'BaselineOfPharoJS-Base'
 }
 
 { #category : #baseline }
