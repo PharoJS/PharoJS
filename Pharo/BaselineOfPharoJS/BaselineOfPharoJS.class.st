@@ -27,18 +27,24 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsTranspilerOptimizationTests' with: [
 				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests'). ].
 		
-		"Other"
+		"App"
 		spec 
 			package: 'PharoJs-Base-App' with: [
-				spec requires: #('PharoJs-Base-Transpiler' 'PharoJsCoreLibraries' ) ];
-			package: 'PharoJsBridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJs-Base-App' 'Zinc-WebSocket-Core' 'PharoJsSerialization') ];
+				spec requires: #('PharoJs-Base-Transpiler' 'PharoJsCoreLibraries' ) ].
+			
+		"Bridge"	  
+		spec 	
+			package: 'PharoJs-Base-Bridge' with: [
+				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJs-Base-App' 'Zinc-WebSocket-Core' 'PharoJsSerialization') ].
+		
+		"Other"
+		spec	
 			package: #PharoJsBridgeTest with: [
-				spec requires: #('PharoJsTestFramework' 'PharoJsBridge' ) ];
+				spec requires: #('PharoJsTestFramework' 'PharoJs-Base-Bridge' ) ];
 			package: #PharoJsCoreLibraries with: [
 				spec requires: #('PharoJs-Base-Transpiler' 'PharoExtra' ) ];
 			package: #PharoJsCoreLibrariesTest with: [
-				spec requires: #(#PharoJsCoreLibraries 'PharoJsBridge' 'PharoJsTestFramework' #PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests') ];
+				spec requires: #(#PharoJsCoreLibraries 'PharoJsTestFramework' #PharoJsBridgeTest 'PharoJs-Base-Transpiler-Tests') ];
 			package: 'PharoJsExamples' with: [
 				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' 'PharoJsExporter') ];
 			package: #PharoJsExporter with: [
@@ -46,11 +52,11 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsStatistics' with: [
 				spec requires: #('PharoJsExporter' ). ];
 			package: 'PharoJsTestFramework' with: [
-				spec requires: #(#PharoJsExporter 'PharoJsBridge' 'PharoJs-Base-App' ) ];
+				spec requires: #(#PharoJsExporter 'PharoJs-Base-Bridge' 'PharoJs-Base-App' ) ];
 			package: #PharoJsTiming with: [
-				spec requires: #(#PharoJsTranspilerOptimization 'PharoJsBridge' ) ];
+				spec requires: #(#PharoJsTranspilerOptimization 'PharoJs-Base-Bridge' ) ];
 			package: 'PharoJsTools' with: [
-				spec requires: #('PharoJsBridge' ). ];
+				spec requires: #('PharoJs-Base-Bridge' ). ];
 		
 			package: 'PharoJsSerialization' with: [
 				spec requires: #('PharoJsCoreLibraries')]; 
