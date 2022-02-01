@@ -1,3 +1,6 @@
+"
+A JSON Reader - to read an object from JSON format
+"
 Class {
 	#name : #PhxJsonReader,
 	#superclass : #PjDomController,

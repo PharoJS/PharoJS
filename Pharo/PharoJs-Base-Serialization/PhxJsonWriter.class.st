@@ -1,3 +1,6 @@
+"
+A JSON Writer - to write an object into JSON format
+"
 Class {
 	#name : #PhxJsonWriter,
 	#superclass : #PjDomController,
