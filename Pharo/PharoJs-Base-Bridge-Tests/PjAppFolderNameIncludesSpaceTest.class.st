@@ -11,7 +11,7 @@ PjAppFolderNameIncludesSpaceTest class >> appClass [
 	^PjAppWithFolderNameIncludesSpace
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjAppFolderNameIncludesSpaceTest >> testConnectionEstablished [
 	self assert: self bridge isConnected
 ]

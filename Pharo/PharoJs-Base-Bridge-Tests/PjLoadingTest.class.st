@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjLoadingTest >> testEvalBlock [
 	PjLoadForTest reset.
 	self bridge evalBlock: [ window js_at: #valueForEvalTest put: 42 ].
@@ -45,13 +45,13 @@ PjLoadingTest >> testEvalBlock [
 		equals: 'Z value'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjLoadingTest >> testLiteralGeneration [
 	self assertEquivalent: [ PjLoadForTest literal ].
 	self assertEquivalent: [ PjLoadForTest new literal ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjLoadingTest >> testLoadClass [
 	PjLoadForTest reset.
 	self bridge loadClass: PjLoadForTest.
@@ -66,7 +66,7 @@ PjLoadingTest >> testLoadClass [
 		equals: PjLoadForTest new seventeen
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjLoadingTest >> testLoadClassContents [
 	| first firstBlock second secondBlock className third pjPrefix|
 	pjPrefix := self bridge exporter transpiler pharoJsSelectorPrefix.

@@ -18,7 +18,7 @@ PjHtmlGeneratorTest >> setUp [
 	generator := PjHtmlGenerator new.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjHtmlGeneratorTest >> testAttributedLoadFrom [
 	generator loadFrom: '<head>the head</head>blah<body att="foo">the body</body>'.
 	self assert: generator html equalsIgnoringLineEndings: '<!DOCTYPE html>
@@ -33,7 +33,7 @@ the body
 </html>'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjHtmlGeneratorTest >> testAugmentedLoadFrom [
 	generator loadFrom: '<head>the head</head>blah<body>the body</body>'.
 	generator addCssLink: 'foo.css'.
@@ -51,7 +51,7 @@ the body
 </html>'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjHtmlGeneratorTest >> testNoBodyLoadFrom [
 	generator loadFrom: 'blah<head>the head</head>'.
 	self assert: generator html equalsIgnoringLineEndings: '<!DOCTYPE html>
@@ -66,7 +66,7 @@ the head
 </html>'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjHtmlGeneratorTest >> testNoHeadLoadFrom [
 	generator loadFrom: 'blah<body>the body</body>'.
 	self assert: generator html equalsIgnoringLineEndings: '<!DOCTYPE html>
@@ -81,7 +81,7 @@ the body
 </html>'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjHtmlGeneratorTest >> testSimpleLoadFrom [
 	generator loadFrom: '<head>the head</head>blah<body>the body</body>'.
 	self assert: generator html equalsIgnoringLineEndings: '<!DOCTYPE html>

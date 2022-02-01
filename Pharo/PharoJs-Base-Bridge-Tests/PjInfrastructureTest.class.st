@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testCallGetsTrampolined [
 	self
 		assert:
@@ -12,7 +12,7 @@ PjInfrastructureTest >> testCallGetsTrampolined [
 				evalBlock: [ nil ~= (document getElementsByTagName: 'script') ])
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testDNUSetup [
 	| prefix |
 	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
@@ -32,12 +32,12 @@ PjInfrastructureTest >> testDNUSetup [
 				evalJavascript: 'HTMLDocument.prototype.', prefix, 'children === document.', prefix, 'children')
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testGetterGetsTrampolined [
 	self assert: (self bridge evalBlock: [ document body ~= nil ])
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testIs [
 	self assertEquivalent: [Object isBlock].
 	self assertEquivalent: [Object new isBlock].
@@ -49,7 +49,7 @@ PjInfrastructureTest >> testIs [
 	self assertEquivalent: [Object isClass].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testJSSelector [
 	|prefix|
 	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
@@ -62,7 +62,7 @@ PjInfrastructureTest >> testJSSelector [
 	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: prefix, '$foo_'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testSTSelector [
 	self assert: [PjCore makeSmalltalkSelector: #foo] evaluatesTo: 'foo'.
 	self assert: [PjCore makeSmalltalkSelector: #foo:] evaluatesTo: 'foo:'.
@@ -72,14 +72,14 @@ PjInfrastructureTest >> testSTSelector [
 	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo_'] evaluatesTo: 'foo:'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testSetterGetsTrampolined [
 	self bridge evalBlock: [ document js_at: 'foo' put: 17 ].
 	self bridge evalBlock: [ document foo: 42 ].
 	self assert: (self bridge evalBlock: [ document foo = 42 ])
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjInfrastructureTest >> testValueNonInterference [
 	self addToDOM: '<input id="theInput" type="text" value="Name:">'.
 	self assert: [|t| t:=document getElementById: #theInput.t value=t defaultValue] evaluatesTo: true.

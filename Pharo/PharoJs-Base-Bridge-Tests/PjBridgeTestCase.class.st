@@ -130,7 +130,7 @@ PjBridgeTestCase >> tearDown [
 	Author uniqueInstance fullName: authorInitialName.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBridgeTestCase >> testBridgePort [
 	self assert: self bridge port equals: self bridge server port
 ]

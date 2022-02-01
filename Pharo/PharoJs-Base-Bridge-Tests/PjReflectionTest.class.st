@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjReflectionTest >> testClassName [
 	| class |
 	class := classFactory
@@ -16,7 +16,7 @@ PjReflectionTest >> testClassName [
 	self assert: [ class new className ] evaluatesTo: class name asString
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjReflectionTest >> testNestedRepeats [
 	| class tryNestedRepeatsSelector tryNestedRepeatsMethod |
 	class := classFactory
@@ -32,7 +32,7 @@ PjReflectionTest >> testNestedRepeats [
 		evaluatesTo: self tryNestedRepeats
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjReflectionTest >> testReflection [
 	self assertEquivalent: [Number inheritsFrom: Object].
 	self assertEquivalent: [Number canUnderstand: #isNil].
@@ -52,7 +52,7 @@ PjReflectionTest >> testReflection [
 	self assertEquivalent: [42 respondsTo: #<=].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjReflectionTest >> testTemporaries [
 	| class tryTemporariesSelector tryTemporariesMethod |
 	class := classFactory

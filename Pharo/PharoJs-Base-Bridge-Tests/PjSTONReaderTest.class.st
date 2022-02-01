@@ -9,17 +9,17 @@ PjSTONReaderTest >> materialize: string [
 	^ PjSTONReader from: string
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSTONReaderTest >> testInfinity [
 	self assert: (self materialize: 'Infinity') equals: Float infinity
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSTONReaderTest >> testNaN [
 	self assert: (self materialize: 'NaN') isNaN
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSTONReaderTest >> testNegInfinity [
 	self assert: (self materialize: '-Infinity') equals: Float infinity negated
 ]

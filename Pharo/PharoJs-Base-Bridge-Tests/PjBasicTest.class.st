@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testBasicEquality [
 	self assertBlock: [ 312 ] equalsBlock: [ 312 ].
 	self denyBlock: [ 312 ] equalsBlock: [ 5 ].
@@ -13,13 +13,13 @@ PjBasicTest >> testBasicEquality [
 	self denyBlock: [ 'one two three' ] equalsBlock: [ 'one three' ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testBooleanMethods [
 	self assertEquivalent: [true asBit].
 	self assertEquivalent: [false asBit].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
 	| o1 o2 |
 	window instVarNamed:#MyConstructor put: [: a : b : c |
@@ -37,7 +37,7 @@ PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
 	self assert: o2 z equals: 99.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testClosedBlocks [
 	<expectedFailure>
 	| x |
@@ -48,7 +48,7 @@ PjBasicTest >> testClosedBlocks [
 	self assertEquivalent: [ x + 39 ] asClosedBlock
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testClosure [
 	self assertEquivalent: [| tot coll |
 		tot := 0.
@@ -59,12 +59,12 @@ PjBasicTest >> testClosure [
 	].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testDifferentIdentities [
 	self assertEquivalent: [false ~~ true].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testEqualityAndDifferenceWithNil [
 	self assertEquivalent: [0=nil].
 	self assertEquivalent: [0~=nil].
@@ -72,7 +72,7 @@ PjBasicTest >> testEqualityAndDifferenceWithNil [
 	self assertEquivalent: [nil~=0].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testEvalResult [
 	self checkBasic: 42.
 	self checkBasic: true.
@@ -86,7 +86,7 @@ PjBasicTest >> testEvalResult [
 		raise: PjJavascriptError
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testExceptionHandling [
 	self assert: [|exceptionSignaled|
 			exceptionSignaled := false.
@@ -100,7 +100,7 @@ PjBasicTest >> testExceptionHandling [
 	  evaluatesTo: false.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testHash [
 	self assertEquivalent: [nil hash].
 	self assertEquivalent: [0 hash].
@@ -112,12 +112,12 @@ PjBasicTest >> testHash [
 	self assertEquivalent: [|x y| x:= Object new. y:= Object new. x hash ~= y hash].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testIdentity [
 	self assertEquivalent: [false == false].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testIfNilIfNotNil [
 	self assertEquivalent: [nil ifNil: [1]].
 	self assertEquivalent: [false ifNotNil: [2]].
@@ -126,7 +126,7 @@ PjBasicTest >> testIfNilIfNotNil [
 	self assert: [(document getElementById: #notInTheDocument) ifNil: [1] ifNotNil: [2]] evaluatesTo: 1
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testIfTrueIfFalse [
 	self assertEquivalent: [true ifTrue: [1]] .
 	self assertEquivalent: [false ifFalse: [2]].
@@ -138,7 +138,7 @@ PjBasicTest >> testIfTrueIfFalse [
 	self assertEquivalent: [false ifFalse: [2] ifTrue: [1]].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testJavascriptSemanticsComparisons [
 " can't use assertEquivalent: because these are errors in Smalltalk "
 	self assert: [nil>=0] evaluatesTo: false.
@@ -151,7 +151,7 @@ PjBasicTest >> testJavascriptSemanticsComparisons [
 	self assert: [0<nil] evaluatesTo: false.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testMethodsForBitManipulation [
 	self assertEquivalent: [-257 bitShift: -4].
 	self assertEquivalent: [257 bitShift: -4].
@@ -174,7 +174,7 @@ PjBasicTest >> testMethodsForBitManipulation [
 	self assertEquivalent: [-12300000 lowBit].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testMethodsForNumbers [
 	self assertEquivalent: [-3 abs].
 	self assertEquivalent: [0 abs].
@@ -186,7 +186,7 @@ PjBasicTest >> testMethodsForNumbers [
 	self assertEquivalent: [ 1.78 radiansToDegrees ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testMultilineConstants [
 	self assertEquivalent: ['this
 			and that' size].
@@ -194,7 +194,7 @@ PjBasicTest >> testMultilineConstants [
 			4 5 6) size].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testNumber [
 	| x |
 	self assertEquivalent: [ 1 ].
@@ -221,14 +221,14 @@ PjBasicTest >> testNumber [
 	self assertEquivalent: [ (x * x * 0) isNaN ]. " NaN "
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testResettingTheClient [
 	self bridge resetClient.
 	self assert:
 		self bridge isConnected
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testSignalingExceptionFromJavaScript [
 	self
 		should: [ self bridge
@@ -236,7 +236,7 @@ PjBasicTest >> testSignalingExceptionFromJavaScript [
 		raise: PjJavascriptError
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testSimpleMathOperations [
 	self assertEquivalent: [1+2].
 	self assertEquivalent: [6*7].
@@ -249,7 +249,7 @@ PjBasicTest >> testSimpleMathOperations [
 	self assertEquivalent: [(3 * 4) even].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testTimesRepeat [
 	self
 		assertEquivalent: [|counter|
@@ -265,17 +265,17 @@ PjBasicTest >> testUnicode [
 	self checkBasic: 'ab€cd'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testValueBlock0Arg [
 	self assertEquivalent: [[1+2] value].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testValueBlock1Arg [
 	self assertEquivalent: [[ : x | x + 2] value: 1].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjBasicTest >> testValues [
 	self assertEquivalent: [ 42 value ].
 	self assertEquivalent: [ true value ].

@@ -23,7 +23,7 @@ PjProxyForGlobalsTest >> tearDown [
 	Author uniqueInstance fullName: authorInitialName.
 ]
 
-{ #category : #running }
+{ #category : #tests }
 PjProxyForGlobalsTest >> testProxyForNewGlobalsCreated [
 	| globalsPool userClass |
 	globalsPool := classFactory silentlyNewSubclassOf: PjJavascriptGlobals instanceVariableNames: '' classVariableNames: 'A B'.

@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjIncrementalJavascriptTest >> testPolyfillLoad [
 	| contents |
 	bridge := PjTestBridge bridgeForAppClass: PjMinimalNodeApplication.

@@ -8,7 +8,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testArrayEquality [
 	self assertBlock: [ #() ] equalsBlock: [ #() ].
 	self denyBlock: [ #() ] equalsBlock: [ #(1 2 3) ].
@@ -21,14 +21,14 @@ PjProxyTest >> testArrayEquality [
 	self denyBlock: [ {{true. 'two'}. nil. 3.14.}] equalsBlock: [ {{false. 'abc'}. nil. 3.14.} ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testAsJson [
 	self assert: 42 asJSON equals: '42'.
 	self assert: 'a\b"c' asJSON equals: '"a\\b\"c"'.
 	self assert: nil asJSON equals: 'undefined'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testBlockClosures [
 	document body addEventListener: 'click' block: [ 42 ].
 	self
@@ -50,12 +50,12 @@ PjProxyTest >> testBlockClosures [
 		self bridge blockClosures size equals: 0.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testBrowser [
 	self assert: (window hasOwnProperty: 'document') description: 'window properies'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testChildren [
 	| rectangle other |
 	rectangle := document createElement: 'span'.
@@ -72,7 +72,7 @@ PjProxyTest >> testChildren [
 	self assert: ((document getElementsByTagName: 'span') at: 1) id equals: 'grn'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testClick [
 	| rectangle count |
 	count := 0.
@@ -103,7 +103,7 @@ PjProxyTest >> testClick [
 	self assert: count = 6
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testClickWithEventTarget [
 	| rectangle1 rectangle2 lastClickedRectangle count listenerBlock |
 	count := 0.
@@ -137,7 +137,7 @@ PjProxyTest >> testClickWithEventTarget [
 	self assert: count = 2
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testGetElementById [
 	| rectangle |
 	rectangle := document createElement: 'div'.
@@ -148,7 +148,7 @@ PjProxyTest >> testGetElementById [
 	self assert: (document js_getElementById: 'grn') id equals: 'grn'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testIterateOverChildren [
 	| container newChild |
 	container := document createElement: 'div'.
@@ -160,7 +160,7 @@ PjProxyTest >> testIterateOverChildren [
 		each textContent: index].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testProxyGarbageCollection [
 	| b jsName |
 	b := document body.
@@ -175,7 +175,7 @@ PjProxyTest >> testProxyGarbageCollection [
 	self deny: (global includesKey: jsName)
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testProxyMissingError [
 	"This test fails intermittently because of interfering garbage collection effects of released proxies"
 	self timeLimit: 60 seconds.
@@ -184,7 +184,7 @@ PjProxyTest >> testProxyMissingError [
 		num milliSeconds wait ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjProxyTest >> testValueNonInterference [
 	| theInput |
 	self
