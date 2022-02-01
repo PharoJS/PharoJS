@@ -1,7 +1,7 @@
 Class {
 	#name : #PjConversionOptimizationTest,
 	#superclass : #PjSpecialMessagesConversionTest,
-	#category : #'PharoJsTranspilerOptimizationTests-Tests'
+	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
 }
 
 { #category : #testing }

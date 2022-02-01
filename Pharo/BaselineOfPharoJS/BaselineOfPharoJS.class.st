@@ -24,7 +24,7 @@ BaselineOfPharoJS >> baseline: spec [
 		"Transpiler optimizations"		 
 		spec 
 			package: 'PharoJs-Base-Transpiler-Optimizations' with: [ spec requires: #('PharoJs-Base-Transpiler' ). ];
-			package: 'PharoJsTranspilerOptimizationTests' with: [
+			package: 'PharoJs-Base-Transpiler-Optimizations-Tests' with: [
 				spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge-Tests' 'PharoJs-Base-Transpiler-Tests'). ].
 		
 		"App"
@@ -38,7 +38,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJs-Base-Bridge-Tests' with: [ spec requires: #('PharoJsTestFramework' 'PharoJs-Base-Bridge' ) ].
 
 		
-		"Other"   'PharoJsTranspilerOptimization'
+		"Other"   
 		spec
 			package: #PharoJsCoreLibraries with: [
 				spec requires: #('PharoJs-Base-Transpiler' 'PharoExtra' ) ];

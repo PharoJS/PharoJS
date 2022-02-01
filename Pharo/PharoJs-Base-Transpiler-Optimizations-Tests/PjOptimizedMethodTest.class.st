@@ -1,7 +1,7 @@
 Class {
 	#name : #PjOptimizedMethodTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #'PharoJsTranspilerOptimizationTests-Tests'
+	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
 }
 
 { #category : #tests }

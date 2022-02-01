@@ -1,7 +1,7 @@
 Class {
 	#name : #PjOptimizedClassTranspilationTest,
 	#superclass : #PjTranspilationClassCompilationTest,
-	#category : #'PharoJsTranspilerOptimizationTests-Tests'
+	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
 }
 
 { #category : #running }

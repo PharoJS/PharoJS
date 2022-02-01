@@ -4,7 +4,7 @@ Sample methods for PjOptimizedMethodTest
 Class {
 	#name : #PjOptimizedMethods,
 	#superclass : #Object,
-	#category : #'PharoJsTranspilerOptimizationTests-Support'
+	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Support'
 }
 
 { #category : #asserting }
