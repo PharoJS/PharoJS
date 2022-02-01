@@ -1,6 +1,6 @@
 Extension { #name : #PjTArray }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjTArray classSide >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
 	| resultCollection elements |
 	resultCollection := self new: jsonObject size.

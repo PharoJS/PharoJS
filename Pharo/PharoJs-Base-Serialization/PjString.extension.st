@@ -1,6 +1,6 @@
 Extension { #name : #PjString }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjString >> writePhxJsonOn: w [
 	w << self asJSON
 ]

@@ -1,6 +1,6 @@
 Extension { #name : #PjUndefinedObject }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjUndefinedObject >> writePhxJsonOn: w [
 	w << 'null'
 ]

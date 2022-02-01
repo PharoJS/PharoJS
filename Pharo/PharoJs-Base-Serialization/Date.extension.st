@@ -1,16 +1,16 @@
 Extension { #name : #Date }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 Date class >> instantiateWithPhxJsonReader: reader instanceJsonObject: aString [
 	^self readFrom: (aString ifNotNilOrEmpty: [aString first:10]) pattern: 'yyyy-mm-dd'
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 Date >> writePhxJsonOn: w [
 	self writePhxJsonObjectOn: w
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 Date >> writePhxJsonRepresentationOn: w [
 	w writeQuoted: self yyyymmdd
 ]

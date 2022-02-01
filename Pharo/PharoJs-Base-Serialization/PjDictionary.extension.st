@@ -1,11 +1,11 @@
 Extension { #name : #PjDictionary }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjDictionary class >> phxJsonClassName [
 	^ 'Dictionary'
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjDictionary >> writePhxJsonRepresentationOn: w [
 	self asJsObject writePhxJsonRepresentationOn: w
 ]

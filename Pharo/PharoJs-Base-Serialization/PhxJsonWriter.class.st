@@ -5,7 +5,7 @@ Class {
 		'string',
 		'knownObjects'
 	],
-	#category : #'PharoJsSerialization-Core'
+	#category : #'PharoJs-Base-Serialization-Core'
 }
 
 { #category : #writing }

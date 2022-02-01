@@ -1,6 +1,6 @@
 Extension { #name : #ScaledDecimal }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 ScaledDecimal >> writePhxJsonOn: w [
 	w << (self printShowingDecimalPlaces: self scale)
 ]

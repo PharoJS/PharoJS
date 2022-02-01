@@ -1,6 +1,6 @@
 Extension { #name : #PjBoolean }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjBoolean >> writePhxJsonOn: w [
 	w << self
 ]

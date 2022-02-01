@@ -1,6 +1,6 @@
 Extension { #name : #True }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 True >> writePhxJsonOn: w [
 	w << 'true'
 ]

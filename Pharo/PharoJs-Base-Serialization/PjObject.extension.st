@@ -1,11 +1,11 @@
 Extension { #name : #PjObject }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjObject >> allPhxJsonInstvarNames [
 	^ self keys
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjObject class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
 	| obj |
 	obj := self new.
@@ -15,7 +15,7 @@ PjObject class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonO
 	^ obj
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjObject class >> jsTranspilationImportMethodsNonstandard [
 	<pharoJsSkip>
 	^ {(Object class -> #(newPhxJsonWriter)).
@@ -24,7 +24,7 @@ PjObject class >> jsTranspilationImportMethodsNonstandard [
 			#(asPhxJsonString #writePhxJsonOn: writePhxJsonRepresentationOn: #writePhxJsonObjectOn:))}
 ]
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 PjObject class >> phxJsonClassName [
 	^ self name
 ]

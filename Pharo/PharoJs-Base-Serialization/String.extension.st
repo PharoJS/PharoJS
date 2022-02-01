@@ -1,6 +1,6 @@
 Extension { #name : #String }
 
-{ #category : #'*PharoJsSerialization' }
+{ #category : #'*PharoJs-Base-Serialization' }
 String >> writePhxJsonOn: w [
 	w << (STONJSON toString: self)
 ]
