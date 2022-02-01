@@ -14,6 +14,12 @@ Class {
 }
 
 { #category : #testing }
+PjTranspilationTest class >> isAbstract [
+
+	^ self = PjTranspilationTest
+]
+
+{ #category : #testing }
 PjTranspilationTest >> assertStBlock: aBlock convertsTo: expectedJsString [
 	self assert: (transpiler convertToJs: aBlock) equals: expectedJsString
 ]
