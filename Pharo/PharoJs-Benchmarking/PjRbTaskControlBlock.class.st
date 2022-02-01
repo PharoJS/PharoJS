@@ -10,7 +10,7 @@ Class {
 		'function',
 		'handle'
 	],
-	#category : #'PharoJsTiming-Richards'
+	#category : #'PharoJs-Benchmarking-Richards'
 }
 
 { #category : #'instance creation' }

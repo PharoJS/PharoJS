@@ -16,7 +16,7 @@ Class {
 	#classInstVars : [
 		'stats'
 	],
-	#category : #'PharoJsTiming-Timing'
+	#category : #'PharoJs-Benchmarking-Timing'
 }
 
 { #category : #stats }

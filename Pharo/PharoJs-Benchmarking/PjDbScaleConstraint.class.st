@@ -14,7 +14,7 @@ Class {
 		'scale',
 		'offset'
 	],
-	#category : #'PharoJsTiming-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
 }
 
 { #category : #'instance creation' }

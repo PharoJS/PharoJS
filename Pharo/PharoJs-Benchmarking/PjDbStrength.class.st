@@ -25,7 +25,7 @@ Class {
 		'StrengthConstants',
 		'StrengthTable'
 	],
-	#category : #'PharoJsTiming-DeltaBlue'
+	#category : #'PharoJs-Benchmarking-DeltaBlue'
 }
 
 { #category : #constants }

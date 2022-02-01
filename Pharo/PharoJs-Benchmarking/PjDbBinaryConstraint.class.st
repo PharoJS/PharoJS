@@ -17,7 +17,7 @@ Class {
 		'v2',
 		'direction'
 	],
-	#category : #'PharoJsTiming-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
 }
 
 { #category : #'add/remove' }

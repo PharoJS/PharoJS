@@ -11,7 +11,7 @@ Class {
 		'prefix',
 		'printedIterations'
 	],
-	#category : #'PharoJsTiming-Application'
+	#category : #'PharoJs-Benchmarking-Application'
 }
 
 { #category : #'as yet unclassified' }

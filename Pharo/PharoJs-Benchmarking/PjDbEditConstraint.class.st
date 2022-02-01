@@ -5,7 +5,7 @@ wishes to change.
 Class {
 	#name : #PjDbEditConstraint,
 	#superclass : #PjDbUnaryConstraint,
-	#category : #'PharoJsTiming-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
 }
 
 { #category : #'instance creation' }
