@@ -10,7 +10,7 @@ Class {
 		'rectangle',
 		'colour'
 	],
-	#category : #'PharoJsExamples-DrawRectangle'
+	#category : #'PharoJs-Examples-DrawRectangle'
 }
 
 { #category : #'event handling' }

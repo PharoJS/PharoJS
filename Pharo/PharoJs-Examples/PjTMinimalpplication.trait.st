@@ -1,6 +1,6 @@
 Trait {
 	#name : #PjTMinimalpplication,
-	#category : #'PharoJsExamples-Minimal'
+	#category : #'PharoJs-Examples-Minimal'
 }
 
 { #category : #'class initialization' }

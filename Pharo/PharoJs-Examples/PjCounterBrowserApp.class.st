@@ -5,7 +5,7 @@ Class {
 		'counter',
 		'controller'
 	],
-	#category : #'PharoJsExamples-Counter'
+	#category : #'PharoJs-Examples-Counter'
 }
 
 { #category : #description }

@@ -6,7 +6,7 @@ Class {
 	#superclass : #PjNodeApplication,
 	#traits : 'PjTMinimalpplication',
 	#classTraits : 'PjTMinimalpplication classTrait',
-	#category : #'PharoJsExamples-Minimal'
+	#category : #'PharoJs-Examples-Minimal'
 }
 
 { #category : #'event handling' }

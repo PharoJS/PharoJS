@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : #'PharoJsExamples-HelloWorld'
+	#category : #'PharoJs-Examples-HelloWorld'
 }
 
 { #category : #accessing }

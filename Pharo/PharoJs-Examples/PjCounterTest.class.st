@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'counter'
 	],
-	#category : #'PharoJsExamples-Counter'
+	#category : #'PharoJs-Examples-Counter'
 }
 
 { #category : #testing }

@@ -16,7 +16,7 @@ Class {
 	#pools : [
 		'PjD3JsGlobals'
 	],
-	#category : #'PharoJsExamples-D3JS'
+	#category : #'PharoJs-Examples-D3JS'
 }
 
 { #category : #initialization }

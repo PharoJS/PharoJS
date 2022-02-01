@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'engine'
 	],
-	#category : #'PharoJsExamples-PhysicsSimulation'
+	#category : #'PharoJs-Examples-PhysicsSimulation'
 }
 
 { #category : #description }

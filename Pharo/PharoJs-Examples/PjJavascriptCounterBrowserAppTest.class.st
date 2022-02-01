@@ -3,5 +3,5 @@ Class {
 	#superclass : #PjCounterBrowserAppTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#category : #'PharoJsExamples-Counter'
+	#category : #'PharoJs-Examples-Counter'
 }

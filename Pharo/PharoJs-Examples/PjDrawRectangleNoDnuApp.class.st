@@ -6,7 +6,7 @@ I am a version that doesn't need a DNU infrastructure.
 Class {
 	#name : #PjDrawRectangleNoDnuApp,
 	#superclass : #PjDrawRectangleApp,
-	#category : #'PharoJsExamples-DrawRectangle'
+	#category : #'PharoJs-Examples-DrawRectangle'
 }
 
 { #category : #'initialize - release' }

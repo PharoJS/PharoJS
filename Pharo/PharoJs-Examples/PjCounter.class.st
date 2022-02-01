@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'count'
 	],
-	#category : #'PharoJsExamples-Counter'
+	#category : #'PharoJs-Examples-Counter'
 }
 
 { #category : #accessing }

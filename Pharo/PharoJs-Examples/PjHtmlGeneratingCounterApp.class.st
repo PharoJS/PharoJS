@@ -5,7 +5,7 @@ Class {
 		'count',
 		'countDisplay'
 	],
-	#category : #'PharoJsExamples-Counter'
+	#category : #'PharoJs-Examples-Counter'
 }
 
 { #category : #accessing }

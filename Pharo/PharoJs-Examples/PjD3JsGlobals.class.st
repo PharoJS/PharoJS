@@ -4,5 +4,5 @@ Class {
 	#classVars : [
 		'd3'
 	],
-	#category : #'PharoJsExamples-D3JS'
+	#category : #'PharoJs-Examples-D3JS'
 }

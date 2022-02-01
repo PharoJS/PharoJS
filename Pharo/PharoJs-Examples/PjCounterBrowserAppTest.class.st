@@ -6,7 +6,7 @@ Class {
 		'incrementButton',
 		'resetButton'
 	],
-	#category : #'PharoJsExamples-Counter'
+	#category : #'PharoJs-Examples-Counter'
 }
 
 { #category : #'suite parameters' }

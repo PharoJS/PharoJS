@@ -12,7 +12,7 @@ Class {
 	#instVars : [
 		'user'
 	],
-	#category : #'PharoJsExamples-HelloWorld'
+	#category : #'PharoJs-Examples-HelloWorld'
 }
 
 { #category : #description }
