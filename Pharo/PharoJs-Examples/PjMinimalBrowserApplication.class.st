@@ -6,8 +6,8 @@ I demonstrate overriding the default html and css, and log to the console.
 Class {
 	#name : #PjMinimalBrowserApplication,
 	#superclass : #PjWebApplication,
-	#traits : 'PjTMinimalpplication',
-	#classTraits : 'PjTMinimalpplication classTrait',
+	#traits : 'PjTMinimalApplication',
+	#classTraits : 'PjTMinimalApplication classTrait',
 	#category : #'PharoJs-Examples-Minimal'
 }
 

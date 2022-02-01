@@ -4,8 +4,8 @@ I am a minimal application that runs in nodejs
 Class {
 	#name : #PjMinimalNodeApplication,
 	#superclass : #PjNodeApplication,
-	#traits : 'PjTMinimalpplication',
-	#classTraits : 'PjTMinimalpplication classTrait',
+	#traits : 'PjTMinimalApplication',
+	#classTraits : 'PjTMinimalApplication classTrait',
 	#category : #'PharoJs-Examples-Minimal'
 }
 
