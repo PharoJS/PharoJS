@@ -15,7 +15,14 @@ BaselineOfPharoJS >> baseline: spec [
 	spec for: #('pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJs-Compatibility-Pharo8' ].
 		
 	spec for: #'common' do: [
-		self prerequisites: spec.
+		self prerequisites: spec.		
+		self packages: spec.		
+	]
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> packages: spec [
+		"Define and list all packages and their dependencies"
 		
 		"Transpiler"
 		spec package: 'PharoJs-Base-Transpiler' with: [ spec requires: #('Equals') ];
@@ -57,8 +64,7 @@ BaselineOfPharoJS >> baseline: spec [
 		spec package: 'PharoJs-Utilities-Statistics' with: [ spec requires: #('PharoJs-Base-Exporter' ) ].
 													
 		"Tools"   		
-		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge' ) ].		
-	]
+		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge' ) ].
 ]
 
 { #category : #'private - accessing' }
@@ -70,7 +76,7 @@ BaselineOfPharoJS >> prerequisites: spec [
 		baseline: 'PharoExtra' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
 		baseline: 'Equals' with: [ spec repository: 'github://bouraqadi/PharoMisc' ].
 		
-	"Packages"	
+	"Zinc Packages"	
 	spec
 		package: 'Zinc-WebSocket-Core' with: [ spec repository: 'github://svenvc/zinc' ]
 ]
