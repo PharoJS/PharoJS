@@ -4,7 +4,7 @@ Class {
 	#pools : [
 		'PjBrowserGlobals'
 	],
-	#category : #'PharoJsSerializationDeprecated-Tests'
+	#category : #'PharoJs-Base-Serialization-Deprecated-Tests'
 }
 
 { #category : #serializing }

@@ -1,6 +1,6 @@
 Extension { #name : #PjArray }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjArray >> materialize [
 	^PjMaterializer materializeFromArray: self
 ]

@@ -1,11 +1,11 @@
 Extension { #name : #PjBoolean }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjBoolean class >> newFromMaterialized: materializedObject [
 	^materializedObject
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjBoolean >> serializationContents [
 	^self
 ]

@@ -1,11 +1,11 @@
 Extension { #name : #PjUndefinedObject }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjUndefinedObject class >> newFromMaterialized: anObject [
 	^nil
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjUndefinedObject >> serializationContents [
 	^self
 ]

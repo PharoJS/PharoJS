@@ -1,6 +1,6 @@
 Extension { #name : #PjObject }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjObject class >> newFromMaterialized: serializationArray [
 	|restored ivIndex|
 	restored := self new. "Ensure initialize is performed in case there are new IVs"
@@ -14,13 +14,13 @@ PjObject class >> newFromMaterialized: serializationArray [
 	^restored
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjObject >> serializationArray [
 	^ {self className.
 	self serializationContents}
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjObject >> serializationContents [
 	|serializable|
 	serializable := OrderedCollection new.
@@ -31,7 +31,7 @@ PjObject >> serializationContents [
 	^serializable
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjObject >> serialize [
 	^ self serializationArray asJSON
 ]

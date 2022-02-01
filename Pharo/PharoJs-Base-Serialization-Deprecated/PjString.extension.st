@@ -1,16 +1,16 @@
 Extension { #name : #PjString }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjString >> materialize [
 	^PjMaterializer materializeFromString: self
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjString class >> newFromMaterialized: materializedObject [
 	^materializedObject
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjString >> serializationContents [
 	^self
 ]

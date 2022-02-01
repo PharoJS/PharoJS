@@ -5,7 +5,7 @@ Class {
 		'a',
 		'b'
 	],
-	#category : #'PharoJsSerializationDeprecated-Tests'
+	#category : #'PharoJs-Base-Serialization-Deprecated-Tests'
 }
 
 { #category : #accessing }

@@ -1,11 +1,11 @@
 Extension { #name : #PjNumber }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjNumber class >> newFromMaterialized: materializedObject [
 	^materializedObject
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjNumber >> serializationContents [
 	^self
 ]

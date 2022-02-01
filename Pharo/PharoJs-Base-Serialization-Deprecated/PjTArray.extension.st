@@ -1,6 +1,6 @@
 Extension { #name : #PjTArray }
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjTArray classSide >> newFromMaterialized: aJsonArray [
 	| materializedArray |
 	materializedArray := self new.
@@ -8,7 +8,7 @@ PjTArray classSide >> newFromMaterialized: aJsonArray [
 	^materializedArray
 ]
 
-{ #category : #'*PharoJsSerializationDeprecated' }
+{ #category : #'*PharoJs-Base-Serialization-Deprecated' }
 PjTArray >> serializationContents [
 	"Important not to use a collect to ensure that we have an OrderedCollection that is actually a JS array. Since JSON knows how to handle arrays."
 	| serializableElements |
