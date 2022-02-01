@@ -11,7 +11,7 @@ PjStatistics statsForAll: { PjHelloWorldApp. PjMinimalBrowserApplication}
 Class {
 	#name : #PjStatistics,
 	#superclass : #Object,
-	#category : #PharoJsStatistics
+	#category : #'PharoJs-Utilities-Statistics'
 }
 
 { #category : #statistics }
