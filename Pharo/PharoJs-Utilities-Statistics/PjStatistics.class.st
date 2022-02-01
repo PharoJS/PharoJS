@@ -14,6 +14,28 @@ Class {
 	#category : #'PharoJs-Utilities-Statistics'
 }
 
+{ #category : #examples }
+PjStatistics class >> example1 [
+
+	Transcript
+		open;
+		clear.
+
+	self statsForApp: PjCounterBrowserApp
+]
+
+{ #category : #examples }
+PjStatistics class >> example2 [
+
+	Transcript
+		open;
+		clear.
+
+	self statsForAll: { 
+			PjHelloWorldApp.
+			PjMinimalBrowserApplication }
+]
+
 { #category : #statistics }
 PjStatistics class >> statsForAll: appClasses [
 	appClasses do: [ : cl | self statsForApp: cl ]
