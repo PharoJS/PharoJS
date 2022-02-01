@@ -16,6 +16,12 @@ Class {
 	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
 }
 
+{ #category : #testing }
+PjDbUnaryConstraint class >> isAbstract [
+
+	^ self = PjDbUnaryConstraint
+]
+
 { #category : #'add/remove' }
 PjDbUnaryConstraint >> addToGraph [
 	"Add myself to the constraint graph."

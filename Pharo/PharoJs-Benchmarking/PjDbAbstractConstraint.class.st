@@ -17,6 +17,12 @@ Class {
 	#category : #'PharoJs-Benchmarking-DeltaBlue'
 }
 
+{ #category : #testing }
+PjDbAbstractConstraint class >> isAbstract [
+
+	^ self = PjDbAbstractConstraint
+]
+
 { #category : #'add/remove' }
 PjDbAbstractConstraint >> addConstraint [
 	"Activate this constraint and attempt to satisfy it."
