@@ -2,7 +2,7 @@
 I define a set of instance variables used in a variety of tests
 "
 Class {
-	#name : #PjAstTests,
+	#name : #PjAbstractAstTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'iv1ForTest',
@@ -40,23 +40,29 @@ Class {
 }
 
 { #category : #testing }
-PjAstTests >> apply: aPjJavascriptAstNode selector: aSelector [
+PjAbstractAstTest class >> isAbstract [ 
+
+	^ self = PjAbstractAstTest
+]
+
+{ #category : #testing }
+PjAbstractAstTest >> apply: aPjJavascriptAstNode selector: aSelector [
 	^ self apply: aPjJavascriptAstNode selector: aSelector nonNil: aPjJavascriptAstNode isNonNil
 ]
 
 { #category : #testing }
-PjAstTests >> apply: aPjJavascriptAstNode selector: aSelector nonNil: nonNil [
+PjAbstractAstTest >> apply: aPjJavascriptAstNode selector: aSelector nonNil: nonNil [
 	^ PjApplyNode func: (PjFieldNode target: aPjJavascriptAstNode selectorNode: (PjMessageSelectorNode identifier: aSelector asSymbol) isNonNil: nonNil)
 		args: #()
 ]
 
 { #category : #accessing }
-PjAstTests >> pharoJsSelectorPrefix [
+PjAbstractAstTest >> pharoJsSelectorPrefix [
 	^ '_'
 ]
 
 { #category : #running }
-PjAstTests >> setUp [
+PjAbstractAstTest >> setUp [
 	super setUp.
 	minusTwo := PjLiteralValueNode value: -2.
 	minusOne := PjLiteralValueNode value: -1.
@@ -92,7 +98,7 @@ PjAstTests >> setUp [
 ]
 
 { #category : #testing }
-PjAstTests >> simpleBlock: objectOrCollection locals: anArray [
+PjAbstractAstTest >> simpleBlock: objectOrCollection locals: anArray [
 	^ PjBlockNode 
 		parameters: #()
 		locals: anArray

@@ -3,7 +3,7 @@ I'm an abstract test class
 "
 Class {
 	#name : #PjAstConverterTest,
-	#superclass : #PjAstTests,
+	#superclass : #PjAbstractAstTest,
 	#instVars : [
 		'converter'
 	],

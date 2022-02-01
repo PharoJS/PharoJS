@@ -257,8 +257,8 @@ PjBasicConverterTest >> testMethodBasic6 [
 { #category : #testing }
 PjBasicConverterTest >> testReadWriteClassVariables [
 	| astAssignment classVar |
-	converter classForConversion: PjAstTests.
-	classVar := (PjClassVariableNode identifier: #ClassVarForTest) poolReference: PjAstTests;myClass: PjAstTests.
+	converter classForConversion: PjAbstractAstTest.
+	classVar := (PjClassVariableNode identifier: #ClassVarForTest) poolReference: PjAbstractAstTest;myClass: PjAbstractAstTest.
 	self assertContentsOf: [ ClassVarForTest ] convertsTo: classVar.
 	astAssignment := PjAssignNode 
 		target:  classVar

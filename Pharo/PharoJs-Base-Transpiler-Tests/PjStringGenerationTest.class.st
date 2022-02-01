@@ -1,6 +1,6 @@
 Class {
 	#name : #PjStringGenerationTest,
-	#superclass : #PjAstTests,
+	#superclass : #PjAbstractAstTest,
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 

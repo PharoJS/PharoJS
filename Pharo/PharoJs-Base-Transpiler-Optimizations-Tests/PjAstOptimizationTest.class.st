@@ -1,6 +1,6 @@
 Class {
 	#name : #PjAstOptimizationTest,
-	#superclass : #PjAstTests,
+	#superclass : #PjAbstractAstTest,
 	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
 }
 
