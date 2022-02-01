@@ -1,6 +1,6 @@
 Extension { #name : #OCAbstractMethodScope }
 
-{ #category : #'*PharoJsPharo8' }
+{ #category : #'*PharoJs-Compatibility-Pharo8' }
 OCAbstractMethodScope >> lookupVar: name inContext: aContext [
 	"We lookup a variable in a context. If it not in this context, we look in the outer context using the corresponding outer scope"
 	
@@ -12,12 +12,12 @@ OCAbstractMethodScope >> lookupVar: name inContext: aContext [
 	^ theValue
 ]
 
-{ #category : #'*PharoJsPharo8' }
+{ #category : #'*PharoJs-Compatibility-Pharo8' }
 OCAbstractMethodScope >> outerScopeLookupVar: name inContext: aContext [
 	Error signal: 'Cannot find variable named''', name, ''' in this method'
 ]
 
-{ #category : #'*PharoJsPharo8' }
+{ #category : #'*PharoJs-Compatibility-Pharo8' }
 OCAbstractMethodScope >> variableNamed: name ifAbsent: aBlock [
 	copiedVars at: name ifPresent: [:v | ^ v].
 	tempVector  at: name ifPresent: [:v | ^ v].
