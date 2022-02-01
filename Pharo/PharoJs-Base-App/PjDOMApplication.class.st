@@ -21,18 +21,21 @@ Class {
 { #category : #description }
 PjDOMApplication class >> appClasses [
 	<pharoJsSkip>
-	^super appClasses, { PjHTMLCollection. PjNodeList}
+	
+	^ super appClasses, { PjHTMLCollection. PjNodeList}
 ]
 
 { #category : #description }
 PjDOMApplication class >> setupCode [
 	<pharoJsSkip>
-	^super setupCode, 'var global=global||this'
+	
+	^ super setupCode, 'var global=global||this'
 ]
 
 { #category : #accessing }
 PjDOMApplication >> document [
- ^document
+
+	^ document
 ]
 
 { #category : #'start-stop' }

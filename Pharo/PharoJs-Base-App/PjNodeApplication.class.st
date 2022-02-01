@@ -14,10 +14,11 @@ Class {
 { #category : #accessing }
 PjNodeApplication class >> headerLine [
 	<pharoJsSkip>
+	
 	^ '#! /usr/bin/env node'
 ]
 
-{ #category : #'start-stop application' }
+{ #category : #private }
 PjNodeApplication class >> whenJsReady: aBlock [
 	aBlock value
 ]

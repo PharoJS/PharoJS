@@ -22,18 +22,21 @@ Class {
 { #category : #description }
 PjApplication class >> appClass [
 	<pharoJsSkip>
+	
 	^ self
 ]
 
 { #category : #description }
 PjApplication class >> appClasses [
 	<pharoJsSkip>
+
 	^ self appClass withAllSuperclasses
 ]
 
 { #category : #description }
 PjApplication class >> appLaunchBlock [
 	<pharoJsSkip>
+
 	| appClass |
 	appClass := self.
 	^[ appClass start ] asClosedBlock
@@ -42,56 +45,69 @@ PjApplication class >> appLaunchBlock [
 { #category : #description }
 PjApplication class >> appPackages [
 	<pharoJsSkip>
+	
 	^ Set new
 ]
 
 { #category : #'instance creation' }
 PjApplication class >> currentInstance [
+
 	^ currentInstance
 ]
 
 { #category : #accessing }
 PjApplication class >> headerLine [
 	<pharoJsSkip>
-	^nil
+	
+	^ nil
 ]
 
 { #category : #accessing }
 PjApplication class >> pharoJsSelectorPrefix [
 	<pharoJsSkip>
+	
 	^ 'pj_'
 ]
 
 { #category : #'instance creation' }
 PjApplication class >> resetCurrentInstance [
-	currentInstance := nil.
+	<script>
+	
+	currentInstance := nil
 ]
 
 { #category : #description }
 PjApplication class >> setupCode [
 	<pharoJsSkip>
-		^''
+	
+	^ ''
 ]
 
 { #category : #'start-stop application' }
 PjApplication class >> start [
+	<script>
+	
 	self whenJsReady: [ self startInstance ]
 ]
 
-{ #category : #'start-stop application' }
+{ #category : #private }
 PjApplication class >> startInstance [
+	
 	self currentInstance ifNil: [ currentInstance := self new ].
 	self currentInstance start
 ]
 
 { #category : #'start-stop application' }
 PjApplication class >> stop [
-	self currentInstance ifNil: [^self].
-	self currentInstance stop.
+	<script>
+	
+	self currentInstance ifNil: [ ^ self ].
+	self currentInstance stop
 ]
 
-{ #category : #'start-stop application' }
+{ #category : #private }
 PjApplication class >> whenJsReady: aBlock [
+
 	self subclassResponsibility
 ]
 
