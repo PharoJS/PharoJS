@@ -1,7 +1,7 @@
 Class {
 	#name : #PhxJsonTestResources,
 	#superclass : #Object,
-	#category : #PharoJsSerializationTest
+	#category : #'PharoJs-Base-Serialization-Tests'
 }
 
 { #category : #tests }

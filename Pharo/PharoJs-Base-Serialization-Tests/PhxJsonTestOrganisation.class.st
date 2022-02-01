@@ -6,7 +6,7 @@ Class {
 		'name',
 		'legalForm'
 	],
-	#category : #PharoJsSerializationTest
+	#category : #'PharoJs-Base-Serialization-Tests'
 }
 
 { #category : #accessing }
