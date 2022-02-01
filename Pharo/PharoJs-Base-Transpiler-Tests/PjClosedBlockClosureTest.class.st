@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjClosedBlockClosureTest >> testBlockFreeVariables [
 	|x block closedBlock |
 	x := 1.
@@ -21,7 +21,7 @@ PjClosedBlockClosureTest >> testBlockFreeVariables [
 	self assert: closedBlock externalVariables equals: {#x->1. #instVar->42. #block->block. #closedBlock-> nil. #testSelector->testSelector. #expectedFails->expectedFails} asDictionary.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClosedBlockClosureTest >> testBlockReferencingTempInMethod [
 	|x closedBlock |
 	x := 1.
@@ -30,14 +30,14 @@ PjClosedBlockClosureTest >> testBlockReferencingTempInMethod [
 	self assert: x equals: 1.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClosedBlockClosureTest >> testClosingClosedBlock [
 	| closedBlock |
 	closedBlock := [] asClosedBlock.
 	self assert: closedBlock asClosedBlock == closedBlock.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClosedBlockClosureTest >> testNestedBlockReferencingTempInMethod [
 	|x closedBlock |
 	x := 1.
@@ -46,7 +46,7 @@ PjClosedBlockClosureTest >> testNestedBlockReferencingTempInMethod [
 	self assert: x equals: 1.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClosedBlockClosureTest >> testNestedBlockReferencingTempInOuterBlock [
 	| xBlock closedBlock |
 	xBlock := [|x|

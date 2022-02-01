@@ -9,7 +9,7 @@ PjClassExtensionTranspilationTest >> classToTranspile [
 	^ PjClassExtensionForTest
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassExtensionTranspilationTest >> testClassExtension [
 	self deny: self jsCode includes: self classToTranspile name.
 	self deny: self jsCode includes: 'function ', self classToTranspile name, '(){}'.
@@ -19,7 +19,7 @@ PjClassExtensionTranspilationTest >> testClassExtension [
 		self deny: self jsCode includes: selector]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassExtensionTranspilationTest >> testJavascriptInitialize [
 	self assertClassMethod: #javascriptInitialize equals: '(){return this}'.
 	self assert: self jsCode includes: PjClassForTranspilationTest name, '._javascriptInitialize()'.

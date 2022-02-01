@@ -45,12 +45,12 @@ PjAbstractAstTest class >> isAbstract [
 	^ self = PjAbstractAstTest
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjAbstractAstTest >> apply: aPjJavascriptAstNode selector: aSelector [
 	^ self apply: aPjJavascriptAstNode selector: aSelector nonNil: aPjJavascriptAstNode isNonNil
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjAbstractAstTest >> apply: aPjJavascriptAstNode selector: aSelector nonNil: nonNil [
 	^ PjApplyNode func: (PjFieldNode target: aPjJavascriptAstNode selectorNode: (PjMessageSelectorNode identifier: aSelector asSymbol) isNonNil: nonNil)
 		args: #()
@@ -97,7 +97,7 @@ PjAbstractAstTest >> setUp [
 	iv2ForTest := PjInstanceVariableNode identifier: #iv2ForTest.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjAbstractAstTest >> simpleBlock: objectOrCollection locals: anArray [
 	^ PjBlockNode 
 		parameters: #()

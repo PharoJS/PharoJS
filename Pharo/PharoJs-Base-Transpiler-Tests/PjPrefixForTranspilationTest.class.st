@@ -9,12 +9,12 @@ PjPrefixForTranspilationTest >> classToTranspile [
 	^ PjClassForDefinitionTest
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjPrefixForTranspilationTest >> selectorsPrefix [
 	^ 'altPrefix_'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjPrefixForTranspilationTest >> testPrefix [
 	| pjPrefix |
 	pjPrefix := self selectorsPrefix.

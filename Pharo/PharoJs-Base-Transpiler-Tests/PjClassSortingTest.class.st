@@ -8,19 +8,19 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> assert: aClass isBefore: bClass [
 	self assert: (self should: aClass initializeBefore: bClass).
 	self deny: (self should: bClass initializeBefore: aClass)
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> assert: aClass isUnrelatedTo: bClass [
 	self deny: (self should: aClass initializeBefore: bClass).
 	self deny: (self should: bClass initializeBefore: aClass)
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> checkInheritanceOrdered: sorted [
 	sorted
 		withIndexDo: [ :first :index | 
@@ -31,7 +31,7 @@ PjClassSortingTest >> checkInheritanceOrdered: sorted [
 					assert: ((second inheritsFrom: first) or: [ (first inheritsFrom: second) not ]) ] ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> checkInitializationOrdered: sorted [
 	sorted
 		withIndexDo: [ :first :index | 
@@ -42,7 +42,7 @@ PjClassSortingTest >> checkInitializationOrdered: sorted [
 					assert: ((self does: second reference: first) or: [ (self does: first reference: second) not ]) ] ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> does: classB reference: classA [
 
 	| classesReferencingA |
@@ -65,13 +65,13 @@ PjClassSortingTest >> setUp [
 	transpiler := PjTranspiler new.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> should: bClass initializeBefore: aClass [
 	^ transpiler should: bClass occurBefore: aClass with: [ : first : last |
 		transpiler does: last reference: first ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> testClassInheritenceBasedOrdering [
 	| sorted classes |
 	classes := Object withAllSuperclasses asIdentitySet
@@ -84,7 +84,7 @@ PjClassSortingTest >> testClassInheritenceBasedOrdering [
 	self checkInheritanceOrdered: sorted.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> testClassIntializationOrdering [
 	| sorted classes |
 	classes := {
@@ -104,7 +104,7 @@ PjClassSortingTest >> testClassIntializationOrdering [
 	self checkInheritanceOrdered: sorted.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassSortingTest >> testShouldInitializeBefore [
 	| relationships classes |
 	relationships := {

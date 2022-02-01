@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassNamingTest >> testClassNeedsCreation [
 	self deny: Object needsClassDefinition.
 	self deny: BlockClosure needsClassDefinition.

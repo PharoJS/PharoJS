@@ -7,26 +7,26 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> addSome [
 	converter addAllConversions: (#(2 6 4) collect: [ : i | PjNullMessageConversionForTest new order: i selector: #foo]).
 	converter addAllConversions: (#(8 4) collect: [ : i | PjNullMessageConversionForTest new order: i selector: #bar])
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> convert: selector receiver: aLiteral args: args [
 	| receiverAstNode |
 	receiverAstNode := RBLiteralNode value: aLiteral.
 	^converter convert: selector receiver: receiverAstNode args: args
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> setUp [
 	super setUp.
 	converter := PjMessageConverter new.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> testAdd [
 	self addSome.
 	self assert: (self convert: #bar receiver: 5 args: #()) equals: 8.
@@ -34,12 +34,12 @@ PjMessageConversionTest >> testAdd [
 	self assert: (self convert: #bar receiver: 5 args: #()) equals: 6
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> testEmpty [
 	self assert: (self convert: #foo receiver: nil args: #()) equals: nil
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> testRemove [
 	self addSome.
 	self assert: (self convert: #foo receiver: 3 args: #()) equals: 4.
@@ -50,7 +50,7 @@ PjMessageConversionTest >> testRemove [
 	self assert: (self convert: #foo receiver: 3 args: #()) equals: nil
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMessageConversionTest >> testSome [
 	self addSome.
 	self assert: (self convert: #foo receiver: 3 args: #()) equals: 4.

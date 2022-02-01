@@ -14,7 +14,7 @@ PjClassDefinitionTranspilationTest >> expectedClassName [
 	^self classToTranspile name
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjClassDefinitionTranspilationTest >> testClassDefinedAsConstructor [
 	self assert: self jsCode includes: 'Object._subclass_("',className, '");'.
 ]

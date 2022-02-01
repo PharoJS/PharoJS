@@ -10,12 +10,12 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #checking }
 PjTranspilationClassCompilationTest >> assert: codeString1 appearsBefore: codeString2 [
 	self assert: (self jsCode includes: codeString1 before: codeString2 )
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjTranspilationClassCompilationTest >> assert: aString includes: mName then: mString [
 	| pName pString pEnd |
 	pName := aString findString: mName startingAt: 1.
@@ -26,12 +26,12 @@ PjTranspilationClassCompilationTest >> assert: aString includes: mName then: mSt
 	self assert: pString < pEnd.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjTranspilationClassCompilationTest >> convertAllClasses: classes [
 	^transpiler convertAllClasses: classes;jsCode
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjTranspilationClassCompilationTest >> generateJsCodeForClasses: classes [
 	self classToTranspile: classes last.
 	self jsCode: (self convertAllClasses: classes)

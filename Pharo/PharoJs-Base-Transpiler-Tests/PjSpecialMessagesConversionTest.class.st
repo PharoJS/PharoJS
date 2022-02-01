@@ -16,7 +16,7 @@ PjSpecialMessagesConversionTest >> setUp [
 	messageConverter := converter messageConverter.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSpecialMessagesConversionTest >> testCascade [
 	| temp assignment |
 	messageConverter addAllConversions: { PjJsAtConversion. PjJsAtPutConversion}.
@@ -39,25 +39,25 @@ PjSpecialMessagesConversionTest >> testCascade [
 			})
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSpecialMessagesConversionTest >> testJsAt [
 	messageConverter addConversion: PjJsAtConversion.
 	self assertContentsOf: [ self js_at:  3 ] convertsTo: (PjFieldNode target: selfNode selectorNode: three isNonNil: true)
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSpecialMessagesConversionTest >> testJsAtPut [
 	messageConverter addConversion: PjJsAtPutConversion.
 	self assertContentsOf: [ self js_at:  3 put: 2] convertsTo: (PjAssignNode target: (PjFieldNode target: selfNode selectorNode: three isNonNil: true) expression: two)
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSpecialMessagesConversionTest >> testJsThis [
 	messageConverter addConversion: PjJsThisConversion.
 	self assertContentsOf: [ self js_this ] convertsTo: (PjGlobalNode identifier: #this)
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSpecialMessagesConversionTest >> testMessageConversionPerformed [
 	messageConverter addAllConversions: (#(2 6 4) collect: [ : i | PjNullMessageConversionForTest new order: i selector: #foo]).
 	self assertContentsOf: [ 3 foo ] convertsTo: 4.

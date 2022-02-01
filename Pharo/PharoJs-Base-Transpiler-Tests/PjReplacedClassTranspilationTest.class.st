@@ -12,7 +12,7 @@ PjReplacedClassTranspilationTest >> classToTranspile [
 	^ PjReplacedClassForTest
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjReplacedClassTranspilationTest >> testClassReplacement [
 	self deny: self jsCode includes: 'function ', className, '(){}'.
 "We use defineProperty. See PjTranspiler>>#writeMethodsOf:named:with:"

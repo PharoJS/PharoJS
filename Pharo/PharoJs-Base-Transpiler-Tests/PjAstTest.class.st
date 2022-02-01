@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjAstTest >> testAstArraySimilarility [
 	| astArray1 astArray2 astArray3 astArray4 astArray5 |
 	astArray1 := PjArrayNode expressions: { one. two. three }.
@@ -21,7 +21,7 @@ PjAstTest >> testAstArraySimilarility [
 	self deny:  (astArray4 isSimilarTo: astArray5).
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjAstTest >> testAstMessageSimilarility [
 	
 	| astArray1 astArray2 astArray3 astCall1 astCall2 astCall3 astCall4 astCall5 |
@@ -47,7 +47,7 @@ PjAstTest >> testAstMessageSimilarility [
 	self deny:  (astCall4 isSimilarTo: astCall5).
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjAstTest >> testAstSelfSimilarility [
 	self assert: (selfNode isSimilarTo: PjSelfNode new). "keep the creation"
 	self deny: (selfNode isSimilarTo: two).

@@ -10,21 +10,21 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #checking }
 PjAstConverterTest >> assertContentsOf: aBlock convertsTo: expectedJsAst [
 	| actualJsAst |
 	actualJsAst := self convertFirstStatementOfBlock: aBlock.
 	self assert: actualJsAst equals: expectedJsAst.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjAstConverterTest >> assertMethod: methodSymbol convertsTo: expectedJsAst [
 	| actualJsAst |
 	actualJsAst := converter convertFirstStatementOfBlock: (PjClassForAstConversionTest>>methodSymbol) ast.
 	self assert: actualJsAst equals: expectedJsAst.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjAstConverterTest >> convertFirstStatementOfBlock: aBlock [
 	^ converter convertFirstStatementOfBlock: aBlock firstAstNode
 ]
@@ -38,7 +38,7 @@ PjAstConverterTest >> discoveredMessage: aString [
 PjAstConverterTest >> discoveredReferenceToClass: aClass [
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjAstConverterTest >> failConverting: aBlock [
 	self should: [ self convertFirstStatementOfBlock: aBlock ] raise: Exception
 ]

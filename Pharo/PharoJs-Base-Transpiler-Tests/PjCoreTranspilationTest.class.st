@@ -9,17 +9,17 @@ PjCoreTranspilationTest >> classToTranspile [
 	^ self transpilerClass coreClass
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCoreTranspilationTest >> testClassSideMethods [
 	self assertClassMethod: #at:put: equals: '(jsName,anObject){return global[jsName]=anObject}'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCoreTranspilationTest >> testInstanceSideMethods [
 	self assert: self classToTranspile methodDict size equals: 0
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCoreTranspilationTest >> testOptimizedJsAt [
 	| method asNil |
 	asNil := PjStringGenerator nilTestFunctionName.
