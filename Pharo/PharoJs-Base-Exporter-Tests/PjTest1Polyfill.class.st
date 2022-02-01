@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'Foobar'
 	],
-	#category : #'PharoJsExporterTests-Support'
+	#category : #'PharoJs-Base-Exporter-Tests-Support'
 }
 
 { #category : #polyfill }

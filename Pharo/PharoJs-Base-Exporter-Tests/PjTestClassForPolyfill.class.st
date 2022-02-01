@@ -4,7 +4,7 @@ Class {
 	#pools : [
 		'PjTest2Polyfill'
 	],
-	#category : #'PharoJsExporterTests-Support'
+	#category : #'PharoJs-Base-Exporter-Tests-Support'
 }
 
 { #category : #accessing }

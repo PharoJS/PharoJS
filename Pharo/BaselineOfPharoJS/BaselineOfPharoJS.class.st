@@ -28,9 +28,9 @@ BaselineOfPharoJS >> baseline: spec [
 				spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge-Tests' 'PharoJs-Base-Transpiler-Tests'). ].
 		
 		"Exporter"		
-		spec	"PharoJsExporter"
-			package: 'PharoJs-Base-Exporter' with: [
-				spec requires: #('PharoJs-Base-Transpiler' 'PharoJs-Base-App' ). ].				
+		spec	
+			package: 'PharoJs-Base-Exporter' with: [ spec requires: #('PharoJs-Base-Transpiler' 'PharoJs-Base-App' ) ];
+			package: 'PharoJs-Base-Exporter-Tests' with: [ spec requires: #('PharoJs-Base-Exporter' 'PharoJs-Base-Transpiler-Tests') ].					
 				
 		"Bridge"	  
 		spec 	
@@ -71,10 +71,7 @@ BaselineOfPharoJS >> baseline: spec [
 			package: 'PharoJsSerializationTest' with: [
 				spec requires: #('PharoJsSerialization' 'PharoJs-Base-Bridge-Tests')]; 
 			package: 'PharoJsSerializationDeprecated' with: [
-				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' ) ]; 
-
-			package: 'PharoJsExporterTests' with: [
-				spec requires: #('PharoJs-Base-Exporter' 'PharoJs-Base-Transpiler-Tests') ]. 
+				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' ) ].
 	]
 ]
 

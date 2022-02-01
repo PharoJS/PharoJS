@@ -7,7 +7,7 @@ Class {
 		'exporter',
 		'jsCode'
 	],
-	#category : #'PharoJsExporterTests-Tests'
+	#category : #'PharoJs-Base-Exporter-Tests-Tests'
 }
 
 { #category : #running }
