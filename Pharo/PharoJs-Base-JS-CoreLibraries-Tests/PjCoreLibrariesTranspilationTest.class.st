@@ -1,7 +1,7 @@
 Class {
 	#name : #PjCoreLibrariesTranspilationTest,
 	#superclass : #PjTranspilationClassCompilationTest,
-	#category : #'PharoJsCoreLibrariesTest-Collections'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
 { #category : #testing }

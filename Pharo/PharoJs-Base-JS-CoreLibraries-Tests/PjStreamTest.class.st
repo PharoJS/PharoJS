@@ -4,7 +4,7 @@ I contain test for the simplistic Read/Write Stream implementation
 Class {
 	#name : #PjStreamTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #'PharoJsCoreLibrariesTest-Collections'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
 { #category : #testing }

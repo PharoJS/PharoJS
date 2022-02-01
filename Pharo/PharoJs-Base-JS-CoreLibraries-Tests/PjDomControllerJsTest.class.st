@@ -3,7 +3,7 @@ Class {
 	#superclass : #PjDomControllerPharoTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#category : #'PharoJsCoreLibrariesTest-Controllers'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Controllers'
 }
 
 { #category : #testing }

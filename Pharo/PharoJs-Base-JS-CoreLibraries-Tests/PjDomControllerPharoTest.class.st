@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'domElement'
 	],
-	#category : #'PharoJsCoreLibrariesTest-Controllers'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Controllers'
 }
 
 { #category : #'suite parameters' }

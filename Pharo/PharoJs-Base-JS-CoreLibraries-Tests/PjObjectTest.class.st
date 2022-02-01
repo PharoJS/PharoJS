@@ -1,7 +1,7 @@
 Class {
 	#name : #PjObjectTest,
 	#superclass : #PjBridgeTestCase,
-	#category : #'PharoJsCoreLibrariesTest-Objects'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Objects'
 }
 
 { #category : #testing }

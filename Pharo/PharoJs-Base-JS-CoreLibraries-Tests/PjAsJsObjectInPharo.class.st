@@ -1,7 +1,7 @@
 Class {
 	#name : #PjAsJsObjectInPharo,
 	#superclass : #TestCase,
-	#category : #'PharoJsCoreLibrariesTest-Collections'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
 { #category : #tests }

@@ -8,7 +8,7 @@ Class {
 		'objectNoIvs',
 		'objectWithIvs'
 	],
-	#category : #'PharoJsCoreLibrariesTest-Collections'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
 { #category : #'instance creation' }
