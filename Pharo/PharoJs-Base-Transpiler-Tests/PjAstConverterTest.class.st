@@ -10,6 +10,12 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
+{ #category : #testing }
+PjAstConverterTest class >> isAbstract [ 
+
+	^ self = PjAstConverterTest
+]
+
 { #category : #checking }
 PjAstConverterTest >> assertContentsOf: aBlock convertsTo: expectedJsAst [
 	| actualJsAst |
