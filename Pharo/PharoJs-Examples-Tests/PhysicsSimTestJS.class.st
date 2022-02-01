@@ -3,5 +3,5 @@ Class {
 	#superclass : #PhysicsSimTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#category : #'PharoJs-Examples-PhysicsSimulation'
+	#category : #'PharoJs-Examples-Tests-PhysicsSimulation'
 }

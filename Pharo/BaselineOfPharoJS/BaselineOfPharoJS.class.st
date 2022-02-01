@@ -41,7 +41,9 @@ BaselineOfPharoJS >> baseline: spec [
 		"Examples"	
 		spec	
 			package: 'PharoJs-Examples' with: [
-				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' 'PharoJsExporter') ].			
+				spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJsTestFramework' 'PharoJsExporter') ];
+			package: 'PharoJs-Examples-Tests' with: [
+				spec requires: #('PharoJs-Examples' 'PharoJsTestFramework') ].						
 							
 		"Other"   
 		spec

@@ -1,7 +1,7 @@
 Class {
 	#name : #PhysicsSimTest,
 	#superclass : #PjWebAppTestCase,
-	#category : #'PharoJs-Examples-PhysicsSimulation'
+	#category : #'PharoJs-Examples-Tests-PhysicsSimulation'
 }
 
 { #category : #'suite parameters' }

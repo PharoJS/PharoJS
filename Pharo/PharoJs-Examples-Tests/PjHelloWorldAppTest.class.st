@@ -8,7 +8,7 @@ Class {
 		'sayHelloButton',
 		'greetingMessageContainer'
 	],
-	#category : #'PharoJs-Examples-HelloWorld'
+	#category : #'PharoJs-Examples-Tests-HelloWorld'
 }
 
 { #category : #'suite parameters' }

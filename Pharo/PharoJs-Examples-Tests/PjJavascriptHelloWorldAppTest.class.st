@@ -3,5 +3,5 @@ Class {
 	#superclass : #PjHelloWorldAppTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#category : #'PharoJs-Examples-HelloWorld'
+	#category : #'PharoJs-Examples-Tests-HelloWorld'
 }
