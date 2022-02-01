@@ -20,6 +20,6 @@ PjSTONReaderTest >> testNaN [
 ]
 
 { #category : #tests }
-PjSTONReaderTest >> testNegInfinity [
+PjSTONReaderTest >> testNegativeInfinity [
 	self assert: (self materialize: '-Infinity') equals: Float infinity negated
 ]
