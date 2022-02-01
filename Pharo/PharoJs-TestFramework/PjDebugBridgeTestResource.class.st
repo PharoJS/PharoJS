@@ -1,7 +1,7 @@
 Class {
 	#name : #PjDebugBridgeTestResource,
 	#superclass : #PjBridgeTestResource,
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #running }

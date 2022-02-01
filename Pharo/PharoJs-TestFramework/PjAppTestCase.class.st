@@ -10,7 +10,7 @@ Class {
 	#pools : [
 		'PjUniversalGlobals'
 	],
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #'suite parameters' }

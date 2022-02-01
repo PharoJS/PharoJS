@@ -6,7 +6,7 @@ Another use is when defining variants of  the  same app, typically for experimen
 "
 Trait {
 	#name : #PjTAppFolderSharingSubclass,
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #exporting }

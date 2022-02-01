@@ -1,5 +1,5 @@
 Class {
 	#name : #PjServerAppTestCase,
 	#superclass : #PjAppTestCase,
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }

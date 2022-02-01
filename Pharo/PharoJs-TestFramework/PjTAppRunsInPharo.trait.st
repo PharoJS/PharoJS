@@ -4,7 +4,7 @@ This trait makes a test case run the app under test on the Pharo VM. Only third 
 "
 Trait {
 	#name : #PjTAppRunsInPharo,
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #testing }

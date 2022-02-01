@@ -4,7 +4,7 @@ Class {
 	#pools : [
 		'PjBrowserGlobals'
 	],
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #asserting }

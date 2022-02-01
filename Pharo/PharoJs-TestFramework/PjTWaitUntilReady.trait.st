@@ -1,6 +1,6 @@
 Trait {
 	#name : #PjTWaitUntilReady,
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #waiting }

@@ -5,7 +5,7 @@ This trait makes a test case export the app under test to JS and control it remo
 "
 Trait {
 	#name : #PjTAppRunsInJS,
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #testing }

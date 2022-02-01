@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'currentAppClass'
 	],
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #description }

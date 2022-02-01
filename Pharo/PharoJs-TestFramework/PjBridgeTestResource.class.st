@@ -6,7 +6,7 @@ Class {
 		'appClass',
 		'execEnv'
 	],
-	#category : #'PharoJsTestFramework-Kernel'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #running }

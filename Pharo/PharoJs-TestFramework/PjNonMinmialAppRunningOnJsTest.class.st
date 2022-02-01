@@ -3,5 +3,5 @@ Class {
 	#superclass : #PjNonMinmialAppRunningOnPharoTest,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
-	#category : #'PharoJsTestFramework-Test'
+	#category : #'PharoJs-TestFramework-Test'
 }

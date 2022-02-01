@@ -1,7 +1,7 @@
 Class {
 	#name : #PjNonMinmialAppRunningOnPharoTest,
 	#superclass : #PjWebAppTestCase,
-	#category : #'PharoJsTestFramework-Test'
+	#category : #'PharoJs-TestFramework-Test'
 }
 
 { #category : #'suite parameters' }
