@@ -14,7 +14,7 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #'initialization-release' }
+{ #category : #'class initialization' }
 PjBlockTranspilationTest class >> initialize [
 	SomeClassVar := 'SomeClassVariable'
 ]
