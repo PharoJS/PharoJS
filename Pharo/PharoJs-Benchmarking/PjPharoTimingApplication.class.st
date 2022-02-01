@@ -14,19 +14,20 @@ Class {
 	#category : #'PharoJs-Benchmarking-Application'
 }
 
-{ #category : #'as yet unclassified' }
-PjPharoTimingApplication class >> time [
+{ #category : #'start-stop application' }
+PjPharoTimingApplication class >> start [
 	<script>
+	
 	Transcript clear.
 	PjTimingApplication runTimings: self new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PjPharoTimingApplication >> initialize [
 	printedIterations := iterations := 1000000
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> iterations [
 	^ iterations
 ]
@@ -36,22 +37,22 @@ PjPharoTimingApplication >> log: aString [
 	Transcript show: aString;cr.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> prefix: aString [
 	prefix := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> runs [
 	^ 10
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> time [
 	PjTimingApplication allTimingOn: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> time: aString with: aBlock ratio: ratio [
 	| iters |
 	iters := (iterations * ratio) asInteger.
@@ -69,7 +70,7 @@ PjPharoTimingApplication >> time: aString with: aBlock ratio: ratio [
 		cr
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjPharoTimingApplication >> warmups [
 	^ 0
 ]

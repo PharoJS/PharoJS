@@ -19,16 +19,19 @@ Class {
 { #category : #exporting }
 PjTimingPlatformApp class >> appJsFileName [
 	<pharoJsSkip>
+	
 	^ 'timing.js'
 ]
 
 { #category : #timing }
 PjTimingPlatformApp class >> excessiveVariance: results [
+
 	^ false
 ]
 
 { #category : #timing }
 PjTimingPlatformApp class >> findBaseIterations: aBlock and: aBlock2 min: mintime [
+
 	| elapsed |
 	elapsed := 0.
 	[ (elapsed := (self timeBlock: aBlock) + (self timeBlock: aBlock2) / 2) < mintime ] whileTrue: [
@@ -43,6 +46,7 @@ PjTimingPlatformApp class >> findBaseIterations: aBlock and: aBlock2 min: mintim
 
 { #category : #timing }
 PjTimingPlatformApp class >> findStableTiming: aBlock [
+
 	| results |
 	results := #().
 	[ results size < minimumTrials or: [ self excessiveVariance: results ]] whileTrue: [
@@ -53,17 +57,20 @@ PjTimingPlatformApp class >> findStableTiming: aBlock [
 
 { #category : #'for testing' }
 PjTimingPlatformApp class >> ifFalseExample: arg [
+
 	arg < 10 ifFalse: [ ^ arg ]
 ]
 
 { #category : #'for testing' }
 PjTimingPlatformApp class >> ifTrueExample: arg [
+
 	arg >= 10 ifTrue: [ ^ arg ]
 ]
 
 { #category : #public }
 PjTimingPlatformApp class >> playgroundDoNotList [
 	< pharoJsSkip >
+
 ]
 
 { #category : #'start-stop application' }

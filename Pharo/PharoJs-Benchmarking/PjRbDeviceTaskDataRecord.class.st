@@ -12,7 +12,7 @@ PjRbDeviceTaskDataRecord class >> create [
     ^super new create
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbDeviceTaskDataRecord >> create [
     pending := nil
 ]

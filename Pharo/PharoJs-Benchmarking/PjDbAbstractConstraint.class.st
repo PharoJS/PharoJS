@@ -28,7 +28,7 @@ PjDbAbstractConstraint >> addConstraint [
 	"Activate this constraint and attempt to satisfy it."
 
 	self addToGraph.
-	PjDbPlanner current incrementalAdd: self.
+	PjDbPlanner current incrementalAdd: self
 ]
 
 { #category : #'add/remove' }
@@ -54,7 +54,7 @@ PjDbAbstractConstraint >> destroyConstraint [
 
 	(self isSatisfied) ifTrue: [PjDbPlanner current incrementalRemove: self].
 	self removeFromGraph.
-	self release.
+	self release
 ]
 
 { #category : #planning }
@@ -105,8 +105,7 @@ PjDbAbstractConstraint >> isSatisfied [
 
 { #category : #printing }
 PjDbAbstractConstraint >> longPrintOn: aStream [
-
-	| bindings |
+	 
 	aStream nextPut: $(.
 	self shortPrintOn: aStream.
 	aStream space; nextPutAll: self strength printString.

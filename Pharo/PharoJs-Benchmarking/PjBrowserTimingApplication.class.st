@@ -14,71 +14,86 @@ Class {
 	#category : #'PharoJs-Benchmarking-Application'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - description' }
 PjBrowserTimingApplication class >> appClasses [
 	<pharoJsSkip>
-	^ super appClasses, 
-		{ PjTimingApplication }
+	
+	^ super appClasses , { PjTimingApplication }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #settings }
 PjBrowserTimingApplication class >> playgroundDoNotList [
-	< pharoJsSkip >
+	<pharoJsSkip>
+	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'start-stop application' }
 PjBrowserTimingApplication class >> start [
+	<script>
+	
 	PjTimingApplication runTimings: self new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PjBrowserTimingApplication >> initialize [
+
+	super initialize.
 	printedIterations := iterations := 1000000
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> iterations [
+
 	^ iterations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> log: aString [
+
 	console log: aString.
 	(document getElementById: #log) ifNotNil: [ : log | log innerHTML: log innerHTML, aString ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> prefix: aString [
+
 	prefix := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> runs [
+
 	^ 10
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> time [
+
 	PjTimingApplication allTimingOn: self.
 	PjTimingApplication jsTimingOn: self top: document.
 	PjTimingApplication browserTimingOn: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> time: aString with: aBlock ratio: ratio [
+
 	| iters |
 	iters := (iterations * ratio) asInteger.
 	iters isZero ifTrue: [ iters := 1 ].
-	printedIterations = iters ifFalse: [
-		Transcript show: 'Running ';show: iters;show: ' iterations';cr.
-		printedIterations := iters
-	].
-	console time: prefix,aString.
+	printedIterations = iters ifFalse: [ 
+		Transcript
+			show: 'Running ';
+			show: iters;
+			show: ' iterations';
+			cr.
+		printedIterations := iters ].
+	console time: prefix , aString.
 	iters timesRepeat: aBlock.
-	console timeEnd: prefix,aString
+	console timeEnd: prefix , aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjBrowserTimingApplication >> warmups [
+
 	^ 5
 ]

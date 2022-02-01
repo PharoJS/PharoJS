@@ -64,14 +64,14 @@ PjRbTaskState >> isWaitingWithPacket [
     ^packetPendingIV and: [taskWaiting and: [taskHolding not]]
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbTaskState >> packetPending [
     packetPendingIV := true.
     taskWaiting := false.
     taskHolding := false
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbTaskState >> running [
     packetPendingIV := taskWaiting := taskHolding := false
 ]
@@ -86,13 +86,13 @@ PjRbTaskState >> taskWaiting: aBoolean [
     taskWaiting := aBoolean
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbTaskState >> waiting [
     packetPendingIV := taskHolding := false.
     taskWaiting := true
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbTaskState >> waitingWithPacket [
     taskHolding := false.
     taskWaiting := packetPendingIV := true

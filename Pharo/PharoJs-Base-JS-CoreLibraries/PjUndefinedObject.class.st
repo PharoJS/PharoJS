@@ -7,13 +7,13 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
-{ #category : #initialize }
+{ #category : #'class initialization' }
 PjUndefinedObject class >> identityHash_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'return ', nil identityHash asString
 ]
 
-{ #category : #initialize }
+{ #category : #'class initialization' }
 PjUndefinedObject class >> javascriptInitialize [
 	PjCore nilInJs: self basicNew
 ]
@@ -33,7 +33,7 @@ PjUndefinedObject class >> jsTranspilationImportMethods [
 		      isNotNil notNil isEmptyOrNil isLiteral printOn: )) }
 ]
 
-{ #category : #initialize }
+{ #category : #'class initialization' }
 PjUndefinedObject class >> new [
 	^PjCore signal: 'cannot create instances of UndefinedObject'
 ]

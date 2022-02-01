@@ -18,14 +18,14 @@ Class {
 	#category : #'PharoJs-Base-App'
 }
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjDOMApplication class >> appClasses [
 	<pharoJsSkip>
 	
 	^ super appClasses, { PjHTMLCollection. PjNodeList}
 ]
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjDOMApplication class >> setupCode [
 	<pharoJsSkip>
 	

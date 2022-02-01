@@ -27,9 +27,9 @@ PjTimingApplication class >> allTimingOn: timer [
 	self on: timer time: 'add-y' with: [ x := x + y ].
 	self on: timer time: 'add-expr' with: [ x := x + instance one ].
 	self on: timer time: 'fieldSetI' with: [ y := instance index: 3 ].
-	self on: timer time: 'fieldSetV' with: [ y := instance instVarNamed:#index put: 3].
+	self on: timer time: 'fieldSetV' with: [ y := instance instVarNamed: #index put: 3].
 	self on: timer time: 'fieldGetI' with: [ y := instance index ].
-	self on: timer time: 'fieldGetV' with: [ y := instance instVarNamed:#index ].
+	self on: timer time: 'fieldGetV' with: [ y := instance instVarNamed: #index ].
 	self on: timer time: 'message' with: [ instance ten ].
 	self on: timer time: 'cond-return' with: [ instance conditionalReturn ].
 	self on: timer time: 'nonlocal' with: [ instance nonlocalReturn ].
@@ -42,7 +42,7 @@ PjTimingApplication class >> allTimingOn: timer [
 		PjDbPlanner chainTest: 100. 
 		PjDbPlanner projectionTest: 100
 	] ratio: 0.0003.
-	self on: timer time: 'Richards' with: [ PjRbBenchmark start ] ratio: 0.00005.
+	self on: timer time: 'Richards' with: [ PjRbBenchmark start ] ratio: 0.00005
 ]
 
 { #category : #timings }
@@ -56,10 +56,10 @@ PjTimingApplication class >> jsTimingOn: timer top: top [
 	x := self makeObject.
 	y := 0.
 	self on: timer time: 'fieldSet' with: [ x index: 1 ].
-	self on: timer time: 'fieldSetN' with: [ x js_at:#index put: 1 ].
+	self on: timer time: 'fieldSetN' with: [ x js_at: #index put: 1 ].
 	self on: timer time: 'fieldSetX' with: [ x instVarNamed:#index put: 1 ].
 	self on: timer time: 'fieldGet' with: [ y := x index ].
-	self on: timer time: 'fieldGetN' with: [ y := x js_at:#index ].
+	self on: timer time: 'fieldGetN' with: [ y := x js_at: #index ].
 	self on: timer time: 'fieldGetX' with: [ y := x instVarNamed:#index ]
 ]
 
@@ -76,70 +76,73 @@ PjTimingApplication class >> nodeTimingOn: timer [
 
 { #category : #running }
 PjTimingApplication class >> on: aTimingApp time: desc with: block [
+
 	self on: aTimingApp time: desc with: block ratio: 1
 ]
 
 { #category : #running }
 PjTimingApplication class >> on: aTimingApp time: desc with: block ratio: ratio [
+
 	aTimingApp prefix: '(warmup)'.
-	aTimingApp warmups timesRepeat: [aTimingApp time: desc with: block ratio: ratio].
+	aTimingApp warmups timesRepeat: [ aTimingApp time: desc with: block ratio: ratio ].
 	aTimingApp prefix: ''.
-	aTimingApp runs timesRepeat: [aTimingApp time: desc with: block ratio: ratio]
+	aTimingApp runs timesRepeat: [ aTimingApp time: desc with: block ratio: ratio ]
 ]
 
 { #category : #running }
 PjTimingApplication class >> runTimings: aTimingApp [
+
 	aTimingApp log: 'Running ', aTimingApp iterations asString,' iterations'.
 	aTimingApp time.
 	aTimingApp log: 'Done'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> conditionalReturn [
 	self ten > 5 ifTrue: [ ^ #yes ].
 	^ #no
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> conditionalReturn2: aBlock [
 	self ten > 5 ifTrue: aBlock.
 	^ #no
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> conditionalReturn: aBlock [
 	self ten > 5 ifTrue: [aBlock value].
 	^ #no
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> index [
 	^ index
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> index: anInteger [
 	index := anInteger
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> nonlocalReturn [
 	self conditionalReturn: [ ^ #yes ].
 	^ #no
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> nonlocalReturn2 [
 	self conditionalReturn2: [ ^ #yes ].
 	^ #no
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> one [
 	^ 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> repeatLoop [
 	| x |
 	x := 0.
@@ -147,12 +150,12 @@ PjTimingApplication >> repeatLoop [
 	^ x
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> ten [
 	^ 7500
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> toDoLoop [
 	| x |
 	x := 0.
@@ -160,7 +163,7 @@ PjTimingApplication >> toDoLoop [
 	^ x
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> whileLoop [
 	| x y |
 	x := y := 0.
@@ -168,7 +171,7 @@ PjTimingApplication >> whileLoop [
 	^ x
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #cases }
 PjTimingApplication >> whileRemoteLoop [
 	| x y b1 b2 |
 	x := y := 0.

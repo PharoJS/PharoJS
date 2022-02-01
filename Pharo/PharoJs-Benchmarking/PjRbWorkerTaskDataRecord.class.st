@@ -23,7 +23,7 @@ PjRbWorkerTaskDataRecord >> count: aCount [
     count := aCount
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbWorkerTaskDataRecord >> create [
     destination := HandlerA.
     count := 0

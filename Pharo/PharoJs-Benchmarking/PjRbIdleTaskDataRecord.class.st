@@ -33,7 +33,7 @@ PjRbIdleTaskDataRecord >> count: aCount [
     count := aCount
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbIdleTaskDataRecord >> create [
     control := 1.
     count := 10000

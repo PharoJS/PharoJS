@@ -19,21 +19,21 @@ Class {
 	#category : #'PharoJs-Base-App'
 }
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjApplication class >> appClass [
 	<pharoJsSkip>
 	
 	^ self
 ]
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjApplication class >> appClasses [
 	<pharoJsSkip>
 
 	^ self appClass withAllSuperclasses
 ]
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjApplication class >> appLaunchBlock [
 	<pharoJsSkip>
 
@@ -42,7 +42,7 @@ PjApplication class >> appLaunchBlock [
 	^[ appClass start ] asClosedBlock
 ]
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjApplication class >> appPackages [
 	<pharoJsSkip>
 	
@@ -76,7 +76,7 @@ PjApplication class >> resetCurrentInstance [
 	currentInstance := nil
 ]
 
-{ #category : #description }
+{ #category : #'accessing - description' }
 PjApplication class >> setupCode [
 	<pharoJsSkip>
 	

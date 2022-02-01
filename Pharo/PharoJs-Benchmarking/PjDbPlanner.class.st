@@ -119,7 +119,7 @@ PjDbPlanner >> addConstraintsConsuming: v to: aCollection [
 	v constraints do:
 		[: c |
 		 ((c == determiningC) or: [c isSatisfied not]) ifFalse:
-			[aCollection add: c]].
+			[aCollection add: c]]
 ]
 
 { #category : #private }
@@ -152,12 +152,14 @@ PjDbPlanner >> addPropagate: c mark: mark [
 PjDbPlanner >> changeVar: aVariable newValue: newValue [
 
 	| editConstraint plan |
-	editConstraint := PjDbEditConstraint var: aVariable strength: #preferred.
+	editConstraint := PjDbEditConstraint
+		                  var: aVariable
+		                  strength: #preferred.
 	plan := self extractPlanFromConstraints: (Array with: editConstraint).
-	10 timesRepeat: [
+	10 timesRepeat: [ 
 		aVariable value: newValue.
-		plan execute].
-	editConstraint destroyConstraint.
+		plan execute ].
+	editConstraint destroyConstraint
 ]
 
 { #category : #private }
@@ -165,10 +167,9 @@ PjDbPlanner >> constraintsConsuming: v do: aBlock [
 
 	| determiningC |
 	determiningC := v determinedBy.
-	v constraints do:
-		[: c |
-		 ((c == determiningC) or: [c isSatisfied not]) ifFalse:
-			[aBlock value: c]].
+	v constraints do: [ :c | 
+		(c == determiningC or: [ c isSatisfied not ]) ifFalse: [ 
+			aBlock value: c ] ]
 ]
 
 { #category : #'planning/value propagation' }
@@ -178,24 +179,24 @@ PjDbPlanner >> extractPlanFromConstraints: constraints [
 
 	| sources |
 	sources := OrderedCollection new.
-	constraints do:
-		[: c | ((c isInput) and: [c isSatisfied]) ifTrue: [sources add: c]].
-	^self makePlan: sources
+	constraints do: [ :c | 
+		(c isInput and: [ c isSatisfied ]) ifTrue: [ sources add: c ] ].
+	^ self makePlan: sources
 ]
 
 { #category : #'planning/value propagation' }
 PjDbPlanner >> extractPlanFromVariables: variables [
+
 	"Extract a plan from the dataflow graph having the given variables. It
 	 is assumed that the given set of variables is complete, or at least
 	 that it contains all the input variables."
 
 	| sources |
 	sources := OrderedCollection new.
-	variables do:
-		[: v |
-		 (v constraints) do:
-			[: c | ((c isInput) and: [c isSatisfied]) ifTrue: [sources add: c]]].
-	^self makePlan: sources
+	variables do: [ :v | 
+		v constraints do: [ :c | 
+			(c isInput and: [ c isSatisfied ]) ifTrue: [ sources add: c ] ] ].
+	^ self makePlan: sources
 ]
 
 { #category : #'add/remove' }
@@ -239,14 +240,13 @@ PjDbPlanner >> incrementalRemove: c [
 	c markUnsatisfied.
 	c removeFromGraph.
 	unsatisfied := self removePropagateFrom: out.
-	unsatisfied do: [: u | self incrementalAdd: u].
+	unsatisfied do: [: u | self incrementalAdd: u]
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjDbPlanner >> initialize [
-	"Planner initialize"
 
-	currentMark := 1.
+	currentMark := 1
 ]
 
 { #category : #'planning/value propagation' }

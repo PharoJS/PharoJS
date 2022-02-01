@@ -253,12 +253,12 @@ PjRbBenchmark >> schedule [
 		    currentTask := currentTask runTask]]
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbBenchmark >> start [
     ^self start: false
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbBenchmark >> start: trace [
     | workQ mark1 mark2 mark3 mark4 |
     self initTrace: trace; initScheduler.

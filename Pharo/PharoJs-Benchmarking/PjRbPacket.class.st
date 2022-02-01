@@ -59,7 +59,7 @@ PjRbPacket >> link: aWorkQueue [
     link := aWorkQueue
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbPacket >> link: aLink identity: anIdentity kind: aKind [ 
     link := aLink.
     identity := anIdentity. 

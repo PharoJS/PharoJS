@@ -47,7 +47,7 @@ PjRbTaskControlBlock >> link [
     ^link
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbTaskControlBlock >> link: aLink identity: anIdentity priority: aPriority initialWorkQueue: anInitialWorkQueue initialState: anInitialState function: aBlock privateData: aPrivateData [ 
     link := aLink.
     identity := anIdentity.

@@ -13,7 +13,7 @@ PjRbHandlerTaskDataRecord class >> create [
     ^super new create
 ]
 
-{ #category : #initialize }
+{ #category : #initialization }
 PjRbHandlerTaskDataRecord >> create [
     workIn := deviceIn := nil
 ]
