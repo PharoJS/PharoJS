@@ -14,7 +14,7 @@ Class {
 		'launchArgs',
 		'globalsPools'
 	],
-	#category : #'PharoJsExporter-Kernel'
+	#category : #'PharoJs-Base-Exporter-Kernel'
 }
 
 { #category : #accessing }

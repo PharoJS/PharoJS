@@ -1,12 +1,12 @@
 Extension { #name : #Class }
 
-{ #category : #'*PharoJsExporter-App' }
+{ #category : #'*PharoJs-Base-Exporter-App' }
 Class >> allSharedPoolsRecursive [
 	"Answer a set of the pools the receiver shares, including those defined  in the superclasses of the receiver."
 	^ self allSharedPoolsRecursiveInto: Set new
 ]
 
-{ #category : #'*PharoJsExporter-App' }
+{ #category : #'*PharoJs-Base-Exporter-App' }
 Class >> allSharedPoolsRecursiveInto: aCollection [
 	"Add to the collection all of the pools the receiver shares, including those defined  in the superclasses of the receiver."
 	self inheritedSharedPools do: [ : each |
@@ -18,17 +18,17 @@ Class >> allSharedPoolsRecursiveInto: aCollection [
 	^ aCollection
 ]
 
-{ #category : #'*PharoJsExporter-App' }
+{ #category : #'*PharoJs-Base-Exporter-App' }
 Class >> inheritedSharedPools [
 	^ self allSharedPools
 ]
 
-{ #category : #'*PharoJsExporter' }
+{ #category : #'*PharoJs-Base-Exporter' }
 Class >> javascriptIsExportableClass [
 	^ true
 ]
 
-{ #category : #'*PharoJsExporter-App' }
+{ #category : #'*PharoJs-Base-Exporter-App' }
 Class >> sharedPoolOfVarNamedRecursive: aString [
 	"Returns the SharedPool or nil from which the pool variable named aString is coming from."
 	

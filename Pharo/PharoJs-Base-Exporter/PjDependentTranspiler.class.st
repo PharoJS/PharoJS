@@ -14,7 +14,7 @@ Class {
 		'alreadyVariablesDeclaredClasses',
 		'globalPools'
 	],
-	#category : #'PharoJsExporter-Kernel'
+	#category : #'PharoJs-Base-Exporter-Kernel'
 }
 
 { #category : #accessing }

@@ -4,7 +4,7 @@ I use PjTranspiler to export a PharoJs application to a file.
 Class {
 	#name : #PjFileExporter,
 	#superclass : #PjExporter,
-	#category : #'PharoJsExporter-Kernel'
+	#category : #'PharoJs-Base-Exporter-Kernel'
 }
 
 { #category : #exporting }

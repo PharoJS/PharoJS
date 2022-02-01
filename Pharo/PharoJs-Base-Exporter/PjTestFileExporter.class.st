@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'writeStream'
 	],
-	#category : #'PharoJsExporter-Kernel'
+	#category : #'PharoJs-Base-Exporter-Kernel'
 }
 
 { #category : #accessors }

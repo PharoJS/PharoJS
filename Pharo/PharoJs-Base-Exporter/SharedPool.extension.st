@@ -1,6 +1,6 @@
 Extension { #name : #SharedPool }
 
-{ #category : #'*PharoJsExporter-App' }
+{ #category : #'*PharoJs-Base-Exporter-App' }
 SharedPool class >> inheritedSharedPools [
 	^ self sharedPools
 ]
