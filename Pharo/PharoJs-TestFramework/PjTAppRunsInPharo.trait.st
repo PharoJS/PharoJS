@@ -7,12 +7,12 @@ Trait {
 	#category : #'PharoJs-TestFramework-Kernel'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 PjTAppRunsInPharo >> appClassToExport [
 	^PjAppWrapperForRunningInPharo on: self appClass
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjTAppRunsInPharo >> currentApp [
 	^self appClass
 		start; 

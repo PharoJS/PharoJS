@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testAsDictionary [
 	| original asDictResult |
 	original := self bridge evalBlock: [ IdentityDictionary new].
@@ -15,14 +15,14 @@ PjIdentityDictionaryTest >> testAsDictionary [
 	self assert: original == asDictResult
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testAtIfAbsent [
 	self assertEquivalent: [|d|
 		d := IdentityDictionary new.
 		d at: #x ifAbsent: [42]].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testAtIfAbsentPut [
 	self assertEquivalent: [|d|
 		d := IdentityDictionary new.
@@ -34,7 +34,7 @@ PjIdentityDictionaryTest >> testAtIfAbsentPut [
 		d at: #x].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testAtIfEmpty [
 	self assertEquivalent: [ IdentityDictionary new isEmpty ].
 	self assertEquivalent: [ (IdentityDictionary new at: #x put: 4;yourself) isEmpty ].
@@ -61,7 +61,7 @@ PjIdentityDictionaryTest >> testAtIfEmpty [
 		d ifNotEmpty: [ 3 ] ifEmpty: [42]].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testAtPut [
 	self assertEquivalent: [|d|
 		d := IdentityDictionary new.
@@ -73,7 +73,7 @@ PjIdentityDictionaryTest >> testAtPut [
 		d size]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testKeysAndValuesDo [
 	| dict |
 	dict := self bridge
@@ -99,21 +99,21 @@ PjIdentityDictionaryTest >> testKeysAndValuesDo [
 	self assert: [ IdentityDictionary new isEmpty ] evaluatesTo: true
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testNewFromPairs [
 	| d |
 	d := self bridge
 		evalBlock: [ IdentityDictionary newFromPairs: #(#x 17 #y 42) ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testNonInterference [
 	" make sure dictionary emulation doesn't interfere "
 	self assert: [document body classList add: 'hello'] evaluatesTo: nil.
 	self assert: [document body classList contains: 'hello'] evaluatesTo: true
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjIdentityDictionaryTest >> testUseObjectsAsKeysForIdentityDictionary [
 	self assert: [
 		|dict firstKey secondKey| 

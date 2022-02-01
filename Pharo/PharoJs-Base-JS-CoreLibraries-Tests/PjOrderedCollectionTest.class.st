@@ -13,7 +13,7 @@ PjOrderedCollectionTest >> setUp [
 	collection := self evalBlock: [ OrderedCollection new ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjOrderedCollectionTest >> testCircularReference [
 	self deny: (collection includes: collection).
 	collection add: 'A'.
@@ -28,7 +28,7 @@ PjOrderedCollectionTest >> testConverstionToOrderedCollection [
 	self deny: collection asOrderedCollection identicalTo: collection.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjOrderedCollectionTest >> testInsertElementBeforeFirstOne [
 	collection addAll: #(1 2 3).
 	collection insert: 0 before: 1.
@@ -38,7 +38,7 @@ PjOrderedCollectionTest >> testInsertElementBeforeFirstOne [
 	]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjOrderedCollectionTest >> testJoin [
 	| temp |
 	collection addAll: #(4 5).
@@ -50,7 +50,7 @@ PjOrderedCollectionTest >> testJoin [
 	]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjOrderedCollectionTest >> testRemoveAll [
 	collection addAll: #(1 2 3 4 5).
 	collection removeAll: #(1 5).

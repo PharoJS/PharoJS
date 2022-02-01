@@ -14,19 +14,19 @@ PjDomControllerPharoTest class >> appClass [
 	^PjMinimalApp
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjDomControllerPharoTest >> appClassToExport [
 	^PjAppWrapperForRunningInPharo on: self appClass
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjDomControllerPharoTest >> currentApp [
 	^self appClass
 		start; 
 		currentInstance.
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjDomControllerPharoTest >> setUp [
 	super setUp.
 	domElement := app createElement: 'div'

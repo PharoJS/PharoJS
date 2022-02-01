@@ -4,13 +4,13 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Objects'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjObjectTest >> testNewObjectHasNoEnumeratableKeys [
 	"This is important for many JS third party libraries"
 	self assertBlock: [ Object new allEnumeratableKeys isEmpty ] .
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjObjectTest >> testPrintStringArray [
 
 	self
@@ -34,7 +34,7 @@ PjObjectTest >> testPrintStringArray [
 		'an Array(an Object #(true nil) nil 12.4 ''someSymbol'' false a Block)'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjObjectTest >> testPrintStringBasicCases [
 
 	self assert: [ Object new printString ] evaluatesTo: 'an Object'.
@@ -53,7 +53,7 @@ PjObjectTest >> testPrintStringBasicCases [
 		evaluatesTo: '''someSymbol'''
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjObjectTest >> testPrintStringException [
 
 	{ 
@@ -70,7 +70,7 @@ PjObjectTest >> testPrintStringException [
 			evaluatesTo: exceptionClass name , ': Some cause' ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjObjectTest >> testPrintStringNumbers [
 
 	self assert: [ 123 printString ] evaluatesTo: '123'.
@@ -82,7 +82,7 @@ PjObjectTest >> testPrintStringNumbers [
 		evaluatesTo: 'Float nan'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjObjectTest >> testShallowCopy [
 	self assertBlock: [
 		|original clone|

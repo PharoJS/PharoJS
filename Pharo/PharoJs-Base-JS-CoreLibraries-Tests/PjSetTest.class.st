@@ -13,7 +13,7 @@ PjSetTest >> setUp [
 	set := self evalBlock: [ Set new ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testCircularReference [
 	self deny: (set includes: set).
 	set add: 'A'.
@@ -23,33 +23,33 @@ PjSetTest >> testCircularReference [
 	self assert: set size equals: 2.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testConverstionToSet [
 	self assert: set asSet identicalTo: set
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testElementAddedFirstSeveralTimesShowsUpOnlyOnce [
 	3 timesRepeat: [ set addFirst: 42 ].
 	self assert: set size equals: 1.
 	self assert: (set includes: 42).
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testElementAddedLastSeveralTimesShowsUpOnlyOnce [
 	3 timesRepeat: [ set addLast: 42 ].
 	self assert: set size equals: 1.
 	self assert: (set includes: 42).
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testElementAddedSeveralTimesShowsUpOnlyOnce [
 	3 timesRepeat: [ set add: 42 ].
 	self assert: set size equals: 1.
 	self assert: (set includes: 42).
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testLike [
 	set addAll: #(1 2 3 4 5).
 	self assert: (set like: 4) equals: 4.
@@ -58,7 +58,7 @@ PjSetTest >> testLike [
 	self assert: (set like: 42 ifAbsent: [ 3+4 ]) equals: 7.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testRemove [
 	set addAll: #(1 2 3 4 5).
 	set remove: 3 ifAbsent: [ ].
@@ -69,7 +69,7 @@ PjSetTest >> testRemove [
 	].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSetTest >> testRemoveAll [
 	set addAll: #(1 2 3 4 5).
 	set removeAll: #(1 5).

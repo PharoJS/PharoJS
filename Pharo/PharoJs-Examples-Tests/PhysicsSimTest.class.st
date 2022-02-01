@@ -9,12 +9,12 @@ PhysicsSimTest class >> appClass [
 	^PhysicsSim
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PhysicsSimTest >> testAppInitialSetup [
 	self assert: app bodies size equals: 3
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PhysicsSimTest >> testResetDeleteMobileBodiesOnly [
 	self clickElementById: #resetButton.
 	self assert: app bodies size equals: 1.

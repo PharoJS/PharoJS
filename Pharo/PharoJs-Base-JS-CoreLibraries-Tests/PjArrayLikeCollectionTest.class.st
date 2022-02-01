@@ -12,26 +12,15 @@ PjArrayLikeCollectionTest class >> isAbstract [
 	^self == PjArrayLikeCollectionTest
 ]
 
-{ #category : #testing }
+{ #category : #'accessing - defaults' }
 PjArrayLikeCollectionTest >> defaultCollection [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjArrayLikeCollectionTest >> setUp [
 	super setUp.
 	collection := self defaultCollection
-]
-
-{ #category : #testing }
-PjArrayLikeCollectionTest >> testAllButFirst [
-	self assert: collection allButFirst size equals: collection size - 1.
-]
-
-{ #category : #testing }
-PjArrayLikeCollectionTest >> testCollectionIsNotEmpty [
-	self assert: collection notEmpty.
-	self deny: collection isEmpty
 ]
 
 { #category : #testing }

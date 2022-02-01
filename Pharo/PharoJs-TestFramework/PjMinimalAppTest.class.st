@@ -11,12 +11,12 @@ PjMinimalAppTest class >> appClass [
 	^PjMinimalApp.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMinimalAppTest >> testAppReady [
 	self assert: [1+2] evaluatesTo: 3
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjMinimalAppTest >> testResetApp [
 	self evalBlock: [window instVarNamed:#forTest put: 3].
 	self assert: [window instVarNamed:#forTest] evaluatesTo: 3.

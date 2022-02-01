@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #utilities }
 PjSortedCollectionTest >> atRandomAddAll: elements [
 	| toInsert |
 	toInsert := Set withAll: elements.
@@ -24,7 +24,7 @@ PjSortedCollectionTest >> setUp [
 	collection := self evalBlock: [ SortedCollection new ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSortedCollectionTest >> testAllButLast [
 	| allButLast |
 	1 to: 4 do: [:each|
@@ -36,7 +36,7 @@ PjSortedCollectionTest >> testAllButLast [
 	].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSortedCollectionTest >> testCollect [
 	collection := self evalBlock: [ 
 		|s|
@@ -48,7 +48,7 @@ PjSortedCollectionTest >> testCollect [
 	self assert: collection last equals: 3.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSortedCollectionTest >> testReSortingNumbers [
 	self evalBlock: [ collection sortBlock: [ : a : b | a <= b ] ].
 	self atRandomAddAll: (1 to: 10).
@@ -57,7 +57,7 @@ PjSortedCollectionTest >> testReSortingNumbers [
 		self assert: (collection at: index) equals: expectedValue ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSortedCollectionTest >> testShallowCopy [
 	| clone |
 	self atRandomAddAll: (1 to: 10).
@@ -67,7 +67,7 @@ PjSortedCollectionTest >> testShallowCopy [
 		self assert: (clone at: index) equals: index ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSortedCollectionTest >> testSortingNumbersGreaterFirst [
 	self evalBlock: [ collection sortBlock: [ : a : b | a >=b ] ].
 	self atRandomAddAll: (1 to: 10).
@@ -75,7 +75,7 @@ PjSortedCollectionTest >> testSortingNumbersGreaterFirst [
 		self assert: (collection at: index) equals: expectedValue ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjSortedCollectionTest >> testSortingNumbersSmallerFirst [
 	self atRandomAddAll: (1 to: 10).
 	(1 to: 10) do: [ : index |

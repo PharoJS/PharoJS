@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #files }
+{ #category : #'accessing - files' }
 PjFileBasedBridgeClient >> appFolder [
 	^ self appClass appFolder
 ]
@@ -17,7 +17,7 @@ PjFileBasedBridgeClient >> exporterClass [
 	^ PjFileExporter
 ]
 
-{ #category : #files }
+{ #category : #'accessing - files' }
 PjFileBasedBridgeClient >> fileName [
 	^ self appClass appFullJsFileName
 ]
@@ -28,7 +28,7 @@ PjFileBasedBridgeClient >> start [
 	super start
 ]
 
-{ #category : #files }
+{ #category : #'accessing - files' }
 PjFileBasedBridgeClient >> writeFiles [
 	exporter writeJavascriptFileNamed: self fileName.
 ]

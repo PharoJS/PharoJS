@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Serialization-Tests'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PhxBridgedDateAndDateAndTimeTests >> testDateAndTimeNowEquivalence [
 	| pharoTs jsTsString jsTs |
 	pharoTs := DateAndTime now.
@@ -14,7 +14,7 @@ PhxBridgedDateAndDateAndTimeTests >> testDateAndTimeNowEquivalence [
 	self assert: (pharoTs asUTC asSeconds - jsTs asSeconds) abs < 10
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PhxBridgedDateAndDateAndTimeTests >> testDateAndTimePhxJsonAlwaysUTC [
 	| jsTs phxJson pharoTs pharoTs2 |
 	pharoTs := PhxJsonReader

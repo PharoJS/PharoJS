@@ -60,7 +60,7 @@ PjBridgeTestResource >> ensureFreshClient [
 	self bridge startJsInterpreter
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjBridgeTestResource >> initialize [
 	super initialize.
 	self description: 'I manage a bridge dedicated to testing a PharoJS app'.

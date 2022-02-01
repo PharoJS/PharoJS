@@ -7,12 +7,12 @@ Class {
 	#category : #'PharoJs-Examples-Tests-Counter'
 }
 
-{ #category : #testing }
+{ #category : #running }
 PjCounterTest >> setUp [
 	counter := PjCounter new
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCounterTest >> testIncrementIncreasesCountBy1 [
 	1 to: 10 do: [ : expectedCount |
 			counter increment.
@@ -20,12 +20,12 @@ PjCounterTest >> testIncrementIncreasesCountBy1 [
 	]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCounterTest >> testInitialCountIs0 [
 	self assert: counter count equals: 0
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCounterTest >> testResetSetsCountTo0 [
 	3 timesRepeat: [counter increment].
 	counter reset.

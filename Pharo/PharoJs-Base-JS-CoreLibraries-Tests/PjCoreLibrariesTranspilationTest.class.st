@@ -4,14 +4,14 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjCoreLibrariesTranspilationTest >> testPjStringClass [
 	self jsCode: (self convertClass: PjString).
 	self assertInstanceMethod: #= equals: '(other){return this==other}'.
 	self assertInstanceMethod: #, equals:  '(other){return this+other}'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjCoreLibrariesTranspilationTest >> testPjUndefinedObjectClass [
 	self jsCode: (self convertClass: PjUndefinedObject).
 	self assertInstanceMethod: #= equals:  '(other){return undefined==other}'.

@@ -4,46 +4,46 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testAllButFirst [
 	| array |
 	array := self bridge evalBlock: [ #(10 20 30 40) ].
 	self assert: array allButFirst size equals: array size - 1
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testArrayClassDoesNotOverlapWithArrayFunction [
 	self assertJavascript: 'typeof Array' evaluatesTo: 'function'.
 	self assertJavascript: 'typeof PjArray' evaluatesTo: 'undefined'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testArrayWith1Element [
 	self assert: [{1}] evaluatesToRaw: '[1]'.
 	self assert: [#(1)] evaluatesToRaw: '[1]'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testArrayWith2Elements [
 	self assert: [{1. 2}] evaluatesToRaw: '[1,2]'.
 	self assert: [#(1 2)] evaluatesToRaw: '[1,2]'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testArrayWithMoreElements [
 	self assert: [{1. 2}] evaluatesToRaw: '[1,2]'.
 	self assert: [#(1 2)] evaluatesToRaw: '[1,2]'.
 	self assert: [#(1 true 'id' 'x\y"z')] evaluatesToRaw: '[1,true,"id","x\\y\"z"]'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testAsOrderedCollection [
 	| orderedCollection |
 	orderedCollection := self evalBlock: [#(1 2 3 4) asOrderedCollection].
 	self assert: orderedCollection size equals: 4.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testAt [
 	| array |
 	array := self bridge evalBlock: [ #(10 20 30 40) ].
@@ -52,7 +52,7 @@ PjArrayTest >> testAt [
 			[ :expectedValue :index | self assert: [ array at: index ] evaluatesTo: expectedValue ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testAtIfAbsent [
 	| array actualValue |
 	array := self bridge evalBlock: [ #(10 20 30) ].
@@ -66,7 +66,7 @@ PjArrayTest >> testAtIfAbsent [
 	self assert: actualValue equals: 100
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testAtPut [
 	| array |
 	array := self bridge evalBlock: [ #(10 20 30 40) ].
@@ -76,14 +76,14 @@ PjArrayTest >> testAtPut [
 	self assert: [ array ] evaluatesToRaw: '[11,22,33,44]'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testCircularReference [
 	| array |
 	array := self bridge evalBlock: [#('X')].
 	self deny: (array includes: array).
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testCollect [
 	| double |
 	double := self bridge
@@ -95,7 +95,7 @@ PjArrayTest >> testCollect [
 			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testCollectPerform [
 	| double |
 	double := self bridge
@@ -107,7 +107,7 @@ PjArrayTest >> testCollectPerform [
 			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testCollectPerformSymbol [
 	| double |
 	double := self bridge
@@ -119,14 +119,14 @@ PjArrayTest >> testCollectPerformSymbol [
 			[ :expectedValue :index | self assert: [ (double at: index) = expectedValue ] evaluatesTo: true ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testConverstionToArray [
 	| collection |
 	collection := self evalBlock: [#(1 2 3 4)].
 	self deny: collection asArray identicalTo: collection.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testConverstionToSet [
 	| setFromArray |
 	setFromArray := self bridge evalBlock: [ #(10 20 30 40) asSet ].
@@ -140,7 +140,7 @@ PjArrayTest >> testConverstionToSet [
 		self assert: (setFromArray includes: each) ]
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testCopy [
 	| tests |
 	tests := self bridge
@@ -151,7 +151,7 @@ PjArrayTest >> testCopy [
 	self deny: tests last.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testDetectIfFound [
 	self
 		assertEquivalent: [|array found|
@@ -161,7 +161,7 @@ PjArrayTest >> testDetectIfFound [
 			found].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testDetectIfNone [
 	self 
 		assertEquivalent: [|array notFound| array := #(1 2 3 4).
@@ -170,7 +170,7 @@ PjArrayTest >> testDetectIfNone [
 			notFound].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testDo [
 	self
 		assertEquivalent: [|array total|
@@ -180,7 +180,7 @@ PjArrayTest >> testDo [
 			total].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testDoWithIndex [
 	self
 		assertEquivalent: [|array total|
@@ -190,13 +190,13 @@ PjArrayTest >> testDoWithIndex [
 			total].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testEmptyArray [
 	self assert: [{}] evaluatesToRaw: '[]'.
 	self assert: [#()] evaluatesToRaw: '[]'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testEquality [
 	self assertEquivalent: [#() = #()].
 	self assertEquivalent: [#(11) = #(11)].
@@ -205,7 +205,7 @@ PjArrayTest >> testEquality [
 	self assertEquivalent: [#(11 33 22) = #(11 22 33)].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testIncludes [
 	self assertEquivalent: [#() includes: 4].
 	self assertEquivalent: [#(2 3 4 5) includes: 4].
@@ -215,7 +215,7 @@ PjArrayTest >> testIncludes [
 	self assertEquivalent: [ #(2 3 (4 5) 6) includes: #(5 6) ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testIncludesAll [
 	self assertEquivalent: [#() includesAll: #(4)].
 	self assertEquivalent: [#(2 3 4 5) includesAll: #(4)].
@@ -225,25 +225,25 @@ PjArrayTest >> testIncludesAll [
 	self assertEquivalent: [ #(2 3 4 5 6) includesAll: #(6 2 6) ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testInserElement [
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testIsEmpty [
 	self assertEquivalent: [#() isEmpty].
 	self assertEquivalent: [#(11) isEmpty].
 	self assertEquivalent: [#(11 22 33) isEmpty].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testNotEmpty [
 	self assertEquivalent: [#() notEmpty].
 	self assertEquivalent: [#(11) notEmpty].
 	self assertEquivalent: [#(11 22 33) notEmpty].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testReject [
 	| filtered |
 	filtered := self bridge evalBlock: [ #(10 20 30 40) reject: [ : each | each > 35 or: [ each < 15 ] ]].
@@ -252,13 +252,13 @@ PjArrayTest >> testReject [
 	self assert: filtered last equals: 30.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testRemove [
 	self assertEquivalent: [ #(10 20 30 40) asOrderedCollection removeAt: 2 ].
 	self assertEquivalent: [ (#(10 20 30 40) asOrderedCollection removeAt: 2;yourself) asArray ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testReversed [
 	self
 		assertEquivalent: [|array|
@@ -266,7 +266,7 @@ PjArrayTest >> testReversed [
 			array,array reversed].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testShallowCopy [
 	| clone |
 	clone := self evalBlock: [ #(11 22 33) copy].
@@ -276,7 +276,7 @@ PjArrayTest >> testShallowCopy [
 		 ].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjArrayTest >> testSize [
 	self assertEquivalent: [#() size].
 	self assertEquivalent: [#(11 ) size].

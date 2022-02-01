@@ -8,12 +8,12 @@ Trait {
 	#category : #'PharoJs-TestFramework-Kernel'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 PjTAppRunsInJS >> appClassToExport [
 	^self appClass
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjTAppRunsInJS >> currentApp [
 	| jsMessage |
 	jsMessage := PjJavascriptMessage receiverId: self appClass name selector: #currentInstance arguments: #().

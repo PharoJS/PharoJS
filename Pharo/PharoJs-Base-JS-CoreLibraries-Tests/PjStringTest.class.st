@@ -4,14 +4,14 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testConversion [
 	self assertEquivalent: ['the Eiffel Tower' asUppercase].
 	self assertEquivalent: ['the Eiffel Tower' asLowercase].
 	self assertEquivalent: ['the Eiffel Tower' capitalized].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testConversionToNumbers [
 	self assertEquivalent: ['07' asInteger].
 	self assertEquivalent: ['3.14' asInteger].
@@ -20,19 +20,19 @@ PjStringTest >> testConversionToNumbers [
 	self assertEquivalent: ['1.41xyz' asNumber].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testFirst [
 	self assert: ['abc' first] evaluatesTo: 'a'.
 	self assert: ['CBA' first] evaluatesTo: 'C'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testIfEmpty [
 	self assertEquivalent: ['abc' ifEmpty: ['xyz']].
 	self assertEquivalent: ['' ifEmpty: ['xyz']].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testIsLetter [
 	| letters nonLetters |
 	letters := Character allByteCharacters select: [: each | each isLetter].
@@ -41,7 +41,7 @@ PjStringTest >> testIsLetter [
 	self assertBlock: [nonLetters noneSatisfy: [: char |  char isLetter]].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testLast [
 	self assert: ['abc' last] evaluatesTo: 'c'.
 	self assert: ['CBA' last] evaluatesTo: 'A'.
@@ -53,7 +53,7 @@ PjStringTest >> testReversed [
 		assertEquivalent: ['abcd' reversed].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStringTest >> testSplit [
 	| splited |
 	splited := self evalBlock: ['.' split: 'a.b.c'].

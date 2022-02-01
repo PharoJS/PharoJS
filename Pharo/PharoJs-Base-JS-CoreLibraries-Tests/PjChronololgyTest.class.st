@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #running }
 PjChronololgyTest >> setUp [
 	super setUp.
 	self bridge
@@ -15,7 +15,7 @@ PjChronololgyTest >> setUp [
 			DateAndTime}
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjChronololgyTest >> testAddDurationToDateAndTime [
 	self assertEquivalent: [|origin later|
 		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
@@ -39,7 +39,7 @@ PjChronololgyTest >> testAddDurationToDateAndTime [
 		later dayOfMonth.].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjChronololgyTest >> testDateAndTimeArithmetic [
 	self evalBlock: [|reference|
 		reference := DateAndTime todayHour: 14 minute: 59 second: 33.
@@ -55,7 +55,7 @@ PjChronololgyTest >> testDateAndTimeArithmetic [
 	self assertEquivalent: [window plus1Sec second = 34].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjChronololgyTest >> testDateAndTimeCreation [
 	self evalBlock: [|today tomorrow|
 		today := DateAndTime todayHour: 14 minute: 59 second: 34.
@@ -80,7 +80,7 @@ PjChronololgyTest >> testDateAndTimeCreation [
 	self assert: window tomorrow dayOfWeek equals: Date tomorrow dayOfWeek.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjChronololgyTest >> testDuration [
 	self assertBlock: [ Duration zero class == Duration ].
 	self assertEquivalent: [ Duration zero days].
@@ -89,7 +89,7 @@ PjChronololgyTest >> testDuration [
 	self assertEquivalent: [ 1 month monthsCount].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjChronololgyTest >> testSubtractDateAndTime [
 	self assertEquivalent: [|origin later|
 		origin := DateAndTime year: 2020 month: 1 day: 1 hour: 0 minute: 0 second: 0.
@@ -113,7 +113,7 @@ PjChronololgyTest >> testSubtractDateAndTime [
 	].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjChronololgyTest >> testTime [
 	self assertBlock: [ Time now class == Time ].
 	self assertEquivalent: [ (Time hour: 5 minute: 30) asDateAndTime dayOfMonth].

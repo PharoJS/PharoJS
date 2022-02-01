@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Collections'
 }
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testArrayRead [
 	self assertEquivalent: [#(1 2 3) readStream next].
 	self assertEquivalent: [#(1 2 3) readStream next;next].
@@ -16,17 +16,17 @@ PjStreamTest >> testArrayRead [
 	self assertEquivalent: [#(1 2 3) readStream next;next;next;atEnd].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testArrayReadWrite [
 	self assert: [#() writeStream nextPutAll: #(1 2 3);nextPutAll: #(4 5 6);next;next;next;next] evaluatesTo: 4.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testArrayWrite [
 	self assertEquivalent: [#(() writeStream nextPut: 3;nextPutAll: 'abc';contents) at: 2].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testStringPeek [
 	self assertEquivalent: ['abc' readStream peek asString].
 	self assertEquivalent: [('abc' readStream peek;next) asString].
@@ -34,7 +34,7 @@ PjStreamTest >> testStringPeek [
 	self assertEquivalent: ['abc' readStream next;next;peek;atEnd].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testStringRead [
 	self assertEquivalent: ['abc' readStream next asString].
 	self assertEquivalent: [('abc' readStream next;next) asString].
@@ -43,12 +43,12 @@ PjStreamTest >> testStringRead [
 	self assertEquivalent: ['abc' readStream next;next;next;next].
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testStringReadWrite [
 	self assert: [('' writeStream nextPutAll: 'abc';nextPutAll: 'def';next;next;next;next) asString] evaluatesTo: 'd'.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjStreamTest >> testStringWrite [
 	self assertEquivalent: ['' writeStream nextPut: $x;nextPutAll: 'abc';contents].
 ]

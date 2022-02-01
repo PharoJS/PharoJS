@@ -110,13 +110,13 @@ PjAppTestCase >> runCaseAsFailure: aSemaphore [
 	super runCaseAsFailure: aSemaphore
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjAppTestCase >> setUp [
 	super setUp.
 	self waitWhile: [ (app := self currentApp) isNil ] timeOut: self timeOutForAppStartUp.
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjAppTestCase >> tearDown [
 	super tearDown.
 	self appClass resetCurrentInstance.

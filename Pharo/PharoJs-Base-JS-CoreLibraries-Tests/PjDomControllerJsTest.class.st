@@ -6,12 +6,12 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Tests-Controllers'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 PjDomControllerJsTest >> appClassToExport [
 	^self appClass
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PjDomControllerJsTest >> currentApp [
 	| jsMessage |
 	jsMessage := PjJavascriptMessage receiverId: self appClass name selector: #currentInstance arguments: #().

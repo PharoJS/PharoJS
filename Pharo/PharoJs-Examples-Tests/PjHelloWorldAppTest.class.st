@@ -16,7 +16,7 @@ PjHelloWorldAppTest class >> appClass [
 	^PjHelloWorldApp
 ]
 
-{ #category : #testing }
+{ #category : #running }
 PjHelloWorldAppTest >> setUp [
 	super setUp.
 	nameInput := document getElementById: #nameTextInput.
@@ -24,7 +24,7 @@ PjHelloWorldAppTest >> setUp [
 	greetingMessageContainer := document getElementById: #greetingMessageContainer.
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 PjHelloWorldAppTest >> testSayHello [
 	#(Luke Yoda 'Obi One') do: [ : name |
 		self changeElement: nameInput value: name.
