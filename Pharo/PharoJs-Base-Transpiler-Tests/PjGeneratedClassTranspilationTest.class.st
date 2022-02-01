@@ -16,12 +16,12 @@ PjGeneratedClassTranspilationTest class >> resources [
 	^{PjClassFactoryTestResource}
 ]
 
-{ #category : #tests }
+{ #category : #checking }
 PjGeneratedClassTranspilationTest >> assertStCode: methodBodyString convertedIncludes: expectedJsSubstring [
 	self assertStMethodCode:  'm\' withCRs, methodBodyString convertedIncludes: expectedJsSubstring.
 ]
 
-{ #category : #tests }
+{ #category : #checking }
 PjGeneratedClassTranspilationTest >> assertStMethodCode: methodString convertedIncludes: expectedJsSubstring [
 	| jsCode |
 	class compile: methodString.
@@ -39,7 +39,7 @@ PjGeneratedClassTranspilationTest >> defaultClass [
 	^PjClassFactoryTestResource current defaultClass
 ]
 
-{ #category : #tests }
+{ #category : #running }
 PjGeneratedClassTranspilationTest >> setUp [
 	super setUp.
 	class := self defaultClass.

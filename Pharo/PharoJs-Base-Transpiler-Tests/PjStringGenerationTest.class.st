@@ -6,6 +6,7 @@ Class {
 
 { #category : #accessing }
 PjStringGenerationTest class >> classVariablesHolderName [
+
 	^ PjStringGenerator classVariablesHolderName
 ]
 

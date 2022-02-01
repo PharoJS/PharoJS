@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Tests'
 }
 
-{ #category : #testing }
+{ #category : #checking }
 PjPackageTranspilationTest >> assert: firstClass classVariablesSetBefore: lastClass [
 	self 
 		assert: firstClass 
@@ -12,7 +12,7 @@ PjPackageTranspilationTest >> assert: firstClass classVariablesSetBefore: lastCl
 		before: lastClass
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjPackageTranspilationTest >> assert: firstClass inCodeWith: codeString before: lastClass [
 	| firstIndex lastIndex |
 	firstIndex := self jsCode indexOfSubCollection: firstClass nameToUseForJsConversion, codeString.
@@ -21,7 +21,7 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWith: codeString before: 
 	self assert: firstIndex < lastIndex.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjPackageTranspilationTest >> assert: firstClass inCodeWithPrefix: codeString before: lastClass [
 	| firstIndex lastIndex |
 	firstIndex := self jsCode indexOfSubCollection: codeString, firstClass nameToUseForJsConversion.
@@ -30,12 +30,12 @@ PjPackageTranspilationTest >> assert: firstClass inCodeWithPrefix: codeString be
 	self assert: firstIndex < lastIndex.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
 	self assert: firstClass inCodeWith: '._initialize();' before: lastClass.
 ]
 
-{ #category : #testing }
+{ #category : #checking }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
 	self assert: firstClass inCodeWithPrefix: '._subclass_("' before: lastClass.
 ]

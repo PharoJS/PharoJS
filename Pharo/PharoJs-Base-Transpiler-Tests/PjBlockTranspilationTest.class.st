@@ -19,14 +19,14 @@ PjBlockTranspilationTest class >> initialize [
 	SomeClassVar := 'SomeClassVariable'
 ]
 
-{ #category : #tests }
+{ #category : #private }
 PjBlockTranspilationTest >> closedBlock: x [
 	| y |
 	y := 23.
 	^  [:v| |w| {v.w.x.y.instVar.123}] asClosedBlock
 ]
 
-{ #category : #tests }
+{ #category : #private }
 PjBlockTranspilationTest >> openBlock: x [
 	| y |
 	y := 23.

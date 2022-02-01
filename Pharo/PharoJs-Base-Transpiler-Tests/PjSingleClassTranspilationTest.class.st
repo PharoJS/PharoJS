@@ -12,7 +12,7 @@ PjSingleClassTranspilationTest >> classToTranspile [
 	^ PjClassForTranspilationTest
 ]
 
-{ #category : #running }
+{ #category : #accessing }
 PjSingleClassTranspilationTest >> expectedClassName [
 	^'JsClass'
 ]
