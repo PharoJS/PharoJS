@@ -1,3 +1,6 @@
+"
+I am the Javascript embodiment of ByteArray.
+"
 Class {
 	#name : #PjByteArray,
 	#superclass : #PjArray,

@@ -1,3 +1,6 @@
+"
+I am the Javascript embodiment of IdentityDictionary.
+"
 Class {
 	#name : #PjIdentityDictionary,
 	#superclass : #PjDictionary,

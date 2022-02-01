@@ -1,3 +1,6 @@
+"
+A DateAndTime trait
+"
 Trait {
 	#name : #PjTDateAndTime,
 	#traits : 'PjTDate',

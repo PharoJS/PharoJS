@@ -1,3 +1,6 @@
+"
+Date representation as JavaScript Date
+"
 Class {
 	#name : #PjDate,
 	#superclass : #Object,

@@ -1,3 +1,6 @@
+"
+DateAndTime representation as JavaScript Date
+"
 Class {
 	#name : #PjDateAndTime,
 	#superclass : #Object,

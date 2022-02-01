@@ -1,3 +1,6 @@
+"
+I am the Javascript embodiment of Set.
+"
 Class {
 	#name : #PjSet,
 	#superclass : #PjArray,

@@ -1,3 +1,6 @@
+"
+I am the Javascript embodiment of SharedPool.
+"
 Class {
 	#name : #PjSharedPool,
 	#superclass : #PjObject,

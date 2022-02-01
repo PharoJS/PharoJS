@@ -1,3 +1,6 @@
+"
+I am the Javascript embodiment of SortedCollection.
+"
 Class {
 	#name : #PjSortedCollection,
 	#superclass : #PjArray,

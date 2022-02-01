@@ -1,3 +1,6 @@
+"
+Duration representation
+"
 Class {
 	#name : #PjDuration,
 	#superclass : #PjMagnitude,
