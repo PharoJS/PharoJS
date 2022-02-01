@@ -1,6 +1,6 @@
 Extension { #name : #PjProxy }
 
-{ #category : #'*PharoJsTools-Inspector' }
+{ #category : #'*PharoJs-Tools-Inspector' }
 PjProxy >> asProxyInfo [
 	| pi |
 	pi := PjProxyInfo new.
@@ -9,14 +9,14 @@ PjProxy >> asProxyInfo [
 	^ pi
 ]
 
-{ #category : #'*PharoJsTools-Inspector' }
+{ #category : #'*PharoJs-Tools-Inspector' }
 PjProxy >> gefFieldValueFor: key [
 	^ self jsBridge: [ : bridge | 
 		bridge evalJavascript: jsName,'.',key
 	]
 ]
 
-{ #category : #'*PharoJsTools-Inspector' }
+{ #category : #'*PharoJs-Tools-Inspector' }
 PjProxy >> gtInspectorProxyIn: composite [
 	<gtInspectorPresentationOrder: 1>
 	| associations |
@@ -30,7 +30,7 @@ PjProxy >> gtInspectorProxyIn: composite [
 		send: #value.
 ]
 
-{ #category : #'*PharoJsTools-Inspector' }
+{ #category : #'*PharoJs-Tools-Inspector' }
 PjProxy >> keysForProxy [
 	^ self
 		jsBridge: [ :bridge | 

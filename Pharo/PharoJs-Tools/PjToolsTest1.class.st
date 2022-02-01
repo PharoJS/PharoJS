@@ -1,7 +1,7 @@
 Class {
 	#name : #PjToolsTest1,
 	#superclass : #PjWebApplication,
-	#category : #'PharoJsTools-Tests'
+	#category : #'PharoJs-Tools-Tests'
 }
 
 { #category : #'as yet unclassified' }

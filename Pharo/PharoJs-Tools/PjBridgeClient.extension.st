@@ -1,6 +1,6 @@
 Extension { #name : #PjBridgeClient }
 
-{ #category : #'*PharoJsTools-Playground' }
+{ #category : #'*PharoJs-Tools-Playground' }
 PjBridgeClient >> playgroundInitialContent [
 	^ self appClass playgroundInitialContent
 ]

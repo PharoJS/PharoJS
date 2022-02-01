@@ -1,7 +1,7 @@
 Class {
 	#name : #PjRubricSmalltalkTextModel,
 	#superclass : #GLMRubricSmalltalkTextModel,
-	#category : #'PharoJsTools-Playground'
+	#category : #'PharoJs-Tools-Playground'
 }
 
 { #category : #rendering }

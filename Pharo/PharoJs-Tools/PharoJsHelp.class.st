@@ -4,7 +4,7 @@ Hierarchical help for PharoJS
 Class {
 	#name : #PharoJsHelp,
 	#superclass : #CustomHelp,
-	#category : #'PharoJsTools-Help'
+	#category : #'PharoJs-Tools-Help'
 }
 
 { #category : #accessing }

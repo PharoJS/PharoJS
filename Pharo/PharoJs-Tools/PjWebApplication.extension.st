@@ -1,6 +1,6 @@
 Extension { #name : #PjWebApplication }
 
-{ #category : #'*PharoJsTools-Playground' }
+{ #category : #'*PharoJs-Tools-Playground' }
 PjWebApplication class >> playgroundInitialContent [
 	<pharoJsSkip>
 	^	super playgroundInitialContent

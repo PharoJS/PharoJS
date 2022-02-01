@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'proxy'
 	],
-	#category : #'PharoJsTools-Inspector'
+	#category : #'PharoJs-Tools-Inspector'
 }
 
 { #category : #creating }

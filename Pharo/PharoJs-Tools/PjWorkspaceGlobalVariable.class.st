@@ -1,7 +1,7 @@
 Class {
 	#name : #PjWorkspaceGlobalVariable,
 	#superclass : #LiteralVariable,
-	#category : #'PharoJsTools-Playground'
+	#category : #'PharoJs-Tools-Playground'
 }
 
 { #category : #accessing }

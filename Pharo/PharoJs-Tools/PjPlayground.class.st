@@ -12,7 +12,7 @@ Class {
 		'pageTitle',
 		'demo'
 	],
-	#category : #'PharoJsTools-Playground'
+	#category : #'PharoJs-Tools-Playground'
 }
 
 { #category : #'world menu' }

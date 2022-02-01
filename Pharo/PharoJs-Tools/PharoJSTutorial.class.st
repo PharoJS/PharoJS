@@ -4,7 +4,7 @@ I am a tutorial for some of the elements of PharoJS
 Class {
 	#name : #PharoJSTutorial,
 	#superclass : #AbstractTutorial,
-	#category : #'PharoJsTools-Tutorial'
+	#category : #'PharoJs-Tools-Tutorial'
 }
 
 { #category : #lessons }

@@ -1,6 +1,6 @@
 Extension { #name : #GLMMorphicRenderer }
 
-{ #category : #'*PharoJsTools-Playground' }
+{ #category : #'*PharoJs-Tools-Playground' }
 GLMMorphicRenderer >> pjRenderOn: aPharoScriptPresentation [
 	^ PjMorphicRenderer render: aPharoScriptPresentation from: self
 ]

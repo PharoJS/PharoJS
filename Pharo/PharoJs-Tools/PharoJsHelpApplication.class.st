@@ -4,7 +4,7 @@ Help pages to describe Applications with PharoJS
 Class {
 	#name : #PharoJsHelpApplication,
 	#superclass : #PharoJsHelp,
-	#category : #'PharoJsTools-Help'
+	#category : #'PharoJs-Tools-Help'
 }
 
 { #category : #accessing }
