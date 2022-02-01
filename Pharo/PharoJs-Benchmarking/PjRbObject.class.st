@@ -14,9 +14,9 @@ Class {
 	#category : #'PharoJs-Benchmarking-Richards'
 }
 
-{ #category : #initialize }
+{ #category : #'class initialization' }
 PjRbObject class >> initialize [
-    "RBObject initialize"
+   
     DeviceA := 5.
     DeviceB := 6.
     DevicePacketKind := 1.
