@@ -7,7 +7,7 @@ Class {
 	#category : #'BaselineOfPharoJS-Base'
 }
 
-{ #category : #baseline }
+{ #category : #baselines }
 BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
