@@ -11,7 +11,7 @@ Class {
 BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
-	spec for: #'pharo7.x' do: [ spec package: 'PharoJsPharo7' ].
+	spec for: #'pharo7.x' do: [ spec package: 'PharoJs-Compatibility-Pharo7' ].
 	spec for: #('pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJs-Compatibility-Pharo8' ].
 		
 	spec for: #'common' do: [
