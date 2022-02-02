@@ -6,7 +6,7 @@ Class {
 		'window',
 		'page'
 	],
-	#category : #'PharoJs-Tools-Playground'
+	#category : #'PharoJs-Tools-Tests-Playground'
 }
 
 { #category : #testing }

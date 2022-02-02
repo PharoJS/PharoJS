@@ -25,6 +25,14 @@ PjDOMApplication class >> appClasses [
 	^ super appClasses, { PjHTMLCollection. PjNodeList}
 ]
 
+{ #category : #testing }
+PjDOMApplication class >> isAbstract [
+
+	^ self = PjDOMApplication
+		  ifTrue: [ ^ true ]
+		  ifFalse: [ super isAbstract ]
+]
+
 { #category : #'accessing - description' }
 PjDOMApplication class >> setupCode [
 	<pharoJsSkip>

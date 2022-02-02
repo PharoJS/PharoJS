@@ -22,6 +22,8 @@ PjNodeApplication class >> headerLine [
 PjNodeApplication class >> isAbstract [
 
 	^ self = PjNodeApplication 
+					ifTrue: [ ^ true ]
+		 		   ifFalse: [ super isAbstract ]
 ]
 
 { #category : #private }

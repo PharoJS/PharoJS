@@ -10,5 +10,7 @@ Class {
 { #category : #testing }
 PjFileBasedWebApp class >> isAbstract [
 
-	^ self = PjFileBasedWebApp
+	^ self = PjFileBasedWebApp 
+					ifTrue: [ ^ true ]
+		  			ifFalse: [ super isAbstract ]
 ]

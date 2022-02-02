@@ -15,6 +15,8 @@ Class {
 PjWebApplication class >> isAbstract [
 
 	^ self = PjWebApplication
+		  ifTrue: [ ^ true ]
+		  ifFalse: [ super isAbstract ]
 ]
 
 { #category : #private }

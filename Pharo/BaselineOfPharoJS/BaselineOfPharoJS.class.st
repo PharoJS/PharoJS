@@ -64,7 +64,10 @@ BaselineOfPharoJS >> packages: spec [
 		spec package: 'PharoJs-Utilities-Statistics' with: [ spec requires: #('PharoJs-Base-Exporter' ) ].
 													
 		"Tools"   		
-		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge' ) ].
+		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge' ) ];
+			  package: 'PharoJs-Tools-Tests' with: [ spec requires: #('PharoJs-Tools' 'PharoJs-TestFramework') ].
+		
+	
 ]
 
 { #category : #'private - accessing' }
