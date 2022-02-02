@@ -1,5 +1,5 @@
 "
-I am the class that all server-side PharoJS applications should extend.
+I am the abstract superclass that all server-side PharoJS applications should extend (directly or indirectly)
 
 "
 Class {
@@ -16,6 +16,12 @@ PjNodeApplication class >> headerLine [
 	<pharoJsSkip>
 	
 	^ '#! /usr/bin/env node'
+]
+
+{ #category : #testing }
+PjNodeApplication class >> isAbstract [
+
+	^ self = PjNodeApplication 
 ]
 
 { #category : #private }

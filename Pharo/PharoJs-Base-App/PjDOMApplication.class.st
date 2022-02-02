@@ -1,5 +1,5 @@
 "
-I am the class that all client-side PharoJS applications should extend.
+I am the abstract superclass that all client-side PharoJS applications should extend (directly or indirectly).
 
 I contain methods that Browser and PhoneGap applications have in common.
 "

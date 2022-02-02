@@ -15,11 +15,13 @@ PhxJsonReader class >> materializeJsonString: aString [
 	<javascript: 'return JSON.parse(aString)'>
 	"returns a javascript object in js world"
 	"returns a dictionary in st world"
+	
 	^ STONJSON fromString: aString readStream
 ]
 
 { #category : #'instance creation' }
 PhxJsonReader class >> readFromJsObjectOrDictionary: jsObjectOrDictionary [
+
 	^ self new readFromJsObjectOrDictionary: jsObjectOrDictionary
 ]
 

@@ -1,5 +1,5 @@
 "
-I am the class that all web-based PharoJS applications should extend. Those are apps that rely on HTML and run in a web browser or a web view 
+I am the abstract superclass that all web-based PharoJS applications should extend (directly or indirectly). Those are apps that rely on HTML and run in a web browser or a web view 
 
 "
 Class {
@@ -10,6 +10,12 @@ Class {
 	],
 	#category : #'PharoJs-Base-App'
 }
+
+{ #category : #testing }
+PjWebApplication class >> isAbstract [
+
+	^ self = PjWebApplication
+]
 
 { #category : #private }
 PjWebApplication class >> whenJsReady: aBlock [

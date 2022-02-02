@@ -6,3 +6,9 @@ Class {
 	#superclass : #PjWebApplication,
 	#category : #'PharoJs-Base-App'
 }
+
+{ #category : #testing }
+PjFileBasedWebApp class >> isAbstract [
+
+	^ self = PjFileBasedWebApp
+]

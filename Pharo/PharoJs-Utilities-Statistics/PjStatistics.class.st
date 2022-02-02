@@ -38,11 +38,13 @@ PjStatistics class >> example2 [
 
 { #category : #statistics }
 PjStatistics class >> statsForAll: appClasses [
+
 	appClasses do: [ : cl | self statsForApp: cl ]
 ]
 
 { #category : #statistics }
 PjStatistics class >> statsForApp: appClass [
+
 	| exporter actuallyExportedClasses methodsCount jsCode |
 	exporter := appClass exporterClass newWithAppClass: appClass.
 	jsCode := String streamContents: [ :stream | exporter writeJsCodeOn: stream ].

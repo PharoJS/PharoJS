@@ -8,23 +8,27 @@ Class {
 }
 
 { #category : #accessing }
-PharoJsHelp class >> bookName [ 
+PharoJsHelp class >> bookName [
+
 	^'PharoJS'
 ]
 
 { #category : #accessing }
 PharoJsHelp class >> key [
+
 	^ self name
 ]
 
 { #category : #accessing }
 PharoJsHelp class >> pages [
+
 	^ (self class methods collect: #selector thenSelect: [ : s | s beginsWith: #topic ]) sort,
 		(self subclasses collect: #name)
 ]
 
 { #category : #documentation }
 PharoJsHelp class >> topic0Overview [
+
 	"This method was automatically generated."
 	<script: 'self edit: #topic0Overview'>
 	^HelpTopic
@@ -41,6 +45,7 @@ PharoJS can support this several ways:
 
 { #category : #documentation }
 PharoJsHelp class >> topicPjInspector [
+
 	<script: 'self edit: #topicPjInspector'>
 	^ HelpTopic
 		title: 'Inspector'
@@ -59,6 +64,7 @@ methods of a class that specify the poolDictionary PjDomGlobals'
 
 { #category : #documentation }
 PharoJsHelp class >> topicPjPlayground [
+
 	<script: 'self edit: #topicPjPlayground'>
 	^ HelpTopic
 		title: 'Playground'

@@ -4,14 +4,20 @@ Class {
 	#category : #'PharoJs-Tools-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjToolsTest1 class >> bridgeClientClass [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PjToolsTest1 class >> c1 [
 	^ self subclassResponsibility
+]
+
+{ #category : #testing }
+PjToolsTest1 class >> isAbstract [
+
+	^ self = PjToolsTest1
 ]
 
 { #category : #'as yet unclassified' }
