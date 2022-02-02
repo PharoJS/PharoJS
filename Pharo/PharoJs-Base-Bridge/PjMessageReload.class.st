@@ -6,5 +6,6 @@ Class {
 
 { #category : #public }
 PjMessageReload >> evaluateInContext: aMessageContext [
+
 	aMessageContext websocketDelegate class reload
 ]

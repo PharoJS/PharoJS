@@ -27,6 +27,7 @@ WebBrowser class >> openBrowser: browserName on: anURLString inBackground: backg
 
 { #category : #'*PharoJs-Base-Bridge' }
 WebBrowser class >> openInBackgroundUrl: anURLString [
+
 	^ self openBrowser: nil on: anURLString inBackground: true
 ]
 
@@ -36,13 +37,14 @@ WebBrowser class >> openOn: anURLString inBackground: backgroundFlag [
 	self openOn: 'http://pharojs.org' inBackground: false.
 	The backgroundFlag is true when the window of the browser should open behind the Pharo window.
 	"
-	backgroundFlag ifFalse: [ ^self openOn: anURLString ].
+
+	backgroundFlag ifFalse: [ ^ self openOn: anURLString ].
 	self webbrowserClassForPlatform openInBackgroundUrl: anURLString
 ]
 
 { #category : #'*PharoJs-Base-Bridge' }
 WebBrowser class >> openTerminalWithNodeOn: theFileName inFolder: theFolder [
-	" Open a terminal with node running on the given file "
+	"Open a terminal with node running on the given file"
 
 	^ self webbrowserClassForPlatform
 		openTerminalWithNodeOn: theFileName

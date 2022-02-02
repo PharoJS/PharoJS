@@ -16,9 +16,10 @@ Class {
 
 { #category : #'instance creation' }
 PjJavascriptMessage class >> receiverId: receiverId selector: selector arguments: arguments [
-	^(self selector: selector arguments: arguments)
-		receiverId: receiverId;
-		yourself
+
+	^ (self selector: selector arguments: arguments)
+		  receiverId: receiverId;
+		  yourself
 ]
 
 { #category : #converting }
@@ -35,6 +36,7 @@ PjJavascriptMessage >> convertToJsUsing: aTranspiler [
 
 { #category : #accessing }
 PjJavascriptMessage >> receiverId [
+
 	^ receiverId
 ]
 

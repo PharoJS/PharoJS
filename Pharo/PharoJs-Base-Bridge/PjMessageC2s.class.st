@@ -11,15 +11,18 @@ PjMessageC2s >> evaluateInContext: aMessageContext [
 
 { #category : #accessing }
 PjMessageC2s >> inResponseToId [
-	^nil
+
+	^ nil
 ]
 
 { #category : #testing }
 PjMessageC2s >> isCallback [
+
 	^ false
 ]
 
 { #category : #testing }
 PjMessageC2s >> shouldEvaluateImmediately [
-	^false
+
+	^ false
 ]

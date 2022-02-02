@@ -29,5 +29,6 @@ PjSinkObject class >> resetDefault [
 
 { #category : #'reflective operations' }
 PjSinkObject >> doesNotUnderstand: aMessage [
-	^self
+
+	^ self
 ]

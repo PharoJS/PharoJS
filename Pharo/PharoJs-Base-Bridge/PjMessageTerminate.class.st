@@ -6,5 +6,6 @@ Class {
 
 { #category : #public }
 PjMessageTerminate >> evaluateInContext: aMessageContext [
+
 	aMessageContext websocketDelegate class terminate
 ]

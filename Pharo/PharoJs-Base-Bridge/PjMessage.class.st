@@ -13,47 +13,55 @@ Class {
 
 { #category : #'instance creation' }
 PjMessage class >> newWithContents: contents [
+
 	^ self newWithId
-		contents: contents;
-		yourself
+		  contents: contents;
+		  yourself
 ]
 
 { #category : #'instance creation' }
 PjMessage class >> newWithId [
+
 	^ self new
-		id: self nextMessageId;
-		yourself
+		  id: self nextMessageId;
+		  yourself
 ]
 
 { #category : #'instance creation' }
 PjMessage class >> nextMessageId [
+
 	currentId := currentId ifNil: [ 1 ] ifNotNil: [ :id | id + 1 ].
 	^ currentId
 ]
 
 { #category : #accessing }
 PjMessage >> contents [
+
 	^ contents
 ]
 
 { #category : #accessing }
 PjMessage >> contents: anObject [
+
 	contents := anObject
 ]
 
 { #category : #accessing }
 PjMessage >> id [
+
 	^ id
 ]
 
 { #category : #accessing }
 PjMessage >> id: anObject [
+
 	id := anObject
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjMessage >> initialize [
-	super initialize.
+
+	super initialize
 ]
 
 { #category : #printing }
@@ -71,14 +79,16 @@ PjMessage >> logDescription [
 
 { #category : #testing }
 PjMessage >> needsToBeQueued [
-	^true
+
+	^ true
 ]
 
 { #category : #printing }
 PjMessage >> printOn: ws [
 	<pharoJsSkip>
+
 	super printOn: ws.
 	ws space.
 	ws << 'id:'.
-	ws << self id.
+	ws << self id
 ]

@@ -308,6 +308,7 @@ PjBridgeServer >> stop [
 
 { #category : #accessing }
 PjBridgeServer >> tearDown [
+
 	self stop.
 	self bridge: nil
 ]
@@ -357,6 +358,7 @@ PjBridgeServer >> webSocket [
 
 { #category : #accessing }
 PjBridgeServer >> webSocket: anObject [
+
 	webSocket := anObject
 ]
 

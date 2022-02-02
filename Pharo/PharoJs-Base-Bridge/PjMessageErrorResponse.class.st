@@ -6,5 +6,6 @@ Class {
 
 { #category : #accessing }
 PjMessageErrorResponse >> getValueWithBridge: aBridge [
+
 	PjJavascriptError signal: self contents
 ]

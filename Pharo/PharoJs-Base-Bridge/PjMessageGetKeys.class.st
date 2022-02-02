@@ -9,6 +9,7 @@ Class {
 
 { #category : #public }
 PjMessageGetKeys >> evaluateInContext: aMessageContext [
+
 	| wsd responseMsg jsObject assocs |
 	wsd := aMessageContext websocketDelegate.
 	responseMsg := PjMessageGetKeysResponse newWithId.
@@ -23,35 +24,36 @@ PjMessageGetKeys >> evaluateInContext: aMessageContext [
 
 { #category : #public }
 PjMessageGetKeys >> keyValuePairsOf: anObject [
+
 	| results |
 	results := OrderedCollection new.
-	anObject
-		allEnumeratableKeysDo: [ :key | 
-			| value |
-			value := anObject instVarNamed: key.
-			results add: key -> (JSON stringify: value) ] .
+	anObject allEnumeratableKeysDo: [ :key | 
+		| value |
+		value := anObject instVarNamed: key.
+		results add: key -> (JSON stringify: value) ].
 	^ results
 ]
 
 { #category : #printing }
 PjMessageGetKeys >> logDescription [
-	^ String
-		streamContents: [ :ws | 
-			ws nextPutAll: self class name.
-			ws nextPutAll: ' id: '.
-			ws nextPutAll: self id printString.
-			self proxyInfo
-				ifNotNil: [ :pi | 
-					ws nextPutAll: ' proxyInfo: '.
-					ws nextPutAll: pi logDescription ] ]
+
+	^ String streamContents: [ :ws | 
+		  ws nextPutAll: self class name.
+		  ws nextPutAll: ' id: '.
+		  ws nextPutAll: self id printString.
+		  self proxyInfo ifNotNil: [ :pi | 
+			  ws nextPutAll: ' proxyInfo: '.
+			  ws nextPutAll: pi logDescription ] ]
 ]
 
 { #category : #accessing }
 PjMessageGetKeys >> proxyInfo [
+
 	^ proxyInfo
 ]
 
 { #category : #accessing }
 PjMessageGetKeys >> proxyInfo: anObject [
+
 	proxyInfo := anObject
 ]

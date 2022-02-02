@@ -20,6 +20,7 @@ PjProxyForGlobal class >> newProxyNamed: globalName [
 
 { #category : #printing }
 PjProxyForGlobal >> printOn: aStream [
+
 	aStream
 		nextPutAll: 'a Proxy for ';
 		nextPutAll: jsName

@@ -9,10 +9,12 @@ Class {
 
 { #category : #accessing }
 PjMessageContext >> websocketDelegate [
+
 	^ websocketDelegate
 ]
 
 { #category : #accessing }
 PjMessageContext >> websocketDelegate: anObject [
+
 	websocketDelegate := anObject
 ]

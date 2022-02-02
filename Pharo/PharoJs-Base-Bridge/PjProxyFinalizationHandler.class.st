@@ -23,42 +23,46 @@ PjProxyFinalizationHandler class >> finalizerForProxyNamed: aString onBridge: aB
 
 { #category : #accessing }
 PjProxyFinalizationHandler >> bridge [
-	^weakBridgeArray at: 1
+
+	^ weakBridgeArray at: 1
 ]
 
 { #category : #accessing }
 PjProxyFinalizationHandler >> bridge: aBridge [
+
 	weakBridgeArray at: 1 put: aBridge
 ]
 
 { #category : #finalization }
 PjProxyFinalizationHandler >> cleanUpJsSide [
-	self bridge
-		ifNotNil: [ :br | 
-			br isServerStopped
-				ifFalse: [ br deleteJsValue: self proxyJsName ] ]
+
+	self bridge ifNotNil: [ :br | 
+		br isServerStopped ifFalse: [ br deleteJsValue: self proxyJsName ] ]
 ]
 
 { #category : #accessing }
 PjProxyFinalizationHandler >> finalizer [
-	^ObjectFinalizer new
-			receiver: self;
-			selector: #cleanUpJsSide
-			yourself.
+
+	^ ObjectFinalizer new
+		  receiver: self;
+		  selector: #cleanUpJsSide yourself
 ]
 
 { #category : #'initialize-release' }
 PjProxyFinalizationHandler >> initialize [
+
 	super initialize.
-	weakBridgeArray := WeakArray new: 1.
+	weakBridgeArray := WeakArray new: 1
 ]
 
 { #category : #accessing }
 PjProxyFinalizationHandler >> proxyJsName [
+
 	^ proxyJsName
 ]
 
 { #category : #accessing }
 PjProxyFinalizationHandler >> proxyJsName: anObject [
+
 	proxyJsName := anObject
 ]

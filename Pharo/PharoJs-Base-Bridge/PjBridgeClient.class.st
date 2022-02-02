@@ -16,38 +16,45 @@ Class {
 
 { #category : #'instance creation' }
 PjBridgeClient class >> newWithAppClass: pjAppClass [
-	^self new
-		initializeWithAppClass: pjAppClass;
-		yourself
+
+	^ self new
+		  initializeWithAppClass: pjAppClass;
+		  yourself
 ]
 
 { #category : #accessing }
 PjBridgeClient >> appClass [
-	^ appClass ifNil: [self defaultAppClass ]
+
+	^ appClass ifNil: [ self defaultAppClass ]
 ]
 
 { #category : #accessing }
 PjBridgeClient >> bridge [
+
 	^ bridge
 ]
 
 { #category : #accessing }
 PjBridgeClient >> clientId [
+
 	^ clientId
 ]
 
 { #category : #accessing }
 PjBridgeClient >> clientId: anObject [
+
 	clientId := anObject
 ]
 
 { #category : #accessing }
 PjBridgeClient >> codeGenerator [
+
 	^ codeGenerator
 ]
 
 { #category : #accessing }
 PjBridgeClient >> codeGenerator: aCodeGenerator [
+
 	| decoratedAppClass |
 	codeGenerator := aCodeGenerator.
 	decoratedAppClass := codeGenerator decorateAppClass: appClass.
@@ -64,46 +71,54 @@ PjBridgeClient >> codeGeneratorClass [
 
 { #category : #'accessing - defaults' }
 PjBridgeClient >> defaultAppClass [
+
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
 PjBridgeClient >> exporter [
+
 	^ exporter
 ]
 
 { #category : #accessing }
 PjBridgeClient >> exporterClass [
+
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
 PjBridgeClient >> initializeWithAppClass: aPharoJsAppClass [
+
 	appClass := aPharoJsAppClass.
 	exporter := self exporterClass new.
-	self codeGenerator: self codeGeneratorClass new.
+	self codeGenerator: self codeGeneratorClass new
 ]
 
 { #category : #accessing }
 PjBridgeClient >> initializeWithBridge: aBridge [
+
 	bridge := aBridge.
 	self codeGenerator bridge: self bridge
 ]
 
 { #category : #accessing }
 PjBridgeClient >> jsGlobalNames [
-	^ (self appClass allSharedPoolsRecursive select: #isJavascriptGlobalsPool)
-			flatCollectAsSet: #classVarNames
+
+	^ (self appClass allSharedPoolsRecursive select:
+		   #isJavascriptGlobalsPool) flatCollectAsSet: #classVarNames
 ]
 
 { #category : #accessing }
 PjBridgeClient >> openBrowserInBackground: aBoolean [
 	"Useful only for Browser apps"
-	^self
+
+	^ self
 ]
 
 { #category : #accessing }
 PjBridgeClient >> pharoJsSelectorPrefix [
+
 	^ exporter transpiler pharoJsSelectorPrefix
 ]
 
@@ -120,36 +135,41 @@ PjBridgeClient >> reset [
 
 { #category : #accessing }
 PjBridgeClient >> server [
-	^self bridge server
+
+	^ self bridge server
 ]
 
 { #category : #accessing }
 PjBridgeClient >> shouldStartJsInterpreter [
+
 	^ self bridge shouldStartJsInterpreter
 ]
 
 { #category : #actions }
 PjBridgeClient >> start [
+
 	self shouldStartJsInterpreter ifTrue: [ self startJsInterpreter ]
 ]
 
 { #category : #actions }
 PjBridgeClient >> startJsInterpreter [
 	"start javascript interpreter"
+
 	self subclassResponsibility
 ]
 
 { #category : #actions }
 PjBridgeClient >> startTimeout [
-	^2 seconds
+
+	^ 2 seconds
 ]
 
 { #category : #actions }
 PjBridgeClient >> stop [
 	"stop javascript interpreter"
-	self server ifNil: [ ^self ].
-	self server isWebSocketConnected
-		ifFalse: [ ^ self ].
+
+	self server ifNil: [ ^ self ].
+	self server isWebSocketConnected ifFalse: [ ^ self ].
 	self bridge websocketDelegateClassName ifNil: [ ^ self ].
 	[ self bridge sendMessage: PjMessageTerminate new ]
 		on: ConnectionTimedOut
@@ -158,20 +178,24 @@ PjBridgeClient >> stop [
 
 { #category : #accessing }
 PjBridgeClient >> title [
+
 	^ self appClass title
 ]
 
 { #category : #accessing }
 PjBridgeClient >> websocketDelegateClass [
-	^self codeGenerator websocketDelegateClass
+
+	^ self codeGenerator websocketDelegateClass
 ]
 
 { #category : #accessing }
 PjBridgeClient >> websocketDelegateClassName [
-	^self codeGenerator websocketDelegateClassName
+
+	^ self codeGenerator websocketDelegateClassName
 ]
 
 { #category : #accessing }
 PjBridgeClient >> withClientLogging [
-	self codeGenerator: self codeGenerator withClientLogging.
+
+	self codeGenerator: self codeGenerator withClientLogging
 ]

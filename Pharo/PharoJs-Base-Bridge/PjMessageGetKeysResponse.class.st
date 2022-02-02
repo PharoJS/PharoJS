@@ -6,34 +6,35 @@ Class {
 
 { #category : #public }
 PjMessageGetKeysResponse >> getValueWithBridge: aBridge [
+
 	^ self contents
 ]
 
 { #category : #printing }
 PjMessageGetKeysResponse >> logDescription [
-	^ String
-		streamContents: [ :ws | 
-			ws nextPutAll: self class name.
-			ws nextPutAll: ' id: '.
-			ws nextPutAll: self id asString.
-			ws nextPutAll: ' inResponseToId: '.
-			ws
-				nextPutAll:
-					(self inResponseToId
-						ifNotNil: [ :aNumber | aNumber asString ]
-						ifNil: [ '-' ]).
-			ws nextPutAll: ' contents: '.
-			ws
-				nextPutAll: self contents size asString , ' key-value pairs' ]
+
+	^ String streamContents: [ :ws | 
+		  ws
+			  nextPutAll: self class name;
+			  nextPutAll: ' id: ';
+			  nextPutAll: self id asString;
+			  nextPutAll: ' inResponseToId: ';
+			  nextPutAll: (self inResponseToId
+					   ifNotNil: [ :aNumber | aNumber asString ]
+					   ifNil: [ '-' ]);
+			  nextPutAll: ' contents: ';
+			  nextPutAll: self contents size asString;
+			  nextPutAll: ' key-value pairs' ]
 ]
 
 { #category : #printing }
 PjMessageGetKeysResponse >> printOn: ws [
 	<pharoJsSkip>
+	
 	super printOn: ws.
 	ws space.
 	ws << 'ir2id: '.
-	ws << (self inResponseToId ifNil: ['-']).
+	ws << (self inResponseToId ifNil: [ '-' ]).
 	ws space.
 	ws << self contents
 ]

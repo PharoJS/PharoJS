@@ -6,5 +6,6 @@ Class {
 
 { #category : #public }
 PjMessageS2c >> evaluateInContext: aMessageContext [
+
 	self subclassResponsibility
 ]

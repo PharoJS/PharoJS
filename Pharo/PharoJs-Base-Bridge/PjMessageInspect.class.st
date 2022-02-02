@@ -9,31 +9,34 @@ Class {
 
 { #category : #testing }
 PjMessageInspect >> isCallback [
+
 	^ true
 ]
 
 { #category : #public }
 PjMessageInspect >> processCallbackWithBridge: aBridge [
 	<pharoJsSkip>
+	
 	(self serverObjectForSubjectWithBridge: aBridge) inspect
 ]
 
 { #category : #public }
 PjMessageInspect >> serverObjectForSubjectWithBridge: aBridge [
 	<pharoJsSkip>
-	subjectProxyInfo isLiteral
-		ifTrue: [ ^ subjectProxyInfo ].
-	subjectProxyInfo isNumber
-		ifTrue: [ ^ subjectProxyInfo ].
+	
+	subjectProxyInfo isLiteral ifTrue: [ ^ subjectProxyInfo ].
+	subjectProxyInfo isNumber ifTrue: [ ^ subjectProxyInfo ].
 	^ subjectProxyInfo proxyForBridge: aBridge
 ]
 
 { #category : #accessing }
 PjMessageInspect >> subjectProxyInfo [
+
 	^ subjectProxyInfo
 ]
 
 { #category : #accessing }
 PjMessageInspect >> subjectProxyInfo: anObject [
+
 	subjectProxyInfo := anObject
 ]

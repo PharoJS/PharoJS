@@ -9,10 +9,12 @@ Class {
 
 { #category : #accessing }
 PjMessageC2sInResponseTo >> inResponseToId [
+
 	^ inResponseToId
 ]
 
 { #category : #accessing }
 PjMessageC2sInResponseTo >> inResponseToId: anObject [
+
 	inResponseToId := anObject
 ]
