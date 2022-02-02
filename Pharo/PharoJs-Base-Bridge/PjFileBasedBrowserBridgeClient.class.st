@@ -9,13 +9,15 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #'initialization-release' }
+{ #category : #'accessing - defaults' }
 PjFileBasedBrowserBridgeClient >> defaultAppClass [
-	^PjFileBasedWebApp
+
+	^ PjFileBasedWebApp
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjFileBasedBrowserBridgeClient >> openWebBrowserOn: appHtmlFileUrlString [
+
 	WebBrowser
 		openOn: self urlString
 		inBackground: self openBrowserInBackground
@@ -23,5 +25,6 @@ PjFileBasedBrowserBridgeClient >> openWebBrowserOn: appHtmlFileUrlString [
 
 { #category : #accessing }
 PjFileBasedBrowserBridgeClient >> urlString [
-	^self appClass appHtmlUrlString
+
+	^ self appClass appHtmlUrlString
 ]

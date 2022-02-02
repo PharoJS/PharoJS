@@ -25,34 +25,38 @@ Class {
 
 { #category : #'instance creation' }
 PjWebsocketDelegate class >> connectToTag: tagString [
-	^self connectToUrl: 'ws://', (location host), '/', tagString
+
+	^ self connectToUrl: 'ws://' , location host , '/' , tagString
 ]
 
 { #category : #'instance creation' }
 PjWebsocketDelegate class >> connectToUrl: urlString [
+
 	| newInstance |
 	newInstance := self new.
 	newInstance connectTo: urlString.
 	^ newInstance
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 PjWebsocketDelegate class >> new [
+
 	^ super new
-		id: self randomIdForNewInstance;
-		yourself
+		  id: self randomIdForNewInstance;
+		  yourself
 ]
 
 { #category : #'instance creation' }
 PjWebsocketDelegate class >> randomIdForNewInstance [
+
 	| charPool id size |
 	charPool := 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.
 	size := charPool size.
 	id := ''.
-	10
-		timesRepeat: [ | rndIdx |
-			rndIdx := (Math floor: Math random * size) + 1.
-			id := id , (charPool at: rndIdx) ].
+	10 timesRepeat: [ 
+		| rndIdx |
+		rndIdx := (Math floor: Math random * size) + 1.
+		id := id , (charPool at: rndIdx) ].
 	^ id
 ]
 

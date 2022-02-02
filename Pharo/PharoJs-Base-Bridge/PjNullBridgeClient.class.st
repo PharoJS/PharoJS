@@ -7,13 +7,15 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #activity }
+{ #category : #actions }
 PjNullBridgeClient >> start [
 	"start interpreter"
-	^self
+
+	^ self
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjNullBridgeClient >> stop [
-	^self
+
+	^ self
 ]

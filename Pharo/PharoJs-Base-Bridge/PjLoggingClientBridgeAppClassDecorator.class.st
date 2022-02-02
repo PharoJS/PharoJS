@@ -6,5 +6,6 @@ Class {
 
 { #category : #accessing }
 PjLoggingClientBridgeAppClassDecorator class >> websocketDelegateClass [
+
 	^ PjLoggingEvaluatorWebsocketDelegate
 ]

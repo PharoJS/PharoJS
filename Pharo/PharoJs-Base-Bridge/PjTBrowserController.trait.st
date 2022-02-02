@@ -1,3 +1,6 @@
+"
+Utility trait to control the webbrowser
+"
 Trait {
 	#name : #PjTBrowserController,
 	#instVars : [
@@ -6,18 +9,21 @@ Trait {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #accessing }
+{ #category : #actions }
 PjTBrowserController >> openBrowserInBackground [
+
 	^ openBrowserInBackground ifNil: [ false ]
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 PjTBrowserController >> openBrowserInBackground: aBoolean [
+
 	openBrowserInBackground := aBoolean
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjTBrowserController >> startJsInterpreter [
+
 	WebBrowser
 		openOn: self urlString
 		inBackground: self openBrowserInBackground
@@ -25,5 +31,6 @@ PjTBrowserController >> startJsInterpreter [
 
 { #category : #accessing }
 PjTBrowserController >> urlString [
+
 	self explicitRequirement
 ]

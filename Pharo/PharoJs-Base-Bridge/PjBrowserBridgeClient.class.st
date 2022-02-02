@@ -12,37 +12,42 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #accessing }
+{ #category : #'accessing - defaults' }
 PjBrowserBridgeClient class >> defaultWebBrowserName [
-	^defaultWebBrowserName ifNil: [ self safari ]
+
+	^ defaultWebBrowserName ifNil: [ self safari ]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - defaults' }
 PjBrowserBridgeClient class >> defaultWebBrowserName: aString [
+
 	defaultWebBrowserName := aString
 ]
 
 { #category : #accessing }
 PjBrowserBridgeClient class >> firefox [
-	^#firefox
+
+	^ #firefox
 ]
 
-{ #category : #accessing }
+{ #category : #utilities }
 PjBrowserBridgeClient class >> makeFirefoxDefaultWebBrowser [
 	<script>
-
+	
 	self defaultWebBrowserName: self firefox
 ]
 
-{ #category : #accessing }
+{ #category : #utilities }
 PjBrowserBridgeClient class >> makeSafariDefaultWebBrowser [
 	<script>
+	
 	self defaultWebBrowserName: self safari
 ]
 
 { #category : #accessing }
 PjBrowserBridgeClient class >> safari [
-	^#safari
+
+	^ #safari
 ]
 
 { #category : #'initialization-release' }
@@ -69,7 +74,7 @@ PjBrowserBridgeClient >> serverUrlString [
 	^self server urlString
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjBrowserBridgeClient >> start [
 	self bridge server
 		javascript:

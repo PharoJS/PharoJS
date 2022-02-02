@@ -23,11 +23,13 @@ PjJavascriptMessage class >> receiverId: receiverId selector: selector arguments
 
 { #category : #converting }
 PjJavascriptMessage >> asJsAstUsing: aConverter [
-	^aConverter convertJavascriptMessage: self
+
+	^ aConverter convertJavascriptMessage: self
 ]
 
 { #category : #converting }
 PjJavascriptMessage >> convertToJsUsing: aTranspiler [
+
 	aTranspiler convertJavascriptMessage: self
 ]
 
@@ -38,5 +40,6 @@ PjJavascriptMessage >> receiverId [
 
 { #category : #accessing }
 PjJavascriptMessage >> receiverId: anObject [
+
 	receiverId := anObject
 ]

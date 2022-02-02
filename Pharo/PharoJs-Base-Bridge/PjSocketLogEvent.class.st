@@ -15,27 +15,32 @@ Class {
 
 { #category : #accessing }
 PjSocketLogEvent >> contents: anObject [
+
 	contents := anObject
 ]
 
 { #category : #accessing }
 PjSocketLogEvent >> direction: anObject [
+
 	direction := anObject
 ]
 
 { #category : #printing }
 PjSocketLogEvent >> printContentsOn: stream [
+
 	| limitedString |
-	limitedString := String streamContents: [: s | s nextPutAll: contents ] limitedTo: 20.
+	limitedString := String
+		                 streamContents: [ :s | s nextPutAll: contents ]
+		                 limitedTo: 20.
 	stream
 		nextPutAll: ' socket ';
 		nextPutAll: direction asString;
 		nextPut: $:;
 		space;
 		nextPutAll: limitedString.
-	limitedString size < contents size ifTrue: [
+	limitedString size < contents size ifTrue: [ 
 		stream
 			nextPutAll: '... ';
 			print: contents size;
-			nextPut: $B].
+			nextPut: $B ]
 ]

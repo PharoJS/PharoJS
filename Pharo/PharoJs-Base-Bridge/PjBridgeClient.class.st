@@ -54,14 +54,15 @@ PjBridgeClient >> codeGenerator: aCodeGenerator [
 	exporter initializeWithAppClass: decoratedAppClass
 ]
 
-{ #category : #'initialization-release' }
+{ #category : #accessing }
 PjBridgeClient >> codeGeneratorClass [
-	self codeGenerator ifNil: [^PjClientCodeGenerator].
-	^self codeGenerator species 
+
+	self codeGenerator ifNil: [ ^ PjClientCodeGenerator ].
+	^ self codeGenerator species
 	"Allows keeping the behavior upon reseting the client in the bridge. See PjBridge>>#resetClient"
 ]
 
-{ #category : #'initialization-release' }
+{ #category : #'accessing - defaults' }
 PjBridgeClient >> defaultAppClass [
 	self subclassResponsibility
 ]
@@ -71,7 +72,7 @@ PjBridgeClient >> exporter [
 	^ exporter
 ]
 
-{ #category : #'initialization-release' }
+{ #category : #accessing }
 PjBridgeClient >> exporterClass [
 	self subclassResponsibility
 ]
@@ -106,8 +107,9 @@ PjBridgeClient >> pharoJsSelectorPrefix [
 	^ exporter transpiler pharoJsSelectorPrefix
 ]
 
-{ #category : #'initialization-release' }
+{ #category : #initialization }
 PjBridgeClient >> reset [
+
 	self initializeWithAppClass: self appClass.
 	self initializeWithBridge:  self bridge.
 	self clientId: nil.
@@ -126,23 +128,23 @@ PjBridgeClient >> shouldStartJsInterpreter [
 	^ self bridge shouldStartJsInterpreter
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjBridgeClient >> start [
 	self shouldStartJsInterpreter ifTrue: [ self startJsInterpreter ]
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjBridgeClient >> startJsInterpreter [
 	"start javascript interpreter"
 	self subclassResponsibility
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjBridgeClient >> startTimeout [
 	^2 seconds
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjBridgeClient >> stop [
 	"stop javascript interpreter"
 	self server ifNil: [ ^self ].

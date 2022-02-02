@@ -23,12 +23,12 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-WebSocketDelegate'
 }
 
-{ #category : #'instance creation' }
+{ #category : #accessing }
 PjLoggingEvaluatorWebsocketDelegate class >> logElementId [
 	^ logElementId ifNil: [ 'webSocketLog' ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : #accessing }
 PjLoggingEvaluatorWebsocketDelegate class >> logElementId: aString [
 	logElementId := aString
 ]
@@ -83,30 +83,30 @@ PjLoggingEvaluatorWebsocketDelegate >> logElementId: anObject [
 	logElementId := anObject
 ]
 
-{ #category : #'socket behavior' }
+{ #category : #'socket - behavior' }
 PjLoggingEvaluatorWebsocketDelegate >> logReceived: aString [
 	self log: 'Received: ', aString
 ]
 
-{ #category : #'socket behavior' }
+{ #category : #'socket - behavior' }
 PjLoggingEvaluatorWebsocketDelegate >> logSent: aString [
 	self log: 'Sent: ', aString.
 	^ aString
 ]
 
-{ #category : #'socket behavior' }
+{ #category : #'socket - event handling' }
 PjLoggingEvaluatorWebsocketDelegate >> onClose: event [
 	super onClose: event.
 	self log: 'Closed.'
 ]
 
-{ #category : #'socket behavior' }
+{ #category : #'socket - event handling' }
 PjLoggingEvaluatorWebsocketDelegate >> onError: event [
 	super onError: event.
 	self log: 'Error.'
 ]
 
-{ #category : #'socket behavior' }
+{ #category : #'socket - event handling' }
 PjLoggingEvaluatorWebsocketDelegate >> onOpen: event [
 	super onOpen: event.
 	self log: 'Open (id: ' , self id , ')'

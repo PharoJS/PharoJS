@@ -30,15 +30,15 @@ Class {
 
 { #category : #public }
 PjHtmlGenerator >> add: tag contents: aString [
-	self 
-		add: tag
-		do: [ bodyStream nextPutAll: aString ]
+
+	self add: tag do: [ bodyStream nextPutAll: aString ]
 ]
 
 { #category : #public }
 PjHtmlGenerator >> add: tag do: aBlock [
+
 	bodyStream
-		cr; 
+		cr;
 		nextPut: $<;
 		nextPutAll: tag;
 		nextPut: $>.
@@ -51,7 +51,8 @@ PjHtmlGenerator >> add: tag do: aBlock [
 
 { #category : #public }
 PjHtmlGenerator >> add: tag id: id class: class contents: aString [
-	self 
+
+	self
 		add: tag
 		id: id
 		class: class
@@ -60,6 +61,7 @@ PjHtmlGenerator >> add: tag id: id class: class contents: aString [
 
 { #category : #public }
 PjHtmlGenerator >> add: tag id: id class: class do: aBlock [
+
 	bodyStream
 		cr; 
 		nextPut: $<;
@@ -77,6 +79,7 @@ PjHtmlGenerator >> add: tag id: id class: class do: aBlock [
 
 { #category : #public }
 PjHtmlGenerator >> add: tag id: id contents: aString [
+
 	self 
 		add: tag
 		id: id
@@ -85,11 +88,13 @@ PjHtmlGenerator >> add: tag id: id contents: aString [
 
 { #category : #public }
 PjHtmlGenerator >> add: tag id: id do: aBlock [
+
 	self add: tag id: id class: nil do: aBlock
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addButton: buttonLabel onClickDo: javaScript [
+
 	bodyStream 
 		nextPutAll: '<input type="button" value="';
 		nextPutAll: buttonLabel;
@@ -100,17 +105,20 @@ PjHtmlGenerator >> addButton: buttonLabel onClickDo: javaScript [
 
 { #category : #public }
 PjHtmlGenerator >> addCssLink: aString [
+
 	headerStream 
 		nextPutAll: '<link rel="stylesheet" type="text/css" href="',aString,'">'
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addDiv: id contents: aString [
+
 	self add: 'div' id: id contents: aString
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addDiv: id do: aBlock [
+
 	self add: 'div' id: id do: aBlock
 ]
 
@@ -121,6 +129,7 @@ PjHtmlGenerator >> addHtmlToBody: htmlString [
 
 { #category : #public }
 PjHtmlGenerator >> addImage: imageUrl [
+
 	bodyStream
 		cr; 
 		nextPutAll: '<img src="';
@@ -130,6 +139,7 @@ PjHtmlGenerator >> addImage: imageUrl [
 
 { #category : #public }
 PjHtmlGenerator >> addScriptString: aString [
+
 	scriptsStream
 		nextPutAll: '<script language="javascript" type="text/javascript">';
 		nextPutAll: aString;
@@ -138,6 +148,7 @@ PjHtmlGenerator >> addScriptString: aString [
 
 { #category : #public }
 PjHtmlGenerator >> addScriptUrl: aString [
+
 	scriptsStream
 		nextPutAll: '<script language="javascript" type="text/javascript" src="';
 		nextPutAll: aString;
@@ -146,16 +157,19 @@ PjHtmlGenerator >> addScriptUrl: aString [
 
 { #category : #public }
 PjHtmlGenerator >> addSpan: id contents: aString [
+
 	self add: 'span' id: id contents: aString
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addSpan: id do: aBlock [
+
 	self add: 'span' id: id do: aBlock
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addStyle: aString [
+
 	headerStream
 		nextPutAll: '<style type="text/css">';
 		nextPutAll: aString;
@@ -166,6 +180,7 @@ PjHtmlGenerator >> addStyle: aString [
 PjHtmlGenerator >> addTextInput: id hint: hintString on: eventName do: javaScript [
 	"eventName can take one of three values: keydown, keypress, keyup"
 	"Not keypress event is sent for actual characters and not when keys such as CTL or ALT are pressed"
+	
 	bodyStream 
 		nextPutAll: '<input type="text" id="';
 		nextPutAll: id;
@@ -180,26 +195,31 @@ PjHtmlGenerator >> addTextInput: id hint: hintString on: eventName do: javaScrip
 
 { #category : #public }
 PjHtmlGenerator >> addTextInput: id hint: hintString onKeyDownDo: javaScript [
+
 	self addTextInput: id hint: hintString on: 'keydown' do: javaScript
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addTextInput: id hint: hintString onKeyPressDo: javaScript [
+
 	self addTextInput: id hint: hintString on: 'keypress' do: javaScript
 ]
 
 { #category : #public }
 PjHtmlGenerator >> addTextInput: id hint: hintString onKeyUpDo: javaScript [
+
 	self addTextInput: id hint: hintString on: 'keyup' do: javaScript
 ]
 
 { #category : #public }
 PjHtmlGenerator >> cr [
+
 	bodyStream nextPutAll: '<br/>'
 ]
 
 { #category : #public }
 PjHtmlGenerator >> html [
+
 	| htmlStream |
 	htmlStream := String new writeStream.
 	htmlStream
@@ -224,20 +244,23 @@ PjHtmlGenerator >> html [
 		nextPutAll: '</body>';
 		cr;
 		nextPutAll: '</html>'.
+		
 	^htmlStream contents
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PjHtmlGenerator >> initialize [
+
 	super initialize.
 	headerStream := String new writeStream.
 	bodyStream := String new writeStream.
 	bodyAttributes := String new writeStream.
-	scriptsStream := String new writeStream.
+	scriptsStream := String new writeStream
 ]
 
 { #category : #public }
 PjHtmlGenerator >> loadFrom: aString [
+
 	| hStart hEnd bStart bAngle bEnd |
 	hStart := aString indexOfSubCollection: '<head>'.
 	hEnd := aString indexOfSubCollection: '</head>'.
@@ -252,11 +275,12 @@ PjHtmlGenerator >> loadFrom: aString [
 	(bAngle>0 and: [bEnd>bAngle]) ifFalse: [
 		bodyStream nextPutAll: '<!-- no body tag in file -->'
 	] ifTrue: [
-		bodyStream nextPutAll: (aString copyFrom: bAngle+1 to: bEnd-1)].
+		bodyStream nextPutAll: (aString copyFrom: bAngle+1 to: bEnd-1)]
 ]
 
 { #category : #public }
 PjHtmlGenerator >> title: aString [
+
 	headerStream 
 		nextPutAll: '<title>';
 		nextPutAll: aString;

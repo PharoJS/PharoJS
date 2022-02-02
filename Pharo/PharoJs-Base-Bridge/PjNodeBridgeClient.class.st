@@ -7,18 +7,21 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #'initialization-release' }
+{ #category : #'accessing - defaults' }
 PjNodeBridgeClient >> defaultAppClass [
-	^PjNodeBridgeDefaultApp
+
+	^ PjNodeBridgeDefaultApp
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjNodeBridgeClient >> runNodeOn: aFileName inFolder: aFolder [
+
 	WebBrowser openTerminalWithNodeOn: aFileName inFolder: aFolder
 ]
 
-{ #category : #activity }
+{ #category : #actions }
 PjNodeBridgeClient >> startJsInterpreter [
+
 	self
 		runNodeOn: self fileName fullName
 		inFolder: self appFolder fullName

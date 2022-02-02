@@ -21,11 +21,13 @@ Class {
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> closeDefault [
-	self default close.
+
+	self default close
 ]
 
 { #category : #'defaut instance' }
-PjEvaluatorWebsocketDelegate class >> connectDefaultToTag: tagString [ 
+PjEvaluatorWebsocketDelegate class >> connectDefaultToTag: tagString [
+
 	| newInstance |
 	newInstance := self connectToTag: tagString.
 	self default: newInstance
@@ -33,6 +35,7 @@ PjEvaluatorWebsocketDelegate class >> connectDefaultToTag: tagString [
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> connectDefaultToUrl: urlString [
+
 	| newInstance |
 	newInstance := self connectToUrl: urlString.
 	self default: newInstance
@@ -40,47 +43,55 @@ PjEvaluatorWebsocketDelegate class >> connectDefaultToUrl: urlString [
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> default [
-	^default
+
+	^ default
 ]
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> default: newInstance [
-	default := newInstance.
+
+	default := newInstance
 ]
 
 { #category : #constants }
 PjEvaluatorWebsocketDelegate class >> includeClasses [
-	^ {PhxJsonReader.
-	PjMessageDeleteGlobalVar.
-	PjMessageEvaluateJavascript.
-	PjMessageGetKeys.
-	PjMessageReload.
-	PjMessageTerminate.
-	PjMessageSetEventListener.
-	PjMessageMakeBlockClosureProxy}
+
+	^ { 
+		  PhxJsonReader.
+		  PjMessageDeleteGlobalVar.
+		  PjMessageEvaluateJavascript.
+		  PjMessageGetKeys.
+		  PjMessageReload.
+		  PjMessageTerminate.
+		  PjMessageSetEventListener.
+		  PjMessageMakeBlockClosureProxy }
 ]
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initialize [
+
 	Smalltalk at: #PjBridge ifPresent: [ ^ self ].
-	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
-		do: [ :each | 
-			(global at: each)
-				ifNotNil: [ :obj | obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
+	#( JSON Math WebSocket console global document history location
+	   navigator screen window localStorage module process require ) do: [ 
+		:each | 
+		(global at: each) ifNotNil: [ :obj | 
+			obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
 ]
 
 { #category : #'class initialization' }
 PjEvaluatorWebsocketDelegate class >> initializePrivate [
-	#(JSON Math WebSocket console global document history location navigator screen window localStorage module process require)
-		do: [ :each | 
-			(global at: each)
-				ifNotNil:
-					[ :obj | obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
+
+	#( JSON Math WebSocket console global document history location
+	   navigator screen window localStorage module process require ) do: [ 
+		:each | 
+		(global at: each) ifNotNil: [ :obj | 
+			obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
 ]
 
 { #category : #'defaut instance' }
 PjEvaluatorWebsocketDelegate class >> reload [
-	self reload: true.
+
+	self reload: true
 ]
 
 { #category : #'defaut instance' }
@@ -93,7 +104,8 @@ true - Reloads the current page from the server."
 ]
 
 { #category : #'defaut instance' }
-PjEvaluatorWebsocketDelegate class >> terminate [ 
+PjEvaluatorWebsocketDelegate class >> terminate [
+
 	[ self closeDefault ]
 		on: Error
 		do: [  ].
