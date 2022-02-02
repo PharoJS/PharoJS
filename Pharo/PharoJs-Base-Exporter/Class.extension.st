@@ -3,12 +3,14 @@ Extension { #name : #Class }
 { #category : #'*PharoJs-Base-Exporter-App' }
 Class >> allSharedPoolsRecursive [
 	"Answer a set of the pools the receiver shares, including those defined  in the superclasses of the receiver."
+	
 	^ self allSharedPoolsRecursiveInto: Set new
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 Class >> allSharedPoolsRecursiveInto: aCollection [
 	"Add to the collection all of the pools the receiver shares, including those defined  in the superclasses of the receiver."
+	
 	self inheritedSharedPools do: [ : each |
 		(aCollection includes: each) ifFalse: [
 			aCollection add: each.
@@ -20,11 +22,13 @@ Class >> allSharedPoolsRecursiveInto: aCollection [
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 Class >> inheritedSharedPools [
+
 	^ self allSharedPools
 ]
 
 { #category : #'*PharoJs-Base-Exporter' }
 Class >> javascriptIsExportableClass [
+
 	^ true
 ]
 

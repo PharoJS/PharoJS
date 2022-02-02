@@ -10,6 +10,7 @@ Class {
 
 { #category : #tests }
 PjProxyTest >> testArrayEquality [
+
 	self assertBlock: [ #() ] equalsBlock: [ #() ].
 	self denyBlock: [ #() ] equalsBlock: [ #(1 2 3) ].
 	self assertBlock: [ #(1 2 3) ] equalsBlock: [ #(1 2 3) ].
@@ -23,6 +24,7 @@ PjProxyTest >> testArrayEquality [
 
 { #category : #tests }
 PjProxyTest >> testAsJson [
+
 	self assert: 42 asJSON equals: '42'.
 	self assert: 'a\b"c' asJSON equals: '"a\\b\"c"'.
 	self assert: nil asJSON equals: 'undefined'.
@@ -30,6 +32,7 @@ PjProxyTest >> testAsJson [
 
 { #category : #tests }
 PjProxyTest >> testBlockClosures [
+
 	document body addEventListener: 'click' block: [ 42 ].
 	self
 		should: [ document body addEventListener: 'click' block: 42 ]
@@ -52,11 +55,13 @@ PjProxyTest >> testBlockClosures [
 
 { #category : #tests }
 PjProxyTest >> testBrowser [
+
 	self assert: (window hasOwnProperty: 'document') description: 'window properies'
 ]
 
 { #category : #tests }
 PjProxyTest >> testChildren [
+
 	| rectangle other |
 	rectangle := document createElement: 'span'.
 	rectangle id: 'grn'.
@@ -74,6 +79,7 @@ PjProxyTest >> testChildren [
 
 { #category : #tests }
 PjProxyTest >> testClick [
+
 	| rectangle count |
 	count := 0.
 	rectangle := document createElement: 'div'.
@@ -105,6 +111,7 @@ PjProxyTest >> testClick [
 
 { #category : #tests }
 PjProxyTest >> testClickWithEventTarget [
+
 	| rectangle1 rectangle2 lastClickedRectangle count listenerBlock |
 	count := 0.
 	rectangle1 := document createElement: 'div'.
@@ -139,6 +146,7 @@ PjProxyTest >> testClickWithEventTarget [
 
 { #category : #tests }
 PjProxyTest >> testGetElementById [
+
 	| rectangle |
 	rectangle := document createElement: 'div'.
 	rectangle id: 'grn'.
@@ -150,6 +158,7 @@ PjProxyTest >> testGetElementById [
 
 { #category : #tests }
 PjProxyTest >> testIterateOverChildren [
+
 	| container newChild |
 	container := document createElement: 'div'.
 	10 timesRepeat: [
@@ -162,6 +171,7 @@ PjProxyTest >> testIterateOverChildren [
 
 { #category : #tests }
 PjProxyTest >> testProxyGarbageCollection [
+
 	| b jsName |
 	b := document body.
 	jsName := b javascriptName.
@@ -177,6 +187,7 @@ PjProxyTest >> testProxyGarbageCollection [
 
 { #category : #tests }
 PjProxyTest >> testProxyMissingError [
+
 	"This test fails intermittently because of interfering garbage collection effects of released proxies"
 	self timeLimit: 60 seconds.
 	1 to: 10 by: 1 do: [ :num | 
@@ -186,6 +197,7 @@ PjProxyTest >> testProxyMissingError [
 
 { #category : #tests }
 PjProxyTest >> testValueNonInterference [
+
 	| theInput |
 	self
 		addToDOM: '<input id="testValueNonInterference" type="text" value="Name:">'.

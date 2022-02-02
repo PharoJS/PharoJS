@@ -6,6 +6,7 @@ Class {
 
 { #category : #tests }
 PjReflectionTest >> testClassName [
+
 	| class |
 	class := classFactory
 		silentlyNewSubclassOf: PjObject
@@ -18,6 +19,7 @@ PjReflectionTest >> testClassName [
 
 { #category : #tests }
 PjReflectionTest >> testNestedRepeats [
+
 	| class tryNestedRepeatsSelector tryNestedRepeatsMethod |
 	class := classFactory
 		silentlyNewSubclassOf: PjObject
@@ -34,22 +36,23 @@ PjReflectionTest >> testNestedRepeats [
 
 { #category : #tests }
 PjReflectionTest >> testReflection [
-	self assertEquivalent: [Number inheritsFrom: Object].
-	self assertEquivalent: [Number canUnderstand: #isNil].
-	self assertEquivalent: [Number canUnderstand: #someSelectorThatDoesntExist].
-	self assertEquivalent: [Number canUnderstand: #ifTrue:].
-	self assertEquivalent: [42 respondsTo: #ifTrue:].
-	self assertEquivalent: [42 respondsTo: #abs].
-	self assertEquivalent: [true respondsTo: #ifTrue:].
-	self assertEquivalent: [Object new respondsTo: #neverDefined].
+
+	self assertEquivalent: [ Number inheritsFrom: Object ].
+	self assertEquivalent: [ Number canUnderstand: #isNil ].
+	self assertEquivalent: [ Number canUnderstand: #someSelectorThatDoesntExist ].
+	self assertEquivalent: [ Number canUnderstand: #ifTrue: ].
+	self assertEquivalent: [ 42 respondsTo: #ifTrue: ].
+	self assertEquivalent: [ 42 respondsTo: #abs ].
+	self assertEquivalent: [ true respondsTo: #ifTrue: ].
+	self assertEquivalent: [ Object new respondsTo: #neverDefined ].
 	self assert: [ document respondsTo: #neverDefined ] evaluatesTo: false.
-	self assertEquivalent: [3 isKindOf: Number].
-	self assertEquivalent: [3 isKindOf: Object].
-	self assertEquivalent: [3 isMemberOf: SmallInteger].
-	self assertEquivalent: [3 isMemberOf: Object].
-	self assertEquivalent: [true respondsTo: #not].
-	self assertEquivalent: [true respondsTo: #ifTrue:].
-	self assertEquivalent: [42 respondsTo: #<=].
+	self assertEquivalent: [ 3 isKindOf: Number ].
+	self assertEquivalent: [ 3 isKindOf: Object ].
+	self assertEquivalent: [ 3 isMemberOf: SmallInteger ].
+	self assertEquivalent: [ 3 isMemberOf: Object ].
+	self assertEquivalent: [ true respondsTo: #not ].
+	self assertEquivalent: [ true respondsTo: #ifTrue: ].
+	self assertEquivalent: [ 42 respondsTo: #<= ].
 ]
 
 { #category : #tests }

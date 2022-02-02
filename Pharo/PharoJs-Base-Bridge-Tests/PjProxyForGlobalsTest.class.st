@@ -10,6 +10,7 @@ Class {
 
 { #category : #running }
 PjProxyForGlobalsTest >> setUp [
+
 	super setUp.
 	authorInitialName := Author uniqueInstance fullNamePerSe.
 	Author uniqueInstance fullName: 'PharoJS'.
@@ -18,6 +19,7 @@ PjProxyForGlobalsTest >> setUp [
 
 { #category : #running }
 PjProxyForGlobalsTest >> tearDown [
+
 	super tearDown.
 	classFactory ifNotNil: [ classFactory cleanUp ].
 	Author uniqueInstance fullName: authorInitialName.
@@ -25,6 +27,7 @@ PjProxyForGlobalsTest >> tearDown [
 
 { #category : #tests }
 PjProxyForGlobalsTest >> testProxyForNewGlobalsCreated [
+
 	| globalsPool userClass |
 	globalsPool := classFactory silentlyNewSubclassOf: PjJavascriptGlobals instanceVariableNames: '' classVariableNames: 'A B'.
 	userClass := classFactory newSubclassOf: Object uses: #() instanceVariableNames: '' classVariableNames: '' poolDictionaries: globalsPool name category: classFactory defaultCategory.

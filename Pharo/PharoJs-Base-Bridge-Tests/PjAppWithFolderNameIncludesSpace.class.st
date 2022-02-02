@@ -7,5 +7,6 @@ Class {
 { #category : #exporting }
 PjAppWithFolderNameIncludesSpace class >> defaultAppFolderName [
 	<pharoJsSkip>
-	^'Folder Name With Space'
+	
+	^ 'Folder Name With Space'
 ]

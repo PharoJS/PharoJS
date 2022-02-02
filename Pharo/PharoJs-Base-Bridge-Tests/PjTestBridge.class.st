@@ -14,10 +14,12 @@ Class {
 
 { #category : #public }
 PjTestBridge >> evalJavascript: javaScriptString [
+
 	^ lastJavascript := javaScriptString
 ]
 
 { #category : #accessing }
 PjTestBridge >> lastJavascript [
+
 	^ lastJavascript
 ]

@@ -9,6 +9,7 @@ Class {
 
 { #category : #tests }
 PjIncrementalJavascriptTest >> testPolyfillLoad [
+
 	| contents |
 	bridge := PjTestBridge bridgeForAppClass: PjMinimalNodeApplication.
 	bridge loadAllClasses: #().

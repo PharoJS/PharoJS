@@ -12,8 +12,9 @@ Class {
 	#category : #'PharoJs-Base-Exporter-Kernel'
 }
 
-{ #category : #accessors }
+{ #category : #accessing }
 PjTestFileExporter >> contents [
+
 	^ self writeStream contents
 ]
 
@@ -27,12 +28,14 @@ PjTestFileExporter >> fileName [
 	^ nil
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 PjTestFileExporter >> fileReferenceFrom: someFileName [
-	^self
+
+	^ self
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 PjTestFileExporter >> writeStream [
+
 	^ writeStream ifNil: [ writeStream := WriteStream with: '' ]
 ]

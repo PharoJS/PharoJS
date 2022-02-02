@@ -8,10 +8,12 @@ Class {
 
 { #category : #'suite parameters' }
 PjAppFolderNameIncludesSpaceTest class >> appClass [
-	^PjAppWithFolderNameIncludesSpace
+
+	^ PjAppWithFolderNameIncludesSpace
 ]
 
 { #category : #tests }
 PjAppFolderNameIncludesSpaceTest >> testConnectionEstablished [
+
 	self assert: self bridge isConnected
 ]

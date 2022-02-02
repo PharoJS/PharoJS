@@ -6,14 +6,14 @@ Class {
 
 { #category : #tests }
 PjInfrastructureTest >> testCallGetsTrampolined [
-	self
-		assert:
-			(self bridge
-				evalBlock: [ nil ~= (document getElementsByTagName: 'script') ])
+
+	self assert: (self bridge evalBlock: [ 
+			 nil ~= (document getElementsByTagName: 'script') ])
 ]
 
 { #category : #tests }
 PjInfrastructureTest >> testDNUSetup [
+
 	| prefix |
 	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
 	self
@@ -34,23 +34,26 @@ PjInfrastructureTest >> testDNUSetup [
 
 { #category : #tests }
 PjInfrastructureTest >> testGetterGetsTrampolined [
+
 	self assert: (self bridge evalBlock: [ document body ~= nil ])
 ]
 
 { #category : #tests }
 PjInfrastructureTest >> testIs [
-	self assertEquivalent: [Object isBlock].
-	self assertEquivalent: [Object new isBlock].
-	self assertEquivalent: [Object isBlock].
-	self assertEquivalent: [[] isBlock].
-	self assertEquivalent: [Object new isClass].
-	self assertEquivalent: [[] isClass].
-	self assertEquivalent: [Object isBehavior].
-	self assertEquivalent: [Object isClass].
+
+	self assertEquivalent: [ Object isBlock ].
+	self assertEquivalent: [ Object new isBlock ].
+	self assertEquivalent: [ Object isBlock ].
+	self assertEquivalent: [ [] isBlock ].
+	self assertEquivalent: [ Object new isClass ].
+	self assertEquivalent: [ [] isClass ].
+	self assertEquivalent: [ Object isBehavior ].
+	self assertEquivalent: [ Object isClass ]
 ]
 
 { #category : #tests }
 PjInfrastructureTest >> testJSSelector [
+
 	|prefix|
 	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
 	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: prefix, 'foo'.
@@ -64,16 +67,18 @@ PjInfrastructureTest >> testJSSelector [
 
 { #category : #tests }
 PjInfrastructureTest >> testSTSelector [
-	self assert: [PjCore makeSmalltalkSelector: #foo] evaluatesTo: 'foo'.
-	self assert: [PjCore makeSmalltalkSelector: #foo:] evaluatesTo: 'foo:'.
-	self assert: [PjCore makeSmalltalkSelector: #,] evaluatesTo: ','.
-	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, '44_'] evaluatesTo: ','.
-	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo'] evaluatesTo: 'foo'.
-	self assert: [PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo_'] evaluatesTo: 'foo:'.
+
+	self assert: [ PjCore makeSmalltalkSelector: #foo ] evaluatesTo: 'foo'.
+	self assert: [ PjCore makeSmalltalkSelector: #foo: ] evaluatesTo: 'foo:'.
+	self assert: [ PjCore makeSmalltalkSelector: #, ] evaluatesTo: ','.
+	self assert: [ PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, '44_' ] evaluatesTo: ','.
+	self assert: [ PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo' ] evaluatesTo: 'foo'.
+	self assert: [ PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo_' ] evaluatesTo: 'foo:'
 ]
 
 { #category : #tests }
 PjInfrastructureTest >> testSetterGetsTrampolined [
+
 	self bridge evalBlock: [ document js_at: 'foo' put: 17 ].
 	self bridge evalBlock: [ document foo: 42 ].
 	self assert: (self bridge evalBlock: [ document foo = 42 ])
@@ -81,8 +86,9 @@ PjInfrastructureTest >> testSetterGetsTrampolined [
 
 { #category : #tests }
 PjInfrastructureTest >> testValueNonInterference [
+
 	self addToDOM: '<input id="theInput" type="text" value="Name:">'.
-	self assert: [|t| t:=document getElementById: #theInput.t value=t defaultValue] evaluatesTo: true.
-	self assert: [|t| t:=document getElementById: #theInput.t value: 'addr'] evaluatesTo: 'addr'.
-	self assert: [|t| t:=document getElementById: #theInput.t value] evaluatesTo: 'addr'
+	self assert: [|t| t := document getElementById: #theInput.t value=t defaultValue] evaluatesTo: true.
+	self assert: [|t| t := document getElementById: #theInput.t value: 'addr'] evaluatesTo: 'addr'.
+	self assert: [|t| t := document getElementById: #theInput.t value] evaluatesTo: 'addr'
 ]

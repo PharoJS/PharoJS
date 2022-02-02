@@ -6,6 +6,7 @@ Class {
 
 { #category : #tests }
 PjBasicTest >> testBasicEquality [
+
 	self assertBlock: [ 312 ] equalsBlock: [ 312 ].
 	self denyBlock: [ 312 ] equalsBlock: [ 5 ].
 	self assertBlock: [ 'one two three' ] equalsBlock: [ 'one two three' ].
@@ -15,12 +16,14 @@ PjBasicTest >> testBasicEquality [
 
 { #category : #tests }
 PjBasicTest >> testBooleanMethods [
-	self assertEquivalent: [true asBit].
-	self assertEquivalent: [false asBit].
+
+	self assertEquivalent: [ true asBit ].
+	self assertEquivalent: [ false asBit ]
 ]
 
 { #category : #tests }
 PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
+
 	| o1 o2 |
 	window instVarNamed:#MyConstructor put: [: a : b : c |
 		self js_this instVarNamed:#x put: a.
@@ -40,6 +43,7 @@ PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
 { #category : #tests }
 PjBasicTest >> testClosedBlocks [
 	<expectedFailure>
+	
 	| x |
 	self fail: 'Fix error'.
 	x := 3.
@@ -50,6 +54,7 @@ PjBasicTest >> testClosedBlocks [
 
 { #category : #tests }
 PjBasicTest >> testClosure [
+
 	self assertEquivalent: [| tot coll |
 		tot := 0.
 		coll := OrderedCollection new.
@@ -61,19 +66,22 @@ PjBasicTest >> testClosure [
 
 { #category : #tests }
 PjBasicTest >> testDifferentIdentities [
+
 	self assertEquivalent: [false ~~ true].
 ]
 
 { #category : #tests }
 PjBasicTest >> testEqualityAndDifferenceWithNil [
-	self assertEquivalent: [0=nil].
-	self assertEquivalent: [0~=nil].
-	self assertEquivalent: [nil=0].
-	self assertEquivalent: [nil~=0].
+
+	self assertEquivalent: [ 0 = nil ].
+	self assertEquivalent: [ 0 ~= nil ].
+	self assertEquivalent: [ nil = 0 ].
+	self assertEquivalent: [ nil ~= 0 ]
 ]
 
 { #category : #tests }
 PjBasicTest >> testEvalResult [
+
 	self checkBasic: 42.
 	self checkBasic: true.
 	self checkBasic: false.
@@ -81,13 +89,15 @@ PjBasicTest >> testEvalResult [
 	self checkBasic: 'a\b''c"d'.
 	self checkProxy: nil.
 	self
-		should: [ (PjMessageErrorResponse newWithContents: 'a Javascript error')
+		should: [ 
+			(PjMessageErrorResponse newWithContents: 'a Javascript error') 
 				getValueWithBridge: self bridge ]
 		raise: PjJavascriptError
 ]
 
 { #category : #tests }
 PjBasicTest >> testExceptionHandling [
+
 	self assert: [|exceptionSignaled|
 			exceptionSignaled := false.
 			[Error signal]on: Error do: [exceptionSignaled := true].
@@ -102,6 +112,7 @@ PjBasicTest >> testExceptionHandling [
 
 { #category : #tests }
 PjBasicTest >> testHash [
+
 	self assertEquivalent: [nil hash].
 	self assertEquivalent: [0 hash].
 	self assertEquivalent: [ 1234 hash].
@@ -114,88 +125,101 @@ PjBasicTest >> testHash [
 
 { #category : #tests }
 PjBasicTest >> testIdentity [
-	self assertEquivalent: [false == false].
+
+	self assertEquivalent: [ false == false ]
 ]
 
 { #category : #tests }
 PjBasicTest >> testIfNilIfNotNil [
-	self assertEquivalent: [nil ifNil: [1]].
-	self assertEquivalent: [false ifNotNil: [2]].
-	self assertEquivalent: [nil ifNil: [1] ifNotNil: [2]].
-	self assertEquivalent: [false ifNil: [1] ifNotNil: [2]].
-	self assert: [(document getElementById: #notInTheDocument) ifNil: [1] ifNotNil: [2]] evaluatesTo: 1
+
+	self assertEquivalent: [ nil ifNil: [ 1 ] ].
+	self assertEquivalent: [ false ifNotNil: [ 2 ] ].
+	self assertEquivalent: [ nil ifNil: [ 1 ] ifNotNil: [ 2 ] ].
+	self assertEquivalent: [ false ifNil: [ 1 ] ifNotNil: [ 2 ] ].
+	self
+		assert: [ 
+			(document getElementById: #notInTheDocument)
+				ifNil: [ 1 ]
+				ifNotNil: [ 2 ] ]
+		evaluatesTo: 1
 ]
 
 { #category : #tests }
 PjBasicTest >> testIfTrueIfFalse [
-	self assertEquivalent: [true ifTrue: [1]] .
-	self assertEquivalent: [false ifFalse: [2]].
-	self assertEquivalent: [false ifTrue: [1]] .
-	self assertEquivalent: [true ifFalse: [2]].
-	self assertEquivalent: [true ifTrue: [1] ifFalse: [2]].
-	self assertEquivalent: [false ifTrue: [1] ifFalse: [2]].
-	self assertEquivalent: [true ifFalse: [2] ifTrue: [1]].
-	self assertEquivalent: [false ifFalse: [2] ifTrue: [1]].
+
+	self assertEquivalent: [ true ifTrue: [1] ] .
+	self assertEquivalent: [ false ifFalse: [2] ].
+	self assertEquivalent: [ false ifTrue: [1] ] .
+	self assertEquivalent: [ true ifFalse: [2] ].
+	self assertEquivalent: [ true ifTrue: [1] ifFalse: [2] ].
+	self assertEquivalent: [ false ifTrue: [1] ifFalse: [2] ].
+	self assertEquivalent: [ true ifFalse: [2] ifTrue: [1] ].
+	self assertEquivalent: [ false ifFalse: [2] ifTrue: [1] ] 
 ]
 
 { #category : #tests }
 PjBasicTest >> testJavascriptSemanticsComparisons [
-" can't use assertEquivalent: because these are errors in Smalltalk "
-	self assert: [nil>=0] evaluatesTo: false.
-	self assert: [nil>0] evaluatesTo: false.
-	self assert: [nil<=0] evaluatesTo: false.
-	self assert: [nil<0] evaluatesTo: false.
-	self assert: [0>=nil] evaluatesTo: false.
-	self assert: [0>nil] evaluatesTo: false.
-	self assert: [0<=nil] evaluatesTo: false.
-	self assert: [0<nil] evaluatesTo: false.
+	"Can't use assertEquivalent: because these are errors in Smalltalk"
+
+	self assert: [ nil>=0 ] evaluatesTo: false.
+	self assert: [ nil>0 ] evaluatesTo: false.
+	self assert: [ nil<=0]  evaluatesTo: false.
+	self assert: [ nil<0 ] evaluatesTo: false.
+	self assert: [ 0>=nil ] evaluatesTo: false.
+	self assert: [ 0>nil ] evaluatesTo: false.
+	self assert: [ 0<=nil ] evaluatesTo: false.
+	self assert: [ 0<nil ] evaluatesTo: false
 ]
 
 { #category : #tests }
 PjBasicTest >> testMethodsForBitManipulation [
-	self assertEquivalent: [-257 bitShift: -4].
-	self assertEquivalent: [257 bitShift: -4].
-	self assertEquivalent: [-257 bitShift: 4].
-	self assertEquivalent: [257 bitShift: 4].
-	self assertEquivalent: [-5 bitAnd: -11].
-	self assertEquivalent: [5 bitAnd: 11].
-	self assertEquivalent: [-5 bitAnd: 11].
-	self assertEquivalent: [5 bitAnd: 11].
-	self assertEquivalent: [-5 bitOr: -11].
-	self assertEquivalent: [5 bitOr: 11].
-	self assertEquivalent: [-5 bitOr: 11].
-	self assertEquivalent: [5 bitOr: 11].
-	self assertEquivalent: [-5 bitXor: -11].
-	self assertEquivalent: [5 bitXor: 11].
-	self assertEquivalent: [-5 bitXor: 11].
-	self assertEquivalent: [5 bitXor: 11].
-	self assertEquivalent: [1234567 highBit].
-	self assertEquivalent: [12300000 lowBit].
-	self assertEquivalent: [-12300000 lowBit].
+
+	self assertEquivalent: [ -257 bitShift: -4 ].
+	self assertEquivalent: [ 257 bitShift: -4 ].
+	self assertEquivalent: [ -257 bitShift: 4 ].
+	self assertEquivalent: [ 257 bitShift: 4 ].
+	self assertEquivalent: [ -5 bitAnd: -11 ].
+	self assertEquivalent: [ 5 bitAnd: 11 ].
+	self assertEquivalent: [ -5 bitAnd: 11 ].
+	self assertEquivalent: [ 5 bitAnd: 11 ].
+	self assertEquivalent: [ -5 bitOr: -11 ].
+	self assertEquivalent: [ 5 bitOr: 11 ].
+	self assertEquivalent: [ -5 bitOr: 11 ].
+	self assertEquivalent: [ 5 bitOr: 11 ].
+	self assertEquivalent: [ -5 bitXor: -11 ].
+	self assertEquivalent: [ 5 bitXor: 11 ].
+	self assertEquivalent: [ -5 bitXor: 11 ].
+	self assertEquivalent: [ 5 bitXor: 11 ].
+	self assertEquivalent: [ 1234567 highBit ].
+	self assertEquivalent: [ 12300000 lowBit ].
+	self assertEquivalent: [ -12300000 lowBit ].
 ]
 
 { #category : #tests }
 PjBasicTest >> testMethodsForNumbers [
-	self assertEquivalent: [-3 abs].
-	self assertEquivalent: [0 abs].
-	self assertEquivalent: [3 abs].
-	self assertEquivalent: [0 sign].
-	self assertEquivalent: [4 sign].
-	self assertEquivalent: [-25 sign].
+
+	self assertEquivalent: [ -3 abs ].
+	self assertEquivalent: [ 0 abs ].
+	self assertEquivalent: [ 3 abs ].
+	self assertEquivalent: [ 0 sign ].
+	self assertEquivalent: [ 4 sign ].
+	self assertEquivalent: [ -25 sign ].
 	self assertEquivalent: [ 30 degreesToRadians ].
 	self assertEquivalent: [ 1.78 radiansToDegrees ].
 ]
 
 { #category : #tests }
 PjBasicTest >> testMultilineConstants [
-	self assertEquivalent: ['this
-			and that' size].
-	self assertEquivalent: [#(1 2 3
-			4 5 6) size].
+
+	self assertEquivalent: [ 
+		'this
+			and that' size ].
+	self assertEquivalent: [ #( 1 2 3 4 5 6 ) size ]
 ]
 
 { #category : #tests }
 PjBasicTest >> testNumber [
+
 	| x |
 	self assertEquivalent: [ 1 ].
 	self assertEquivalent: [ 2 asInteger ].
@@ -223,34 +247,38 @@ PjBasicTest >> testNumber [
 
 { #category : #tests }
 PjBasicTest >> testResettingTheClient [
+
 	self bridge resetClient.
-	self assert:
-		self bridge isConnected
+	self assert: self bridge isConnected
 ]
 
 { #category : #tests }
 PjBasicTest >> testSignalingExceptionFromJavaScript [
+
 	self
-		should: [ self bridge
-				evalBlock: [ Object new testSignalingExceptionFromJavaScript ] ]
+		should: [ 
+			self bridge evalBlock: [ 
+				Object new testSignalingExceptionFromJavaScript ] ]
 		raise: PjJavascriptError
 ]
 
 { #category : #tests }
 PjBasicTest >> testSimpleMathOperations [
-	self assertEquivalent: [1+2].
-	self assertEquivalent: [6*7].
-	self assertEquivalent: [(2 + 4) * (3 + 4)].
-	self assertEquivalent: [2 + 4 * 7].
-	self assertEquivalent: [2 + 4 * (3 + 4)].
-	self assertEquivalent: [(3 + 4) odd].
-	self assertEquivalent: [(3 * 4) odd].
-	self assertEquivalent: [(3 + 4) even].
-	self assertEquivalent: [(3 * 4) even].
+
+	self assertEquivalent: [ 1+2 ].
+	self assertEquivalent: [ 6*7 ].
+	self assertEquivalent: [ (2 + 4) * (3 + 4) ].
+	self assertEquivalent: [ 2 + 4 * 7 ].
+	self assertEquivalent: [ 2 + 4 * (3 + 4) ].
+	self assertEquivalent: [ (3 + 4) odd ].
+	self assertEquivalent: [ (3 * 4) odd ].
+	self assertEquivalent: [ (3 + 4) even ].
+	self assertEquivalent: [ (3 * 4) even ].
 ]
 
 { #category : #tests }
 PjBasicTest >> testTimesRepeat [
+
 	self
 		assertEquivalent: [|counter|
 			counter := 0.
@@ -260,6 +288,7 @@ PjBasicTest >> testTimesRepeat [
 
 { #category : #tests }
 PjBasicTest >> testUnicode [
+
 	self assert: $€ asJSON equals: '"\u20AC"'.
 	self assert: 'ab€cd' asJSON equals: '"ab\u20ACcd"'.
 	self checkBasic: 'ab€cd'.
@@ -267,18 +296,21 @@ PjBasicTest >> testUnicode [
 
 { #category : #tests }
 PjBasicTest >> testValueBlock0Arg [
-	self assertEquivalent: [[1+2] value].
+
+	self assertEquivalent: [ [1+2] value ]
 ]
 
 { #category : #tests }
 PjBasicTest >> testValueBlock1Arg [
-	self assertEquivalent: [[ : x | x + 2] value: 1].
+
+	self assertEquivalent: [ [ : x | x + 2] value: 1 ]
 ]
 
 { #category : #tests }
 PjBasicTest >> testValues [
+
 	self assertEquivalent: [ 42 value ].
 	self assertEquivalent: [ true value ].
 	self assertEquivalent: [ false value ].
-	self assertEquivalent: [ 'abc' value ].
+	self assertEquivalent: [ 'abc' value ]
 ]

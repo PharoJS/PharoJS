@@ -3,25 +3,26 @@ Extension { #name : #PjDOMApplication }
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjDOMApplication class >> appFullHtmlFileName [
 	<pharoJsSkip>
+	
 	^self appFullHtmlFolderPath / self appHtmlFileName
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjDOMApplication class >> appFullHtmlFolderPath [
+
 	<pharoJsSkip>
-	self appHtmlSubFolder ifNotNil: [: subfolder|
-		^self appFolder / subfolder 
-	].
-	^self appFolder
+	self appHtmlSubFolder ifNotNil: [ :subfolder | 
+		^ self appFolder / subfolder ].
+	^ self appFolder
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjDOMApplication class >> appFullJsFolderPath [
 	<pharoJsSkip>
-	self appJsSubFolder ifNotNil: [: subfolder|
-		^self appFullHtmlFolderPath / subfolder 
-	].
-	^self appFullHtmlFolderPath
+	
+	self appJsSubFolder ifNotNil: [ :subfolder | 
+		^ self appFullHtmlFolderPath / subfolder ].
+	^ self appFullHtmlFolderPath
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }

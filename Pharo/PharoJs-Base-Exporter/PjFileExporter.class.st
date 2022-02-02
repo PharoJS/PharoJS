@@ -14,6 +14,7 @@ PjFileExporter class >> exportApp: aClass [
 
 { #category : #files }
 PjFileExporter >> createFileNamed: someFileName startingWith: beginning and: string ifEditableDo: aBlock [
+
 	| fileReference |
 	fileReference := self fileReferenceFrom: someFileName.
 	fileReference exists ifTrue: [ 
@@ -27,23 +28,24 @@ PjFileExporter >> createFileNamed: someFileName startingWith: beginning and: str
 
 { #category : #files }
 PjFileExporter >> delete: fileReference ifMatches: string [
+
 	| fileStream first100 match |
-	fileReference exists ifFalse: [ ^self ].
+	fileReference exists ifFalse: [ ^ self ].
 	fileStream := fileReference openForRead.
 	first100 := fileStream next: 100 into: (String new: 100).
 	fileStream close.
 	match := self matchFrom: string.
-	(first100 = ''
-						or: [ (first100 findString: match startingAt: 1 caseSensitive: true) > 0 ])
-						ifTrue: [ ^ self].
-		Error
-				signal:
-					fileReference pathString , ' exists and does not contain "' , string
-						, '" in the first 100 bytes'
+	(first100 = '' or: [ 
+		 (first100 findString: match startingAt: 1 caseSensitive: true) > 0 ]) 
+		ifTrue: [ ^ self ].
+	Error signal:
+		fileReference pathString , ' exists and does not contain "' , string
+		, '" in the first 100 bytes'
 ]
 
 { #category : #files }
 PjFileExporter >> fileName [
+
 	^ self appClass appFullJsFileName
 ]
 
@@ -61,11 +63,13 @@ PjFileExporter >> matchFrom: string [
 
 { #category : #files }
 PjFileExporter >> writeFiles [
-	self writeJavascriptFileNamed: self fileName.
+
+	self writeJavascriptFileNamed: self fileName
 ]
 
 { #category : #files }
 PjFileExporter >> writeInto: fileReference match: string startingWith: beginning  do: aBlock [
+
 	| fileStream |
 	fileStream := fileReference writeStream.
 	self
@@ -94,6 +98,7 @@ PjFileExporter >> writeInto: fileReference match: string startingWith: beginning
 
 { #category : #files }
 PjFileExporter >> writeInto: f startingWith: beginning  do: aBlock [
+
 	| match |
 	self
 		jsStream: f
@@ -121,6 +126,7 @@ PjFileExporter >> writeInto: f startingWith: beginning  do: aBlock [
 { #category : #files }
 PjFileExporter >> writeJavascriptFileNamed: aFileName [
 	"Delete file first, because Windows can't open it for writing later when the file is open."
+	
 	aFileName ifNotNil: [aFileName resolve deleteIfAbsent: [ ]].
 	self
 		createFileNamed: aFileName

@@ -40,84 +40,100 @@ PjExporter class >> transpilerClass [
 ]
 
 { #category : #adding }
-PjExporter >> addAllClasses: someClasses [ 
-	someClasses do: [: each | self addClass: each]
+PjExporter >> addAllClasses: someClasses [
+
+	someClasses do: [ :each | self addClass: each ]
 ]
 
 { #category : #adding }
-PjExporter >> addAllPackages: packageNames [ 
-	packageNames do: [ : each |
-		self addPackage: each ]
+PjExporter >> addAllPackages: packageNames [
+
+	packageNames do: [ :each | self addPackage: each ]
 ]
 
 { #category : #adding }
 PjExporter >> addClass: aClass [
-	(self isExportable: aClass) ifFalse: [ ^self ].
+
+	(self isExportable: aClass) ifFalse: [ ^ self ].
 	self classes add: aClass
 ]
 
 { #category : #adding }
 PjExporter >> addPackage: packageName [
-	self
-		addAllClasses: (SystemOrganizer default classesInCategory: packageName asString)
+
+	self addAllClasses:
+		(SystemOrganizer default classesInCategory: packageName asString)
 ]
 
 { #category : #accessing }
 PjExporter >> appClass [
+
 	^ appClass
 ]
 
 { #category : #accessing }
 PjExporter >> bootstrapClasses [
+
 	^ self class bootstrapClasses
 ]
 
 { #category : #accessing }
 PjExporter >> classes [
+
 	^ classes
 ]
 
 { #category : #loading }
 PjExporter >> convertAllClassesToJs: someClasses [
-	someClasses do: [ : aClass | self invalidateClass: aClass]. 
+
+	someClasses do: [ :aClass | self invalidateClass: aClass ].
 	self addAllClasses: someClasses.
-	^ self transpiler onTempStreamDo: [
-		self transpiler convertAllClasses: self nonBootstrapClasses writeDnu: true].
+	^ self transpiler onTempStreamDo: [ 
+		  self transpiler
+			  convertAllClasses: self nonBootstrapClasses
+			  writeDnu: true ]
 ]
 
 { #category : #accessing }
 PjExporter >> coreClass [
+
 	^ self class coreClass
 ]
 
 { #category : #'writing low-level' }
 PjExporter >> cr [
+
 	jsStream lf
 ]
 
 { #category : #writing }
 PjExporter >> dnuHook [
-	^ [ self writeGlobalsPolyfills: nil.
-	true ]
+
+	^ [ 
+	  self writeGlobalsPolyfills: nil.
+	  true ]
 ]
 
 { #category : #accessing }
 PjExporter >> headerLine [
+
 	^ self appClass headerLine
 ]
 
 { #category : #'initialize-release' }
 PjExporter >> initialize [
+
 	super initialize.
 	classes := Set new.
 	globalsPools := Set new.
 	self transpiler: self transpilerClass new.
-	self transpiler addAllOptionalConversions"Except: 0 to: 1/2".
-	self setUpForPolyfill.
+	self transpiler addAllOptionalConversions "Except: 0 to: 1/2".
+	self setUpForPolyfill
 ]
 
 { #category : #accessing }
 PjExporter >> initializeWithAppClass: aClass [
+
 	appClass := aClass.
 	transpiler pharoJsSelectorPrefix: aClass pharoJsSelectorPrefix.
 	self addAllClasses: appClass appClasses.
@@ -126,6 +142,7 @@ PjExporter >> initializeWithAppClass: aClass [
 
 { #category : #testing }
 PjExporter >> isExportable: aClass [
+
 	aClass ifNil: [ ^ false ].
 	aClass isTrait ifTrue: [ ^false ].
 	aClass isTestCase ifTrue: [ ^false ].
@@ -135,11 +152,13 @@ PjExporter >> isExportable: aClass [
 
 { #category : #'test support' }
 PjExporter >> javascriptCode [
+
 	^ String streamContents: [: aStream | self writeJsCodeOn: aStream]
 ]
 
 { #category : #'writing low-level' }
 PjExporter >> jsStream: aStream do: aBlock [
+
 	| savedStream |
 	savedStream := jsStream.
 	jsStream := aStream.
@@ -150,26 +169,31 @@ PjExporter >> jsStream: aStream do: aBlock [
 
 { #category : #accessing }
 PjExporter >> launchBlock [
+
 	^ launchBlock ifNil: [ self appClass appLaunchBlock ]
 ]
 
 { #category : #accessing }
 PjExporter >> launchBlock: aBlock [
+
 	launchBlock := aBlock
 ]
 
 { #category : #'writing low-level' }
 PjExporter >> nextPut: aCharacter [
+
 	jsStream nextPut: aCharacter
 ]
 
 { #category : #'writing low-level' }
 PjExporter >> nextPutAll: aString [
+
 	jsStream nextPutAll: aString
 ]
 
 { #category : #writing }
 PjExporter >> nonBootstrapClasses [
+
 	| actualBootstrapClasses |
 	actualBootstrapClasses := self bootstrapClasses asSet collect: #classToUseForJsConversion.
 	^self classes reject: [ :setClass | 
@@ -178,28 +202,33 @@ PjExporter >> nonBootstrapClasses [
 
 { #category : #'initialize-release' }
 PjExporter >> setUpForPolyfill [
+
 	self transpiler beforeCodeOutputHook: [: pools | self writeGlobalsPolyfills: pools]
 ]
 
 { #category : #accessing }
 PjExporter >> setupCode [
-	^self appClass setupCode
+
+	^ self appClass setupCode
 ]
 
 { #category : #accessing }
 PjExporter >> transpiler [
-	^transpiler
+
+	^ transpiler
 ]
 
 { #category : #accessing }
 PjExporter >> transpiler: aTranspiler [
+
 	transpiler := aTranspiler.
 	transpiler onStream: self
 ]
 
 { #category : #accessing }
 PjExporter >> transpilerClass [
-	^self class transpilerClass
+
+	^ self class transpilerClass
 ]
 
 { #category : #writing }
@@ -249,12 +278,12 @@ PjExporter >> writeCoreObject [
 
 { #category : #writing }
 PjExporter >> writeGlobalsPolyfills: pools [
+
 	pools do: [ :pool | 
 		self appClass
 			polyfill: pool
 			withTranspiler: self transpiler
-			unlessIn: globalsPools
-	].
+			unlessIn: globalsPools ]
 ]
 
 { #category : #writing }
@@ -266,11 +295,13 @@ PjExporter >> writeJsCode [
 
 { #category : #writing }
 PjExporter >> writeJsCodeOn: aStream [
+
 	self jsStream: aStream do: [ self writeJsCode ]
 ]
 
 { #category : #writing }
 PjExporter >> writeJsCoreAndBootstrap [
+
 	self nextPutAll: self setupCode; cr.
 	self writeCoreObject.
 	self transpiler convertAllClasses: self bootstrapClasses writeDnu: false
@@ -278,11 +309,13 @@ PjExporter >> writeJsCoreAndBootstrap [
 
 { #category : #writing }
 PjExporter >> writeLaunchCode [
-	self transpiler convertAndWriteClosedBlock: self launchBlock.
+
+	self transpiler convertAndWriteClosedBlock: self launchBlock
 ]
 
 { #category : #writing }
 PjExporter >> writeNonBootstrapClasses [
+
 	self transpiler
 		convertAllClasses: self nonBootstrapClasses
 		writeDnu: true
