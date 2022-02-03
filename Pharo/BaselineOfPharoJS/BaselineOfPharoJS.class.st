@@ -38,11 +38,25 @@ BaselineOfPharoJS >> groups: spec [
 			group: 'Bridge' with: #('PharoJs-Base-Bridge')	;
 			group: 'Examples' with: #('PharoJs-Examples');
 			group: 'Benchmarks' with: #('PharoJs-Benchmarking');
+			group: 'Statistics' with: #('PharoJs-Utilities-Statistics');
 			group: 'Tools' with: #('PharoJs-Tools').
 			
+		spec 	
+			group: 'Tests' with: #(
+				'PharoJs-Base-Transpiler-Tests'
+				'PharoJs-Base-Transpiler-Optimizations-Tests'
+				'PharoJs-Base-Exporter-Tests'
+				'PharoJs-Base-JS-CoreLibraries-Tests'
+				'PharoJs-Base-Serialization-Tests'
+				'PharoJs-Base-Bridge-Tests'
+				'PharoJs-Examples-Tests'
+				'PharoJs-Tools-Tests' 
+			).	
+				
+		spec group: 'Deprecated' with: #('PharoJs-Base-Serialization-Deprecated').		
 	   "Virtual groups (lowercase) from Metacello"
-		spec group: 'all' with: #('App' 'Exporter' 'Bridge' 'Examples' 'Tools').
-		spec group: 'default' with: #('default')
+		spec group: 'all' with: #('App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
+		spec group: 'default' with: #('all')
 ]
 
 { #category : #'private - accessing' }
