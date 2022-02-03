@@ -23,17 +23,19 @@ BaselineOfPharoJS >> baseline: spec [
 
 { #category : #'private - accessing' }
 BaselineOfPharoJS >> compatibility: spec [
-
+	"Define a 'Compatibility' group that can be used as a dependency later to overcome differences in Pharo releases"
+	
 	spec for: #'common' do: [ spec group: 'Compatibility' with: #() ].	"no compatibility by default"
-		
-	spec for: #'pharo7.x' do: [ 
-		spec package: 'PharoJs-Compatibility-Pharo7';
-			  group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo7') ].
 
-	spec for: #('pharo8.x' 'pharo9.x') 
-		do: [ 
-			spec package: 'PharoJs-Compatibility-Pharo8';
-				  group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo8') ].
+	spec for: #('pharo9.x') do: [ spec package: 'PharoJs-Compatibility-Pharo9';
+				     							   group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo9') ].
+					
+	spec for: #('pharo8.x') do: [ spec package: 'PharoJs-Compatibility-Pharo8';
+				     							   group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo8') ].
+
+	spec for: #('pharo7.x') do: [ spec package: 'PharoJs-Compatibility-Pharo7';
+				     							   group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo7') ].
+
 ]
 
 { #category : #'private - accessing' }
@@ -69,7 +71,7 @@ BaselineOfPharoJS >> groups: spec [
 				
 		spec group: 'Deprecated' with: #('PharoJs-Base-Serialization-Deprecated').		
 	   "Virtual groups (lowercase) from Metacello"
-		spec group: 'all' with: #('App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
+		spec group: 'all' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
 		spec group: 'default' with: #('all')
 ]
 
