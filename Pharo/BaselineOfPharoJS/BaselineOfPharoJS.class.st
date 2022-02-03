@@ -15,9 +15,34 @@ BaselineOfPharoJS >> baseline: spec [
 	spec for: #('pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJs-Compatibility-Pharo8' ].
 		
 	spec for: #'common' do: [
-		self prerequisites: spec.		
-		self packages: spec.		
+		self 
+			prerequisites: spec;		
+			packages: spec;
+			groups: spec	
 	]
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> groups: spec [
+		"Define groups for loading"
+		
+		"Transpiler"
+		spec 
+			group: 'Transpiler' with: #('PharoJs-Base-Transpiler');			
+			group: 'OptimizedTranspiler' with: #('PharoJs-Base-Transpiler' 'PharoJs-Base-Transpiler-Optimizations').		
+		
+		"Other"	
+		spec 
+			group: 'App' with: #('PharoJs-Base-App');
+			group: 'Exporter' with: #('PharoJs-Base-Exporter');
+			group: 'Bridge' with: #('PharoJs-Base-Bridge')	;
+			group: 'Examples' with: #('PharoJs-Examples');
+			group: 'Benchmarks' with: #('PharoJs-Benchmarking');
+			group: 'Tools' with: #('PharoJs-Tools').
+			
+	   "Virtual groups (lowercase) from Metacello"
+		spec group: 'all' with: #('App' 'Exporter' 'Bridge' 'Examples' 'Tools').
+		spec group: 'default' with: #('default')
 ]
 
 { #category : #'private - accessing' }
