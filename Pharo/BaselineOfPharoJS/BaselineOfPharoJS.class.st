@@ -140,9 +140,10 @@ BaselineOfPharoJS >> prerequisites: spec [
 	"Baselines"
 	spec
 		baseline: 'PharoExtra' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
-		baseline: 'Equals' with: [ spec repository: 'github://bouraqadi/PharoMisc' ].
-		
+		baseline: 'Equals' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
+		baseline: 'Seaside3' with: [ spec repository: 'github://SeasideSt/Seaside:master/repository' ].	
+			
 	"Zinc Packages"	
 	spec
-		package: 'Zinc-WebSocket-Core' with: [ spec repository: 'github://svenvc/zinc' ]
+		package: 'Zinc-WebSocket-Core' with: [ spec repository: 'github://svenvc/zinc' ]			 
 ]
