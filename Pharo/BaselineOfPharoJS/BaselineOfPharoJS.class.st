@@ -57,6 +57,9 @@ BaselineOfPharoJS >> groups: spec [
 			group: 'Statistics' with: #('PharoJs-Utilities-Statistics');
 			group: 'Tools' with: #('PharoJs-Tools').
 			
+		spec
+			group: 'Electron' with: #('PharoJs-Base-JS-Electron').	
+			
 		spec 	
 			group: 'Tests' with: #(
 				'PharoJs-Base-Transpiler-Tests'
@@ -71,7 +74,7 @@ BaselineOfPharoJS >> groups: spec [
 				
 		spec group: 'Deprecated' with: #('PharoJs-Base-Serialization-Deprecated').		
 	   "Virtual groups (lowercase) from Metacello"
-		spec group: 'all' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
+		spec group: 'all' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests' 'Electron').
 		spec group: 'default' with: #('all')
 ]
 
@@ -113,16 +116,17 @@ BaselineOfPharoJS >> packages: spec [
 			  package: 'PharoJs-Examples-Tests' with: [ spec requires: #('PharoJs-Examples' 'PharoJs-TestFramework') ].						
 		
 		"Benchmarking (Timing)"
-		spec package: 'PharoJs-Benchmarking' with: [ spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge' ) ].
+		spec package: 'PharoJs-Benchmarking' with: [ spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge') ].
 		
 		"Utilities - Statistics"					
-		spec package: 'PharoJs-Utilities-Statistics' with: [ spec requires: #('PharoJs-Base-Exporter' ) ].
+		spec package: 'PharoJs-Utilities-Statistics' with: [ spec requires: #('PharoJs-Base-Exporter') ].
 													
 		"Tools"   		
-		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge' ) ];
+		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge') ];
 			  package: 'PharoJs-Tools-Tests' with: [ spec requires: #('PharoJs-Tools' 'PharoJs-TestFramework') ].
 		
-	
+		"Electron"
+		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ]
 ]
 
 { #category : #'private - accessing' }

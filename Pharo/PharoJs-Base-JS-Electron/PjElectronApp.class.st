@@ -18,7 +18,7 @@ Class {
 	#pools : [
 		'PjElectronPolyfill'
 	],
-	#category : #PharoJsElectron
+	#category : #'PharoJs-Base-JS-Electron'
 }
 
 { #category : #exporting }
