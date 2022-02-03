@@ -78,7 +78,7 @@ BaselineOfPharoJS >> packages: spec [
 		"Define and list all packages and their dependencies"
 		
 		"Transpiler"
-		spec package: 'PharoJs-Base-Transpiler' with: [ spec requires: #('Equals') ];
+		spec package: 'PharoJs-Base-Transpiler' with: [ spec requires: #('Equals' 'Compatibility') ];
 			  package: 'PharoJs-Base-Transpiler-Tests' with: [ spec requires: #('PharoJs-Base-Transpiler') ]; 
            package: 'PharoJs-Base-Transpiler-Optimizations' with: [ spec requires: #('PharoJs-Base-Transpiler') ];
 			  package: 'PharoJs-Base-Transpiler-Optimizations-Tests' with: [ spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge-Tests' 'PharoJs-Base-Transpiler-Tests') ].
