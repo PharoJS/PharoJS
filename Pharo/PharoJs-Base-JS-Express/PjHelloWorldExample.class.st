@@ -10,7 +10,7 @@ Usage
 Class {
 	#name : #PjHelloWorldExample,
 	#superclass : #PjExpressApp,
-	#category : #PharoJsExpress
+	#category : #'PharoJs-Base-JS-Express'
 }
 
 { #category : #exporting }

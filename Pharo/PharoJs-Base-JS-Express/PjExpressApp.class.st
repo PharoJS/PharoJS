@@ -13,7 +13,7 @@ Class {
 	#pools : [
 		'PjExpressPolyfill'
 	],
-	#category : #PharoJsExpress
+	#category : #'PharoJs-Base-JS-Express'
 }
 
 { #category : #webapp }

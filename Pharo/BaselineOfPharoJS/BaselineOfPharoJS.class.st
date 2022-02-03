@@ -58,7 +58,8 @@ BaselineOfPharoJS >> groups: spec [
 			group: 'Tools' with: #('PharoJs-Tools').
 			
 		spec
-			group: 'Electron' with: #('PharoJs-Base-JS-Electron').	
+			group: 'Electron' with: #('PharoJs-Base-JS-Electron');
+			group: 'Express' with: #('PharoJs-Base-JS-Express').	
 			
 		spec 	
 			group: 'Tests' with: #(
@@ -126,7 +127,8 @@ BaselineOfPharoJS >> packages: spec [
 			  package: 'PharoJs-Tools-Tests' with: [ spec requires: #('PharoJs-Tools' 'PharoJs-TestFramework') ].
 		
 		"Electron"
-		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ]
+		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ];
+			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ]
 ]
 
 { #category : #'private - accessing' }

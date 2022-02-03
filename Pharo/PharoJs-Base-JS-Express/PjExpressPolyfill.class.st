@@ -9,7 +9,7 @@ Class {
 	#classVars : [
 		'ExpressServer'
 	],
-	#category : #PharoJsExpress
+	#category : #'PharoJs-Base-JS-Express'
 }
 
 { #category : #'pharojs globals' }

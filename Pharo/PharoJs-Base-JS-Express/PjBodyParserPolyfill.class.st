@@ -9,7 +9,7 @@ Class {
 	#classVars : [
 		'BodyParser'
 	],
-	#category : #PharoJsExpress
+	#category : #'PharoJs-Base-JS-Express'
 }
 
 { #category : #polyfill }
