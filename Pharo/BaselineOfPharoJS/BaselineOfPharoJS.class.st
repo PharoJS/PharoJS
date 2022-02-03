@@ -11,8 +11,7 @@ Class {
 BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
-	spec for: #'pharo7.x' do: [ spec package: 'PharoJs-Compatibility-Pharo7' ].
-	spec for: #('pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJs-Compatibility-Pharo8' ].
+	self compatibility: spec.
 		
 	spec for: #'common' do: [
 		self 
@@ -20,6 +19,21 @@ BaselineOfPharoJS >> baseline: spec [
 			packages: spec;
 			groups: spec	
 	]
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> compatibility: spec [
+
+	spec for: #'common' do: [ spec group: 'Compatibility' with: #() ].	"no compatibility by default"
+		
+	spec for: #'pharo7.x' do: [ 
+		spec package: 'PharoJs-Compatibility-Pharo7';
+			  group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo7') ].
+
+	spec for: #('pharo8.x' 'pharo9.x') 
+		do: [ 
+			spec package: 'PharoJs-Compatibility-Pharo8';
+				  group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo8') ].
 ]
 
 { #category : #'private - accessing' }
