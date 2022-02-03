@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'SQLite'
 	],
-	#category : #'PharoJsForNode-SQL'
+	#category : #'PharoJs-Base-JS-Node-SQL'
 }
 
 { #category : #'pharojs globals' }

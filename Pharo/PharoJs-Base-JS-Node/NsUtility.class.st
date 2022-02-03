@@ -1,7 +1,7 @@
 Class {
 	#name : #NsUtility,
 	#superclass : #Object,
-	#category : #'PharoJsForNode-Utility'
+	#category : #'PharoJs-Base-JS-Node-Utility'
 }
 
 { #category : #'as yet unclassified' }

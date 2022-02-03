@@ -59,7 +59,8 @@ BaselineOfPharoJS >> groups: spec [
 			
 		spec
 			group: 'Electron' with: #('PharoJs-Base-JS-Electron');
-			group: 'Express' with: #('PharoJs-Base-JS-Express').	
+			group: 'Express' with: #('PharoJs-Base-JS-Express');
+			group: 'Node' with: #('PharoJs-Base-JS-Node').	
 			
 		spec 	
 			group: 'Tests' with: #(
@@ -126,9 +127,10 @@ BaselineOfPharoJS >> packages: spec [
 		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge') ];
 			  package: 'PharoJs-Tools-Tests' with: [ spec requires: #('PharoJs-Tools' 'PharoJs-TestFramework') ].
 		
-		"Electron"
+		"Apps and Frameworks (Electron, Express, Node, ...)"
 		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ];
-			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ]
+			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ];
+			  package: 'PharoJs-Base-JS-Node' with: [ spec requires: #('PharoJs-Base-App') ]
 ]
 
 { #category : #'private - accessing' }

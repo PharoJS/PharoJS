@@ -1,6 +1,6 @@
 Extension { #name : #PjObject }
 
-{ #category : #'*PharoJsForNode-SQL' }
+{ #category : #'*PharoJs-Base-JS-Node-SQL' }
 PjObject >> isSQLValue [
 	^ false
 ]

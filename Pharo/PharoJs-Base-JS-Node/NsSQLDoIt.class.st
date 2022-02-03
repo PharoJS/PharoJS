@@ -15,7 +15,7 @@ Class {
 	#pools : [
 		'PjNodeGlobals'
 	],
-	#category : #'PharoJsForNode-SQL'
+	#category : #'PharoJs-Base-JS-Node-SQL'
 }
 
 { #category : #action }

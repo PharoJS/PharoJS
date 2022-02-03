@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'Filesystem'
 	],
-	#category : #'PharoJsForNode-Utility'
+	#category : #'PharoJs-Base-JS-Node-Utility'
 }
 
 { #category : #API }

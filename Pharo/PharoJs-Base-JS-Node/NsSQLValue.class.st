@@ -5,7 +5,7 @@ Class {
 		'value',
 		'block'
 	],
-	#category : #'PharoJsForNode-SQL'
+	#category : #'PharoJs-Base-JS-Node-SQL'
 }
 
 { #category : #'as yet unclassified' }
