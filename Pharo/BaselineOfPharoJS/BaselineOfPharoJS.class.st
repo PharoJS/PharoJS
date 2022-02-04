@@ -132,9 +132,9 @@ BaselineOfPharoJS >> packages: spec [
 		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ];
 			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ];
 			  package: 'PharoJs-Base-JS-Node' with: [ spec requires: #('PharoJs-Base-App') ];
-			  package: 'PharoJs-Base-JS-Seaside' with: [ spec requires: #('PharoJs-Base-App' 'Seaside3');
-			  package: 'LightweightObserverJS' with: [ spec requires: #('PharoJs-Base-App' 'LightweightObserver') ] ]
-			
+			  package: 'PharoJs-Base-JS-Seaside' with: [ spec requires: #('PharoJs-Base-App' 'Seaside3') ];
+			  package: 'LightweightObserverJS' with: [ spec requires: #('PharoJs-Base-App' 'LightweightObserver') ] 
+		 
 ]
 
 { #category : #'private - accessing' }
