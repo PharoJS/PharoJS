@@ -60,7 +60,8 @@ BaselineOfPharoJS >> groups: spec [
 		spec
 			group: 'Electron' with: #('PharoJs-Base-JS-Electron');
 			group: 'Express' with: #('PharoJs-Base-JS-Express');
-			group: 'Node' with: #('PharoJs-Base-JS-Node').	
+			group: 'Node' with: #('PharoJs-Base-JS-Node');
+			group: 'Seaside' with: #('PharoJs-Base-JS-Seaside').
 			
 		spec 	
 			group: 'Tests' with: #(
@@ -76,8 +77,8 @@ BaselineOfPharoJS >> groups: spec [
 				
 		spec group: 'Deprecated' with: #('PharoJs-Base-Serialization-Deprecated').		
 	   "Virtual groups (lowercase) from Metacello"
-		spec group: 'all' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests' 'Express' 'Electron' 'Node').
-		spec group: 'default' with: #('all')
+		spec group: 'default' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
+		spec group: 'all' with: #('default' 'Express' 'Electron' 'Node' 'Seaside')
 ]
 
 { #category : #'private - accessing' }
@@ -130,7 +131,9 @@ BaselineOfPharoJS >> packages: spec [
 		"Apps and Frameworks (Electron, Express, Node, ...)"
 		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ];
 			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ];
-			  package: 'PharoJs-Base-JS-Node' with: [ spec requires: #('PharoJs-Base-App') ]
+			  package: 'PharoJs-Base-JS-Node' with: [ spec requires: #('PharoJs-Base-App') ];
+			  package: 'PharoJs-Base-JS-Seaside' with: [ spec requires: #('PharoJs-Base-App' 'Seaside3') ]
+			
 ]
 
 { #category : #'private - accessing' }

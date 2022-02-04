@@ -6,7 +6,7 @@ Class {
 	#classInstVars : [
 		'scriptCache'
 	],
-	#category : #PharoJsSeaside
+	#category : #'PharoJs-Base-JS-Seaside'
 }
 
 { #category : #accessing }

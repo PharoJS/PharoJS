@@ -1,6 +1,6 @@
 Trait {
 	#name : #PjTPharoJsForSeaside,
-	#category : #PharoJsSeaside
+	#category : #'PharoJs-Base-JS-Seaside'
 }
 
 { #category : #hooks }
