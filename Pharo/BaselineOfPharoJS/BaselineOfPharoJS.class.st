@@ -78,7 +78,7 @@ BaselineOfPharoJS >> groups: spec [
 		spec group: 'Deprecated' with: #('PharoJs-Base-Serialization-Deprecated').		
 	   "Virtual groups (lowercase) from Metacello"
 		spec group: 'default' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
-		spec group: 'all' with: #('default' 'Express' 'Electron' 'Node' 'Seaside')
+		spec group: 'all' with: #('default' 'Express' 'Electron' 'Node' 'Seaside' 'LightweightObserverJS')
 ]
 
 { #category : #'private - accessing' }
@@ -132,7 +132,8 @@ BaselineOfPharoJS >> packages: spec [
 		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ];
 			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ];
 			  package: 'PharoJs-Base-JS-Node' with: [ spec requires: #('PharoJs-Base-App') ];
-			  package: 'PharoJs-Base-JS-Seaside' with: [ spec requires: #('PharoJs-Base-App' 'Seaside3') ]
+			  package: 'PharoJs-Base-JS-Seaside' with: [ spec requires: #('PharoJs-Base-App' 'Seaside3');
+			  package: 'LightweightObserverJS' with: [ spec requires: #('PharoJs-Base-App' 'LightweightObserver') ] ]
 			
 ]
 
@@ -140,13 +141,14 @@ BaselineOfPharoJS >> packages: spec [
 BaselineOfPharoJS >> prerequisites: spec [
 	"Add the projects prerequisite definitions to the given spec"	
 
-	"Baselines"
+	"Prerequisite Baselines"
 	spec
 		baseline: 'PharoExtra' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
 		baseline: 'Equals' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
+		baseline: 'LightweightObserver' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
 		baseline: 'Seaside3' with: [ spec repository: 'github://SeasideSt/Seaside:master/repository' ].	
 			
-	"Zinc Packages"	
+	"Prerequisite Packages"	
 	spec
 		package: 'Zinc-WebSocket-Core' with: [ spec repository: 'github://svenvc/zinc' ]			 
 ]
