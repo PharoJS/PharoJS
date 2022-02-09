@@ -4,66 +4,151 @@ Baseline managing the PharoJS project on Git
 Class {
 	#name : #BaselineOfPharoJS,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfPharoJS
+	#category : #'BaselineOfPharoJS-Base'
 }
 
-{ #category : #baseline }
+{ #category : #baselines }
 BaselineOfPharoJS >> baseline: spec [
 	<baseline>
 
-
-	spec for: #'pharo7.x' do: [ spec package: 'PharoJsPharo7' ].
-	spec for: #(#'pharo8.x' 'pharo9.x') do: [ spec package: 'PharoJsPharo8' ].	
+	self compatibility: spec.
+		
 	spec for: #'common' do: [
-		spec 
-			baseline: 'PharoExtra' with: [
-				spec
-					repository: 'github://bouraqadi/PharoMisc' ];
-			baseline: 'Equals' with: [
-				spec
-					repository: 'github://bouraqadi/PharoMisc' ];
-			package: 'Zinc-WebSocket-Core' with: [
-				spec
-					repository: 'github://svenvc/zinc' ].
-				
-		spec 
-			package: 'PharoJsApp' with: [
-				spec requires: #('PharoJsTranspiler' ). ];
-			package: 'PharoJsBridge' with: [
-				spec requires: #(#PharoJsCoreLibraries #PharoJsExporter 'PharoJsApp' 'Zinc-WebSocket-Core' 'PharoJsSerialization'). ];
-			package: #PharoJsBridgeTest with: [
-				spec requires: #('PharoJsTestFramework' 'PharoJsBridge' ). ];
-			package: #PharoJsCoreLibraries with: [
-				spec requires: #('PharoJsTranspiler' 'PharoExtra' ). ];
-			package: #PharoJsCoreLibrariesTest with: [
-				spec requires: #(#PharoJsCoreLibraries 'PharoJsBridge' 'PharoJsTestFramework' #PharoJsBridgeTest PharoJsTranspilerTests). ];
-			package: 'PharoJsExamples' with: [
-				spec requires: #('PharoJsApp' 'PharoJsTranspiler' 'PharoJsTestFramework' 'PharoJsExporter'). ];
-			package: #PharoJsExporter with: [
-				spec requires: #('PharoJsTranspiler' 'PharoJsApp' ). ];
-			package: 'PharoJsStatistics' with: [
-				spec requires: #('PharoJsExporter' ). ];
-			package: 'PharoJsTestFramework' with: [
-				spec requires: #(#PharoJsExporter 'PharoJsBridge' 'PharoJsApp' ). ];
-			package: #PharoJsTiming with: [
-				spec requires: #(#PharoJsTranspilerOptimization 'PharoJsBridge' ). ];
-			package: 'PharoJsTools' with: [
-				spec requires: #('PharoJsBridge' ). ];
-			package: 'PharoJsTranspiler' with: [
-				spec requires: #('Equals' ). ];
-			package: 'PharoJsTranspilerOptimization' with: [
-				spec requires: #('PharoJsTranspiler' ). ];
-			package: 'PharoJsSerialization' with: [
-				spec requires: #('PharoJsCoreLibraries')]; 
-			package: 'PharoJsSerializationTest' with: [
-				spec requires: #('PharoJsSerialization' 'PharoJsBridgeTest')]; 
-			package: 'PharoJsSerializationDeprecated' with: [
-				spec requires: #('PharoJsApp' 'PharoJsTranspiler' 'PharoJsTestFramework' ). ]; 
-			package: 'PharoJsTranspilerTests' with: [
-				spec requires: #('PharoJsTranspiler'). ]; 
-			package: 'PharoJsTranspilerOptimizationTests' with: [
-				spec requires: #('PharoJsTranspilerOptimization' PharoJsBridgeTest PharoJsTranspilerTests). ];
-			package: 'PharoJsExporterTests' with: [
-				spec requires: #('PharoJsExporter' 'PharoJsTranspilerTests'). ]. 
+		self 
+			prerequisites: spec;		
+			packages: spec;
+			groups: spec	
 	]
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> compatibility: spec [
+	"Define a 'Compatibility' group that can be used as a dependency later to overcome differences in Pharo releases"
+	
+	spec for: #'common' do: [ spec group: 'Compatibility' with: #() ].	"no compatibility by default"
+
+	spec for: #('pharo9.x') do: [ spec package: 'PharoJs-Compatibility-Pharo9';
+				     							   group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo9') ].
+					
+	spec for: #('pharo8.x') do: [ spec package: 'PharoJs-Compatibility-Pharo8';
+				     							   group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo8') ].
+
+	spec for: #('pharo7.x') do: [ spec package: 'PharoJs-Compatibility-Pharo7';
+				     							   group: 'Compatibility' with: #('PharoJs-Compatibility-Pharo7') ].
+
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> groups: spec [
+		"Define groups for loading"
+		
+		"Transpiler"
+		spec 
+			group: 'Transpiler' with: #('PharoJs-Base-Transpiler');			
+			group: 'OptimizedTranspiler' with: #('PharoJs-Base-Transpiler' 'PharoJs-Base-Transpiler-Optimizations').		
+		
+		"Other"	
+		spec 
+			group: 'App' with: #('PharoJs-Base-App');
+			group: 'Exporter' with: #('PharoJs-Base-Exporter');
+			group: 'Bridge' with: #('PharoJs-Base-Bridge')	;
+			group: 'Examples' with: #('PharoJs-Examples');
+			group: 'Benchmarks' with: #('PharoJs-Benchmarking');
+			group: 'Statistics' with: #('PharoJs-Utilities-Statistics');
+			group: 'Tools' with: #('PharoJs-Tools').
+			
+		spec
+			group: 'Electron' with: #('PharoJs-Base-JS-Electron');
+			group: 'Express' with: #('PharoJs-Base-JS-Express');
+			group: 'Node' with: #('PharoJs-Base-JS-Node');
+			group: 'Seaside' with: #('PharoJs-Base-JS-Seaside').
+			
+		spec 	
+			group: 'Tests' with: #(
+				'PharoJs-Base-Transpiler-Tests'
+				'PharoJs-Base-Transpiler-Optimizations-Tests'
+				'PharoJs-Base-Exporter-Tests'
+				'PharoJs-Base-JS-CoreLibraries-Tests'
+				'PharoJs-Base-Serialization-Tests'
+				'PharoJs-Base-Bridge-Tests'
+				'PharoJs-Examples-Tests'
+				'PharoJs-Tools-Tests' 
+			).	
+				
+		spec group: 'Deprecated' with: #('PharoJs-Base-Serialization-Deprecated').		
+	   "Virtual groups (lowercase) from Metacello"
+		spec group: 'default' with: #('Compatibility' 'Transpiler' 'OptimizedTranspiler' 'App' 'Exporter' 'Bridge' 'Examples' 'Benchmarks' 'Statistics' 'Tools' 'Deprecated' 'Tests').
+		spec group: 'all' with: #('default' 'Express' 'Electron' 'Node' 'Seaside' 'LightweightObserverJS')
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> packages: spec [
+		"Define and list all packages and their dependencies"
+		
+		"Transpiler"
+		spec package: 'PharoJs-Base-Transpiler' with: [ spec requires: #('Equals' 'Compatibility') ];
+			  package: 'PharoJs-Base-Transpiler-Tests' with: [ spec requires: #('PharoJs-Base-Transpiler') ]; 
+           package: 'PharoJs-Base-Transpiler-Optimizations' with: [ spec requires: #('PharoJs-Base-Transpiler') ];
+			  package: 'PharoJs-Base-Transpiler-Optimizations-Tests' with: [ spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge-Tests' 'PharoJs-Base-Transpiler-Tests') ].
+		
+		"Exporter"		
+		spec package: 'PharoJs-Base-Exporter' with: [ spec requires: #('PharoJs-Base-Transpiler' 'PharoJs-Base-App' ) ];
+			  package: 'PharoJs-Base-Exporter-Tests' with: [ spec requires: #('PharoJs-Base-Exporter' 'PharoJs-Base-Transpiler-Tests') ].					
+				
+		"TestFramework"	
+		spec package: 'PharoJs-TestFramework' with: [ spec requires: #('PharoJs-Base-Exporter' 'PharoJs-Base-Bridge' 'PharoJs-Base-App') ].			
+
+		"JS - CoreLibraries"
+		spec package: 'PharoJs-Base-JS-CoreLibraries' with: [ spec requires: #('PharoJs-Base-Transpiler' 'PharoExtra') ];
+			  package: 'PharoJs-Base-JS-CoreLibraries-Tests' with: [ spec requires: #('PharoJs-Base-JS-CoreLibraries' 'PharoJs-TestFramework' 'PharoJs-Base-Bridge-Tests' 'PharoJs-Base-Transpiler-Tests') ].					
+
+		"Serialization"  
+		spec package: 'PharoJs-Base-Serialization' with: [ spec requires: #('PharoJs-Base-JS-CoreLibraries')];
+			  package: 'PharoJs-Base-Serialization-Tests' with: [ spec requires: #('PharoJs-Base-Serialization' 'PharoJs-Base-Bridge-Tests')];
+			  package: 'PharoJs-Base-Serialization-Deprecated' with: [ spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJs-TestFramework') ].
+							
+		"Bridge"	  
+		spec package: 'PharoJs-Base-Bridge' with: [ spec requires: #('PharoJs-Base-JS-CoreLibraries' 'PharoJs-Base-Exporter' 'PharoJs-Base-App' 'Zinc-WebSocket-Core' 'PharoJs-Base-Serialization')];
+			  package: 'PharoJs-Base-Bridge-Tests' with: [ spec requires: #('PharoJs-TestFramework' 'PharoJs-Base-Bridge') ].
+		
+		"App"
+		spec package: 'PharoJs-Base-App' with: [ spec requires: #('PharoJs-Base-Transpiler' 'PharoJs-Base-JS-CoreLibraries') ].
+		
+		"Examples"	
+		spec package: 'PharoJs-Examples' with: [ spec requires: #('PharoJs-Base-App' 'PharoJs-Base-Transpiler' 'PharoJs-TestFramework' 'PharoJs-Base-Exporter') ];
+			  package: 'PharoJs-Examples-Tests' with: [ spec requires: #('PharoJs-Examples' 'PharoJs-TestFramework') ].						
+		
+		"Benchmarking (Timing)"
+		spec package: 'PharoJs-Benchmarking' with: [ spec requires: #('PharoJs-Base-Transpiler-Optimizations' 'PharoJs-Base-Bridge') ].
+		
+		"Utilities - Statistics"					
+		spec package: 'PharoJs-Utilities-Statistics' with: [ spec requires: #('PharoJs-Base-Exporter') ].
+													
+		"Tools"   		
+		spec package: 'PharoJs-Tools' with: [ spec requires: #('PharoJs-Base-Bridge') ];
+			  package: 'PharoJs-Tools-Tests' with: [ spec requires: #('PharoJs-Tools' 'PharoJs-TestFramework') ].
+		
+		"Apps and Frameworks (Electron, Express, Node, ...)"
+		spec package: 'PharoJs-Base-JS-Electron' with: [ spec requires: #('PharoJs-Base-App') ];
+			  package: 'PharoJs-Base-JS-Express' with: [ spec requires: #('PharoJs-Base-App') ];
+			  package: 'PharoJs-Base-JS-Node' with: [ spec requires: #('PharoJs-Base-App') ];
+			  package: 'PharoJs-Base-JS-Seaside' with: [ spec requires: #('PharoJs-Base-App' 'Seaside3') ];
+			  package: 'LightweightObserverJS' with: [ spec requires: #('PharoJs-Base-App' 'LightweightObserver') ] 
+		 
+]
+
+{ #category : #'private - accessing' }
+BaselineOfPharoJS >> prerequisites: spec [
+	"Add the projects prerequisite definitions to the given spec"	
+
+	"Prerequisite Baselines"
+	spec
+		baseline: 'PharoExtra' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
+		baseline: 'Equals' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
+		baseline: 'LightweightObserver' with: [ spec repository: 'github://bouraqadi/PharoMisc' ];
+		baseline: 'Seaside3' with: [ spec repository: 'github://SeasideSt/Seaside:master/repository' ].	
+			
+	"Prerequisite Packages"	
+	spec
+		package: 'Zinc-WebSocket-Core' with: [ spec repository: 'github://svenvc/zinc' ]			 
 ]
