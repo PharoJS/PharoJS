@@ -265,6 +265,16 @@ PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollection [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeSet [
+
+	self
+		assertAllWithInstantiationBlock: [ Set new ]
+		literal: '{"class":"Set","instance":[]}'
+		testEq: false "#assertEquivalent: doesn't work for this type of object"
+		test4Stages: true 
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeSimpleObject [
 
 	self
