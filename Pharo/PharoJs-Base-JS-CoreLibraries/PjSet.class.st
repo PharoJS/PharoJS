@@ -13,11 +13,6 @@ PjSet class >> jsTranspilationImportMethods [
 	^{Set -> #(asSet)}
 ]
 
-{ #category : #'pharojs support' }
-PjSet class >> phxJsonClassName [
-	^ 'Set'
-]
-
 { #category : #enumerating }
 PjSet >> addFirst: element [
 	(self includes: element) ifTrue: [ ^element ].

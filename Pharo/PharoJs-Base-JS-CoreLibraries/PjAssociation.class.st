@@ -15,8 +15,3 @@ PjAssociation class >> jsTranspilationImportMethods [
 		Association class -> #( key:value: ).
 	}
 ]
-
-{ #category : #'pharojs support' }
-PjAssociation class >> phxJsonClassName [
-	^ 'Association'
-]
