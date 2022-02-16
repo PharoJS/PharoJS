@@ -5,15 +5,15 @@ Class {
 	#name : #PhxJsonWriter,
 	#superclass : #PjDomController,
 	#instVars : [
-		'string',
-		'knownObjects'
+		'knownObjects',
+		'stream'
 	],
 	#category : #'PharoJs-Base-Serialization-Core'
 }
 
 { #category : #writing }
 PhxJsonWriter >> << aString [
-	string := string , aString
+	stream nextPutAll: aString
 ]
 
 { #category : #writing }
@@ -46,18 +46,14 @@ PhxJsonWriter >> identityIndexOf: anObject [
 
 { #category : #'initialize-release' }
 PhxJsonWriter >> initialize [
-	string := ''.
+	stream := '' writeStream.
 	knownObjects := OrderedCollection new
 ]
 
 { #category : #accessing }
 PhxJsonWriter >> string [
-	^ string
-]
 
-{ #category : #accessing }
-PhxJsonWriter >> string: anObject [
-	string := anObject
+	^ stream contents
 ]
 
 { #category : #writing }
