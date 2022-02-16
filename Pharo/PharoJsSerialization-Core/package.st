@@ -1,0 +1,1 @@
+Package { #name : #'PharoJsSerialization-Core' }
