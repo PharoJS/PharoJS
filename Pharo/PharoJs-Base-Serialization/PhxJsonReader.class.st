@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'knownObjects'
 	],
-	#category : #'PharoJsSerialization-Core'
+	#category : #'PharoJs-Base-Serialization-Core'
 }
 
 { #category : #'instance creation' }
