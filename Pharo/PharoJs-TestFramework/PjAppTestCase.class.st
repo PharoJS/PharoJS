@@ -96,6 +96,12 @@ PjAppTestCase >> evalBlock: aBlock [
 { #category : #testing }
 PjAppTestCase >> resetApp [
 	self bridge resetClient.
+	self resetInstanceVariables
+]
+
+{ #category : #testing }
+PjAppTestCase >> resetInstanceVariables [
+	app := self currentApp.
 ]
 
 { #category : #accessing }
@@ -114,6 +120,7 @@ PjAppTestCase >> runCaseAsFailure: aSemaphore [
 PjAppTestCase >> setUp [
 	super setUp.
 	self waitWhile: [ (app := self currentApp) isNil ] timeOut: self timeOutForAppStartUp.
+	self resetInstanceVariables.
 ]
 
 { #category : #running }

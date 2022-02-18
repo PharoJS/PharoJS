@@ -246,6 +246,13 @@ PjBasicTest >> testNumber [
 ]
 
 { #category : #tests }
+PjBasicTest >> testResettingTheApp [
+
+	self resetApp.
+	self assert: app identicalTo: self currentApp.
+]
+
+{ #category : #tests }
 PjBasicTest >> testResettingTheClient [
 
 	self bridge resetClient.
