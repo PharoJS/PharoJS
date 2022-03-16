@@ -175,7 +175,7 @@ PjProxyTest >> testProxyGarbageCollection [
 	| b jsName |
 	b := document body.
 	jsName := b javascriptName.
-	self assert: jsName equals: '$_4'.
+	self deny: jsName isNil.
 	
 	"Following lines to mimic the effect of garbage collection in a deteministic way."
 	(self finalizationRegistry remove: b ifAbsent: [ nil ])

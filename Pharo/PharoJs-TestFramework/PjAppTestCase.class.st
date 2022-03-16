@@ -118,9 +118,11 @@ PjAppTestCase >> runCaseAsFailure: aSemaphore [
 
 { #category : #running }
 PjAppTestCase >> setUp [
+
 	super setUp.
-	self waitWhile: [ (app := self currentApp) isNil ] timeOut: self timeOutForAppStartUp.
+	self waitWhile: [ self currentApp isNil ] timeOut: self timeOutForAppStartUp.
 	self resetInstanceVariables.
+
 ]
 
 { #category : #running }
