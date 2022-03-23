@@ -6,6 +6,9 @@ Class {
 		'appClass',
 		'execEnv'
 	],
+	#classVars : [
+		'OpenWebBrowserInBackground'
+	],
 	#category : #'PharoJs-TestFramework-Kernel'
 }
 
@@ -27,6 +30,16 @@ PjBridgeTestResource class >> ensureFreshClient [
 	self current ensureFreshClient
 ]
 
+{ #category : #accessing }
+PjBridgeTestResource class >> isClientBrowserOpenedInBackground [
+	^OpenWebBrowserInBackground ifNil: [ false ]
+]
+
+{ #category : #accessing }
+PjBridgeTestResource class >> isClientBrowserOpenedInBackground: aBoolean [
+	^OpenWebBrowserInBackground := aBoolean 
+]
+
 { #category : #'instance creation' }
 PjBridgeTestResource class >> newWithAppClass: aClass [
 	^ self new
@@ -37,6 +50,20 @@ PjBridgeTestResource class >> newWithAppClass: aClass [
 { #category : #'instance creation' }
 PjBridgeTestResource class >> setCurrentWithNewForAppClass: aClass [
 	current := self newWithAppClass: aClass
+]
+
+{ #category : #accessing }
+PjBridgeTestResource class >> setWebBrowserOpenedInBackground [
+
+	<script>
+	self isClientBrowserOpenedInBackground: true
+]
+
+{ #category : #accessing }
+PjBridgeTestResource class >> setWebBrowserOpenedInForeground [
+
+	<script>
+	self isClientBrowserOpenedInBackground: false
 ]
 
 { #category : #accessing }
@@ -79,6 +106,11 @@ PjBridgeTestResource >> initializeWithAppClass: aClass [
 ]
 
 { #category : #running }
+PjBridgeTestResource >> isClientBrowserOpenedInBackground [
+	^self class isClientBrowserOpenedInBackground
+]
+
+{ #category : #running }
 PjBridgeTestResource >> resetClient [
 	self bridge resetClient
 ]
@@ -89,7 +121,7 @@ PjBridgeTestResource >> setUp [
 
 { #category : #running }
 PjBridgeTestResource >> setUpClient [
-	^self bridge client openBrowserInBackground: true
+	^self bridge client openBrowserInBackground: self isClientBrowserOpenedInBackground
 ]
 
 { #category : #running }
