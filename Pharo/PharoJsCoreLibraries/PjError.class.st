@@ -21,7 +21,7 @@ PjError class >> javascriptInitialize [
 PjError class >> jsTranspilationImportMethods [
 
 	<pharoJsSkip>
-	^ { (Exception -> #( defaultDescription description )) }
+	^ { (Exception -> #( "defaultDescription" description )) }
 ]
 
 { #category : #'instance creation' }
@@ -32,6 +32,21 @@ PjError class >> signal [
 { #category : #'instance creation' }
 PjError class >> signal: aString [
 	^self new signal: aString
+]
+
+{ #category : #'accessing - defaults' }
+PjError >> defaultDescription [
+
+	"Return a textual description of the exception."
+
+	^ String streamContents: [ :stream | 
+		  | mt |
+		console log: stream.
+		  stream << self class name.
+		console log: stream.
+		  (mt := self messageText) isEmptyOrNil ifFalse: [ 
+		console log: stream.
+			  stream << ': ' << mt ] ]
 ]
 
 { #category : #accessing }

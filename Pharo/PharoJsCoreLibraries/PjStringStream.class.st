@@ -12,6 +12,12 @@ PjStringStream class >> on: aCollection [
 	^ self new on: aCollection
 ]
 
+{ #category : #accessing }
+PjStringStream >> << aCharacterOrString [
+
+	array addLast: aCharacterOrString asString
+]
+
 { #category : #'initialize-release' }
 PjStringStream >> emptyCollection [
 	^ ''

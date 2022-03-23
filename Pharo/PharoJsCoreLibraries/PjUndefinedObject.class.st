@@ -48,6 +48,11 @@ PjUndefinedObject >> asJSON [
 	^ 'null'
 ]
 
+{ #category : #converting }
+PjUndefinedObject >> asString [
+	^ 'nil'
+]
+
 { #category : #comparing }
 PjUndefinedObject >> identityHash [
 	<jsGenerator: #identityHash_jsGenerator:>

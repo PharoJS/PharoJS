@@ -26,10 +26,9 @@ PjString class >> jsTranspilationImportMethods [
 		      fromByteArray: )).
 		  (String
 		   ->
-		   #( findTokens: linesDo: lineIndicesDo: printOn: storeOn: isLiteral shouldBePrintedAsLiteral)).
-		  (Symbol -> #( cull: value: )).
-		  (Character class -> #( cr escape lf linefeed space tab )).
-		  (Character -> #( isVowel isCharacter to: )) }
+			   #( findTokens: linesDo: lineIndicesDo: printOn: storeOn:
+			      isLiteral shouldBePrintedAsLiteral )).
+		  (Symbol -> #( cull: value: )) }
 ]
 
 { #category : #'instance creation' }
@@ -48,11 +47,6 @@ PjString class >> streamContents: aBlock [
 	stream := PjStringStream new.
 	aBlock value: stream.
 	^ stream contents
-]
-
-{ #category : #'instance creation' }
-PjString class >> value: anInteger [
-	^ String js_fromCharCode: anInteger
 ]
 
 { #category : #copying }

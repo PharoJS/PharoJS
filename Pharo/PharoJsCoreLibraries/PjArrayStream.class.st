@@ -12,6 +12,13 @@ PjArrayStream class >> on: aCollection [
 	^ self new on: aCollection
 ]
 
+{ #category : #streaming }
+PjArrayStream >> << anObject [
+
+	array addLast: anObject
+
+]
+
 { #category : #'initialize-release' }
 PjArrayStream >> emptyCollection [
 	^ #()
