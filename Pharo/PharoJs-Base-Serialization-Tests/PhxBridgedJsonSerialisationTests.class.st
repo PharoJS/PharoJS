@@ -265,6 +265,19 @@ PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollection [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollectionInPharoMatrializeInJs [
+
+	| originalCollection serializationString materializedCollection |
+	originalCollection := OrderedCollection withAll: #( a 11 'xyz' ).
+	serializationString := originalCollection asPhxJsonString.
+	materializedCollection := self evalBlock: [ 
+		                          PhxJsonReader readFromString: 
+			                          serializationString ].
+	originalCollection withIndexDo: [ :each :index | 
+		self assert: (materializedCollection at: index) equals: each ]
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeSet [
 
 	self
