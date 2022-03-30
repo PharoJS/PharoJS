@@ -19,7 +19,7 @@ PjFileBasedBrowserBridgeClient >> defaultAppClass [
 PjFileBasedBrowserBridgeClient >> openWebBrowserOn: appHtmlFileUrlString [
 
 	WebBrowser
-		openOn: self urlString
+		openOn: appHtmlFileUrlString
 		inBackground: self openBrowserInBackground
 ]
 
