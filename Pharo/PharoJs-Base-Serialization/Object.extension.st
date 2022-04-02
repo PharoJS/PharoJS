@@ -15,11 +15,14 @@ Object >> asPhxJsonString [
 
 { #category : #'*PharoJs-Base-Serialization' }
 Object class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
+
 	| obj |
 	obj := self new.
 	reader addKnownObject: obj.
-	jsonObject
-		keysAndValuesDo: [ :k :v | obj instVarNamed: k put: (reader readFromJsObjectOrDictionary: v) ].
+	jsonObject keys asSortedCollection do: [ : ivName | 
+		|ivValue|
+		ivValue := jsonObject at: ivName.
+		obj instVarNamed: ivName put: (reader readFromJsObjectOrDictionary: ivValue) ].
 	^ obj
 ]
 
@@ -55,11 +58,12 @@ Object >> writePhxJsonOn: w [
 
 { #category : #'*PharoJs-Base-Serialization' }
 Object >> writePhxJsonRepresentationOn: w [
-	w
-		doBetweenCurlyBraces: [ self allPhxJsonInstvarNames
-				do: [ :key | 
-					w
-						writeKeyName: key
-						andValue: [ (self instVarNamed: key) writePhxJsonOn: w ] ]
-				separatedBy: [ w comma ] ]
+
+	w doBetweenCurlyBraces: [ 
+		self allPhxJsonInstvarNames asSortedCollection
+			do: [ :key | 
+				w
+					writeKeyName: key
+					andValue: [ (self instVarNamed: key) writePhxJsonOn: w ] ]
+			separatedBy: [ w comma ] ]
 ]

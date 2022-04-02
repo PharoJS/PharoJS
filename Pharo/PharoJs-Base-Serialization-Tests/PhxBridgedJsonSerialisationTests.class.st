@@ -149,6 +149,26 @@ PhxBridgedJsonSerialisationTests >> testSerializeDictionary [
 ]
 
 { #category : #tests }
+PhxBridgedJsonSerialisationTests >> testSerializeDifferentObjectGraphs [
+
+	| jsString pharoString |
+	#(objectGraphWithSharedLeaves objectGraphWithCycleOfLength2 objectGraphWithCycleOfLength1
+	   objectWithLiteralIVs ) do: [ :each | 
+		self assertEquivalent: [ 
+			(PhxJsonTestResources perform: each) asPhxJsonString ].
+		jsString := self evalBlock: [ 
+			            (PhxJsonTestResources perform: each) asPhxJsonString ].
+		self
+			shouldnt: [ PhxJsonReader readFromString: jsString ]
+			raise: Exception.
+		pharoString := (PhxJsonTestResources perform: each) asPhxJsonString.
+		self
+			shouldnt: [ 
+			self evalBlock: [ PhxJsonReader readFromString: pharoString ] ]
+			raise: Exception ]
+]
+
+{ #category : #tests }
 PhxBridgedJsonSerialisationTests >> testSerializeEmptyObject [
 	self
 		assertAllWithInstantiationBlock: [ Object new  ]
@@ -285,16 +305,6 @@ PhxBridgedJsonSerialisationTests >> testSerializeSet [
 		literal: '{"class":"Set","instance":[]}'
 		testEq: false "#assertEquivalent: doesn't work for this type of object"
 		test4Stages: true 
-]
-
-{ #category : #tests }
-PhxBridgedJsonSerialisationTests >> testSerializeSimpleObject [
-
-	self
-		assertAllWithInstantiationBlock: [ PhxJsonTestResources testOrg1 ]
-		literal: PhxJsonTestResources testOrg1 asPhxJsonString
-		testEq: false "#assertEquivalent: doesn't work for this type of object"
-		test4Stages: true
 ]
 
 { #category : #tests }
