@@ -17,11 +17,3 @@ PjDateAndTimeTest >> testConversion [
 		" works because both Smalltalk and Javascript default to local timezone - see testWeirdTimezoneBug for case with timezone" 
 		(DateAndTime fromString: todayString, 'T12:30:21') printString ]
 ]
-
-{ #category : #tests }
-PjDateAndTimeTest >> testWeirdTimezoneBug [
-<expectedFailure>	
-	" will never work everywhere because Javascript normalizes to the current timezone "
-	self assertEquivalent: [ 
-		(DateAndTime fromString: '2022-01-02T12:30:21-04:00') printString ]
-]
