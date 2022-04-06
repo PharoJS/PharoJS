@@ -595,6 +595,18 @@ PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 ]
 
 { #category : #visiting }
+PjAstConverter >> visitGlobalVariableNamed: name [
+
+	| globalVariable globalVariableNode |
+	globalVariable := GlobalVariable
+		                  key: name
+		                  value: nil.
+	globalVariableNode := RBVariableNode named: globalVariable key.
+	globalVariableNode variable: globalVariableNode.
+	^ self visitGlobalNode: globalVariableNode
+]
+
+{ #category : #visiting }
 PjAstConverter >> visitGlobalVariableNode: aRBVariableNode [ 
 	^self visitGlobalNode: aRBVariableNode.
 ]
@@ -609,7 +621,7 @@ PjAstConverter >> visitInlineBlock: aRBProgramNode [
 	aRBProgramNode temporaryNames do: [ : each |
 		extraTempVariablesToDeclare add: each.
 		loopNestingLevel >0 ifTrue: [
-			variable := RBTemporaryNode named: each.
+			variable := RBVariableNode named: each.
 			statements addFirst: (RBAssignmentNode variable: variable value: RBLiteralValueNode new).
 	]].
 	^ (self visitAllNodes: statements) asSimpleNode.

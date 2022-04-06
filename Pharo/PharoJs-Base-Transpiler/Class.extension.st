@@ -2,8 +2,8 @@ Extension { #name : #Class }
 
 { #category : #'*PharoJs-Base-Transpiler' }
 Class >> asJsAstUsing: astConverter [
-	^ astConverter
-		visitGlobalNode: (RBGlobalNode named: self instanceSide name)
+
+	^ astConverter visitGlobalVariableNamed: self instanceSide name
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
@@ -14,7 +14,8 @@ Class >> classInitializeSelector [
 
 { #category : #'*PharoJs-Base-Transpiler' }
 Class >> convertToJavascriptAstUsing: aPjAstConverter [
-	^ aPjAstConverter visit: (RBGlobalNode named: self name)
+
+	^ aPjAstConverter visitGlobalVariableNamed: self name
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
