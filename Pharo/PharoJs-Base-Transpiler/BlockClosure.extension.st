@@ -85,10 +85,7 @@ BlockClosure >> externalVariablesOf: aBlock [
 	context := aBlock outerContext.
 	scope := context sourceNode scope.
 	scope allTempNames do: [ :name | 
-		tempValue := self
-			             externalVariable: name
-			             fromContext: context
-			             andScope: scope.
+		tempValue := self externalVariable: name fromContext: context andScope: scope.
 		variables at: name put: tempValue ].
 	method := aBlock home receiver.
 	method class allInstVarNames do: [ :name | 
@@ -116,4 +113,20 @@ BlockClosure >> isFreeJavascriptValue [
 { #category : #'*PharoJs-Base-Transpiler' }
 BlockClosure >> originalBlock [
 	^ self
+]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
+BlockClosure class >> outerContext: aContext startpc: startPcOrOuterCode numArgs: anInteger copiedValues: copiedValues [ 
+	| newBlock |
+	newBlock := self new: copiedValues size.
+	newBlock
+		outerContext: aContext;
+		compiledBlock: startPcOrOuterCode;
+		numArgs: anInteger.
+	1 to: newBlock numCopiedValues do:
+		[:i|
+		newBlock at: i put: (copiedValues at: i)].
+	^newBlock 
+	
+		
 ]
