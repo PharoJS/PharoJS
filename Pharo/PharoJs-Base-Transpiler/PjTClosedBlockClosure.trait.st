@@ -33,18 +33,30 @@ PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 ]
 
 { #category : #public }
-PjTClosedBlockClosure >> externalVariable: name fromContext: context andScope: scope [
+PjTClosedBlockClosure >> externalValueForVariable: variable startingFrom: context scope: scope [
 
-	| variable definingContext definingScope originalValue |
-	variable := scope lookupVar: name declare: false.
+	"	scope = variable scope ifTrue: [ 
+		^ variable readFromLocalContext: context ].
+	^ self
+		  externalValueForVariable: variable
+		  startingFrom: (scope nextOuterScopeContextOf: context)
+		  scope: scope outerScope"
+
+	| definingContext definingScope |
 	definingContext := scope
 		                   lookupDefiningContextForVariable: variable
 		                   startingFrom: context.
 	definingScope := definingContext sourceNode scope.
-	originalValue := variable
-		                 readFromContext: definingContext
-		                 scope: definingScope.
-	^ originalValue
+	^ variable readFromContext: definingContext scope: definingScope
+]
+
+{ #category : #public }
+PjTClosedBlockClosure >> externalVariable: name fromContext: context andScope: scope [
+
+	| variable |
+	variable := scope lookupVar: name declare: false.
+	^self externalValueForVariable: variable startingFrom: context scope: scope.
+
 ]
 
 { #category : #public }
