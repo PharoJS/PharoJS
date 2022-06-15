@@ -73,26 +73,26 @@ BlockClosure >> externalVariable: name fromMethod: method [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-BlockClosure >> externalVariables [
-	^ self externalVariablesOf: self
+BlockClosure >> externalVariablesDict [
+	^ self externalVariablesDictOf: self
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-BlockClosure >> externalVariablesOf: aBlock [
+BlockClosure >> externalVariablesDictOf: aBlock [
 
-	| context method variables tempValue scope |
-	variables := Dictionary new.
+	| context method variablesDict tempValue scope |
+	variablesDict := Dictionary new.
 	context := aBlock outerContext.
 	scope := context sourceNode scope.
 	scope allTempNames do: [ :name | 
 		tempValue := self externalVariable: name fromContext: context andScope: scope.
-		variables at: name put: tempValue ].
+		variablesDict at: name put: tempValue ].
 	method := aBlock home receiver.
 	method class allInstVarNames do: [ :name | 
-		variables
+		variablesDict
 			at: name
 			put: (self externalVariable: name fromMethod: method) ].
-	^ variables
+	^ variablesDict
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }

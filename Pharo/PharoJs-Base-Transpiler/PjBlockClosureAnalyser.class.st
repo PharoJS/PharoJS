@@ -33,7 +33,7 @@ PjBlockClosureAnalyser >> blockForAnalysis: anObject [
 PjBlockClosureAnalyser >> checkFree: aRBVariableNode [
 	| name |
 	name := aRBVariableNode name.
-	self externalVariables at: name ifPresent: [ : value |
+	self externalVariablesDict at: name ifPresent: [ : value |
 		(value isKindOf: Error) ifTrue: [ value signal ].
 		value isFreeJavascriptValue ifFalse: [ PjJavascriptTranspilationError signal: 'reference to non-literal value in variable: ', name ].
 		self register: name with: value.
@@ -59,8 +59,8 @@ PjBlockClosureAnalyser >> closeAst: aPjJavascriptAstNode with: aPjAstConverter [
 ]
 
 { #category : #public }
-PjBlockClosureAnalyser >> externalVariables [
-	^ externalVariables ifNil: [ externalVariables := blockForAnalysis externalVariables ]
+PjBlockClosureAnalyser >> externalVariablesDict [
+	^ externalVariables ifNil: [ externalVariables := blockForAnalysis externalVariablesDict ]
 ]
 
 { #category : #'initialize-release' }

@@ -4,8 +4,8 @@ Trait for closed block closure handling
 Trait {
 	#name : #PjTClosedBlockClosure,
 	#instVars : [
-		'externalVariables',
-		'originalBlock'
+		'originalBlock',
+		'externalVariablesDict'
 	],
 	#category : #'PharoJs-Base-Transpiler-Kernel'
 }
@@ -27,6 +27,12 @@ PjTClosedBlockClosure >> asClosedBlock [
 	^self
 ]
 
+{ #category : #accessing }
+PjTClosedBlockClosure >> basicOriginalBlock: aBlock [
+	originalBlock := aBlock.
+	externalVariablesDict := self externalVariablesDictOf: originalBlock
+]
+
 { #category : #converting }
 PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [ 
 	aPjTranspiler convertClosedBlock: self
@@ -35,19 +41,7 @@ PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 { #category : #public }
 PjTClosedBlockClosure >> externalValueForVariable: variable startingFrom: context scope: scope [
 
-	"	scope = variable scope ifTrue: [ 
-		^ variable readFromLocalContext: context ].
-	^ self
-		  externalValueForVariable: variable
-		  startingFrom: (scope nextOuterScopeContextOf: context)
-		  scope: scope outerScope"
-
-	| definingContext definingScope |
-	definingContext := scope
-		                   lookupDefiningContextForVariable: variable
-		                   startingFrom: context.
-	definingScope := definingContext sourceNode scope.
-	^ variable readFromContext: definingContext scope: definingScope closure: self
+	^ variable readFromContext: context scope: scope
 ]
 
 { #category : #public }
@@ -65,8 +59,8 @@ PjTClosedBlockClosure >> externalVariable: name fromMethod: method [
 ]
 
 { #category : #public }
-PjTClosedBlockClosure >> externalVariables [
-	^ externalVariables
+PjTClosedBlockClosure >> externalVariablesDict [
+	^ externalVariablesDict
 ]
 
 { #category : #testing }
@@ -82,7 +76,7 @@ PjTClosedBlockClosure >> originalBlock [
 { #category : #accessing }
 PjTClosedBlockClosure >> originalBlock: aBlock [
 	originalBlock := aBlock.
-	externalVariables := self externalVariablesOf: originalBlock
+	externalVariablesDict := self externalVariablesDictOf: originalBlock
 ]
 
 { #category : #accessing }
