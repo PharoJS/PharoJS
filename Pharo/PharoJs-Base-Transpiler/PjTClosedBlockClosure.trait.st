@@ -47,7 +47,7 @@ PjTClosedBlockClosure >> externalValueForVariable: variable startingFrom: contex
 		                   lookupDefiningContextForVariable: variable
 		                   startingFrom: context.
 	definingScope := definingContext sourceNode scope.
-	^ variable readFromContext: definingContext scope: definingScope
+	^ variable readFromContext: definingContext scope: definingScope closure: self
 ]
 
 { #category : #public }
