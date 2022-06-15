@@ -41,7 +41,7 @@ PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 { #category : #public }
 PjTClosedBlockClosure >> externalValueForVariable: variable startingFrom: context scope: scope [
 
-	^ variable readFromContext: context scope: scope
+	^ variable readFromContext: context scope: scope closure: self
 ]
 
 { #category : #public }
