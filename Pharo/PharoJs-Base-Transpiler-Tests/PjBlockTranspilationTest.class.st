@@ -123,12 +123,12 @@ PjBlockTranspilationTest >> testBlockWithExternalVariables [
 
 { #category : #tests }
 PjBlockTranspilationTest >> testBlockWithNestedScopes [
-	| x a openBlock closedBlock |
+	|openBlock closedBlock x a|
 	x := 1337.
 	instVar := 1066.
 	a := 42.
 	openBlock := [: y |  [:v| |w| {a.v.w.x.y.instVar.123}] ] value: 91.
-	closedBlock := [: y |  [:v| |w| {a.v.w.x.y.instVar.123}] asClosedBlock ] value: 73.
+	closedBlock := [: q |  [:v| |w| {a.v.w.x.q.instVar.321}] asClosedBlock ] value: 73.
 	a := 107.
 	instVar := 1492.
 	self 
@@ -139,13 +139,13 @@ PjBlockTranspilationTest >> testBlockWithNestedScopes [
 		convertsTo: '(function(x,instVar){return function(){var z;z=this;return function(v){var w;return [v,w,x,z,instVar,123]}}})(1337,1492)'.
 	self 
 		assertStBlock: closedBlock
-		convertsTo: '(function(a,x,y,instVar){return function(v){var w;return [a,v,w,x,y,instVar,123]}})(42,1337,73,1066)'. 
+		convertsTo: '(function(a,x,q,instVar){return function(v){var w;return [a,v,w,x,q,instVar,321]}})(42,1337,73,1066)'. 
 	self 
 		assertStBlock: openBlock asClosedBlock
 		convertsTo: '(function(a,x,y,instVar){return function(v){var w;return [a,v,w,x,y,instVar,123]}})(107,1337,91,1492)'.
 	self 
 		assertStBlock: (self closedBlock: 17)
-		convertsTo: '(function(x,y,instVar){return function(v){var w;return [v,w,x,y,instVar,123]}})(17,23,1492)'.
+		convertsTo: '(function(x,q,instVar){return function(v){var w;return [v,w,x,q,instVar,321]}})(17,23,1492)'.
 	self 
 		assertStBlock: (self openBlock: 42) asClosedBlock
 		convertsTo: '(function(x,y,instVar){return function(v){var w;return [v,w,x,y,instVar,123]}})(42,23,1492)'.
