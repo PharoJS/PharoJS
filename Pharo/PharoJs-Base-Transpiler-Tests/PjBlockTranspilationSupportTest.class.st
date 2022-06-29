@@ -10,14 +10,21 @@ Class {
 { #category : #tests }
 PjBlockTranspilationSupportTest >> assertBlock: block externalVarValues: valuesDict [
 
-	| context scope index allTempNames |
+	| context scope allTempNames actualTempValue allVariables variable currentScope currentContext|
 	context := block outerContext.
 	scope := context sourceNode scope.
 	allTempNames := scope allTempNames.
+	allVariables := scope allTemps.
 	valuesDict keysDo: [ :tempName | 
-		index := scope allTempNames indexOf: tempName.
+		variable := allVariables detect: [ : each | each name = tempName ].
+		currentScope := scope.
+		currentContext := context.
+		[ currentScope == variable scope ] whileFalse: [
+			currentContext := currentContext outerContext.
+			currentScope := currentContext sourceNode scope ].
+		actualTempValue := currentContext at: variable index.
 		self
-			assert: (context tempAt: index)
+			assert: actualTempValue
 			equals: (valuesDict at: tempName) ]
 ]
 
@@ -90,22 +97,14 @@ PjBlockTranspilationSupportTest >> test1ArgBlock3ExternalVarsLevel2 [
 	| block x a valuesDict |
 	valuesDict := { 
 		              (#x -> 1337).
-		              (#instVar -> 1066).
 		              (#a -> 42).
 		              (#y -> 91) } asDictionary.
 	x := valuesDict at: #x.
-	instVar := valuesDict at: #instVar.
+	instVar := 1066.
 	a := valuesDict at: #a.
 	block := [ :y | 
-	         [ :v | 
-	         | w |
-	         { 
-		         a.
-		         v.
-		         w.
-		         x.
-		         y.
-		         instVar.
-		         123 } ] ] value: (valuesDict at: #y).
+	      			[ :v | 
+						| w |
+	         			{a. v. w. x. y. instVar. 123}] ] value: (valuesDict at: #y).
 	self assertBlock: block externalVarValues: valuesDict
 ]
