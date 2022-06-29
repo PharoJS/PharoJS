@@ -39,21 +39,6 @@ PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 ]
 
 { #category : #public }
-PjTClosedBlockClosure >> externalValueForVariable: variable startingFrom: context scope: scope [
-
-	^ variable readFromContext: context scope: scope closure: self
-]
-
-{ #category : #public }
-PjTClosedBlockClosure >> externalVariable: name fromContext: context andScope: scope [
-
-	| variable |
-	variable := scope lookupVar: name declare: false.
-	^self externalValueForVariable: variable startingFrom: context scope: scope.
-
-]
-
-{ #category : #public }
 PjTClosedBlockClosure >> externalVariable: name fromMethod: method [
 	^ method instVarNamed: name
 ]

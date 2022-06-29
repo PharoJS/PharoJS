@@ -84,9 +84,9 @@ BlockClosure >> externalVariablesDictOf: aBlock [
 	variablesDict := Dictionary new.
 	context := aBlock outerContext.
 	scope := context sourceNode scope.
-	scope allTempNames do: [ :name | 
-		tempValue := self externalVariable: name fromContext: context andScope: scope.
-		variablesDict at: name put: tempValue ].
+	scope allTemps do: [ :variable | 
+		tempValue := variable valueStartAtContext: context.
+		variablesDict at: variable name put: tempValue ].
 	method := aBlock home receiver.
 	method class allInstVarNames do: [ :name | 
 		variablesDict
