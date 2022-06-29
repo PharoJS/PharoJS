@@ -10,19 +10,13 @@ Class {
 { #category : #tests }
 PjBlockTranspilationSupportTest >> assertBlock: block externalVarValues: valuesDict [
 
-	| context scope allTempNames actualTempValue allVariables variable currentScope currentContext|
+	| context actualTempValue variable allVariables scope |
 	context := block outerContext.
 	scope := context sourceNode scope.
-	allTempNames := scope allTempNames.
 	allVariables := scope allTemps.
 	valuesDict keysDo: [ :tempName | 
 		variable := allVariables detect: [ : each | each name = tempName ].
-		currentScope := scope.
-		currentContext := context.
-		[ currentScope == variable scope ] whileFalse: [
-			currentContext := currentContext outerContext.
-			currentScope := currentContext sourceNode scope ].
-		actualTempValue := currentContext at: variable index.
+		actualTempValue := variable valueStartAtContext: context.
 		self
 			assert: actualTempValue
 			equals: (valuesDict at: tempName) ]
