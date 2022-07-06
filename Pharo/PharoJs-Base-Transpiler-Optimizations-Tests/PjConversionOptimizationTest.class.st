@@ -574,6 +574,7 @@ PjConversionOptimizationTest >> testTimesRepeat [
 					target: a
 					expression: one
 			}).
+	self shouldnt: [ self convertFirstStatementOfBlock:  [ in timesRepeat: [|b| b := 1]]] raise: PjJavascriptTranspilationError  
 ]
 
 { #category : #testing }

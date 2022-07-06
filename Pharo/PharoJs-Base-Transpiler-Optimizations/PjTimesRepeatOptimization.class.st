@@ -9,6 +9,7 @@ PjTimesRepeatOptimization >> convertReceiver: receiver args: args [
 	| from to body fromName toName |
 	self astConverter isInExpression ifTrue: [ ^ nil ].
 	args last isBlock ifFalse: [ ^ nil ].
+	args last temporaries ifNotEmpty: [ ^ nil ].
 	self inExpressionDo: [
 		fromName := self tempName.
 		from := PjAssignNode
