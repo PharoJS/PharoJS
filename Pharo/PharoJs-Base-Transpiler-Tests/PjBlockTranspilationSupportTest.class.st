@@ -97,8 +97,42 @@ PjBlockTranspilationSupportTest >> test1ArgBlock3ExternalVarsLevel2 [
 	instVar := 1066.
 	a := valuesDict at: #a.
 	block := [ :y | 
-	      			[ :v | 
-						| w |
-	         			{a. v. w. x. y. instVar. 123}] ] value: (valuesDict at: #y).
-	self assertBlock: block externalVarValues: valuesDict
+	         [ :v | 
+	         | w |
+	         { 
+		         a.
+		         v.
+		         w.
+		         x.
+		         y.
+		         instVar.
+		         123 } ] ] value: (valuesDict at: #y).
+	self assertBlock: block externalVarValues: valuesDict.
+	self assert: (block externalVariablesDict at: #block) == block
+]
+
+{ #category : #tests }
+PjBlockTranspilationSupportTest >> test1ArgClosedBlock3ExternalVarsLevel2 [
+
+	| block x a valuesDict |
+	valuesDict := { 
+		              (#x -> 1337).
+		              (#a -> 42).
+		              (#y -> 91) } asDictionary.
+	x := valuesDict at: #x.
+	instVar := 1066.
+	a := valuesDict at: #a.
+	block := [ :y | 
+	         [ :v | 
+	         | w |
+	         { 
+		         a.
+		         v.
+		         w.
+		         x.
+		         y.
+		         instVar.
+		         123 } ] asClosedBlock ] value: (valuesDict at: #y).
+	self assertBlock: block externalVarValues: valuesDict.
+	self assert: (block externalVariablesDict at: #block) == block
 ]
