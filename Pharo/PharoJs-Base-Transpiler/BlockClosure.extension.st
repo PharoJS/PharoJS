@@ -61,6 +61,11 @@ BlockClosure >> copiedValuesForClosedBlock [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
+BlockClosure >> externalVariable: variable formContext: context [
+	^ PjJavascriptTranspilationError new messageText: 'free temp variable: ', variable name
+]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
 BlockClosure >> externalVariable: name fromContext: context andScope: scope [
 	^ PjJavascriptTranspilationError new messageText: 'free temp variable: ',name
 ]
@@ -83,7 +88,7 @@ BlockClosure >> externalVariablesDictOf: aBlock [
 	context := aBlock outerContext.
 	scope := context sourceNode scope.
 	scope allTemps do: [ :variable | 
-		tempValue := variable valueStartAtContext: context.
+		tempValue := self externalVariable: variable formContext: context.
 		variablesDict at: variable name put: tempValue ].
 	method := aBlock home receiver.
 	method class allInstVarNames do: [ :name | 

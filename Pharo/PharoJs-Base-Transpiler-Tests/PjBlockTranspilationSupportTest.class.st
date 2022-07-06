@@ -108,13 +108,13 @@ PjBlockTranspilationSupportTest >> test1ArgBlock3ExternalVarsLevel2 [
 		         instVar.
 		         123 } ] ] value: (valuesDict at: #y).
 	self assertBlock: block externalVarValues: valuesDict.
-	self assert: (block externalVariablesDict at: #block) == block
+	self should: [(block externalVariablesDict at: #block) signal] raise: PjJavascriptTranspilationError 
 ]
 
 { #category : #tests }
 PjBlockTranspilationSupportTest >> test1ArgClosedBlock3ExternalVarsLevel2 [
 
-	| block x a valuesDict |
+	| outerBlock x a valuesDict closedBlock |
 	valuesDict := { 
 		              (#x -> 1337).
 		              (#a -> 42).
@@ -122,17 +122,22 @@ PjBlockTranspilationSupportTest >> test1ArgClosedBlock3ExternalVarsLevel2 [
 	x := valuesDict at: #x.
 	instVar := 1066.
 	a := valuesDict at: #a.
-	block := [ :y | 
-	         [ :v | 
-	         | w |
-	         { 
-		         a.
-		         v.
-		         w.
-		         x.
-		         y.
-		         instVar.
-		         123 } ] asClosedBlock ] value: (valuesDict at: #y).
-	self assertBlock: block externalVarValues: valuesDict.
-	self assert: (block externalVariablesDict at: #block) == block
+	outerBlock := [ :y | 
+	              [ :v | 
+	              | w |
+	              { 
+		              a.
+		              v.
+		              w.
+		              x.
+		              y.
+		              instVar.
+		              123 } ] asClosedBlock ].
+	closedBlock := outerBlock value: (valuesDict at: #y).
+	self assertBlock: closedBlock externalVarValues: valuesDict.
+	self
+		assert: (closedBlock externalVariablesDict at: #outerBlock)
+		identicalTo: outerBlock.
+	self
+		assert: (closedBlock externalVariablesDict at: #closedBlock) isNil
 ]

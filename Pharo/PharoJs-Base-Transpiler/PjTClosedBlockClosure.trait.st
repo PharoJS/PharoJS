@@ -43,6 +43,11 @@ PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [
 	aPjTranspiler convertClosedBlock: self
 ]
 
+{ #category : #accessing }
+PjTClosedBlockClosure >> externalVariable: variable formContext: context [
+	^variable valueStartAtContext: context
+]
+
 { #category : #public }
 PjTClosedBlockClosure >> externalVariable: name fromMethod: method [
 	^ method instVarNamed: name
