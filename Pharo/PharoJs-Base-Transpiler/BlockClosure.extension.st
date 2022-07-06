@@ -9,7 +9,6 @@ BlockClosure >> arguments [
 BlockClosure >> asClosedBlock [
 
 	^ self closedBlockClass
-		  outerContext: self outerContext
 		  startpc: self basicStartpc
 		  numArgs: self numArgs
 		  copiedValues: self copiedValuesForClosedBlock

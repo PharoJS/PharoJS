@@ -11,7 +11,7 @@ Class {
 PjBlockTranspilationSupportTest >> assertBlock: block externalVarValues: valuesDict [
 
 	| context actualTempValue variable allVariables scope |
-	context := block outerContext.
+	context := block originalBlock outerContext.
 	scope := context sourceNode scope.
 	allVariables := scope allTemps.
 	valuesDict keysDo: [ :tempName | 

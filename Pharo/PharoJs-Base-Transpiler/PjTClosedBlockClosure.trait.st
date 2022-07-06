@@ -11,10 +11,15 @@ Trait {
 }
 
 { #category : #'instance creation' }
-PjTClosedBlockClosure classSide >> outerContext: aContext startpc: startpc numArgs: numArgs copiedValues: aCollection originalBlock: aBlock [
-	^(self outerContext: aContext startpc: startpc numArgs: numArgs copiedValues: aCollection)
-		originalBlock: aBlock;
-		yourself
+PjTClosedBlockClosure classSide >> startpc: startpc numArgs: numArgs copiedValues: aCollection originalBlock: aBlock [
+
+	^ (self
+		   outerContext: nil
+		   startpc: startpc
+		   numArgs: numArgs
+		   copiedValues: aCollection)
+		  originalBlock: aBlock;
+		  yourself
 ]
 
 { #category : #visiting }
