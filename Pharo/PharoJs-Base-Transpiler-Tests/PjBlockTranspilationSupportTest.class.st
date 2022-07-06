@@ -23,6 +23,13 @@ PjBlockTranspilationSupportTest >> assertBlock: block externalVarValues: valuesD
 ]
 
 { #category : #tests }
+PjBlockTranspilationSupportTest >> openBlock: x [
+	| y |
+	y := 23.
+	^  [:v| |w| {v.w.x.y.instVar.123}]
+]
+
+{ #category : #tests }
 PjBlockTranspilationSupportTest >> test0ArgBlock1ExtenalVarLevel1 [
 
 	| block x valuesDict  |
@@ -140,4 +147,11 @@ PjBlockTranspilationSupportTest >> test1ArgClosedBlock3ExternalVarsLevel2 [
 		identicalTo: outerBlock.
 	self
 		assert: (closedBlock externalVariablesDict at: #closedBlock) isNil
+]
+
+{ #category : #tests }
+PjBlockTranspilationSupportTest >> test1ArgClosedBlockLevel1CreatedByAnotherMethod [
+	| closedBlock |
+	closedBlock := (self openBlock: 42) asClosedBlock.
+	self assertBlock: closedBlock externalVarValues: { #x -> 42. #y ->23 } asDictionary 
 ]

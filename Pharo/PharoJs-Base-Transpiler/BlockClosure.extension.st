@@ -85,9 +85,10 @@ BlockClosure >> externalVariablesDictOf: aBlock [
 
 	| context method variablesDict tempValue scope |
 	variablesDict := Dictionary new.
-	context := aBlock outerContext.
+	context := aBlock asContext.
 	scope := context sourceNode scope.
-	scope allTemps do: [ :variable | 
+"Experimental: Does not capture all external variables!!!!"
+	scope copiedVars do: [ :variable | 		
 		tempValue := self externalVariable: variable formContext: context.
 		variablesDict at: variable name put: tempValue ].
 	method := aBlock home receiver.
