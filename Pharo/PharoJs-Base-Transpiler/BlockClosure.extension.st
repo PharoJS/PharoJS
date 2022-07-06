@@ -11,7 +11,6 @@ BlockClosure >> asClosedBlock [
 	^ self closedBlockClass
 		  startpc: self basicStartpc
 		  numArgs: self numArgs
-		  copiedValues: self copiedValuesForClosedBlock
 		  originalBlock: self
 ]
 

@@ -26,7 +26,6 @@ PjValuedClosedBlockClosure class >> newFrom: aBlock withArgs: args [
 	newInstance := self
 		               startpc: aBlock startpc
 		               numArgs: aBlock numArgs
-		               copiedValues: aBlock copiedValuesForClosedBlock
 		               originalBlock: aBlock.
 	^ newInstance
 		  arguments: args;
