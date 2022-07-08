@@ -621,7 +621,7 @@ PjAstConverter >> visitInlineBlock: aRBProgramNode [
 	aRBProgramNode temporaryNames do: [ : each |
 		extraTempVariablesToDeclare add: each.
 		loopNestingLevel >0 ifTrue: [
-			variable := RBVariableNode named: each.
+			variable := PjTemporaryNode named: each.
 			statements addFirst: (RBAssignmentNode variable: variable value: RBLiteralValueNode new).
 	]].
 	^ (self visitAllNodes: statements) asSimpleNode.
