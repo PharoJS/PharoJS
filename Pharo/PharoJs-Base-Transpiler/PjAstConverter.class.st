@@ -613,15 +613,14 @@ PjAstConverter >> visitGlobalVariableNode: aRBVariableNode [
 
 { #category : #visiting }
 PjAstConverter >> visitInlineBlock: aRBProgramNode [
-	| statements variable |
+	| statements  |
 	aRBProgramNode isBlock ifFalse: [
 		^ self returnNodeWith: aRBProgramNode ].
 	statements := (aRBProgramNode statements ifEmpty: [RBLiteralValueNode new]
 			) copy asOrderedCollection.
-	aRBProgramNode temporaryNames do: [ : each |
-		extraTempVariablesToDeclare add: each.
+	aRBProgramNode temporaries do: [ : variable |
+		extraTempVariablesToDeclare add: variable name.
 		loopNestingLevel >0 ifTrue: [
-			variable := RBVariableNode named: each.
 			statements addFirst: (RBAssignmentNode variable: variable value: RBLiteralValueNode new).
 	]].
 	^ (self visitAllNodes: statements) asSimpleNode.

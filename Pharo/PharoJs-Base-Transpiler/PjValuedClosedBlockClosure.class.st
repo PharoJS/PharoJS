@@ -18,16 +18,18 @@ PjValuedClosedBlockClosure class >> newFrom: aBlock [
 
 { #category : #'instance creation' }
 PjValuedClosedBlockClosure class >> newFrom: aBlock withArgs: args [
+
 	| newInstance |
-	aBlock isClosed ifTrue: [PjJavascriptTranspilationError signal: 'Cannot build a valued block from a closed one' ].
-	newInstance := self outerContext: aBlock outerContext
-		startpc: aBlock startpc
-		numArgs: aBlock numArgs
-		copiedValues: aBlock copiedValuesForClosedBlock
-		originalBlock: aBlock.
-	^newInstance 
-		arguments: args;
-		yourself
+	aBlock isClosed ifTrue: [ 
+		PjJavascriptTranspilationError signal:
+			'Cannot build a valued block from a closed one' ].
+	newInstance := self
+		               startpc: aBlock startpc
+		               numArgs: aBlock numArgs
+		               originalBlock: aBlock.
+	^ newInstance
+		  arguments: args;
+		  yourself
 ]
 
 { #category : #accessing }

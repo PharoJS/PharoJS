@@ -9,10 +9,8 @@ BlockClosure >> arguments [
 BlockClosure >> asClosedBlock [
 
 	^ self closedBlockClass
-		  outerContext: self outerContext
 		  startpc: self basicStartpc
 		  numArgs: self numArgs
-		  copiedValues: self copiedValuesForClosedBlock
 		  originalBlock: self
 ]
 
@@ -63,6 +61,11 @@ BlockClosure >> copiedValuesForClosedBlock [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
+BlockClosure >> externalVariable: variable formContext: context [
+	^ PjJavascriptTranspilationError new messageText: 'free temp variable: ', variable name
+]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
 BlockClosure >> externalVariable: name fromContext: context andScope: scope [
 	^ PjJavascriptTranspilationError new messageText: 'free temp variable: ',name
 ]
@@ -73,26 +76,26 @@ BlockClosure >> externalVariable: name fromMethod: method [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-BlockClosure >> externalVariables [
-	^ self externalVariablesOf: self
+BlockClosure >> externalVariablesDict [
+	^ self externalVariablesDictOf: self
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-BlockClosure >> externalVariablesOf: aBlock [
+BlockClosure >> externalVariablesDictOf: aBlock [
 
-	| context method variables tempValue scope |
-	variables := Dictionary new.
-	context := aBlock outerContext.
-	scope := context sourceNode scope.
-	scope allTempNames do: [ :name | 
-		tempValue := self externalVariable: name fromContext: context andScope: scope.
-		variables at: name put: tempValue ].
+	| context method variablesDict tempValue scope |
+	variablesDict := Dictionary new.
+	context := aBlock asContext.
+	scope := aBlock outerContext sourceNode scope.
+	scope allTemps do: [ :variable | 		
+		tempValue := self externalVariable: variable formContext: context.
+		variablesDict at: variable name put: tempValue ].
 	method := aBlock home receiver.
 	method class allInstVarNames do: [ :name | 
-		variables
+		variablesDict
 			at: name
 			put: (self externalVariable: name fromMethod: method) ].
-	^ variables
+	^ variablesDict
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
