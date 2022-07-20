@@ -33,8 +33,8 @@ PjPlaygroundTest >> eval: statementsString [
 { #category : #testing }
 PjPlaygroundTest >> setUp [
 	super setUp.
-	playground := PjPlayground new.
-	playground label: 'PharoJS Playground Test'.
+	playground := PjPlayground open.
+	playground title: 'PharoJS Playground Test'.
 ]
 
 { #category : #testing }

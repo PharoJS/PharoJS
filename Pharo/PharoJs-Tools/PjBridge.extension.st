@@ -11,8 +11,8 @@ PjBridge >> pharoPlayground [
 { #category : #'*PharoJs-Tools-Playground' }
 PjBridge >> playground [
 
-	PjPlayground openFor: self.
-	^ self server
+	^ PjPlayground openFor: self
+	"^ self server" 
 ]
 
 { #category : #'*PharoJs-Tools-Playground' }
