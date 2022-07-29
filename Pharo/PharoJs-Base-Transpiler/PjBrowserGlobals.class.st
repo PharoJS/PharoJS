@@ -12,6 +12,7 @@ Class {
 		'Uint16Array',
 		'Uint8Array',
 		'XMLHttpRequest',
+		'FormData',
 		'localStorage'
 	],
 	#pools : [
