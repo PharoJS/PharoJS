@@ -13,19 +13,14 @@ PjBridgeServedFileBasedBrowserBridgeClient >> folderName [
 { #category : #'as yet unclassified' }
 PjBridgeServedFileBasedBrowserBridgeClient >> initMappingOn: server andFolder: aString [
 
-	server delegate 
-		map:#'index.html' to: [ :request | 
-			ZnResponse ok:
-					(ZnEntity html: (aString asFileReference / 'index.html') contents) ];
-		map: #'index.js' to: [ :request | 
-			ZnResponse ok:
-					(ZnEntity javascript: (aString asFileReference / 'index.js') contents) ].
+	server delegate map: #web to: (ZnStaticFileServerDelegate new
+			 prefixFromString: 'web';
+			 directory: aString asFileReference;
+			 yourself)
 ]
 
 { #category : #actions }
 PjBridgeServedFileBasedBrowserBridgeClient >> startJsInterpreter [
-
-	"start javascript interpreter"
 
 	self initMappingOn: self server andFolder: self folderName fullName.
 	super startJsInterpreter
@@ -34,5 +29,5 @@ PjBridgeServedFileBasedBrowserBridgeClient >> startJsInterpreter [
 { #category : #actions }
 PjBridgeServedFileBasedBrowserBridgeClient >> urlString [
 
-	^ self server url / 'index.html'
+	^ self server url / 'web' / 'index.html'
 ]
