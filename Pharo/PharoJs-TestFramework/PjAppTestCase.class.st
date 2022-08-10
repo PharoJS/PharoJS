@@ -106,7 +106,7 @@ PjAppTestCase >> resetInstanceVariables [
 
 { #category : #accessing }
 PjAppTestCase >> resources [
-	^{self bridgeResourceClass}
+	^super resources, {self bridgeResourceClass}
 ]
 
 { #category : #running }
