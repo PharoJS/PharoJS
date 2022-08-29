@@ -48,16 +48,18 @@ PjThreeJsDemo >> handleKeydown: keyboardEvent [
 { #category : #initialization }
 PjThreeJsDemo >> initialize [
 
-	| geometry material texture |
+	| geometry material texture canvasWidth canvasHeight canvas |
 	super initialize.
 	scene := Scene new.
+	canvasWidth := window innerWidth / 2.
+	canvasHeight := window innerHeight / 2.
 	camera := PerspectiveCamera
 		          new: 75
-		          with: window innerWidth / window innerHeight
+		          with: canvasWidth / canvasHeight
 		          with: 0.1
 		          with: 1000.
 	renderer := WebGLRenderer new.
-	renderer setSize: window innerWidth height: window innerHeight.
+	renderer setSize: canvasWidth height: canvasHeight.
 	document body appendChild: renderer domElement.
 	geometry := BoxGeometry new: 1 with: 1 with: 1.
 	texture := TextureLoader new load:
@@ -66,7 +68,10 @@ PjThreeJsDemo >> initialize [
 	cube := Mesh new: geometry with: material.
 	scene add: cube.
 	camera position z: 5.
-	document body
+	canvas := document querySelector: 'canvas'.
+	canvas
+		setAttribute: #tabindex value: 1;
+		focus;
 		addEventListener: #keydown
 		block: [ :event | self handleKeydown: event ].
 	self animate
