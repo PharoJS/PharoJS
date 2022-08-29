@@ -1,3 +1,11 @@
+"
+Simple demo of ThreeJS 3D graphics library.
+Shows a cube that can be rotated by pressing keyboard arrow keys.
+
+""Transpile to JS""
+PjThreeJsDemo exportApp.
+
+"
 Class {
 	#name : #PjThreeJsDemo,
 	#superclass : #PjFileBasedWebApp,
