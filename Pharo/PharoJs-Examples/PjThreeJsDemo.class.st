@@ -1,5 +1,5 @@
 "
-Simple demo of ThreeJS 3D graphics library.
+Simple demo of ThreeJS 3D graphics library (https://threejs.org/).
 Shows a cube that can be rotated by pressing keyboard arrow keys.
 
 ""Transpile to JS""
@@ -51,8 +51,8 @@ PjThreeJsDemo >> initialize [
 	| geometry material texture canvasWidth canvasHeight canvas |
 	super initialize.
 	scene := Scene new.
-	canvasWidth := window innerWidth / 2.
-	canvasHeight := window innerHeight / 2.
+	canvasWidth := 1024.
+	canvasHeight := canvasWidth / 1.6.
 	camera := PerspectiveCamera
 		          new: 75
 		          with: canvasWidth / canvasHeight
@@ -67,7 +67,7 @@ PjThreeJsDemo >> initialize [
 	material := MeshBasicMaterial new: { (#map -> texture) } asJsObject.
 	cube := Mesh new: geometry with: material.
 	scene add: cube.
-	camera position z: 5.
+	camera position z: 2.
 	canvas := document querySelector: 'canvas'.
 	canvas
 		setAttribute: #tabindex value: 1;
