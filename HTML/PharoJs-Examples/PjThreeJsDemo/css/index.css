@@ -1,0 +1,19 @@
+#banner{
+	width:100%;
+	text-align:center; 
+	background-color:rgb(230,250,255);
+	box-sizing:border-box; 
+	padding:15px;
+	font-weight: bold;
+	font-size:400%; 
+	color: rgb(70,70,70)
+}
+#banner img{
+	height:100px;
+	vertical-align:middle;
+}
+
+canvas{
+    display: block;
+    margin: auto;
+}
