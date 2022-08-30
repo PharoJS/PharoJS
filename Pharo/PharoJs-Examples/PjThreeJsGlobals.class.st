@@ -18,7 +18,7 @@ Class {
 }
 
 { #category : #initialization }
-PjThreeJsGlobals class >> initialize [
+PjThreeJsGlobals class >> javascriptInitialize [
 
 	THREE := window THREE.
 	WebGLRenderer := THREE WebGLRenderer.
