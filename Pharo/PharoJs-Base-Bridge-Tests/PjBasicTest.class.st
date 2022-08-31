@@ -158,20 +158,6 @@ PjBasicTest >> testIfTrueIfFalse [
 ]
 
 { #category : #tests }
-PjBasicTest >> testJavascriptSemanticsComparisons [
-	"Can't use assertEquivalent: because these are errors in Smalltalk"
-
-	self assert: [ nil>=0 ] evaluatesTo: false.
-	self assert: [ nil>0 ] evaluatesTo: false.
-	self assert: [ nil<=0]  evaluatesTo: false.
-	self assert: [ nil<0 ] evaluatesTo: false.
-	self assert: [ 0>=nil ] evaluatesTo: false.
-	self assert: [ 0>nil ] evaluatesTo: false.
-	self assert: [ 0<=nil ] evaluatesTo: false.
-	self assert: [ 0<nil ] evaluatesTo: false
-]
-
-{ #category : #tests }
 PjBasicTest >> testMethodsForBitManipulation [
 
 	self assertEquivalent: [ -257 bitShift: -4 ].

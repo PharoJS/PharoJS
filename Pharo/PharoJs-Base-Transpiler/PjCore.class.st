@@ -385,7 +385,7 @@ PjCore class >> propertySet: func [
 PjCore class >> registerDnu: aSelector [
 	| selector props |
 	selector := self makePharoJsSelector: aSelector.
-	((Object js_at:#prototype) js_at: selector) ifNil: [
+	((Object js_at: #prototype) js_hasOwnProperty: selector) ifFalse: [
 		props := self makeDNU: aSelector.
 		Object
 			js_defineProperty: (Object js_at:#prototype)

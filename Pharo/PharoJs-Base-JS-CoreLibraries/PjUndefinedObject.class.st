@@ -47,7 +47,7 @@ PjUndefinedObject class >> new [
 
 { #category : #comparing }
 PjUndefinedObject >> = other [
-	<javascript: 'return undefined==other'>
+	<javascript: 'return null==other'>
 ]
 
 { #category : #converting }
