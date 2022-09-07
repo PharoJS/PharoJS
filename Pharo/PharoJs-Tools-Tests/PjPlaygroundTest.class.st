@@ -17,8 +17,8 @@ PjPlaygroundTest >> closeWindow [
 { #category : #testing }
 PjPlaygroundTest >> eval: statementsString [
 	| obtainedResult |
-	playground page saveContent: statementsString, String cr.
-	window := playground openPage.
+	playground page contents: statementsString, String cr.
+	window := playground window.
 	self startBridge.
 	playground inspectorPresentation firstPresentation 
 		selectLine;
@@ -33,8 +33,10 @@ PjPlaygroundTest >> eval: statementsString [
 { #category : #testing }
 PjPlaygroundTest >> setUp [
 	super setUp.
-	playground := PjPlayground open.
+	playground := PjPlayground new.
+	playground open.
 	playground title: 'PharoJS Playground Test'.
+
 ]
 
 { #category : #testing }
