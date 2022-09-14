@@ -16,33 +16,25 @@ PjPlaygroundTest >> closeWindow [
 
 { #category : #testing }
 PjPlaygroundTest >> eval: statementsString [
+
 	| obtainedResult |
-	playground page contents: statementsString, String cr.
-	window := playground window.
-	self startBridge.
-	playground inspectorPresentation firstPresentation 
+	playground contents: statementsString , String cr.
+	playground firstPage text
 		selectLine;
-		announce:
-			(GLMEvaluateSelection new
-				action: [ :aResult | obtainedResult := aResult ];
-				makeSyncronous).
-	self closeWindow.
-	^obtainedResult
+		announce: (GLMEvaluateSelection new
+				 action: [ :aResult | obtainedResult := aResult ];
+				 makeSyncronous).
+	^ obtainedResult
 ]
 
 { #category : #testing }
 PjPlaygroundTest >> setUp [
 
 	super setUp.
-	playground := PjPlayground open.
-	playground title: 'PharoJS Playground Test'
-]
+	playground := PjWebApplication playground.
+	playground title: 'PharoJS Playground Test'.
+	window := playground window.
 
-{ #category : #testing }
-PjPlaygroundTest >> startBridge [
-	playground bridge: PjWebApplication bridge.
-	playground bridge client openBrowserInBackground: true.
-	playground bridge start
 ]
 
 { #category : #testing }
