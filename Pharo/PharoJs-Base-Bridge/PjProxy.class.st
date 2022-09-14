@@ -63,6 +63,12 @@ PjProxy class >> newProxyNamed: proxyName onBridge: aBridge oid: anOid [
 ]
 
 { #category : #'instance creation' }
+PjProxy class >> proxyNamed: proxyName onBridge: aBridge [
+	"Useful for building proxies on JS globals"
+	^ self proxyNamed: proxyName onBridge: aBridge oid: proxyName
+]
+
+{ #category : #'instance creation' }
 PjProxy class >> proxyNamed: proxyName onBridge: aBridge oid: anOid [
 	| proxy |
 	aBridge
