@@ -1,41 +1,21 @@
 Class {
 	#name : #PjAppPlaygroundTest,
-	#superclass : #TestCase,
+	#superclass : #PjPlaygroundTest,
 	#traits : 'PjTWaitUntilReady',
 	#classTraits : 'PjTWaitUntilReady classTrait',
-	#instVars : [
-		'playground'
-	],
 	#category : #'PharoJs-Tools-Tests-Playground'
 }
 
-{ #category : #tests }
-PjAppPlaygroundTest >> eval: aString [
-	playground bridge eval: aString
+{ #category : #asserting }
+PjAppPlaygroundTest class >> shouldInheritSelectors [
+	^true
 ]
 
 { #category : #tests }
-PjAppPlaygroundTest >> setUp [
+PjAppPlaygroundTest >> setUpPlayground [
 
-	super setUp.
 	playground := PjMinimalApp playground.
 	self waitUntil: [ playground bridge isConnected ]
-]
-
-{ #category : #tests }
-PjAppPlaygroundTest >> tearDown [
-
-	super tearDown.
-	playground window close
-]
-
-{ #category : #tests }
-PjAppPlaygroundTest >> testReadJsGlobal [
-
-	| result |
-	self shouldnt: [ result := self eval: 'window.' ] raise: Error.
-	self assert: (result isKindOf: PjProxy).
-	self assert: result asJSON equals: #window
 ]
 
 { #category : #tests }
