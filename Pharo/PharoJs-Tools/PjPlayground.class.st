@@ -7,10 +7,26 @@ Class {
 	#category : #'PharoJs-Tools-Playground'
 }
 
+{ #category : #'world menu' }
+PjPlayground class >> applicationList [
+	^ (PjApplication allSubclasses select: [ :class |
+				class isAbstract not and: [ (class hasClassMethod: #playgroundDoNotList) not ]
+		]) sort: [ : l : r | l name <= r name ]
+]
+
 { #category : #accessing }
 PjPlayground class >> defaultTitle [
 
 	^ 'PharoJS Playground'
+]
+
+{ #category : #initialization }
+PjPlayground class >> initialize [
+
+	SystemAnnouncer uniqueInstance
+		unsubscribe: self;
+		when: ClassAnnouncement do: [ 
+			self resetMenuBar ]
 ]
 
 { #category : #opening }
@@ -29,6 +45,47 @@ PjPlayground class >> openFor: aPjBridge [
 	playground := self open.
 	playground initializeWithBridge: aPjBridge.
 	^ playground
+]
+
+{ #category : #'world menu' }
+PjPlayground class >> pharoJsMenuOn: aBuilder [
+
+	<worldMenu>
+	(aBuilder item: #PharoJsPlayground)
+		order: 40;
+		label: 'PharoJs Playground';
+		icon: (self iconNamed: #smallWindowIcon);
+		with: [ 
+			(aBuilder item: #simple) action: [ self open ].
+			self applicationList do: [ :class | 
+					| n |
+					n := class name.
+					(aBuilder item: n asSymbol)
+						label: n;
+						with: [ 
+							(aBuilder item: (n , ':pharo') asSymbol)
+								label: 'launch on Pharo';
+								action: [ class pharoPlayground ].
+							(aBuilder item: (n , ':js') asSymbol)
+								label: 'launch on remote';
+								action: [ class playground ].
+							(aBuilder item: (n , ':browse') asSymbol)
+								label: 'export app';
+								action: [ class exportApp ].
+							(aBuilder item: (n , ':browse') asSymbol)
+								label: 'browse';
+								action: [ class browse ] ] ].
+			(aBuilder item: #HelpPharoJs)
+				label: 'PharoJs Help';
+				icon: (self iconNamed: #smallHelp);
+				action: [ HelpBrowser openOn: PharoJsHelp ] ]
+]
+
+{ #category : #'world menu' }
+PjPlayground class >> resetMenuBar [
+
+	<script>
+	MenubarMorph reset
 ]
 
 { #category : #accessing }
