@@ -2,7 +2,8 @@ Extension { #name : #DateAndTime }
 
 { #category : #'*PharoJs-Base-Serialization' }
 DateAndTime class >> instantiateWithPhxJsonReader: reader instanceJsonObject: jsonObject [
-	^self fromString: jsonObject
+
+	^ reader addKnownObject: (self fromString: jsonObject)
 ]
 
 { #category : #'*PharoJs-Base-Serialization' }
