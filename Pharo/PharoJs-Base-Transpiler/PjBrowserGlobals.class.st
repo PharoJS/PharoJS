@@ -8,6 +8,7 @@ Class {
 	#superclass : #PjJavascriptGlobals,
 	#classVars : [
 		'Float32Array',
+		'FormData',
 		'Image',
 		'Uint16Array',
 		'Uint8Array',
