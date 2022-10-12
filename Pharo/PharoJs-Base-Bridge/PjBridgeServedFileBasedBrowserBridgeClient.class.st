@@ -19,6 +19,14 @@ PjBridgeServedFileBasedBrowserBridgeClient >> initMappingOn: server andFolder: a
 			 yourself)
 ]
 
+{ #category : #accessing }
+PjBridgeServedFileBasedBrowserBridgeClient >> initializeWithBridge: aBridge [
+
+	super initializeWithBridge: aBridge.
+	self initMappingOn: self server andFolder: self folderName fullName.
+
+]
+
 { #category : #actions }
 PjBridgeServedFileBasedBrowserBridgeClient >> urlString [
 
