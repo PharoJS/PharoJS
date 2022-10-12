@@ -20,13 +20,6 @@ PjBridgeServedFileBasedBrowserBridgeClient >> initMappingOn: server andFolder: a
 ]
 
 { #category : #actions }
-PjBridgeServedFileBasedBrowserBridgeClient >> startJsInterpreter [
-
-	self initMappingOn: self server andFolder: self folderName fullName.
-	super startJsInterpreter
-]
-
-{ #category : #actions }
 PjBridgeServedFileBasedBrowserBridgeClient >> urlString [
 
 	^ self server url / 'web' / 'index.html'
