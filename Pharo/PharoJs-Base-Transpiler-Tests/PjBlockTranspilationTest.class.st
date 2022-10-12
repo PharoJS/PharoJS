@@ -80,7 +80,7 @@ PjBlockTranspilationTest >> testBlockWithExternalVariables [
 	x := nil.
 	self
 		assertStBlock: [ x ] asClosedBlock
-		convertsTo: '(function(x){return function(){return x}})(undefined)'.
+		convertsTo: '(function(x){return function(){return x}})(null)'.
 	x := 'string'.
 	self
 		assertStBlock: [ x ] asClosedBlock
@@ -180,5 +180,5 @@ PjBlockTranspilationTest >> testValuedBlock [
 		convertsTo: '(function(){return 23})()'.
 	self 
 		assertStBlock: ([: a : b | ] asValuedBlockWithArgs: { 23. self class })
-		convertsTo: '(function(a,b){return undefined})(23,',self className,')'.
+		convertsTo: '(function(a,b){return null})(23,',self className,')'.
 ]

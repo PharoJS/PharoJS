@@ -1,6 +1,6 @@
 Extension { #name : #PjApplication }
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> classSubclassResponsibilitySet [
 	| set |
 	set := self == PjApplication ifTrue: [ Set new ] ifFalse: [ self superclass classSubclassResponsibilitySet ].
@@ -14,26 +14,26 @@ PjApplication class >> classSubclassResponsibilitySet [
 	^ set
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> isAbstract [
 	^ self subclassResponsibilitySet isNotEmpty or: [
 			self classSubclassResponsibilitySet isNotEmpty
 		]
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> pharoPlayground [
 	<pharoJsSkip>
 	^ self bridge pharoPlayground
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playground [
 	<pharoJsSkip>
 	^ self bridge playground
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playgroundInitialContent [
 	<pharoJsSkip>
 	^	'bridge evalBlock: [ PjLoadForTest fortyTwo ]. " loads the referenced classes and executes the block "', String cr
@@ -43,7 +43,7 @@ PjApplication class >> playgroundInitialContent [
 "
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playgroundLoadClassesContent [
 	<pharoJsSkip>
 	| classes |
@@ -54,19 +54,19 @@ PjApplication class >> playgroundLoadClassesContent [
 		,(String cr join: (classes collect: [: class | 'bridge loadClass: ',class name,'.']))
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playgroundWithoutLaunch [
 	<pharoJsSkip>
 	self bridge playgroundWithoutLaunch
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playgroundWithoutLaunchOnUrl: aString [
 	<pharoJsSkip>
 	^ self bridge playgroundWithoutLaunchOnUrl: aString
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> subclassResponsibilitySet [
 	| set |
 	set := self == PjApplication ifTrue: [ Set new ] ifFalse: [ self superclass subclassResponsibilitySet ].
@@ -80,7 +80,7 @@ PjApplication class >> subclassResponsibilitySet [
 	^ set
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> title [
 	<pharoJsSkip>
 	^ self name

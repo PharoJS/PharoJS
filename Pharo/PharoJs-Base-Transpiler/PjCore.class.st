@@ -346,15 +346,13 @@ PjCore class >> metaclassOf_jsGenerator: transpiler [
 
 { #category : #'nil support' }
 PjCore class >> nilIfUndefined [
-	<javascript: 'var pjCore=this;return function(arg){if(arg == undefined){
-		return pjCore.nilInJs;
+	"In case PjUndefinedObject is not created yet, use a placeholder object, just for declaring."
+	<javascript: 'window.PjUndefinedObject |= {};
+	return function(arg){if(arg == undefined){
+		return PjUndefinedObject.uniqueInstance;
 	}
 	return arg}'>
-]
-
-{ #category : #'nil support' }
-PjCore class >> nilInJs: anObject [
-	nilInJs := anObject
+	
 ]
 
 { #category : #'nil support' }
@@ -387,7 +385,7 @@ PjCore class >> propertySet: func [
 PjCore class >> registerDnu: aSelector [
 	| selector props |
 	selector := self makePharoJsSelector: aSelector.
-	((Object js_at:#prototype) js_at: selector) ifNil: [
+	((Object js_at: #prototype) js_hasOwnProperty: selector) ifFalse: [
 		props := self makeDNU: aSelector.
 		Object
 			js_defineProperty: (Object js_at:#prototype)

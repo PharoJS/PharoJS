@@ -26,6 +26,14 @@ PjNodeApplication class >> isAbstract [
 		 		   ifFalse: [ super isAbstract ]
 ]
 
+{ #category : #pj }
+PjNodeApplication class >> playgroundInitialContent [
+	<pharoJsSkip>
+	^	super playgroundInitialContent
+		,'console log: ''hello''.', String cr
+		,'global. " inspect this "', String cr
+]
+
 { #category : #private }
 PjNodeApplication class >> whenJsReady: aBlock [
 	aBlock value

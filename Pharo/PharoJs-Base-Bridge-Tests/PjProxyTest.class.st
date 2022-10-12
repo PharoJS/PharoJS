@@ -27,7 +27,7 @@ PjProxyTest >> testAsJson [
 
 	self assert: 42 asJSON equals: '42'.
 	self assert: 'a\b"c' asJSON equals: '"a\\b\"c"'.
-	self assert: nil asJSON equals: 'undefined'.
+	self assert: nil asJSON equals: 'null'.
 ]
 
 { #category : #tests }

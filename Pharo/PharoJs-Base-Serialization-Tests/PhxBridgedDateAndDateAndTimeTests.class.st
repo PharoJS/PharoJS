@@ -31,3 +31,18 @@ PhxBridgedDateAndDateAndTimeTests >> testDateAndTimePhxJsonAlwaysUTC [
 	jsTs := PhxJsonReader readFromString: phxJson.
 	self assert: jsTs offset isZero
 ]
+
+{ #category : #tests }
+PhxBridgedDateAndDateAndTimeTests >> testDateAndTimeRefCountWhileMaterializing [
+
+	| phxJson |
+	phxJson := self evalBlock: [ 
+		           | ts |
+		           ts := DateAndTime now.
+		           { 
+			           ts.
+			           ts } asPhxJsonString ].
+	self
+		shouldnt: [ PhxJsonReader readFromString: phxJson ]
+		raise: SubscriptOutOfBounds
+]

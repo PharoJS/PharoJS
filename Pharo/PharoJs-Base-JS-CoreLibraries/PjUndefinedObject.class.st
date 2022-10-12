@@ -4,6 +4,9 @@ I am the implementation for UndefinedObject. Any method calls translate the Java
 Class {
 	#name : #PjUndefinedObject,
 	#superclass : #PjObject,
+	#classInstVars : [
+		'uniqueInstance'
+	],
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
@@ -15,7 +18,11 @@ PjUndefinedObject class >> identityHash_jsGenerator: transpiler [
 
 { #category : #'class initialization' }
 PjUndefinedObject class >> javascriptInitialize [
-	PjCore nilInJs: self basicNew
+
+	uniqueInstance := self basicNew.
+	Object js_freeze: uniqueInstance;
+	 js_freeze: self
+	
 ]
 
 { #category : #'pharojs support' }
@@ -40,7 +47,7 @@ PjUndefinedObject class >> new [
 
 { #category : #comparing }
 PjUndefinedObject >> = other [
-	<javascript: 'return undefined==other'>
+	<javascript: 'return null==other'>
 ]
 
 { #category : #converting }

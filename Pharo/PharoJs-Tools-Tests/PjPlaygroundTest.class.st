@@ -3,8 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'playground',
-		'window',
-		'page'
+		'window'
 	],
 	#category : #'PharoJs-Tools-Tests-Playground'
 }
@@ -16,32 +15,28 @@ PjPlaygroundTest >> closeWindow [
 
 { #category : #testing }
 PjPlaygroundTest >> eval: statementsString [
-	| obtainedResult |
-	playground page saveContent: statementsString, String cr.
-	window := playground openPage.
-	self startBridge.
-	playground inspectorPresentation firstPresentation 
-		selectLine;
-		announce:
-			(GLMEvaluateSelection new
-				action: [ :aResult | obtainedResult := aResult ];
-				makeSyncronous).
-	self closeWindow.
-	^obtainedResult
+
+	| codePresenter |
+	codePresenter := playground firstPage text.
+	^ codePresenter
+		  evaluate: statementsString
+		  onCompileError: [ :err | err pass ]
+		  onError: [ :err | err pass ]
 ]
 
 { #category : #testing }
 PjPlaygroundTest >> setUp [
+
 	super setUp.
-	playground := PjPlayground open.
-	playground title: 'PharoJS Playground Test'.
+	self setUpPlayground.
+	window := playground window
 ]
 
 { #category : #testing }
-PjPlaygroundTest >> startBridge [
-	playground bridge: PjWebApplication bridge.
-	playground bridge client openBrowserInBackground: true.
-	playground bridge start
+PjPlaygroundTest >> setUpPlayground [
+
+	playground := PjWebApplication playground.
+	playground title: 'PharoJS Playground Test'
 ]
 
 { #category : #testing }

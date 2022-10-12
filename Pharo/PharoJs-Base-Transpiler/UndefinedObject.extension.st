@@ -2,7 +2,7 @@ Extension { #name : #UndefinedObject }
 
 { #category : #'*PharoJs-Base-Transpiler' }
 UndefinedObject >> asJSON [
-	^ #undefined
+	^ #null
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }

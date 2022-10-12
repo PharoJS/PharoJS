@@ -172,7 +172,7 @@ PjStringGenerationTest >> testLiteral [
 	self assert: (PjLiteralValueNode value: 42) asStringEquals: '42'.
 	self assert: (PjLiteralValueNode value: '42') asStringEquals: '"42"'.
 	self assert: (PjLiteralValueNode value: $x) asStringEquals: '"x"'.
-	self assert: (PjLiteralValueNode value: nil) asStringEquals: 'undefined'.
+	self assert: (PjLiteralValueNode value: nil) asStringEquals: 'null'.
 	self assert: (PjLiteralValueNode value: (String with: (Character value: 7)),'a\b"
 x',(String with: Character null)) asStringEquals: '"\x07a\\b\"\rx\x00"'.
 	self assert: (PjLiteralValueNode value: 'a\b"',(String with: (Character value:257)) ) asStringEquals: '"a\\b\"\u0101"'.
@@ -224,7 +224,7 @@ PjStringGenerationTest >> testMethod [
 PjStringGenerationTest >> testObject [
 	self
 		assert: (PjObjectNode dictionary: { #a -> selfNode. #* -> nilNode } asDictionary)
-		asStringEquals: '{"*":undefined,a:this}'.
+		asStringEquals: '{"*":null,a:this}'.
 ]
 
 { #category : #tests }

@@ -1,6 +1,6 @@
 Extension { #name : #PjBridge }
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjBridge >> pharoPlayground [
 
 	runOnPharo := true.
@@ -8,27 +8,27 @@ PjBridge >> pharoPlayground [
 	^ self server
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjBridge >> playground [
 
 	^ PjPlayground openFor: self
-	"^ self server" 
+
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjBridge >> playgroundInitialContent [
 
 	^ self client playgroundInitialContent
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjBridge >> playgroundWithoutLaunch [
 
 	self shouldStartJsInterpreter: false.
 	^ self playground
 ]
 
-{ #category : #'*PharoJs-Tools-Playground' }
+{ #category : #'*PharoJs-Tools' }
 PjBridge >> playgroundWithoutLaunchOnUrl: aString [
 
 	self serverUrl: aString.

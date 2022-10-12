@@ -30,7 +30,7 @@ PjGenerationOptimizationTest >> testIfFalse [
 		whenTrue: nilNode
 		whenFalse: one).
 	self assert:  inputAst asStringEquals: 'if(false==y){1}'.
-	self assert:  returnAst asStringEquals: 'return true==y?undefined:1'
+	self assert:  returnAst asStringEquals: 'return true==y?null:1'
 ]
 
 { #category : #testing }
@@ -43,12 +43,12 @@ PjGenerationOptimizationTest >> testIfNil [
 		PjIfNilNode 
 			test: (self apply: y selector: #foo)
 			whenNil: one).
-	self assert: inputAst asStringEquals: 'return $asNil$(y)._foo()==undefined?1:undefined'.
+	self assert: inputAst asStringEquals: 'return $asNil$(y)._foo()==null?1:null'.
 
 	inputAst := PjIfNilNode 
 			test: (self apply: y selector: #foo)
 			whenNil: one.
-	self assert: inputAst asStringEquals: 'if($asNil$(y)._foo()==undefined){1}'.
+	self assert: inputAst asStringEquals: 'if($asNil$(y)._foo()==null){1}'.
 ]
 
 { #category : #testing }
@@ -66,7 +66,7 @@ PjGenerationOptimizationTest >> testIfNilCaseForIfNilIfNotNil [
 			whenNil: one).
 	self
 		assert: expectedAst
-		asStringEquals: 'return ($1=$asNil$(y)._foo())==undefined?1:$1'
+		asStringEquals: 'return ($1=$asNil$(y)._foo())==null?1:$1'
 ]
 
 { #category : #testing }
@@ -84,7 +84,7 @@ PjGenerationOptimizationTest >> testIfNotNil [
 			whenNotNil: tempVariable).
 	self
 		assert: expectedAst
-		asStringEquals: 'return (x=$asNil$(y)._foo())==undefined?undefined:x'.
+		asStringEquals: 'return (x=$asNil$(y)._foo())==null?null:x'.
 
 	expectedAst := PjReturnNode expression: (
 		PjIfNotNilNode 
@@ -94,14 +94,14 @@ PjGenerationOptimizationTest >> testIfNotNil [
 			whenNotNil: (self apply: tempVariable selector: #foo nonNil: true)).
 	self
 		assert: expectedAst
-		asStringEquals: 'return (x=$asNil$(y)._foo())==undefined?undefined:x._foo()'.
+		asStringEquals: 'return (x=$asNil$(y)._foo())==null?null:x._foo()'.
 
 	expectedAst := PjIfNotNilNode 
 			test: (PjAssignNode
 				target: tempVariable
 				expression: (self apply: y selector: #foo nonNil: false))
 			whenNotNil: tempVariable.
-	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())!=undefined){x}'.
+	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())!=null){x}'.
 
 	expectedAst := PjIfNotNilNode 
 			test: (PjAssignNode
@@ -110,14 +110,14 @@ PjGenerationOptimizationTest >> testIfNotNil [
 			whenNotNil: (self apply: tempVariable selector: #foo nonNil: true).
 	self
 		assert: expectedAst
-		asStringEquals: 'if((x=$asNil$(y)._foo())!=undefined){x._foo()}'.
+		asStringEquals: 'if((x=$asNil$(y)._foo())!=null){x._foo()}'.
 
 	expectedAst := PjIfNotNilNode
 		test: y
 		whenNotNil: returnOne. 
 	self
 		assert: expectedAst
-		asStringEquals: 'if(y!=undefined){return 1}'.
+		asStringEquals: 'if(y!=null){return 1}'.
 ]
 
 { #category : #testing }
@@ -134,7 +134,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 				expression: (self apply: y selector: #foo)) 
 			whenNotNil: tempVariable
 			whenNil: one).
-	self assert: expectedAst asStringEquals: 'return (x=$asNil$(y)._foo())==undefined?1:x'.
+	self assert: expectedAst asStringEquals: 'return (x=$asNil$(y)._foo())==null?1:x'.
 
 	expectedAst := PjReturnNode expression: (
 		PjIfNilIfNotNilNode 
@@ -143,7 +143,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 				expression: (self apply: y selector: #foo))
 			whenNotNil: (self apply: tempVariable selector: #foo nonNil: true)
 			whenNil: one).
-	self assert: expectedAst asStringEquals: 'return (x=$asNil$(y)._foo())==undefined?1:x._foo()'.
+	self assert: expectedAst asStringEquals: 'return (x=$asNil$(y)._foo())==null?1:x._foo()'.
 
 	expectedAst := PjIfNilIfNotNilNode 
 			test: (PjAssignNode
@@ -151,7 +151,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 				expression: (self apply: y selector: #foo))
 			whenNotNil: tempVariable
 			whenNil: one .
-	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1;}else{x}'.
+	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==null){1;}else{x}'.
 
 	expectedAst := PjIfNilIfNotNilNode 
 			test: (PjAssignNode
@@ -159,7 +159,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 				expression: (self apply: y selector: #foo))
 			whenNotNil: (self apply: tempVariable selector: #foo nonNil: true)
 			whenNil: one.
-	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==undefined){1;}else{x._foo()}'
+	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==null){1;}else{x._foo()}'
 ]
 
 { #category : #testing }

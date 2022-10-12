@@ -35,23 +35,17 @@ Learn more about PharoJS:
 
 To install PharoJS, perform the code appropriate to your Pharo version in a playground:
 
-### Pharo 9
 
 ```smalltalk
 Metacello new
   baseline: 'PharoJS';
-  repository: 'github://PharoJS/PharoJS:pharo9';
+  repository: 'github://PharoJS/PharoJS:<pharoVersion>';
   load
 ```
-
-### Pharo 7 and Pharo 8
-
-```smalltalk
-Metacello new
-  baseline: 'PharoJS';
-  repository: 'github://PharoJS/PharoJS:pharo8';
-  load
-```
+Where `<pharoVersion>` is one of the following: 
+- `pharo10`: latest, 
+- `pharo9`: stable, 
+- `pharo8`: obsolete, should works also with Pharo 7.
 
 ## Contributing
 

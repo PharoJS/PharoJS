@@ -33,7 +33,7 @@ PhxJsonReader class >> readFromString: aString [
 
 { #category : #'instance creation' }
 PhxJsonReader >> addKnownObject: anObject [
-	knownObjects add: anObject
+	^knownObjects add: anObject
 ]
 
 { #category : #'instance creation' }

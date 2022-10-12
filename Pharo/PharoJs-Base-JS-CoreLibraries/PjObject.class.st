@@ -21,7 +21,7 @@ Class {
 
 { #category : #'doesNotUnderstand support' }
 PjObject class >> addDnuSupportFor: selector [
-	<javascript: 'if(Object.prototype[selector] != undefined){return;}
+	<javascript: 'if(Object.prototype.hasOwnProperty(selector)){return;}
 		Object.prototype.selector =  function(){
 			throw "Does not understand message " + selector;};
 	'>
