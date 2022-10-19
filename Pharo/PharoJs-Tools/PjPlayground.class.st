@@ -153,6 +153,27 @@ PjPlayground >> initTitleWithBridge [
 ]
 
 { #category : #initialization }
+PjPlayground >> initialComment [
+
+	^ String streamContents: [ :str | 
+		  (str << $")
+			  <<
+				  'Connection established with Javascript via PharoJS bridge listening on port ';
+			  print: self bridge port;
+			<< $.;
+			  cr;
+cr;			  <<
+				  'PharoJS playground preset bindings including the bridge and JS globals.';
+			  cr;
+			  << 'You can find them all in the bindings menu above.';
+			  cr;
+			  <<
+				  'You can also find in the pages menu above some PharoJS sample code.';
+			  << $";
+			  cr ]
+]
+
+{ #category : #initialization }
 PjPlayground >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
@@ -192,5 +213,5 @@ PjPlayground >> waitForClientToStart [
 		self displayWaitingForConnectionMessageForDuration:
 			endTime - DateAndTime now.
 		World doOneCycle ].
- 	self contents: '"Connection established with Javascript"'
+	self contents: self initialComment 
 ]
