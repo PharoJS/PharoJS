@@ -192,6 +192,12 @@ PjNumber >> asString [
 	<javascript: 'return this + ""'>
 ]
 
+{ #category : #comparing }
+PjNumber >> between: min and: max [ 
+
+	^ self >= min and: [ self <= max ]
+]
+
 { #category : #'bit manipulation' }
 PjNumber >> bitAnd: arg [ 
 	<javascript: 'return this&arg'>
