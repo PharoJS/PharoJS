@@ -33,6 +33,20 @@ PjStringTest >> testIfEmpty [
 ]
 
 { #category : #tests }
+PjStringTest >> testIsAlphanumeric [
+	| digits |
+	digits := Character allByteCharacters select: [: each | each isAlphaNumeric ].
+	self assertBlock: [digits allSatisfy: [: char |char isAlphaNumeric ]].
+]
+
+{ #category : #tests }
+PjStringTest >> testIsDigit [
+	| digits |
+	digits := Character allByteCharacters select: [: each | each isDigit].
+	self assertBlock: [digits allSatisfy: [: char |char isDigit]].
+]
+
+{ #category : #tests }
 PjStringTest >> testIsLetter [
 	| letters nonLetters |
 	letters := Character allByteCharacters select: [: each | each isLetter].
