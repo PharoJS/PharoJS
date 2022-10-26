@@ -10,7 +10,7 @@ Class {
 { #category : #'accessing - defaults' }
 PjNodeBridgeClient >> defaultAppClass [
 
-	^ PjNodeBridgeDefaultApp
+	^ PjMinimalNodeApplication 
 ]
 
 { #category : #actions }

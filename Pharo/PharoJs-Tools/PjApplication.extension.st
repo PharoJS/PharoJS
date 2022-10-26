@@ -22,25 +22,9 @@ PjApplication class >> isAbstract [
 ]
 
 { #category : #'*PharoJs-Tools' }
-PjApplication class >> pharoPlayground [
-	<pharoJsSkip>
-	^ self bridge pharoPlayground
-]
-
-{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playground [
 	<pharoJsSkip>
 	^ self bridge playground
-]
-
-{ #category : #'*PharoJs-Tools' }
-PjApplication class >> playgroundInitialContent [
-	<pharoJsSkip>
-	^	'bridge evalBlock: [ PjLoadForTest fortyTwo ]. " loads the referenced classes and executes the block "', String cr
-		,'bridge evalBlock: [ 42 inspect ].', String cr
-		,'bridge loadClass: PjLoadForTest. " reloads methods "', String cr
-"		,'bridge evalBlock: [ Math sin: 1 ].', String cr
-"
 ]
 
 { #category : #'*PharoJs-Tools' }
@@ -84,4 +68,19 @@ PjApplication class >> subclassResponsibilitySet [
 PjApplication class >> title [
 	<pharoJsSkip>
 	^ self name
+]
+
+{ #category : #'*PharoJs-Tools' }
+PjApplication class >> writePlaygroundContentsOn: str [
+
+	<pharoJsSkip>
+	str
+		<< $"
+		<<
+			'PharoJS playground preset bindings including the bridge and JS globals.';
+		cr;
+		<< 'You can find them all in the bindings menu above.';
+		<< $";
+		cr;
+		cr
 ]

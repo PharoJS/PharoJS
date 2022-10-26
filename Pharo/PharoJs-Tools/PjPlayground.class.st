@@ -53,21 +53,17 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PharoJsPlayground)
 		order: 40;
-		label: 'PharoJs Playground';
+		label: 'PharoJS';
 		icon: (self iconNamed: #smallWindowIcon);
 		with: [ 
-			(aBuilder item: #simple) action: [ self open ].
 			self applicationList do: [ :class | 
 					| n |
 					n := class name.
 					(aBuilder item: n asSymbol)
 						label: n;
 						with: [ 
-							(aBuilder item: (n , ':pharo') asSymbol)
-								label: 'launch on Pharo';
-								action: [ class pharoPlayground ].
 							(aBuilder item: (n , ':js') asSymbol)
-								label: 'launch on remote';
+								label: 'playground';
 								action: [ class playground ].
 							(aBuilder item: (n , ':browse') asSymbol)
 								label: 'export app';
@@ -76,7 +72,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 								label: 'browse';
 								action: [ class browse ] ] ].
 			(aBuilder item: #HelpPharoJs)
-				label: 'PharoJs Help';
+				label: 'PharoJS Help';
 				icon: (self iconNamed: #smallHelp);
 				action: [ HelpBrowser openOn: PharoJsHelp ] ]
 ]
@@ -90,6 +86,7 @@ PjPlayground class >> resetMenuBar [
 
 { #category : #accessing }
 PjPlayground >> addBinding: anAssociation [
+
 	self firstPage addBinding: anAssociation
 ]
 
@@ -153,6 +150,13 @@ PjPlayground >> initTitleWithBridge [
 ]
 
 { #category : #initialization }
+PjPlayground >> initialContents [
+
+	^ String streamContents: [ :str | 
+		  self writePlaygroundContentsOn: str ]
+]
+
+{ #category : #initialization }
 PjPlayground >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
@@ -167,6 +171,7 @@ PjPlayground >> initializeWithBridge: aPjBridge [
 	self initTitleWithBridge.
 	self waitForClientToStart.
 	self initBindings.
+	self contents: self initialContents
 ]
 
 { #category : #accessing }
@@ -192,5 +197,9 @@ PjPlayground >> waitForClientToStart [
 		self displayWaitingForConnectionMessageForDuration:
 			endTime - DateAndTime now.
 		World doOneCycle ].
- 	self contents: '"Connection established with Javascript"'
+]
+
+{ #category : #writing }
+PjPlayground >> writePlaygroundContentsOn: aWriteStream [ 
+	self bridge writePlaygroundContentsOn: aWriteStream 
 ]

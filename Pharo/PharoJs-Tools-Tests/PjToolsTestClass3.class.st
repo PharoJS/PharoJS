@@ -8,6 +8,11 @@ Class {
 	#category : #'PharoJs-Tools-Tests-Data'
 }
 
+{ #category : #settings }
+PjToolsTestClass3 class >> playgroundDoNotList [
+	<pharoJsSkip>
+]
+
 { #category : #'concrete sample methods' }
 PjToolsTestClass3 >> m2 [
 	^ 7

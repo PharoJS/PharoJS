@@ -33,7 +33,7 @@ PjStatistics class >> example2 [
 
 	self statsForAll: { 
 			PjHelloWorldApp.
-			PjMinimalBrowserApplication }
+			PjMinimalWebApplication }
 ]
 
 { #category : #statistics }

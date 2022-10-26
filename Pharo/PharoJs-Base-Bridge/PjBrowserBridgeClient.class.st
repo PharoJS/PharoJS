@@ -52,7 +52,8 @@ PjBrowserBridgeClient class >> safari [
 
 { #category : #'initialization-release' }
 PjBrowserBridgeClient >> defaultAppClass [
-	^PjWebApplication
+
+	^ PjMinimalWebApplication
 ]
 
 { #category : #accessing }

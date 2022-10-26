@@ -49,7 +49,6 @@ Class {
 		'proxies',
 		'blockClosures',
 		'client',
-		'runOnPharo',
 		'shouldStartJsInterpreter',
 		'monitor',
 		'incomingMessageFrames'
@@ -316,7 +315,6 @@ PjBridge >> initialize [
 	super initialize.
 	incomingMessageFrames := OrderedCollection with:
 		                         OrderedCollection new.
-	runOnPharo := false.
 	shouldStartJsInterpreter := true.
 	self server: self serverClass new.
 	self finalizationRegistry add: self executor: (ObjectFinalizer new

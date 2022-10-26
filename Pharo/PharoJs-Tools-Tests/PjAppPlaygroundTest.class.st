@@ -14,7 +14,7 @@ PjAppPlaygroundTest class >> shouldInheritSelectors [
 { #category : #tests }
 PjAppPlaygroundTest >> setUpPlayground [
 
-	playground := PjMinimalApp playground.
+	playground := PjMinimalFileBasedWebApp playground.
 	self waitUntil: [ playground bridge isConnected ]
 ]
 
@@ -22,5 +22,6 @@ PjAppPlaygroundTest >> setUpPlayground [
 PjAppPlaygroundTest >> testVerifyTitle [
 
 	self assert: (playground title includesSubstring: 'PharoJS').
-	self assert: (playground title includesSubstring: 'PjMinimalApp')
+	self assert:
+		(playground title includesSubstring: PjMinimalFileBasedWebApp name)
 ]

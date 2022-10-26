@@ -1,7 +1,7 @@
 Extension { #name : #PjBridgeClient }
 
 { #category : #'*PharoJs-Tools' }
-PjBridgeClient >> playgroundInitialContent [
+PjBridgeClient >> writePlaygroundContentsOn: str [
 
-	^ self appClass playgroundInitialContent
+	^ self appClass writePlaygroundContentsOn: str
 ]

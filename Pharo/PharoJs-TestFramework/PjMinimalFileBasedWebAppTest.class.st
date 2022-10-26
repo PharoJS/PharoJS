@@ -1,5 +1,5 @@
 Class {
-	#name : #PjMinimalAppTest,
+	#name : #PjMinimalFileBasedWebAppTest,
 	#superclass : #PjWebAppTestCase,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
@@ -7,17 +7,17 @@ Class {
 }
 
 { #category : #'suite parameters' }
-PjMinimalAppTest class >> appClass [
-	^PjMinimalApp.
+PjMinimalFileBasedWebAppTest class >> appClass [
+	^PjMinimalFileBasedWebApp.
 ]
 
 { #category : #tests }
-PjMinimalAppTest >> testAppReady [
+PjMinimalFileBasedWebAppTest >> testAppReady [
 	self assert: [1+2] evaluatesTo: 3
 ]
 
 { #category : #tests }
-PjMinimalAppTest >> testResetApp [
+PjMinimalFileBasedWebAppTest >> testResetApp [
 	self evalBlock: [window instVarNamed:#forTest put: 3].
 	self assert: [window instVarNamed:#forTest] evaluatesTo: 3.
 	self resetApp.
