@@ -96,13 +96,15 @@ PjBridgeTestResource >> initialize [
 
 { #category : #accessing }
 PjBridgeTestResource >> initializeWithAppClass: aClass [
+
 	appClass := aClass.
+	appClass resetAppFolder.
 	self bridge: appClass bridge.
 	PjBridge soleBridge: self bridge.
 	self bridge shouldStartJsInterpreter: false.
 	self setUpClient.
-	DefaultExecutionEnvironment
-		beActiveDuring: [ self bridge startWithoutWaitingForClient ]
+	DefaultExecutionEnvironment beActiveDuring: [ 
+		self bridge startWithoutWaitingForClient ]
 ]
 
 { #category : #running }

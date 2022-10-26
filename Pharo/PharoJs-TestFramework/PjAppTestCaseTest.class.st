@@ -33,7 +33,7 @@ PjAppTestCaseTest >> tearDown [
 PjAppTestCaseTest >> testDebug [
 	| suite |
 	3 timesRepeat: [
-		suite := PjMinimalAppTest buildSuite.
+		suite := PjMinimalFileBasedWebAppTest buildSuite.
 		suite debug.
 		suite tests do: [: test | self assert: test bridgeResourceClass == PjDebugBridgeTestResource].
 		self assert: PjDebugBridgeTestResource current bridge isNil.
@@ -78,7 +78,7 @@ PjAppTestCaseTest >> testExportedCodeOfAppRunningPharoSideIsMinimal [
 PjAppTestCaseTest >> testPlainRun [
 	| result suite |
 	3 timesRepeat: [
-		suite := PjMinimalAppTest buildSuite.
+		suite := PjMinimalFileBasedWebAppTest buildSuite.
 		result := suite run.
 		self assert: result hasPassed.
 		suite tests do: [: test | self assert: test bridgeResourceClass == PjBridgeTestResource].
