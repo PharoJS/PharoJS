@@ -22,5 +22,6 @@ PjAppPlaygroundTest >> setUpPlayground [
 PjAppPlaygroundTest >> testVerifyTitle [
 
 	self assert: (playground title includesSubstring: 'PharoJS').
-	self assert: (playground title includesSubstring: 'PjMinimalApp')
+	self assert:
+		(playground title includesSubstring: PjMinimalFileBasedWebApp name)
 ]
