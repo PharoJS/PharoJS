@@ -53,7 +53,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PharoJsPlayground)
 		order: 40;
-		label: 'PharoJs Playground';
+		label: 'PharoJS Playground';
 		icon: (self iconNamed: #smallWindowIcon);
 		with: [ 
 			self applicationList do: [ :class | 
@@ -75,7 +75,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 								label: 'browse';
 								action: [ class browse ] ] ].
 			(aBuilder item: #HelpPharoJs)
-				label: 'PharoJs Help';
+				label: 'PharoJS Help';
 				icon: (self iconNamed: #smallHelp);
 				action: [ HelpBrowser openOn: PharoJsHelp ] ]
 ]
