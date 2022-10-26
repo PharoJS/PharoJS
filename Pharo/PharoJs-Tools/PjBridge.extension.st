@@ -16,12 +16,6 @@ PjBridge >> playground [
 ]
 
 { #category : #'*PharoJs-Tools' }
-PjBridge >> playgroundInitialContent [
-
-	^ self client playgroundInitialContent
-]
-
-{ #category : #'*PharoJs-Tools' }
 PjBridge >> playgroundWithoutLaunch [
 
 	self shouldStartJsInterpreter: false.
@@ -34,4 +28,19 @@ PjBridge >> playgroundWithoutLaunchOnUrl: aString [
 	self serverUrl: aString.
 	self shouldStartJsInterpreter: false.
 	^ self playground
+]
+
+{ #category : #'*PharoJs-Tools' }
+PjBridge >> writePlaygroundContentsOn: str [
+
+	str
+		<< $";
+		<<
+			'Connection established with Javascript via PharoJS bridge listening on port ';
+		print: self port;
+		<< $.;
+		<< $";
+		cr;
+		cr.
+	self client writePlaygroundContentsOn: str
 ]

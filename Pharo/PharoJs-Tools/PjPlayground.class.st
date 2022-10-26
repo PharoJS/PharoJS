@@ -56,7 +56,6 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 		label: 'PharoJs Playground';
 		icon: (self iconNamed: #smallWindowIcon);
 		with: [ 
-			(aBuilder item: #simple) action: [ self open ].
 			self applicationList do: [ :class | 
 					| n |
 					n := class name.
@@ -90,6 +89,7 @@ PjPlayground class >> resetMenuBar [
 
 { #category : #accessing }
 PjPlayground >> addBinding: anAssociation [
+
 	self firstPage addBinding: anAssociation
 ]
 
@@ -153,24 +153,10 @@ PjPlayground >> initTitleWithBridge [
 ]
 
 { #category : #initialization }
-PjPlayground >> initialComment [
+PjPlayground >> initialContents [
 
 	^ String streamContents: [ :str | 
-		  (str << $")
-			  <<
-				  'Connection established with Javascript via PharoJS bridge listening on port ';
-			  print: self bridge port;
-			<< $.;
-			  cr;
-cr;			  <<
-				  'PharoJS playground preset bindings including the bridge and JS globals.';
-			  cr;
-			  << 'You can find them all in the bindings menu above.';
-			  cr;
-			  <<
-				  'You can also find in the pages menu above some PharoJS sample code.';
-			  << $";
-			  cr ]
+		  self writePlaygroundContentsOn: str ]
 ]
 
 { #category : #initialization }
@@ -188,6 +174,7 @@ PjPlayground >> initializeWithBridge: aPjBridge [
 	self initTitleWithBridge.
 	self waitForClientToStart.
 	self initBindings.
+	self contents: self initialContents
 ]
 
 { #category : #accessing }
@@ -213,5 +200,9 @@ PjPlayground >> waitForClientToStart [
 		self displayWaitingForConnectionMessageForDuration:
 			endTime - DateAndTime now.
 		World doOneCycle ].
-	self contents: self initialComment 
+]
+
+{ #category : #writing }
+PjPlayground >> writePlaygroundContentsOn: aWriteStream [ 
+	self bridge writePlaygroundContentsOn: aWriteStream 
 ]
