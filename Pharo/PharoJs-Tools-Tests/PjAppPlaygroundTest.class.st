@@ -14,7 +14,7 @@ PjAppPlaygroundTest class >> shouldInheritSelectors [
 { #category : #tests }
 PjAppPlaygroundTest >> setUpPlayground [
 
-	playground := PjMinimalApp playground.
+	playground := PjMinimalFileBasedWebApp playground.
 	self waitUntil: [ playground bridge isConnected ]
 ]
 

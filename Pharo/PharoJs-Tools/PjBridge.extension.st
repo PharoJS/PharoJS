@@ -1,14 +1,6 @@
 Extension { #name : #PjBridge }
 
 { #category : #'*PharoJs-Tools' }
-PjBridge >> pharoPlayground [
-
-	runOnPharo := true.
-	PjPlayground openFor: self.
-	^ self server
-]
-
-{ #category : #'*PharoJs-Tools' }
 PjBridge >> playground [
 
 	^ PjPlayground openFor: self

@@ -53,7 +53,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PharoJsPlayground)
 		order: 40;
-		label: 'PharoJS Playground';
+		label: 'PharoJS';
 		icon: (self iconNamed: #smallWindowIcon);
 		with: [ 
 			self applicationList do: [ :class | 
@@ -62,11 +62,8 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 					(aBuilder item: n asSymbol)
 						label: n;
 						with: [ 
-							(aBuilder item: (n , ':pharo') asSymbol)
-								label: 'launch on Pharo';
-								action: [ class pharoPlayground ].
 							(aBuilder item: (n , ':js') asSymbol)
-								label: 'launch on remote';
+								label: 'playground';
 								action: [ class playground ].
 							(aBuilder item: (n , ':browse') asSymbol)
 								label: 'export app';

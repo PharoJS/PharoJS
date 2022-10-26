@@ -12,7 +12,7 @@ Class {
 { #category : #'accessing - defaults' }
 PjFileBasedBrowserBridgeClient >> defaultAppClass [
 
-	^ PjFileBasedWebApp
+	^ PjMinimalFileBasedWebApp
 ]
 
 { #category : #actions }

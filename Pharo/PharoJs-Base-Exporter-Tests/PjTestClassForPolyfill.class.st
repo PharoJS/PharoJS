@@ -12,6 +12,13 @@ PjTestClassForPolyfill class >> pharoJsSelectorPrefix [
 	^ 'alt_'
 ]
 
+{ #category : #settings }
+PjTestClassForPolyfill class >> playgroundDoNotList [
+
+	<pharoJsSkip>
+	
+]
+
 { #category : #any }
 PjTestClassForPolyfill >> m [
 	| bar ws |

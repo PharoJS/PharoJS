@@ -1,7 +1,7 @@
-Extension { #name : #PjMinimalBrowserApplication }
+Extension { #name : #PjMinimalFileBasedWebApp }
 
 { #category : #'*PharoJs-Tools' }
-PjMinimalBrowserApplication class >> writePlaygroundContentsOn: str [
+PjMinimalFileBasedWebApp class >> writePlaygroundContentsOn: str [
 
 	<pharoJsSkip>
 	super writePlaygroundContentsOn: str.

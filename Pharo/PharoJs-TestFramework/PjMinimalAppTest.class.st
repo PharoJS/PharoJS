@@ -8,7 +8,7 @@ Class {
 
 { #category : #'suite parameters' }
 PjMinimalAppTest class >> appClass [
-	^PjMinimalApp.
+	^PjMinimalFileBasedWebApp.
 ]
 
 { #category : #tests }

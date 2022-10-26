@@ -11,7 +11,7 @@ Class {
 
 { #category : #'suite parameters' }
 PjDomControllerPharoTest class >> appClass [
-	^PjMinimalApp
+	^PjMinimalFileBasedWebApp
 ]
 
 { #category : #accessing }

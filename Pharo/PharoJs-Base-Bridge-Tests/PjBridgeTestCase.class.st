@@ -28,7 +28,7 @@ Class {
 { #category : #'suite parameters' }
 PjBridgeTestCase class >> appClass [
 
-	^ PjMinimalApp
+	^ PjMinimalFileBasedWebApp
 ]
 
 { #category : #'test support' }

@@ -22,12 +22,6 @@ PjApplication class >> isAbstract [
 ]
 
 { #category : #'*PharoJs-Tools' }
-PjApplication class >> pharoPlayground [
-	<pharoJsSkip>
-	^ self bridge pharoPlayground
-]
-
-{ #category : #'*PharoJs-Tools' }
 PjApplication class >> playground [
 	<pharoJsSkip>
 	^ self bridge playground

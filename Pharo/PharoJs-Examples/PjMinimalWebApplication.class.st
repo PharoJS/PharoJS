@@ -4,7 +4,7 @@ I am a minimal application that runs in a web browser.
 I demonstrate overriding the default html and css, and log to the console.
 "
 Class {
-	#name : #PjMinimalBrowserApplication,
+	#name : #PjMinimalWebApplication,
 	#superclass : #PjWebApplication,
 	#traits : 'PjTMinimalApplication',
 	#classTraits : 'PjTMinimalApplication classTrait',
@@ -12,17 +12,17 @@ Class {
 }
 
 { #category : #'pharojs support' }
-PjMinimalBrowserApplication class >> css [
+PjMinimalWebApplication class >> css [
 	^ 'body{color:blue}'
 ]
 
 { #category : #'event handling' }
-PjMinimalBrowserApplication class >> log: message [
+PjMinimalWebApplication class >> log: message [
 	console log: message
 ]
 
 { #category : #'event handling' }
-PjMinimalBrowserApplication class >> start [
+PjMinimalWebApplication class >> start [
 	super start.
 	console log: 'this is a minimal Browser application'
 ]
