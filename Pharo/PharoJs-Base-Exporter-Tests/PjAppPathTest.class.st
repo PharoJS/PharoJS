@@ -10,7 +10,9 @@ Class {
 { #category : #running }
 PjAppPathTest >> resetAppClass [
 	appClass appHtmlSubFolder: nil.
-	appClass appJsSubFolder: nil
+	appClass appJsSubFolder: nil.
+	appClass defaultAppFolderPath deleteIfAbsent: [ ]
+
 ]
 
 { #category : #running }
@@ -25,6 +27,11 @@ PjAppPathTest >> setUp [
 PjAppPathTest >> tearDown [
 	super tearDown.
 	self resetAppClass
+]
+
+{ #category : #running }
+PjAppPathTest >> testDefaultAppFolderCreatedIfMissing [
+	self assert: appClass defaultAppFolder exists
 ]
 
 { #category : #running }
