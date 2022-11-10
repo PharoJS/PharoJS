@@ -347,7 +347,7 @@ PjCore class >> metaclassOf_jsGenerator: transpiler [
 { #category : #'nil support' }
 PjCore class >> nilIfUndefined [
 	"In case PjUndefinedObject is not created yet, use a placeholder object, just for declaring."
-	<javascript: 'window.PjUndefinedObject |= {};
+	<javascript: 'global.PjUndefinedObject |= {};
 	return function(arg){if(arg == undefined){
 		return PjUndefinedObject.uniqueInstance;
 	}
