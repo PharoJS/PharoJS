@@ -125,12 +125,18 @@ PjBridgeClient >> pharoJsSelectorPrefix [
 { #category : #initialization }
 PjBridgeClient >> reset [
 
+	self resetProxiesImmediately.
 	self initializeWithAppClass: self appClass.
 	self initializeWithBridge:  self bridge.
 	self clientId: nil.
 	"Ensure transpiler is reset correctly.
 	Transpiler is driven by exporter"
 	String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ]
+]
+
+{ #category : #initialization }
+PjBridgeClient >> resetProxiesImmediately [
+	self bridge resetProxiesImmediately
 ]
 
 { #category : #accessing }

@@ -2,7 +2,7 @@
 Utility trait to control the webbrowser
 "
 Trait {
-	#name : #PjTBrowserController,
+	#name : #PjTWebBridgeClient,
 	#instVars : [
 		'openBrowserInBackground'
 	],
@@ -10,19 +10,25 @@ Trait {
 }
 
 { #category : #actions }
-PjTBrowserController >> openBrowserInBackground [
+PjTWebBridgeClient >> openBrowserInBackground [
 
 	^ openBrowserInBackground ifNil: [ false ]
 ]
 
 { #category : #actions }
-PjTBrowserController >> openBrowserInBackground: aBoolean [
+PjTWebBridgeClient >> openBrowserInBackground: aBoolean [
 
 	openBrowserInBackground := aBoolean
 ]
 
+{ #category : #initialization }
+PjTWebBridgeClient >> reset [
+	self sendMessage: PjMessageReload new.
+	super reset
+]
+
 { #category : #actions }
-PjTBrowserController >> startJsInterpreter [
+PjTWebBridgeClient >> startJsInterpreter [
 
 	WebBrowser
 		openOn: self urlString
@@ -30,7 +36,7 @@ PjTBrowserController >> startJsInterpreter [
 ]
 
 { #category : #accessing }
-PjTBrowserController >> urlString [
+PjTWebBridgeClient >> urlString [
 
 	self explicitRequirement
 ]

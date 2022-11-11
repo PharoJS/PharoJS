@@ -4,8 +4,8 @@ I represent a web bridge client i.e. an interactive interpreter is launched upon
 Class {
 	#name : #PjBrowserBridgeClient,
 	#superclass : #PjBridgeClient,
-	#traits : 'PjTBrowserController',
-	#classTraits : 'PjTBrowserController classTrait',
+	#traits : 'PjTWebBridgeClient',
+	#classTraits : 'PjTWebBridgeClient classTrait',
 	#classInstVars : [
 		'defaultWebBrowserName'
 	],

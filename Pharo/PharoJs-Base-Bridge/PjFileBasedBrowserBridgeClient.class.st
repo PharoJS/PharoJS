@@ -4,8 +4,8 @@ I am for browsers that have more resources than the CSS and HTML files that need
 Class {
 	#name : #PjFileBasedBrowserBridgeClient,
 	#superclass : #PjFileBasedBridgeClient,
-	#traits : 'PjTBrowserController',
-	#classTraits : 'PjTBrowserController classTrait',
+	#traits : 'PjTWebBridgeClient',
+	#classTraits : 'PjTWebBridgeClient classTrait',
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
