@@ -24,7 +24,13 @@ PjTWebBridgeClient >> openBrowserInBackground: aBoolean [
 { #category : #initialization }
 PjTWebBridgeClient >> reset [
 	self sendMessage: PjMessageReload new.
+	self resetProxiesImmediately.
 	super reset
+]
+
+{ #category : #actions }
+PjTWebBridgeClient >> sendMessage: aMessage [
+	self bridge sendMessage: aMessage
 ]
 
 { #category : #actions }

@@ -16,6 +16,7 @@ PjNodeBridgeClient >> defaultAppClass [
 { #category : #initialization }
 PjNodeBridgeClient >> reset [ 
 	self stop.
+	self resetProxiesImmediately.
 	super reset.
 	self startJsInterpreter
 ]
