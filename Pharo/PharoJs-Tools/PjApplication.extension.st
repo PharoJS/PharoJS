@@ -28,29 +28,6 @@ PjApplication class >> playground [
 ]
 
 { #category : #'*PharoJs-Tools' }
-PjApplication class >> playgroundLoadClassesContent [
-	<pharoJsSkip>
-	| classes |
-	classes := (SystemNavigation default allClassesInPackageNamed: self category) reject: #isTestCase.
-	^ '" inspect the following to examine the running app "',String cr
-		,'bridge evalBlock: [ ',self name,' currentInstance ].',String cr
-		,'" do the following to re-load classes if you edit them "',String cr
-		,(String cr join: (classes collect: [: class | 'bridge loadClass: ',class name,'.']))
-]
-
-{ #category : #'*PharoJs-Tools' }
-PjApplication class >> playgroundWithoutLaunch [
-	<pharoJsSkip>
-	self bridge playgroundWithoutLaunch
-]
-
-{ #category : #'*PharoJs-Tools' }
-PjApplication class >> playgroundWithoutLaunchOnUrl: aString [
-	<pharoJsSkip>
-	^ self bridge playgroundWithoutLaunchOnUrl: aString
-]
-
-{ #category : #'*PharoJs-Tools' }
 PjApplication class >> subclassResponsibilitySet [
 	| set |
 	set := self == PjApplication ifTrue: [ Set new ] ifFalse: [ self superclass subclassResponsibilitySet ].

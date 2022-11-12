@@ -8,21 +8,6 @@ PjBridge >> playground [
 ]
 
 { #category : #'*PharoJs-Tools' }
-PjBridge >> playgroundWithoutLaunch [
-
-	self shouldStartJsInterpreter: false.
-	^ self playground
-]
-
-{ #category : #'*PharoJs-Tools' }
-PjBridge >> playgroundWithoutLaunchOnUrl: aString [
-
-	self serverUrl: aString.
-	self shouldStartJsInterpreter: false.
-	^ self playground
-]
-
-{ #category : #'*PharoJs-Tools' }
 PjBridge >> writePlaygroundContentsOn: str [
 
 	str

@@ -1,21 +1,21 @@
 # PharoJS: Develop in Pharo, Run on Javascript
 
 <p align="center">
-    <a href="https://github.com/PharoJS/jsource/issues" alt="contributions welcome">
-        <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" /></a>
     <a href="https://lbesson.mit-license.org/" alt="MIT license">
         <img src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>    
     <a href="https://pharo.org/">
-        <img src="https://img.shields.io/badge/Pharo%20Smalltalk-9.0-ff69b4.svg"/></a>
+        <img src="https://img.shields.io/badge/Pharo%20Smalltalk-10-ff69b4.svg"/></a>
     <a href="https://github.com/PharoJS?tab=followers" alt="GitHub followers">
         <img src="https://img.shields.io/github/followers/PharoJS.svg" /></a>
-    <a><img src="https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS" /></a>
+    <a href="https://github.com/PharoJS/PharoJS/graphs/commit-activity"><img src="https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS" /></a>
     <a href="https://join.slack.com/t/pharojs/shared_invite/zt-os5ppigw-YnDyAn1dR0deyeOHesZlWg" rel="nofollow">
 	<img src="https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack" alt="Join our Slack!" style="max-width:100%;"></a>
     <a href="https://GitHub.com/PharoJS/PharoJS/stargazers/" alt="GitHub stars">
         <img src="https://img.shields.io/github/stars/PharoJS/PharoJS.svg" /></a>
 	<a href="https://twitter.com/PharoJS" alt="Twitter">
         <img src="https://img.shields.io/twitter/follow/PharoJS.svg?style=flat&label=@PharoJS&logo=twitter&color=blue" /></a>
+    <a href="https://github.com/PharoJS/jsource/issues" alt="contributions welcome">
+        <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" /></a>
 </p>
 
 <!-- [![Build Status](https://dev.azure.com/nushell/nushell/_apis/build/status/nushell.nushell?branchName=main)](https://dev.azure.com/nushell/nushell/_build/latest?definitionId=2&branchName=main)

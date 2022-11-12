@@ -15,7 +15,7 @@ PjMaterializer class >> materializeFrom: anObject [
 { #category : #materializing }
 PjMaterializer class >> materializeFromArray: array [
 	| class |
-	class := window instVarNamed: array first.
+	class := global instVarNamed: array first.
 	^class newFromMaterialized: array second
 ]
 
