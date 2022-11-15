@@ -133,6 +133,11 @@ PjBridgeClient >> reset [
 	String streamContents: [ :aStream | self exporter writeJsCodeOn: aStream ]
 ]
 
+{ #category : #initialization }
+PjBridgeClient >> resetProxiesImmediately [
+	self bridge resetProxiesImmediately
+]
+
 { #category : #accessing }
 PjBridgeClient >> server [
 

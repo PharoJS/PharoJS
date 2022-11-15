@@ -322,7 +322,7 @@ PjObject >> removeKey: key [
 
 { #category : #'process operations' }
 PjObject >> setTimeout: aBlock afterMilliseconds: anInteger [
-	<javascript: 'window.setTimeout(aBlock, anInteger)'>
+	<javascript: 'global.setTimeout(aBlock, anInteger)'>
 	super setTimeout: aBlock afterMilliseconds: anInteger
 ]
 

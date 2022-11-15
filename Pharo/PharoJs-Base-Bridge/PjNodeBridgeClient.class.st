@@ -13,6 +13,14 @@ PjNodeBridgeClient >> defaultAppClass [
 	^ PjMinimalNodeApplication 
 ]
 
+{ #category : #initialization }
+PjNodeBridgeClient >> reset [ 
+	self stop.
+	self resetProxiesImmediately.
+	super reset.
+	self startJsInterpreter
+]
+
 { #category : #actions }
 PjNodeBridgeClient >> runNodeOn: aFileName inFolder: aFolder [
 

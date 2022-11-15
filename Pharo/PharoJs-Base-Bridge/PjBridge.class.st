@@ -436,15 +436,13 @@ PjBridge >> resetClient [
 
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
-	self sendMessage: PjMessageReload new.
-	self resetProxiesImmediately.
 	self client reset.
-	"self
+	self
 		when: [ self webSocket ~~ oldWebSocket ]
 		do: [ oldWebSocket isConnected
 				ifTrue: [ oldWebSocket close ] ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
-		timeOutDuration: self client startTimeout."
+		timeOutDuration: self client startTimeout.
 	self waitForClientToStart
 ]
 

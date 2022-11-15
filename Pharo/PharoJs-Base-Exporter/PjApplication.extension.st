@@ -54,9 +54,12 @@ PjApplication class >> appJsSubFolder [
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjApplication class >> defaultAppFolder [
+
 	<pharoJsSkip>
-	
-	^self defaultAppFolderParent / self defaultAppFolderName
+	| defaultAppFolder |
+	defaultAppFolder := self defaultAppFolderPath.
+	defaultAppFolder ensureCreateDirectory.
+	^ defaultAppFolder
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
@@ -78,6 +81,13 @@ PjApplication class >> defaultAppFolderParentName [
 	<pharoJsSkip>
 	
 	^'HTML'
+]
+
+{ #category : #'*PharoJs-Base-Exporter-App' }
+PjApplication class >> defaultAppFolderPath [
+	<pharoJsSkip>
+
+	^ self defaultAppFolderParent / self defaultAppFolderName
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
