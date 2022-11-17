@@ -92,7 +92,7 @@ PjTranspiler >> convertAllClasses: classes [
 	classesInWriteOrder := self orderForWriting: actualClassesToConvert.
 	classesInWriteOrder
 		do: [ :aClass | 
-			self writeClassInheritanceLinksOf: aClass.
+			self writeClassDefinitionOf: aClass.
 			self writeMethodsOf: aClass ].
 	self writeDnuList.
 	self writeClassInitializeOfAll: classesInWriteOrder
@@ -132,7 +132,7 @@ PjTranspiler >> convertBlock: aBlock [
 PjTranspiler >> convertClass: aClass [ 
 	| actualClassToConvert | 
 	actualClassToConvert := aClass classToUseForJsConversion.
-	self writeClassInheritanceLinksOf: actualClassToConvert.
+	self writeClassDefinitionOf: actualClassToConvert.
 	self writeMethodsOf: actualClassToConvert.
 	self writeClassInitializeOf: actualClassToConvert.
 ]
@@ -469,21 +469,16 @@ PjTranspiler >> writeAliases: aRBMethodNode [
 PjTranspiler >> writeClassDefinitionOf: aClass [
 	aClass needsClassDefinition ifFalse: [ ^self ].
 	self 
-		nextPutAll: 'function ';
-		writeNameForClass: aClass;
-		nextPutAll: '(){};';
+		nextPutAll: 'class ';
+		writeNameForClass: aClass.
+	aClass needsInheritanceLink ifTrue: [
+		self
+			nextPutAll: ' extends ';
+			writeNameForClass: aClass superclass
+	].
+	self
+		nextPutAll: '{};';
 		cr
-]
-
-{ #category : #transpiling }
-PjTranspiler >> writeClassInheritanceLinksOf: aClass [
-	((aClass hasClassMethod: #javascriptSkipSubclassing) and: [ aClass javascriptSkipSubclassing ]) ifTrue: [ ^ self ].
-	self 
-		writeNameForClass: aClass superclass;
-		nextPutAll: '.', self pharoJsSelectorPrefix, 'subclass_("';
-		writeNameForClass: aClass;
-		nextPutAll: '");' ;
-		cr.
 ]
 
 { #category : #transpiling }

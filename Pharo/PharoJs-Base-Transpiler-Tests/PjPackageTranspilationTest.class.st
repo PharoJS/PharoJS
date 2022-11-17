@@ -37,7 +37,7 @@ PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
 
 { #category : #checking }
 PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
-	self assert: firstClass inCodeWithPrefix: '._subclass_("' before: lastClass.
+	self assert: firstClass inCodeWithPrefix: 'class ' before: lastClass.
 ]
 
 { #category : #testing }
@@ -73,7 +73,7 @@ PjPackageTranspilationTest >> testDuplicateClasses [
 	3 timesRepeat: [ classesToConvert add: PjClassAForPackageTranspilationTest].
 	self generateJsCodeForClasses: classesToConvert.
 	className := PjClassAForPackageTranspilationTest name.
-	classDefintionString := 'subclass_("', className,'")'.
+	classDefintionString := 'class ', className,' extends'.
 	classInitializationString := className, '._initialize();'.
 	{classDefintionString. classInitializationString} do: [:each |
 		self assert: (jsCode allRangesOfSubstring: each) size equals: 1] .

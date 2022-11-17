@@ -10,7 +10,6 @@ Class {
 		'convertedClasses',
 		'alreadyDefinedClasses',
 		'alreadyInitializedClasses',
-		'alreadyInheritanceLinkedClasses',
 		'alreadyVariablesDeclaredClasses',
 		'globalPools'
 	],
@@ -163,7 +162,6 @@ PjDependentTranspiler >> initialize [
 	convertedClasses := Set new.
 	alreadyDefinedClasses := Set new.
 	alreadyInitializedClasses := Set new.
-	alreadyInheritanceLinkedClasses := Set new.
 	alreadyVariablesDeclaredClasses := Set new.
 	globalPools := Set new.
 ]
@@ -233,13 +231,6 @@ PjDependentTranspiler >> writeClassDefinitionOf: aClass [
 
 	alreadyDefinedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassDefinitionOf: aClass
-]
-
-{ #category : #transpiling }
-PjDependentTranspiler >> writeClassInheritanceLinksOf: aClass [
-
-	alreadyInheritanceLinkedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
-	super writeClassInheritanceLinksOf: aClass
 ]
 
 { #category : #transpiling }

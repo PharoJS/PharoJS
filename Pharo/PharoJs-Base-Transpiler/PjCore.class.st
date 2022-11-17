@@ -93,9 +93,6 @@ PjCore class >> initNilInJs [
 
 { #category : #'reflection support' }
 PjCore class >> initObject [
-	(Object js_at: #__proto__) 
-		js_at: self subclassSelector
-		put: self makeSubclass.
 	((self js_at: #theClassClass) js_at: #prototype) 
 		js_at: #__proto__
 		put: (BlockClosure js_at: #prototype).
@@ -293,29 +290,6 @@ PjCore class >> makeSmalltalkSelector: aSelector [
 	^ result
 ]
 
-{ #category : #'reflection support' }
-PjCore class >> makeSubclass [
-	<javascript: 'var pjCore=this;
-return function(subclassName){
-	var subclass = (function(){
-		if(global[subclassName]) 
-			return global[subclassName];
-		var newClass = (new Function("return function "+subclassName+"(){}"))();
-		// newClass.name = subclassName;
-		return global[subclassName] = newClass;
-	})();
-	if(subclass.__proto__.__proto__ == this.__proto__){return;}
-	subclass.subclasses = [];
-	if(subclass == this) {
-		this.__proto__ = {__proto__ : pjCore.theClassClass.prototype};
-	}else{
-		subclass.__proto__ = {__proto__ : this.__proto__};
-		subclass.prototype.__proto__ = this.prototype;
-		this.subclasses.push(subclass);	
-	}
-}	'>
-]
-
 { #category : #'doesNotUnderstand support' }
 PjCore class >> messageClass: anObject [
 	messageClass := anObject
@@ -416,17 +390,6 @@ PjCore class >> selector_arguments_jsGenerator: transpiler [
 			arguments: args,
 			', transpiler pharoJsSelectorPrefix, 'arguments: function(){return this.arguments}
 		}'
-]
-
-{ #category : #'reflection support' }
-PjCore class >> subclassSelector [
-	<jsGenerator: #subclassSelector_jsGenerator:>
-]
-
-{ #category : #'reflection support' }
-PjCore class >> subclassSelector_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^'return ', (transpiler pharoJsSelectorPrefix, #subclass_) asJSON
 ]
 
 { #category : #'throw support' }

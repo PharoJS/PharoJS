@@ -48,6 +48,12 @@ Class >> needsClassDefinition [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
+Class >> needsInheritanceLink [
+	(self hasClassMethod: #javascriptSkipSubclassing) ifFalse: [ ^true ].
+	^self javascriptSkipSubclassing not
+]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
 Class >> needsInitialization [
 	^(self hasClassMethod: #initialize) or: [ self hasClassMethod: #javascriptInitialize ]
 ]
