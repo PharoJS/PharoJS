@@ -85,6 +85,11 @@ PjTranspiler >> classVariablesHolderName [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> classVarsPoolName [
+	^'cp$'
+]
+
+{ #category : #transpiling }
 PjTranspiler >> convertAllClasses: classes [
 
 	| actualClassesToConvert classesInWriteOrder |
@@ -380,21 +385,14 @@ PjTranspiler >> poolFor: myClass [
 
 { #category : #transpiling }
 PjTranspiler >> poolReference: aClass for: myClass [
+
 	| index pool |
-	myClass ifNil: [
-		index := 0
-	] ifNotNil: [
+	myClass ifNil: [ index := 0 ] ifNotNil: [ 
 		pool := self poolFor: myClass.
-		(pool includes: aClass) ifFalse: [
-			pool add: aClass
-		].
-		index := pool indexOf: aClass.
-	].
-	^ index < 2 ifTrue: [
-			'cp$'
-		] ifFalse: [
-			'$',aClass name
-		]
+		(pool includes: aClass) ifFalse: [ pool add: aClass ].
+		index := pool indexOf: aClass ].
+	index < 2 ifTrue: [ ^ 'this.', self classVarsPoolName ].
+	^ aClass nameToUseForJsConversion
 ]
 
 { #category : #conversions }
@@ -569,21 +567,22 @@ PjTranspiler >> writeClassVarNamesOf: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeClassVarPoolName [
-	self nextPutAll: 'classVars'
-]
-
-{ #category : #transpiling }
 PjTranspiler >> writeClassVariableDeclarationsOf: aClass [
 
 	self
 		nextPutAll: 'static';
 		space;
-		writeClassVarPoolName;
+		writeClassVarsPoolName;
 		nextPutAll: '={';
 		writeClassVarNamesOf: aClass;
 		nextPut: $}. 
 
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeClassVarsPoolName [
+
+	self nextPutAll: self classVarsPoolName
 ]
 
 { #category : #transpiling }

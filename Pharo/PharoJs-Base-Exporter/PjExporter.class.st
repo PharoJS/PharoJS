@@ -210,6 +210,12 @@ PjExporter >> nonBootstrapClasses [
 			actualBootstrapClasses includes: setClass classToUseForJsConversion]
 ]
 
+{ #category : #writing }
+PjExporter >> pharoJsSelectorPrefix [
+
+	^ self transpiler pharoJsSelectorPrefix
+]
+
 { #category : #'initialize-release' }
 PjExporter >> setUpForPolyfill [
 
@@ -261,14 +267,18 @@ PjExporter >> writeCoreObject [
 		nextPutAll: 'global.';
 		nextPutAll: coreName;
 		nextPut: $.;
-		nextPutAll: self transpiler pharoJsSelectorPrefix;
+		nextPutAll: self pharoJsSelectorPrefix;
 		nextPutAll: 'require=global.require';
 		cr;
 		nextPutAll: coreName;
 		nextPut: $.;
 		nextPutAll: self copyContentSelector;
 		nextPutAll: '=function(source,target){
-    let propertyNames = Object.getOwnPropertyNames(source).filter((each)=>each != ''constructor'');
+    let propertyNames = Object.getOwnPropertyNames(source).filter((each)=>
+			/\b';
+		nextPutAll: self pharoJsSelectorPrefix;
+		nextPutAll: '/.test(each)
+	  );
     propertyNames.forEach((name)=>target[name]=source[name]);
 }';
 		cr;
@@ -287,8 +297,10 @@ PjExporter >> writeCoreObject [
 		nextPutAll: self copyContentSelector;
 		nextPutAll: '(extensionClass, targetClass);}';
 		cr;
-		convertClass: PjCore;
-		convertClass: PjClass;
+		convertMethodAsts: PjCore newClasses: Set new; 
+		convertMethodAsts: PjClass newClasses: Set new; 
+		writeClassDefinitionOf: PjCore;
+		writeClassDefinitionOf: PjClass;		
 		nextPutAll: coreName;
 		nextPutAll: '.theClassClass=';
 		writeNameForClass: PjClass;
