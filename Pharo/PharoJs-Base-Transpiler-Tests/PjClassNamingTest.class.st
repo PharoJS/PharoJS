@@ -6,7 +6,7 @@ Class {
 
 { #category : #tests }
 PjClassNamingTest >> testClassNeedsCreation [
-	self deny: Object needsClassDefinition.
-	self deny: BlockClosure needsClassDefinition.
-	self assert: UndefinedObject needsClassDefinition.
+	self deny: Object needsClassDeclaration.
+	self deny: BlockClosure needsClassDeclaration.
+	self assert: UndefinedObject needsClassDeclaration.
 ]

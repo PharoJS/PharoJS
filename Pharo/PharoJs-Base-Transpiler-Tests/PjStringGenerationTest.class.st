@@ -356,10 +356,10 @@ PjStringGenerationTest >> testSelf [
 PjStringGenerationTest >> testSuperCall [
 	self
 		assert: (self apply: (PjSuperNode myClass: Integer) selector: #value)
-		asStringEquals: 'Number.prototype._value.call(this)'.
+		asStringEquals: 'super._value()'.
 	self
 		assert: (self apply: ((PjSuperNode myClass: Integer class) inBlock: true) selector: #value)
-		asStringEquals: 'Number._value.call(',PjStringGenerator selfName,')'
+		asStringEquals: 'super._value()'
 ]
 
 { #category : #tests }

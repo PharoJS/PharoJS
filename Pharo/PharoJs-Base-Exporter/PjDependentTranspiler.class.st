@@ -246,3 +246,10 @@ PjDependentTranspiler >> writeClassVariableDeclarationsOf: aClass [
 	alreadyVariablesDeclaredClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassVariableDeclarationsOf: aClass
 ]
+
+{ #category : #transpiling }
+PjDependentTranspiler >> writeEmptyClassDefinitionOf: aClass [
+
+	alreadyDefinedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
+	super writeEmptyClassDefinitionOf: aClass
+]

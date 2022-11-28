@@ -94,6 +94,11 @@ PjExporter >> convertAllClassesToJs: someClasses [
 			  writeDnu: true ]
 ]
 
+{ #category : #writing }
+PjExporter >> copyContentSelector [
+	^#copyContent
+]
+
 { #category : #accessing }
 PjExporter >> coreClass [
 
@@ -138,6 +143,11 @@ PjExporter >> initializeWithAppClass: aClass [
 	transpiler pharoJsSelectorPrefix: aClass pharoJsSelectorPrefix.
 	self addAllClasses: appClass appClasses.
 	self addAllPackages: appClass appPackages
+]
+
+{ #category : #writing }
+PjExporter >> installClassExtensionSelector [
+	^self transpiler installClassExtensionSelector
 ]
 
 { #category : #testing }
@@ -212,6 +222,11 @@ PjExporter >> setupCode [
 	^ self appClass setupCode
 ]
 
+{ #category : #writing }
+PjExporter >> space [
+	jsStream space
+]
+
 { #category : #accessing }
 PjExporter >> transpiler [
 
@@ -233,6 +248,7 @@ PjExporter >> transpilerClass [
 
 { #category : #writing }
 PjExporter >> writeCoreObject [
+
 	| coreName |
 	coreName := self coreClass nameToUseForJsConversion.
 	self transpiler
@@ -240,40 +256,49 @@ PjExporter >> writeCoreObject [
 		nextPutAll: coreName;
 		nextPutAll: '=global.';
 		nextPutAll: coreName;
-		nextPutAll: '||(function ';
-		nextPutAll: coreName;
-		nextPutAll: '(){});';cr;
-		nextPutAll: 'Object.defineProperty(Object.prototype,"$def",{value:';cr;
-		nextPutAll: ' function $def(aFunc){';cr;
-		nextPutAll: '    var args = Array.from(arguments),self=this;';cr;
-		nextPutAll: '    args[0]=aFunc.name;';cr;
-		nextPutAll: '    args.forEach(function(arg){';cr;
-		nextPutAll: '       Object.defineProperty(self,arg,{writable:true,value:aFunc})})}})';cr;
-		nextPutAll: 'Object.defineProperty(Object.prototype,"$$def",{value:';cr;
-		nextPutAll: ' function $$def(){';cr;
-		nextPutAll:	'   var v=Array.from(arguments),f=v[0];';cr;
-		nextPutAll: '   v[0]=this';cr;
-		nextPutAll: '	  v=Array.from(v,function(x){if(!x.classPool)x.classPool={};return x.classPool})';cr;
-		nextPutAll: '   v.unshift(this.$def.bind(this.prototype),this.$def.bind(this.__proto__));';cr;
-		nextPutAll: '   f.apply(null,v)}})';cr;
-		nextPutAll: 'var require';cr;
+		nextPutAll: '||{};';
+		cr;
 		nextPutAll: 'global.';
 		nextPutAll: coreName;
-		nextPutAll: '.require=require';cr;
-		writeClassDefinitionOf: PjClass;
+		nextPut: $.;
+		nextPutAll: self transpiler pharoJsSelectorPrefix;
+		nextPutAll: 'require=global.require';
+		cr;
+		nextPutAll: coreName;
+		nextPut: $.;
+		nextPutAll: self copyContentSelector;
+		nextPutAll: '=function(source,target){
+    let propertyNames = Object.getOwnPropertyNames(source).filter((each)=>each != ''constructor'');
+    propertyNames.forEach((name)=>target[name]=source[name]);
+}';
+		cr;
+		nextPutAll: coreName;
+		nextPut: $.;
+		nextPutAll: self installClassExtensionSelector;
+		nextPutAll: '=function(extensionClass,targetClass){';
+		cr;
+		nextPutAll: coreName;
+		nextPut: $.;
+		nextPutAll: self copyContentSelector;
+		nextPutAll: '(extensionClass.prototype, targetClass.prototype);';
+		cr;
+		nextPutAll: coreName;
+		nextPut: $.;
+		nextPutAll: self copyContentSelector;
+		nextPutAll: '(extensionClass, targetClass);}';
+		cr;
+		convertClass: PjCore;
+		convertClass: PjClass;
 		nextPutAll: coreName;
 		nextPutAll: '.theClassClass=';
 		writeNameForClass: PjClass;
-		nextPut: $;;cr;
-		nextPutAll: coreName;
-		nextPutAll: '.$$def(function(i$,c$){';cr;
-		convertMethodAsts: self coreClass classToUseForJsConversion newClasses: OrderedCollection new;
-		writeMethodsOf: self coreClass class named: coreName with: 'c$' ;
-		nextPutAll: '})';cr;
+		nextPut: $;;
+		cr;
 		nextPutAll: coreName;
 		nextPut: $.;
 		nextPutAll: transpiler pharoJsSelectorPrefix;
-		nextPutAll: 'initializeCore();';cr
+		nextPutAll: 'initializeCore();';
+		cr
 ]
 
 { #category : #writing }

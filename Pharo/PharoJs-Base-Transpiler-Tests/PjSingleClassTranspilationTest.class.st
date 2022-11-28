@@ -34,7 +34,7 @@ PjSingleClassTranspilationTest >> testBlockReferencingSelf [
 { #category : #tests }
 PjSingleClassTranspilationTest >> testCascade [
 	self assertInstanceMethod: #cascadeSelf equals: '(){return (this._m1(),this._m_(4),this._yourself())}'.
-	self assertInstanceMethod: #cascadeSuper equals: '(){return (',self classToTranspile superclass name,'.prototype._isNil.call(this),',self classToTranspile superclass name,'.prototype._yourself.call(this))}'.
+	self assertInstanceMethod: #cascadeSuper equals: '(){return (super._isNil(),super._yourself())}'.
 	self assertInstanceMethod: #cascade: equals: '(x){var $1;return ($1=$asNil$($asNil$(x)._foo()),$1._bar(),$1._yourself())}'.
 	self assertInstanceMethod: #cascadeNested equals: '(){return (this._m1(),this._m_((this._m1(),this._m2())),this._yourself())}'.
 ]
