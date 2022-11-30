@@ -39,6 +39,12 @@ PjExporter class >> transpilerClass [
 	^ PjDependentTranspiler
 ]
 
+{ #category : #'writing low-level' }
+PjExporter >> << aString [
+
+	jsStream << aString
+]
+
 { #category : #adding }
 PjExporter >> addAllClasses: someClasses [
 
@@ -258,58 +264,71 @@ PjExporter >> writeCoreObject [
 	| coreName |
 	coreName := self coreClass nameToUseForJsConversion.
 	self transpiler
-		nextPutAll: 'global.';
-		nextPutAll: coreName;
-		nextPutAll: '=global.';
-		nextPutAll: coreName;
-		nextPutAll: '||{};';
+		<< 'global.';
+		<< coreName;
+		<< '=global.';
+		<< coreName;
+		<< '??{};';
 		cr;
-		nextPutAll: 'global.';
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: self pharoJsSelectorPrefix;
-		nextPutAll: 'require=global.require';
+		<< 'global.';
+		<< coreName;
+		<< $.;
+		<< self pharoJsSelectorPrefix;
+		<< 'require=global.require';
 		cr;
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: self copyContentSelector;
-		nextPutAll: '=function(source,target){
+		<< coreName;
+		<< $.;
+		<< self copyContentSelector;
+		<< '=function(source,target){
     let propertyNames = Object.getOwnPropertyNames(source).filter((each)=>
 			/\b';
-		nextPutAll: self pharoJsSelectorPrefix;
-		nextPutAll: '/.test(each)
+		<< self pharoJsSelectorPrefix;
+		<< '/.test(each)
 	  );
     propertyNames.forEach((name)=>target[name]=source[name]);
 }';
 		cr;
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: self installClassExtensionSelector;
-		nextPutAll: '=function(extensionClass,targetClass){';
+		<< coreName;
+		<< $.;
+		<< self installClassExtensionSelector;
+		<< '=function(extensionClass,targetClass){';
 		cr;
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: self copyContentSelector;
-		nextPutAll: '(extensionClass.prototype, targetClass.prototype);';
+		<< coreName;
+		<< $.;
+		<< self copyContentSelector;
+		<< '(extensionClass.prototype, targetClass.prototype);';
 		cr;
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: self copyContentSelector;
-		nextPutAll: '(extensionClass, targetClass);}';
+		<< coreName;
+		<< $.;
+		<< self copyContentSelector;
+		<< '(extensionClass, targetClass);';
 		cr;
-		convertMethodAsts: PjCore newClasses: Set new; 
-		convertMethodAsts: PjClass newClasses: Set new; 
+		<< 'targetClass.';
+		writeClassVarsPoolName;
+		<< '=';
+		<< 'targetClass.';
+		writeClassVarsPoolName;
+		<< '??{};';
+		cr;
+		<< 'Object.assign(targetClass.';
+		writeClassVarsPoolName;
+        << ', extensionClass.';
+		writeClassVarsPoolName;
+        << ');}';
+		cr;
+		convertMethodAsts: PjCore newClasses: Set new;
+		convertMethodAsts: PjClass newClasses: Set new;
 		writeClassDefinitionOf: PjCore;
-		writeClassDefinitionOf: PjClass;		
-		nextPutAll: coreName;
-		nextPutAll: '.theClassClass=';
+		writeClassDefinitionOf: PjClass;
+		<< coreName;
+		<< '.theClassClass=';
 		writeNameForClass: PjClass;
-		nextPut: $;;
+		<< $;;
 		cr;
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: transpiler pharoJsSelectorPrefix;
-		nextPutAll: 'initializeCore();';
+		<< coreName;
+		<< $.;
+		<< transpiler pharoJsSelectorPrefix;
+		<< 'initializeCore();';
 		cr
 ]
 

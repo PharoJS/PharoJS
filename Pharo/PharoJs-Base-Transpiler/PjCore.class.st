@@ -21,45 +21,6 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Globals'
 }
 
-{ #category : #globals }
-PjCore class >> at: jsName [
-	"Get the value of an object in the Smalltalk global space.
-	For now, we use the JS global, but this is likely to evolve once we have environments."
-	^ global js_at: jsName
-]
-
-{ #category : #globals }
-PjCore class >> at: key ifAbsent: aBlock [
-	"Answer the global associated with the key or, if key isn't found,
-	answer the result of evaluating aBlock."
-
-	^global at: key ifAbsent: aBlock
-]
-
-{ #category : #globals }
-PjCore class >> at: aKey ifAbsentPut: aBlock [ 
-	"Return the global at the given key. 
-	If key is not included in the receiver store the result 
-	of evaluating aBlock as new value."
-
-	^global at: aKey ifAbsentPut: aBlock
-]
-
-{ #category : #globals }
-PjCore class >> at: key ifPresent: aBlock [
-	"Lookup the given key in the globals. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer nil."
-
-	^global at: key ifPresent: aBlock
-]
-
-{ #category : #globals }
-PjCore class >> at: jsName put: anObject [ 
-	"Set the global at key to be anObject.  If key is not found, create a
-	new entry for key and set is value to anObject. Answer anObject.
-	For now, we use the JS global, but this is likely to evolve once we have environments."
-	^ global js_at: jsName put: anObject
-]
-
 { #category : #initalize }
 PjCore class >> emptyJavascriptObject [
 	"Object.create(null) creates an even emptier JS object, but it isn't an Object (i.e. has no methods)."

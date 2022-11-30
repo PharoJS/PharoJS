@@ -459,6 +459,18 @@ PjTranspiler >> withMethodsOf: aClass do: aBlock [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> writeAddToSystemDictionaryClass: aClass [
+
+	self 
+		nextPutAll: 'Smalltalk.';
+		writeNameForClass: aClass;
+		nextPutAll: '=';
+		writeNameForClass: aClass;
+		nextPut: $;;
+		cr		
+]
+
+{ #category : #transpiling }
 PjTranspiler >> writeAliases: aRBMethodNode [
 	^ aRBMethodNode pragmas select: [: pragma |
 			pragma selector beginsWith: #jsAlias:
@@ -490,7 +502,8 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		writeMethodsOf: aClass;
 		writeClassVariableDeclarationsOf: aClass;
 		nextPut: $};
-		cr.
+		cr;
+		writeAddToSystemDictionaryClass: aClass.
 	aClass isClassExtension ifFalse: [ ^self ].
 	self 
 		nextPutAll: 'Smalltalk.';

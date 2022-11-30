@@ -12,6 +12,12 @@ PjTStreamWriter classSide >> jsNativePrefix [
 ]
 
 { #category : #'writing low-level' }
+PjTStreamWriter >> << aString [
+
+	self jsStream << aString
+]
+
+{ #category : #'writing low-level' }
 PjTStreamWriter >> cr [
 	self jsStream nextPut: self lineEnding
 ]
