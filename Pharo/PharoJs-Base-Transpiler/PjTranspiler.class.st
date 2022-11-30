@@ -32,6 +32,11 @@ PjTranspiler class >> classVariablesHolderName [
 ]
 
 { #category : #transpiling }
+PjTranspiler class >> classVarsPoolName [
+	^'cp$'
+]
+
+{ #category : #transpiling }
 PjTranspiler class >> convertToJs: anObject [
 	^self new convertToJs: anObject
 ]
@@ -86,7 +91,7 @@ PjTranspiler >> classVariablesHolderName [
 
 { #category : #transpiling }
 PjTranspiler >> classVarsPoolName [
-	^'cp$'
+	^self class classVarsPoolName
 ]
 
 { #category : #transpiling }
@@ -386,13 +391,7 @@ PjTranspiler >> poolFor: myClass [
 { #category : #transpiling }
 PjTranspiler >> poolReference: aClass for: myClass [
 
-	| index pool |
-	myClass ifNil: [ index := 0 ] ifNotNil: [ 
-		pool := self poolFor: myClass.
-		(pool includes: aClass) ifFalse: [ pool add: aClass ].
-		index := pool indexOf: aClass ].
-	index < 2 ifTrue: [ ^ 'this.', self classVarsPoolName ].
-	^ aClass nameToUseForJsConversion
+	^ aClass nameToUseForJsConversion, '.',  self classVarsPoolName
 ]
 
 { #category : #conversions }

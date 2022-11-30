@@ -33,8 +33,9 @@ PjStringGenerationTest >> nilTestFunctionName [
 ]
 
 { #category : #'test mock' }
-PjStringGenerationTest >> poolReference: anUndefinedObject for: anUndefinedObject2 [ 
-	^ 'cp$'
+PjStringGenerationTest >> poolReference: anUndefinedObject for: anUndefinedObject2 [
+
+	^ PjTranspiler classVarsPoolName
 ]
 
 { #category : #accessing }
