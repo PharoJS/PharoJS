@@ -502,17 +502,19 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		writeClassVariableDeclarationsOf: aClass;
 		nextPut: $};
 		cr;
-		writeAddToSystemDictionaryClass: aClass.
-	aClass isClassExtension ifFalse: [ ^self ].
-	self 
+		writeAddToSystemDictionaryClass: aClass;
+		writeSetMetaclassOf: aClass;
+		cr.
+	aClass isClassExtension ifFalse: [ ^ self ].
+	self
 		nextPutAll: 'Smalltalk.';
 		nextPutAll: self installClassExtensionSelector;
 		nextPut: $(;
 		writeNameForClassExtension: aClass;
-		nextPut: $, ;
+		nextPut: $,;
 		writeNameForClass: aClass;
-		nextPutAll: ');'
-	
+		nextPutAll: ');';
+		cr
 ]
 
 { #category : #transpiling }
@@ -656,4 +658,16 @@ PjTranspiler >> writeNameForSubclass: aClass [
 
 	aClass isClassExtension ifFalse: [ ^ self writeNameForClass: aClass ].
 	self writeNameForClassExtension: aClass
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeSetMetaclassOf: aClass [
+
+	aClass superclass == Object ifFalse: [ ^ self ].
+	aClass == PjCore ifTrue: [ ^ self ].
+	self
+		writeNameForClass: aClass;
+		<< '.__proto__=';
+		writeNameForClass: PjClass;
+		<< '.prototype;'
 ]

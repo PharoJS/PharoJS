@@ -312,9 +312,9 @@ PjExporter >> writeCoreObject [
 		cr;
 		<< 'Object.assign(targetClass.';
 		writeClassVarsPoolName;
-        << ', extensionClass.';
+		<< ', extensionClass.';
 		writeClassVarsPoolName;
-        << ');}';
+		<< ');}';
 		cr;
 		convertMethodAsts: PjCore newClasses: Set new;
 		convertMethodAsts: PjClass newClasses: Set new;
