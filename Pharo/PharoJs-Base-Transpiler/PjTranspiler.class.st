@@ -517,38 +517,6 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeClassExtensionOf: aClass [
-
-	| className methods pools |
-	className := aClass nameToUseForJsConversion.
-	methods := self onTempStreamDo: [ 
-		           self
-			           writeFunctionStyleMethodsOf: aClass with: 'i$';
-			           writeFunctionStyleMethodsOf: aClass class with: 'c$' ].
-	pools := self poolFor: aClass.
-	self
-		nextPutAll: className;
-		nextPutAll: '.$$def(function(i$,c$'.
-	pools do: [ :each | 
-		self
-			nextPutAll: ',';
-			nextPutAll: (self poolReference: each for: aClass) ].
-	self
-		nextPutAll: '){';
-		cr;
-		nextPutAll: methods;
-		writeClassVariableDeclarationsOf: aClass;
-		nextPutAll: '}'.
-	pools allButFirst do: [ :each | 
-		self
-			nextPutAll: ',';
-			writeNameForClass: each ].
-	self
-		nextPutAll: ');';
-		cr
-]
-
-{ #category : #transpiling }
 PjTranspiler >> writeClassInitializeOf: aClass [
 	aClass needsInitialization ifFalse: [^self].  
 	self 
@@ -630,26 +598,6 @@ PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeFunctionStyleMethodsOf: aClass with: reference [
-
-	"Use JS Object.defineProperty() to ensure that methods are not enumerable. 
-	This is typically required by some third party libraries that create instances of Object, 
-	and expect that no property is available for enumeration. 
-	We set the writable attribute to true to enable reflection (e.g. replacing the method)."
-
-	converter classForConversion: aClass.
-	self withMethodsOf: aClass do: [ :method | 
-		(self shouldSkipMethodNode: method) ifFalse: [ 
-			self
-				nextPutAll: reference;
-				nextPutAll: '(function ';
-				transpileMethod: method;
-				writeAliases: method;
-				nextPutAll: ');';
-				cr ] ]
-]
-
-{ #category : #transpiling }
 PjTranspiler >> writeInstanceVariable: cvName [
 	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
 ]
@@ -709,29 +657,4 @@ PjTranspiler >> writeNameForSubclass: aClass [
 
 	aClass isClassExtension ifFalse: [ ^ self writeNameForClass: aClass ].
 	self writeNameForClassExtension: aClass
-]
-
-{ #category : #transpiling }
-PjTranspiler >> writePoolDictionariesAndClassVarsOf: aClass [
-	| className pools |
-	className := aClass nameToUseForJsConversion.
-	pools := self poolFor: aClass.
-	self
-		nextPutAll: className;
-		nextPutAll: '.$$def(function(i$,c$'.
-		pools do: [: each |
-			self
-				nextPutAll: ',';
-				nextPutAll: (self poolReference: each for: aClass)
-		].
-	self
-		nextPutAll: '){';cr;
-		writeClassVariableDeclarationsOf: aClass;
-		nextPutAll: '}'.
-		pools allButFirst do: [: each |
-			self
-				nextPutAll: ',';
-				writeNameForClass:  each
-		].
-		self nextPutAll: ');';cr.
 ]
