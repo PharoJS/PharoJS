@@ -482,11 +482,16 @@ PjTranspiler >> writeAliases: aRBMethodNode [
 { #category : #transpiling }
 PjTranspiler >> writeClassDeclaration: aClass [
 
-	self nextPutAll: 'class '.
-	self writeNameForSubclass: aClass.
+	aClass isClassExtension ifFalse: [ 
+		self
+			<< 'global.';
+			writeNameForSubclass: aClass;
+			<< $= ].
 	self
+		<< 'class ';
+		writeNameForSubclass: aClass;
 		space;
-		nextPutAll: 'extends';
+		<< 'extends';
 		space;
 		writeNameForClass: aClass superclass
 ]
