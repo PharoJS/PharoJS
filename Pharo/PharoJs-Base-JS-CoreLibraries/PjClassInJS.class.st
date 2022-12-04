@@ -9,6 +9,13 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
+{ #category : #'as yet unclassified' }
+PjClassInJS class >> classPool_jsGenerator: transpiler [
+
+	<pharoJsSkip>
+	^ 'return this.' , transpiler classVarsPoolName
+]
+
 { #category : #'Behavior: reflection' }
 PjClassInJS class >> hasClassMethod_jsGenerator: transpiler [
 	<pharoJsSkip>
@@ -40,6 +47,12 @@ PjClassInJS >> adoptInstance: anObject [
 { #category : #'Behavior: reflection' }
 PjClassInJS >> class [
 	^ PjCore metaclassOf: self
+]
+
+{ #category : #accessing }
+PjClassInJS >> classPool [
+	<jsGenerator: #classPool_jsGenerator:>
+	
 ]
 
 { #category : #'Behavior: reflection' }
