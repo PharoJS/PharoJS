@@ -50,10 +50,8 @@ PjCore class >> handleDNU: aMessage for: anObject [
 { #category : #'reflection support' }
 PjCore class >> initInheritanceAndInstanciationLinks [
 
-	
-	Object js_setPrototypeOf: Object to: theClassClass.
-	Object js_setPrototypeOf: theClassClass to: PjFunction.
-
+	Object js_setPrototypeOf: Object to: (theClassClass js_at: #prototype).
+	Object js_setPrototypeOf: theClassClass to: PjFunction
 ]
 
 { #category : #'nil support' }
