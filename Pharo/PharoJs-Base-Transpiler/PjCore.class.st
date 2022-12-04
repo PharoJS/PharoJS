@@ -16,7 +16,8 @@ Class {
 		'messageClass',
 		'nilInJs',
 		'selectorCache',
-		'metaclassClass'
+		'metaclassClass',
+		'theClassClass'
 	],
 	#category : #'PharoJs-Base-Transpiler-Globals'
 }
@@ -46,17 +47,19 @@ PjCore class >> handleDNU: aMessage for: anObject [
 						, aMessage selector ]
 ]
 
+{ #category : #'reflection support' }
+PjCore class >> initInheritanceAndInstanciationLinks [
+
+	
+	Object js_setPrototypeOf: Object to: theClassClass.
+	Object js_setPrototypeOf: theClassClass to: PjFunction.
+
+]
+
 { #category : #'nil support' }
 PjCore class >> initNilInJs [
 	" specifically install in the global space, rather than in the Smalltalk global space "
 	global js_at: self nilTestFunctionName put: (self nilIfUndefined)
-]
-
-{ #category : #'reflection support' }
-PjCore class >> initObject [
-	((self js_at: #theClassClass) js_at: #prototype) 
-		js_at: #__proto__
-		put: (BlockClosure js_at: #prototype).
 ]
 
 { #category : #'throw support' }
@@ -70,7 +73,7 @@ PjCore class >> initializeCore [
 	selectorCache := self emptyJavascriptObject.
 	self initNilInJs.
 	self initThrowInJs.
-	self initObject.
+	self initInheritanceAndInstanciationLinks.
 	self messageClass: self.
 	self metaclassClass: self.
 ]

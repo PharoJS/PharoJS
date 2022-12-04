@@ -4,25 +4,26 @@ I am the implementation for Class and Behavior.
 I am a subclass of Javascript Function with appropriate methods for Class and Behavior.
 "
 Class {
-	#name : #PjClass,
+	#name : #PjClassInJS,
 	#superclass : #PjFunction,
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
 { #category : #'Behavior: reflection' }
-PjClass class >> hasClassMethod_jsGenerator: transpiler [
+PjClassInJS class >> hasClassMethod_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'return this.__proto__.hasOwnProperty(Smalltalk.', transpiler pharoJsSelectorPrefix, 'makePharoJsSelector_(aSymbol))'
 ]
 
 { #category : #'pharoJs support' }
-PjClass class >> javascriptName [
+PjClassInJS class >> javascriptName [
+
 	<pharoJsSkip>
-	^self name
+	^ #PjClass
 ]
 
 { #category : #'pharoJs support' }
-PjClass class >> jsTranspilationImportMethods [
+PjClassInJS class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
 		Behavior -> #( subclassesDo: allSubclasses allSubclassesDo: isBehavior ).
@@ -31,43 +32,43 @@ PjClass class >> jsTranspilationImportMethods [
 ]
 
 { #category : #'Behaviour: object creatioin' }
-PjClass >> adoptInstance: anObject [
+PjClassInJS >> adoptInstance: anObject [
 	anObject js_at: #__proto__ put: (self js_at:#prototype)
 " here so that ordinary Javascript 'classes' will respond to the message"
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> class [
+PjClassInJS >> class [
 	^ PjCore metaclassOf: self
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> classVarNamed: aString [
+PjClassInJS >> classVarNamed: aString [
 	^ self classPool at: aString
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> classVarNamed: aString put: otherString [
+PjClassInJS >> classVarNamed: aString put: otherString [
 	self classPool at: aString put: otherString
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> hasClassMethod: aSymbol [
+PjClassInJS >> hasClassMethod: aSymbol [
 	<jsGenerator: #hasClassMethod_jsGenerator:>
 ]
 
 { #category : #testing }
-PjClass >> isBlock [
+PjClassInJS >> isBlock [
 	^ false
 ]
 
 { #category : #testing }
-PjClass >> isClass [
+PjClassInJS >> isClass [
 	^ true
 ]
 
 { #category : #accessing }
-PjClass >> name [
+PjClassInJS >> name [
 	<javascript:
 	'var s=this.name||this.prototype.toString();
 	if (s.substr(0,1)=="[") s=s.substr(8,s.length-9);
@@ -75,7 +76,7 @@ PjClass >> name [
 ]
 
 { #category : #'Behaviour: object creatioin' }
-PjClass >> newFromJsonString: jsonString [
+PjClassInJS >> newFromJsonString: jsonString [
 	| newInstance |
 	newInstance := JSON js_parse: jsonString.
 	self adoptInstance: newInstance.
@@ -84,27 +85,27 @@ PjClass >> newFromJsonString: jsonString [
 ]
 
 { #category : #printing }
-PjClass >> printOn: aStream [
+PjClassInJS >> printOn: aStream [
 
 	aStream nextPutAll: self name
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> prototype [
+PjClassInJS >> prototype [
 	^ self js_at: #prototype
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> subclasses [
+PjClassInJS >> subclasses [
 	^ subclasses
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> theMetaClass [
+PjClassInJS >> theMetaClass [
 	^ self class
 ]
 
 { #category : #'Behavior: reflection' }
-PjClass >> theNonMetaClass [
+PjClassInJS >> theNonMetaClass [
 	^ self
 ]

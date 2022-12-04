@@ -259,24 +259,57 @@ PjExporter >> transpilerClass [
 ]
 
 { #category : #writing }
+PjExporter >> writeCore [
+
+	self writeCoreObject.
+	self writeCoreClass.
+	self transpiler
+		writeNameForClass: PjCore;
+		<< '.theClassClass=';
+		writeNameForClass: PjClassInJS;
+		<< $;;
+		cr;
+		writeNameForClass: PjCore;
+		<< $.;
+		<< transpiler pharoJsSelectorPrefix;
+		<< 'initializeCore();';
+		cr
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreClass [
+
+	self transpiler
+		<< 'const ';
+		writeNameForClass: PjClassInJS;
+		<< '={prototype:function(){}};';
+		cr;
+		convertMethodAsts: PjClassInJS newClasses: Set new;
+		writeClassDefinitionOf: PjClassInJS
+]
+
+{ #category : #writing }
 PjExporter >> writeCoreObject [
 
-	| coreName |
-	coreName := self coreClass nameToUseForJsConversion.
+	self writeCoreObjectCreation.
+	self writeCoreObjectBasicMethods.
 	self transpiler
-		<< 'global.';
-		<< coreName;
-		<< '=global.';
-		<< coreName;
-		<< '??{};';
+		convertMethodAsts: PjCore newClasses: Set new;
+		writeClassDefinitionOf: PjCore
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreObjectBasicMethods [
+
+	self transpiler
 		cr;
 		<< 'global.';
-		<< coreName;
+		writeNameForClass: PjCore;
 		<< $.;
 		<< self pharoJsSelectorPrefix;
 		<< 'require=global.require';
 		cr;
-		<< coreName;
+		writeNameForClass: PjCore;
 		<< $.;
 		<< self copyContentSelector;
 		<< '=function(source,target){
@@ -288,17 +321,17 @@ PjExporter >> writeCoreObject [
     propertyNames.forEach((name)=>target[name]=source[name]);
 }';
 		cr;
-		<< coreName;
+		writeNameForClass: PjCore;
 		<< $.;
 		<< self installClassExtensionSelector;
 		<< '=function(extensionClass,targetClass){';
 		cr;
-		<< coreName;
+		writeNameForClass: PjCore;
 		<< $.;
 		<< self copyContentSelector;
 		<< '(extensionClass.prototype, targetClass.prototype);';
 		cr;
-		<< coreName;
+		writeNameForClass: PjCore;
 		<< $.;
 		<< self copyContentSelector;
 		<< '(extensionClass, targetClass);';
@@ -315,21 +348,18 @@ PjExporter >> writeCoreObject [
 		<< ', extensionClass.';
 		writeClassVarsPoolName;
 		<< ');}';
-		cr;
-		convertMethodAsts: PjCore newClasses: Set new;
-		convertMethodAsts: PjClass newClasses: Set new;
-		writeClassDefinitionOf: PjCore;
-		writeClassDefinitionOf: PjClass;
-		<< coreName;
-		<< '.theClassClass=';
-		writeNameForClass: PjClass;
-		<< $;;
-		cr;
-		<< coreName;
-		<< $.;
-		<< transpiler pharoJsSelectorPrefix;
-		<< 'initializeCore();';
 		cr
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreObjectCreation [
+
+	self transpiler
+		<< 'global.';
+		writeNameForClass: PjCore;
+		<< '=global.';
+		writeNameForClass: PjCore;
+		<< '??{};'
 ]
 
 { #category : #writing }
@@ -359,7 +389,7 @@ PjExporter >> writeJsCodeOn: aStream [
 PjExporter >> writeJsCoreAndBootstrap [
 
 	self nextPutAll: self setupCode; cr.
-	self writeCoreObject.
+	self writeCore.
 	self transpiler convertAllClasses: self bootstrapClasses writeDnu: false
 ]
 

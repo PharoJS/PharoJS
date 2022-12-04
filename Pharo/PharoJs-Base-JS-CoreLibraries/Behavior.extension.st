@@ -2,7 +2,7 @@ Extension { #name : #Behavior }
 
 { #category : #'*PharoJs-Base-JS-CoreLibraries' }
 Behavior class >> javascriptPlaceholder [
-	^PjClass
+	^PjClassInJS
 ]
 
 { #category : #'*PharoJs-Base-JS-CoreLibraries' }
