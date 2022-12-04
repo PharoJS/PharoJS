@@ -76,7 +76,7 @@ PjLoadingTest >> testLoadClassContents [
 	className := PjLoadForTest nameToUseForJsConversion.
 	PjLoadForTest reset.
 	first := self bridge convertToJs: PjLoadForTest.
-	self assert: (first beginsWith: 'Object.', pjPrefix, 'subclass_("', className,'")' ).
+	self assert: (first beginsWith: 'global.', className, '=class ', className,' extends Object' ).
 	self assert: (first trim endsWith: className , '.', pjPrefix, 'initialize();').
 	firstBlock := self bridge
 		convertToJs: [ PjLoadForTest fortyTwo ] asValuedBlock.
