@@ -25,19 +25,30 @@ PjBasicTest >> testBooleanMethods [
 PjBasicTest >> testCallingNewOnAJsConstructorViaFullProxy [
 
 	| o1 o2 |
-	window instVarNamed:#MyConstructor put: [: a : b : c |
-		self js_this instVarNamed:#x put: a.
-		self js_this instVarNamed:#y put: b.
-		self js_this instVarNamed:#z put: c.
-	].
-	o1 := (window instVarNamed:#MyConstructor) new: 1 with: 2 with: 3.
+	self bridge evalJavascript: 'window.MyClass = class MyClass{
+		x(){
+			return this.x;
+		}
+		y(){
+			return this.y;
+		}
+		z(){
+			return this.z;
+		}
+		constructor(a, b, c){
+			this.x = a;
+			this.y = b;
+			this.z = c;
+		}
+	}'.
+	o1 := (window instVarNamed: #MyClass) new: 1 with: 2 with: 3.
 	self assert: o1 x equals: 1.
 	self assert: o1 y equals: 2.
 	self assert: o1 z equals: 3.
-	o2 := (window instVarNamed:#MyConstructor) new: 77 with: 88 with: 99.
+	o2 := (window instVarNamed: #MyClass) new: 77 with: 88 with: 99.
 	self assert: o2 x equals: 77.
 	self assert: o2 y equals: 88.
-	self assert: o2 z equals: 99.
+	self assert: o2 z equals: 99
 ]
 
 { #category : #tests }
