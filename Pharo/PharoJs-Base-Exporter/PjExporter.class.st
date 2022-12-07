@@ -101,8 +101,9 @@ PjExporter >> convertAllClassesToJs: someClasses [
 ]
 
 { #category : #writing }
-PjExporter >> copyContentSelector [
-	^#copyContent
+PjExporter >> copyMethodsSelector [
+
+	^ #copyMethods
 ]
 
 { #category : #accessing }
@@ -266,7 +267,7 @@ PjExporter >> writeCore [
 	self transpiler
 		writeNameForClass: PjCore;
 		<< '.theClassClass=';
-		writeNameForClass: PjClassInJS;
+		writeNameForClass: PjClass;
 		<< $;;
 		cr;
 		writeNameForClass: PjCore;
@@ -281,11 +282,11 @@ PjExporter >> writeCoreClass [
 
 	self transpiler
 		<< 'const ';
-		writeNameForClass: PjClassInJS;
+		writeNameForClass: PjClass;
 		<< '={prototype:function(){}};';
 		cr;
-		convertMethodAsts: PjClassInJS newClasses: Set new;
-		writeClassDefinitionOf: PjClassInJS
+		convertMethodAsts: PjClass newClasses: Set new;
+		writeClassDefinitionOf: PjClass
 ]
 
 { #category : #writing }
@@ -307,11 +308,11 @@ PjExporter >> writeCoreObjectBasicMethods [
 		writeNameForClass: PjCore;
 		<< $.;
 		<< self pharoJsSelectorPrefix;
-		<< 'require=global.require';
+		<< 'require=global.require;';
 		cr;
 		writeNameForClass: PjCore;
 		<< $.;
-		<< self copyContentSelector;
+		<< self copyMethodsSelector;
 		<< '=function(source,target){
     let propertyNames = Object.getOwnPropertyNames(source).filter((each)=>
 			/\b';
@@ -328,12 +329,12 @@ PjExporter >> writeCoreObjectBasicMethods [
 		cr;
 		writeNameForClass: PjCore;
 		<< $.;
-		<< self copyContentSelector;
+		<< self copyMethodsSelector;
 		<< '(extensionClass.prototype, targetClass.prototype);';
 		cr;
 		writeNameForClass: PjCore;
 		<< $.;
-		<< self copyContentSelector;
+		<< self copyMethodsSelector;
 		<< '(extensionClass, targetClass);';
 		cr;
 		<< 'targetClass.';

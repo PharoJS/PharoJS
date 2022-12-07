@@ -480,7 +480,7 @@ PjTranspiler >> writeAliases: aRBMethodNode [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeClassDeclaration: aClass [
+PjTranspiler >> writeClassDeclarationOf: aClass [
 
 	aClass isClassExtension ifFalse: [ 
 		self
@@ -500,7 +500,7 @@ PjTranspiler >> writeClassDeclaration: aClass [
 PjTranspiler >> writeClassDefinitionOf: aClass [
 
 	self
-		writeClassDeclaration: aClass;
+		writeClassDeclarationOf: aClass;
 		nextPut: ${;
 		cr;
 		writeMethodsOf: aClass;
@@ -597,7 +597,7 @@ PjTranspiler >> writeDnuList [
 PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 
 	self
-		writeClassDeclaration: aClass;
+		writeClassDeclarationOf: aClass;
 		nextPutAll: '{}';
 		cr
 ]

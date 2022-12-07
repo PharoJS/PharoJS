@@ -48,7 +48,7 @@ PjCore class >> handleDNU: aMessage for: anObject [
 ]
 
 { #category : #'reflection support' }
-PjCore class >> initInheritanceAndInstanciationLinks [
+PjCore class >> initInheritanceAndInstantiationLinks [
 
 	Object js_setPrototypeOf: Object to: (theClassClass js_at: #prototype).
 	Object js_setPrototypeOf: theClassClass to: PjFunction
@@ -71,7 +71,7 @@ PjCore class >> initializeCore [
 	selectorCache := self emptyJavascriptObject.
 	self initNilInJs.
 	self initThrowInJs.
-	self initInheritanceAndInstanciationLinks.
+	self initInheritanceAndInstantiationLinks.
 	self messageClass: self.
 	self metaclassClass: self.
 ]
