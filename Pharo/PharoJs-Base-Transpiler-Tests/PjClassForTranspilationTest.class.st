@@ -269,6 +269,14 @@ PjClassForTranspilationTest >> toDoWithObjectAsParameter [
 ]
 
 { #category : #any }
+PjClassForTranspilationTest >> twoPragmaWithAliases [
+
+	<jsAlias: #firstAlias>
+	<jsAlias: #secondAlias>
+	^ 200
+]
+
+{ #category : #any }
 PjClassForTranspilationTest >> whileAtEnd [
 	self m: [:x|	[ x m1 ] whileTrue].
 	[ self m2 ] whileTrue.

@@ -45,3 +45,11 @@ PjExtensionClassForAliasTest >> m2 [
 	<jsAlias: #m2alias1 with: #m2alias2 with: #m2alias3>
 	^ #instanceM2
 ]
+
+{ #category : #aliasing }
+PjExtensionClassForAliasTest >> twoPragmaWithAliases [
+
+	<jsAlias: #firstAlias>
+	<jsAlias: #secondAlias>
+	^ 200
+]

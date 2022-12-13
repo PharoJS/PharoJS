@@ -81,3 +81,33 @@ PjAliasTest >> testInstanceMethod3AliasesInExtensionClass [
 	self assert: [ Object new m2alias2 ] evaluatesTo: 'instanceM2'.
 	self assert: [ Object new m2alias3 ] evaluatesTo: 'instanceM2'
 ]
+
+{ #category : #tests }
+PjAliasTest >> testTwoAliasPragma [
+
+	self
+		assert: [ PjClassForTranspilationTest new twoPragmaWithAliases ]
+		evaluatesTo: 200.
+	self
+		assert: [ PjClassForTranspilationTest new firstAlias ]
+		evaluatesTo: 200.
+	self
+		assert: [ PjClassForTranspilationTest new secondAlias ]
+		evaluatesTo: 200.
+
+]
+
+{ #category : #tests }
+PjAliasTest >> testTwoAliasPragmaExtension [
+
+	self loadClass: PjExtensionClassForAliasTest.
+	self
+		assert: [ Object new twoPragmaWithAliases ]
+		evaluatesTo: 200.
+	self
+		assert: [ Object new firstAlias ]
+		evaluatesTo: 200.
+	self
+		assert: [ Object new secondAlias ]
+		evaluatesTo: 200
+]
