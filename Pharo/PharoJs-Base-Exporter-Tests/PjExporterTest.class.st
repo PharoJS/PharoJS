@@ -145,14 +145,3 @@ PjExporterTest >> testTraitsAreIgnored [
 	exporter addClass: TComparable.
 	self assert: exporter classes isEmpty.
 ]
-
-{ #category : #writing }
-PjExporterTest >> writeJsSelector: aSelector onStream: aStream [
-	| isBinary |
-	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
-			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
-	isBinary := aSelector isBinary.
-	aStream nextPutAll: self pharoJsSelectorPrefix.
-	aSelector do:[ :each | 
-			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
-]

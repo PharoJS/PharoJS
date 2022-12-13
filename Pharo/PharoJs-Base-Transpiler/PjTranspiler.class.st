@@ -452,6 +452,12 @@ PjTranspiler >> transpileMethodToString: aMethod [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> withMethodsNoSkipOf: aClass do: aBlock [
+	self withMethodsOf: aClass do: [ :method | 
+		(self shouldSkipMethodNode: method) ifFalse: [aBlock value: method] ]
+]
+
+{ #category : #transpiling }
 PjTranspiler >> withMethodsOf: aClass do: aBlock [
 	aClass selectorsWithExplicitOrigin do: [ : selector |
 		 aBlock value: (aClass compiledMethodAt: selector) ]
@@ -470,13 +476,31 @@ PjTranspiler >> writeAddToSystemDictionaryClass: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeAliases: aRBMethodNode [
-	^ aRBMethodNode pragmas select: [: pragma |
-			pragma selector beginsWith: #jsAlias:
-		] thenDo:  [: pragma |
-			pragma arguments do: [: key |
-				self nextPut: $,; nextPutAll: key asString printString 
-		]]
+PjTranspiler >> writeAliasPragmasOf: aRBMethodNode ownerString: ownerString [
+
+	aRBMethodNode pragmas
+		select: [ :pragma | pragma selector beginsWith: #jsAlias: ]
+		thenDo: [ :pragma | 
+		 self writeAliasesFrom: pragma ownerString: ownerString ]
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeAliasesFrom: pragma ownerString: ownerString [
+
+	self
+		cr;
+		nextPutAll: 'static {'.
+	pragma arguments
+		do: [ :key | 
+			self
+				<< ownerString;
+				<< key;
+				<< $=;
+				<< ownerString;
+				writeJsSelector: pragma methodSelector;
+				<< $; ]
+		separatedBy: [ self cr ].
+	self nextPut: $}
 ]
 
 { #category : #transpiling }
@@ -537,6 +561,17 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 	sortedClassesToInit := self orderForInitialization: classesToInit.
 	^ sortedClassesToInit
 		do: [ :aClass | self writeClassInitializeOf: aClass ]
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeClassMethodsOf: aClass [
+
+	self withMethodsNoSkipOf: aClass class do: [ :aRBMethodNode | 
+		self
+			<< 'static ';
+			transpileMethod: aRBMethodNode;
+			writeAliasPragmasOf: aRBMethodNode ownerString: 'this.';
+			cr ]
 ]
 
 { #category : #transpiling }
@@ -603,19 +638,18 @@ PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeInstanceVariable: cvName [
-	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
+PjTranspiler >> writeInstanceMethodsOf: aClass [
+
+	self withMethodsNoSkipOf: aClass do: [ :aRBMethodNode | 
+		self
+			transpileMethod: aRBMethodNode;
+			writeAliasPragmasOf: aRBMethodNode ownerString: 'this.prototype.';
+			cr ]
 ]
 
-{ #category : #writing }
-PjTranspiler >> writeJsSelector: aSelector onStream: aStream [
-	| isBinary |
-	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
-			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
-	isBinary := aSelector isBinary.
-	aStream nextPutAll: self pharoJsSelectorPrefix.
-	aSelector do:[ :each | 
-			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
+{ #category : #transpiling }
+PjTranspiler >> writeInstanceVariable: cvName [
+	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
 ]
 
 { #category : #writing }
@@ -628,20 +662,10 @@ PjTranspiler >> writeList: aCollection withPrefix: aString [
 { #category : #transpiling }
 PjTranspiler >> writeMethodsOf: aClass [
 
+	converter classForConversion: aClass.
 	self
-		writeMethodsOf: aClass prefix: ' ';
-		writeMethodsOf: aClass class prefix: 'static '
-]
-
-{ #category : #transpiling }
-PjTranspiler >> writeMethodsOf: aClass prefix: prefix [
-
-	self withMethodsOf: aClass do: [ :method | 
-		(self shouldSkipMethodNode: method) ifFalse: [ 
-			self
-				nextPutAll: prefix;
-				transpileMethod: method;
-				cr ] ]
+		writeInstanceMethodsOf: aClass;
+		writeClassMethodsOf: aClass
 ]
 
 { #category : #transpiling }

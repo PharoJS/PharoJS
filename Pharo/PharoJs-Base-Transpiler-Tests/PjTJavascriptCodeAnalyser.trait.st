@@ -71,11 +71,6 @@ PjTJavascriptCodeAnalyser >> jsCode [
 	self explicitRequirement
 ]
 
-{ #category : #accessing }
-PjTJavascriptCodeAnalyser >> jsStream [
-	self explicitRequirement
-]
-
 { #category : #'test support' }
 PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 	| start aString end |
@@ -90,15 +85,4 @@ PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
 	end := self jsCode findString: (String with: self lineEnding) startingAt: start.
 	end = 0 ifTrue: [ end := self jsCode size + 1 ].
 	^ self jsCode copyFrom: start-1+aString size to: end-3
-]
-
-{ #category : #writing }
-PjTJavascriptCodeAnalyser >> writeJsSelector: aSelector onStream: aStream [
-	| isBinary |
-	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
-			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
-	isBinary := aSelector isBinary.
-	aStream nextPutAll: self pharoJsSelectorPrefix.
-	aSelector do:[ :each | 
-			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]

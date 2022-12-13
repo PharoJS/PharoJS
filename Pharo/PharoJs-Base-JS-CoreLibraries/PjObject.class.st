@@ -8,8 +8,8 @@ Methods from these classes are added to the built-in constructor prototypes or d
 Class {
 	#name : #PjObject,
 	#superclass : #Object,
-	#traits : 'PjTExtensionClass',
-	#classTraits : 'PjTExtensionClass classTrait',
+	#traits : 'PjTKernelClass',
+	#classTraits : 'PjTKernelClass classTrait',
 	#pools : [
 		'PjDomGlobals'
 	],

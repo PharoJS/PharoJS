@@ -58,6 +58,12 @@ PjTStreamWriter >> space [
 ]
 
 { #category : #writing }
+PjTStreamWriter >> writeJsSelector: aSelector [
+	self writeJsSelector: aSelector onStream: self
+
+]
+
+{ #category : #writing }
 PjTStreamWriter >> writeJsSelector: aSelector onStream: aStream [
 	| isBinary |
 	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 

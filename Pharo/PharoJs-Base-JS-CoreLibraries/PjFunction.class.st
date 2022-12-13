@@ -6,8 +6,8 @@ All the instance creation category *should* be in PjClass instead, but is here s
 Class {
 	#name : #PjFunction,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass',
-	#classTraits : 'PjTExtensionClass classTrait',
+	#traits : 'PjTKernelClass',
+	#classTraits : 'PjTKernelClass classTrait',
 	#instVars : [
 		'subclasses'
 	],
