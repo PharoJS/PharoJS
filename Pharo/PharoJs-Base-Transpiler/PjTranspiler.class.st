@@ -21,7 +21,9 @@ Class {
 		'beforeCodeOutputHook',
 		'shouldWriteDnu',
 		'poolsUsed',
-		'pharoJsSelectorPrefix'
+		'pharoJsSelectorPrefix',
+		'instanceMethodsAliasesDict',
+		'classMethodsAliasesDict'
 	],
 	#category : #'PharoJs-Base-Transpiler-Kernel'
 }
@@ -46,6 +48,12 @@ PjTranspiler class >> coreClass [
 	^ PjCore
 ]
 
+{ #category : #transpiling }
+PjTranspiler class >> installAllAliasesSelector [
+
+	^ #installAllAliases
+]
+
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
@@ -55,6 +63,22 @@ PjTranspiler class >> lineEnding [
 PjTranspiler class >> skipMethodPragmaKeyword [
 	"Methods with this pragma are skipped upon conversion to javascript."
 	^#pharoJsSkip
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> addAliasesForClassMethod: aRBMethodNode [
+
+	self
+		aliasesDict: classMethodsAliasesDict
+		addForMethod: aRBMethodNode
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> addAliasesForInstanceMethod: aRBMethodNode [
+
+	self
+		aliasesDict: instanceMethodsAliasesDict
+		addForMethod: aRBMethodNode
 ]
 
 { #category : #conversions }
@@ -77,6 +101,24 @@ PjTranspiler >> addAllOptionalConversionsExcept: low to: high [
 	discard := aCollection copyFrom: (low*aCollection size) asInteger+1 to: (high*aCollection size) asInteger.
 	self addAllConversions: (aCollection reject: [: each | discard includes: each ]).
 	discard inspect.
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> aliasesDict: aDict addForMethod: aRBMethodNode [
+	aRBMethodNode pragmas
+		select: [ :pragma | pragma selector beginsWith: #jsAlias: ]
+		thenDo: [ :pragma | 
+		self aliasesDict: aDict at: aRBMethodNode selector addAll: pragma arguments ]
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> aliasesDict: aliasesDict at: methodSelector addAll: newAliases [
+
+	| aliases |
+	aliases := aliasesDict
+		           at: methodSelector
+		           ifAbsentPut: [ Set new ].
+	aliases addAll: newAliases
 ]
 
 { #category : #accessing }
@@ -277,6 +319,11 @@ PjTranspiler >> initialize [
 	self pharoJsSelectorPrefix: '_'.
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> installAllAliasesSelector [
+	^self class installAllAliasesSelector
+]
+
 { #category : #'transpiling classes' }
 PjTranspiler >> installClassExtensionSelector [
 	^#installClassExtension
@@ -399,6 +446,13 @@ PjTranspiler >> removeAllConversions: aCollection [
 	converter removeAllConversions: aCollection
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> resetMethodAliasesDictionaries [
+	instanceMethodsAliasesDict := Dictionary new.
+	classMethodsAliasesDict := Dictionary new.
+
+]
+
 { #category : #accessing }
 PjTranspiler >> selectorsPrefix [
 	^ self pharoJsSelectorPrefix
@@ -476,31 +530,17 @@ PjTranspiler >> writeAddToSystemDictionaryClass: aClass [
 ]
 
 { #category : #'transpiling aliases' }
-PjTranspiler >> writeAliasPragmasOf: aRBMethodNode ownerString: ownerString [
+PjTranspiler >> writeAssociationKey: selector values: aliases [
 
-	aRBMethodNode pragmas
-		select: [ :pragma | pragma selector beginsWith: #jsAlias: ]
-		thenDo: [ :pragma | 
-		 self writeAliasesFrom: pragma ownerString: ownerString ]
-]
+self
+				<< $";
+				writeJsSelector: selector;
+				<< '":['.
+			aliases
+				do: [ :each | self print: each ]
+				separatedBy: [ self << $, ].
+			self << $] 
 
-{ #category : #'transpiling aliases' }
-PjTranspiler >> writeAliasesFrom: pragma ownerString: ownerString [
-
-	self
-		cr;
-		nextPutAll: 'static {'.
-	pragma arguments
-		do: [ :key | 
-			self
-				<< ownerString;
-				<< key;
-				<< $=;
-				<< ownerString;
-				writeJsSelector: pragma methodSelector;
-				<< $; ]
-		separatedBy: [ self cr ].
-	self nextPut: $}
 ]
 
 { #category : #'transpiling classes' }
@@ -520,10 +560,11 @@ PjTranspiler >> writeClassDeclarationOf: aClass [
 		writeNameForClass: aClass superclass
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeClassDefinitionOf: aClass [
 
 	self
+		resetMethodAliasesDictionaries;
 		writeClassDeclarationOf: aClass;
 		nextPut: ${;
 		cr;
@@ -533,7 +574,8 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		cr;
 		writeAddToSystemDictionaryClass: aClass;
 		cr.
-	aClass isClassExtension ifFalse: [ ^ self ].
+	aClass isClassExtension ifFalse: [ 
+		^ self writeInstallMethodAliasesOf: aClass ].
 	self
 		nextPutAll: 'Smalltalk.';
 		nextPutAll: self installClassExtensionSelector;
@@ -542,7 +584,8 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		nextPut: $,;
 		writeNameForClass: aClass;
 		nextPutAll: ');';
-		cr
+		cr;
+		writeInstallMethodAliasesOf: aClass
 ]
 
 { #category : #transpiling }
@@ -563,6 +606,12 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 		do: [ :aClass | self writeClassInitializeOf: aClass ]
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeClassMethodsAliasesDict [
+
+	self writeMethodAliasesDict: classMethodsAliasesDict
+]
+
 { #category : #'transpiling methods' }
 PjTranspiler >> writeClassMethodsOf: aClass [
 
@@ -570,7 +619,7 @@ PjTranspiler >> writeClassMethodsOf: aClass [
 		self
 			<< 'static ';
 			transpileMethod: aRBMethodNode;
-			writeAliasPragmasOf: aRBMethodNode ownerString: 'this.';
+			addAliasesForClassMethod:aRBMethodNode ;
 			cr ]
 ]
 
@@ -637,13 +686,39 @@ PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 		cr
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeInstallMethodAliasesOf: aClass [
+
+	(instanceMethodsAliasesDict isEmpty and: [ 
+		 classMethodsAliasesDict isEmpty ]) ifTrue: [ ^ self ].
+	self
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self installAllAliasesSelector;
+		<< $(;
+		writeInstanceMethodsAliasesDict;
+		<< $,;
+		writeClassMethodsAliasesDict;
+		<< $,;
+		writeNameForSubclass: aClass;
+		<< $,;
+		writeNameForClass: aClass;
+		<< ');';
+		cr
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeInstanceMethodsAliasesDict [
+	self writeMethodAliasesDict: instanceMethodsAliasesDict 
+]
+
 { #category : #'transpiling methods' }
 PjTranspiler >> writeInstanceMethodsOf: aClass [
 
 	self withMethodsNoSkipOf: aClass do: [ :aRBMethodNode | 
 		self
 			transpileMethod: aRBMethodNode;
-			writeAliasPragmasOf: aRBMethodNode ownerString: 'this.prototype.';
+			addAliasesForInstanceMethod: aRBMethodNode;
 			cr ]
 ]
 
@@ -657,6 +732,19 @@ PjTranspiler >> writeList: aCollection withPrefix: aString [
 	aCollection do: [: each |
 		self jsStream nextPutAll: aString;nextPutAll: each
 	]
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeMethodAliasesDict: aliasesDict [
+
+	self << ${.
+	aliasesDict keys
+		do: [ :selector | 
+			self
+				writeAssociationKey: selector
+				values: (aliasesDict at: selector) ]
+		separatedBy: [ self << $, ].
+	self << $}
 ]
 
 { #category : #'transpiling methods' }

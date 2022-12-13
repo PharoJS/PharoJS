@@ -153,6 +153,11 @@ PjExporter >> initializeWithAppClass: aClass [
 ]
 
 { #category : #writing }
+PjExporter >> installAllAliasesSelector [
+	^PjTranspiler installAllAliasesSelector
+]
+
+{ #category : #writing }
 PjExporter >> installClassExtensionSelector [
 	^self transpiler installClassExtensionSelector
 ]
@@ -302,6 +307,14 @@ PjExporter >> writeCoreObject [
 { #category : #writing }
 PjExporter >> writeCoreObjectBasicMethods [
 
+	self writeCoreObjectCopyMethod ;
+		writeCoreObjectInstallClassExtensionMethod;
+		writeCoreObjectInstallAliasesMethods
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreObjectCopyMethod [
+
 	self transpiler
 		cr;
 		<< 'global.';
@@ -321,7 +334,62 @@ PjExporter >> writeCoreObjectBasicMethods [
 	  );
     propertyNames.forEach((name)=>target[name]=source[name]);
 }';
+		cr
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreObjectCreation [
+
+	self transpiler
+		<< 'global.';
+		writeNameForClass: PjCore;
+		<< '=global.';
+		writeNameForClass: PjCore;
+		<< '??{};'
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreObjectInstallAliasesMethods [
+
+	| coreClassName |
+	coreClassName := PjCore instanceSide nameToUseForJsConversion.
+	self transpiler
+		<< coreClassName;
+		<<
+			'.installSelectorAliases=function(aliases, selector, source, target){
+		aliases.forEach((alias)=>{
+			target[alias] = source[selector];
+		});
+	}';
 		cr;
+		<< coreClassName;
+		<< '.installAliasesFromDict=function(aliasesDict, source, target){
+		for(let key of Object.getOwnPropertyNames(aliasesDict)){';
+		<< coreClassName;
+		<< '.installSelectorAliases(aliasesDict[key], key, source, target);
+	}}';
+		cr;
+		<< coreClassName;
+		<< $.;
+		<< self installAllAliasesSelector;
+		<<
+			'=function(instanceSideAliasesDict, classSideAliasesDict, sourceClass, targetClass){';
+		cr;
+		<< coreClassName;
+		<<
+			'.installAliasesFromDict(instanceSideAliasesDict, sourceClass.prototype, targetClass.prototype);';
+		cr;
+		<< coreClassName;
+		<<
+			'.installAliasesFromDict(classSideAliasesDict, sourceClass, targetClass);
+	}';
+		cr
+]
+
+{ #category : #writing }
+PjExporter >> writeCoreObjectInstallClassExtensionMethod [
+
+	self transpiler
 		writeNameForClass: PjCore;
 		<< $.;
 		<< self installClassExtensionSelector;
@@ -350,17 +418,6 @@ PjExporter >> writeCoreObjectBasicMethods [
 		writeClassVarsPoolName;
 		<< ');}';
 		cr
-]
-
-{ #category : #writing }
-PjExporter >> writeCoreObjectCreation [
-
-	self transpiler
-		<< 'global.';
-		writeNameForClass: PjCore;
-		<< '=global.';
-		writeNameForClass: PjCore;
-		<< '??{};'
 ]
 
 { #category : #writing }
