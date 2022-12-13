@@ -94,7 +94,7 @@ PjTranspiler >> classVarsPoolName [
 	^self class classVarsPoolName
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> convertAllClasses: classes [
 
 	| actualClassesToConvert classesInWriteOrder |
@@ -108,7 +108,7 @@ PjTranspiler >> convertAllClasses: classes [
 	self writeClassInitializeOfAll: classesInWriteOrder
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> convertAllClasses: classes writeDnu: aBoolean [
 	self 
 		enableWriteDnu: aBoolean
@@ -138,7 +138,7 @@ PjTranspiler >> convertBlock: aBlock [
 	^self generateCodeStringFrom: jsAst.
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> convertClass: aClass [
 
 	| actualClassToConvert |
@@ -277,7 +277,7 @@ PjTranspiler >> initialize [
 	self pharoJsSelectorPrefix: '_'.
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> installClassExtensionSelector [
 	^#installClassExtension
 ]
@@ -417,7 +417,7 @@ PjTranspiler >> should: first occurBefore: last with: doesReferenceBlock [
 	^ doesReferenceBlock value: first value: last
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> shouldSkipMethodNode: aRBMethodNode [
 	^aRBMethodNode hasPragmaNamed: self skipMethodPragmaKeyword
 ]
@@ -437,7 +437,7 @@ PjTranspiler >> skipMethodPragmaKeyword [
 	^self class skipMethodPragmaKeyword
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> transpileMethod: aMethod [
 	| jsAst |
 	jsAst := converter
@@ -446,24 +446,24 @@ PjTranspiler >> transpileMethod: aMethod [
 	generator asString: jsAst on: self jsStream
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> transpileMethodToString: aMethod [
 	^ self onTempStreamDo: [ self transpileMethod: aMethod ]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> withMethodsNoSkipOf: aClass do: aBlock [
 	self withMethodsOf: aClass do: [ :method | 
 		(self shouldSkipMethodNode: method) ifFalse: [aBlock value: method] ]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> withMethodsOf: aClass do: aBlock [
 	aClass selectorsWithExplicitOrigin do: [ : selector |
 		 aBlock value: (aClass compiledMethodAt: selector) ]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeAddToSystemDictionaryClass: aClass [
 
 	self 
@@ -475,7 +475,7 @@ PjTranspiler >> writeAddToSystemDictionaryClass: aClass [
 		cr		
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling aliases' }
 PjTranspiler >> writeAliasPragmasOf: aRBMethodNode ownerString: ownerString [
 
 	aRBMethodNode pragmas
@@ -484,7 +484,7 @@ PjTranspiler >> writeAliasPragmasOf: aRBMethodNode ownerString: ownerString [
 		 self writeAliasesFrom: pragma ownerString: ownerString ]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling aliases' }
 PjTranspiler >> writeAliasesFrom: pragma ownerString: ownerString [
 
 	self
@@ -503,7 +503,7 @@ PjTranspiler >> writeAliasesFrom: pragma ownerString: ownerString [
 	self nextPut: $}
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeClassDeclarationOf: aClass [
 
 	aClass isClassExtension ifFalse: [ 
@@ -563,7 +563,7 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 		do: [ :aClass | self writeClassInitializeOf: aClass ]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> writeClassMethodsOf: aClass [
 
 	self withMethodsNoSkipOf: aClass class do: [ :aRBMethodNode | 
@@ -628,7 +628,7 @@ PjTranspiler >> writeDnuList [
 	neededDNUs := Set new.
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 
 	self
@@ -637,7 +637,7 @@ PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 		cr
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> writeInstanceMethodsOf: aClass [
 
 	self withMethodsNoSkipOf: aClass do: [ :aRBMethodNode | 
@@ -659,7 +659,7 @@ PjTranspiler >> writeList: aCollection withPrefix: aString [
 	]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> writeMethodsOf: aClass [
 
 	converter classForConversion: aClass.
@@ -668,12 +668,12 @@ PjTranspiler >> writeMethodsOf: aClass [
 		writeClassMethodsOf: aClass
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeNameForClass: aClass [
 	self nextPutAll: aClass instanceSide nameToUseForJsConversion
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeNameForClassExtension: aClass [
 
 	self
@@ -681,7 +681,7 @@ PjTranspiler >> writeNameForClassExtension: aClass [
 		nextPutAll: '$ClassExtension'
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeNameForSubclass: aClass [
 
 	aClass isClassExtension ifFalse: [ ^ self writeNameForClass: aClass ].
