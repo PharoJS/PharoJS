@@ -66,6 +66,12 @@ PjTranspilationTest >> nilTestFunctionName [
 ]
 
 { #category : #accessing }
+PjTranspilationTest >> pharoJsSelectorPrefix [
+
+	^ transpiler pharoJsSelectorPrefix
+]
+
+{ #category : #accessing }
 PjTranspilationTest >> selectorsPrefix [
 	^  '_'
 ]
