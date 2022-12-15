@@ -264,7 +264,7 @@ PjExporter >> transpilerClass [
 	^ self class transpilerClass
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCore [
 
 	self writeCoreObject.
@@ -282,19 +282,15 @@ PjExporter >> writeCore [
 		cr
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreClass [
 
 	self transpiler
-		<< 'const ';
-		writeNameForClass: PjClass;
-		<< '={prototype:function(){}};';
-		cr;
 		convertMethodAsts: PjClass newClasses: Set new;
 		writeClassDefinitionOf: PjClass
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreObject [
 
 	self writeCoreObjectCreation.
@@ -304,7 +300,7 @@ PjExporter >> writeCoreObject [
 		writeClassDefinitionOf: PjCore
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreObjectBasicMethods [
 
 	self writeCoreObjectCopyMethod ;
@@ -312,7 +308,7 @@ PjExporter >> writeCoreObjectBasicMethods [
 		writeCoreObjectInstallAliasesMethods
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreObjectCopyMethod [
 
 	self transpiler
@@ -337,7 +333,7 @@ PjExporter >> writeCoreObjectCopyMethod [
 		cr
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreObjectCreation [
 
 	self transpiler
@@ -348,7 +344,7 @@ PjExporter >> writeCoreObjectCreation [
 		<< '??{};'
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreObjectInstallAliasesMethods [
 
 	| coreClassName |
@@ -386,7 +382,7 @@ PjExporter >> writeCoreObjectInstallAliasesMethods [
 		cr
 ]
 
-{ #category : #writing }
+{ #category : #'writing core' }
 PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 
 	self transpiler

@@ -298,6 +298,11 @@ PjTranspiler >> findClassesFor: aClass [
 	^ { aClass }, aClass allSuperclasses
 ]
 
+{ #category : #'transpiling classes' }
+PjTranspiler >> fixMetaclassOfSelector [
+	^#fixMetaclassOf:
+]
+
 { #category : #transpiling }
 PjTranspiler >> generateCodeStringFrom: jsAst [
 	generator asString: jsAst on: self jsStream
@@ -354,6 +359,12 @@ PjTranspiler >> moveHighestPriorityClassesIn: initialClasses to: orderedClasses 
 	(nextClasses includes: PjObject) ifTrue: [ nextClasses size > 1 ifTrue: [self halt] ].
 	initialClasses removeAll: nextClasses.
 	orderedClasses addAll: nextClasses.
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> needMetaclassFixFor: aClass [
+
+	^aClass == PjClass or: [aClass isClassExtension]
 ]
 
 { #category : #outputing }
@@ -574,8 +585,16 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		cr;
 		writeAddToSystemDictionaryClass: aClass;
 		cr.
-	aClass isClassExtension ifFalse: [ 
-		^ self writeInstallMethodAliasesOf: aClass ].
+	self
+		writeClassExtensionSpecicsOf: aClass;
+		writeInstallMethodAliasesOf: aClass;
+		writeFixMetaclassOf: aClass
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeClassExtensionSpecicsOf: aClass [
+
+	aClass isClassExtension ifFalse: [^self].
 	self
 		nextPutAll: 'Smalltalk.';
 		nextPutAll: self installClassExtensionSelector;
@@ -584,8 +603,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		nextPut: $,;
 		writeNameForClass: aClass;
 		nextPutAll: ');';
-		cr;
-		writeInstallMethodAliasesOf: aClass
+		cr
 ]
 
 { #category : #transpiling }
@@ -684,6 +702,19 @@ PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
 		writeClassDeclarationOf: aClass;
 		nextPutAll: '{}';
 		cr
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeFixMetaclassOf: aClass [
+
+	(self needMetaclassFixFor: aClass) ifFalse: [ ^self ].
+	self
+		writeNameForClass: self coreClass;
+		<< $.;
+		writeJsSelector: self fixMetaclassOfSelector;
+		<< $(;
+		writeNameForClass: aClass;
+		<< ');'
 ]
 
 { #category : #'transpiling aliases' }

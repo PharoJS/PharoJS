@@ -23,13 +23,6 @@ PjClass class >> hasClassMethod_jsGenerator: transpiler [
 ]
 
 { #category : #'pharoJs support' }
-PjClass class >> isClassExtension [
-
-	<pharoJsSkip>
-	^true
-]
-
-{ #category : #'pharoJs support' }
 PjClass class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
