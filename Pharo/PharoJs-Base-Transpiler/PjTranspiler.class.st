@@ -364,7 +364,7 @@ PjTranspiler >> moveHighestPriorityClassesIn: initialClasses to: orderedClasses 
 { #category : #'transpiling classes' }
 PjTranspiler >> needMetaclassFixFor: aClass [
 
-	^aClass == PjClass or: [aClass isClassExtension]
+	^ aClass isClassExtension
 ]
 
 { #category : #outputing }
@@ -584,8 +584,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		nextPut: $};
 		cr;
 		writeAddToSystemDictionaryClass: aClass;
-		cr.
-	self
+		cr;
 		writeClassExtensionSpecicsOf: aClass;
 		writeInstallMethodAliasesOf: aClass;
 		writeFixMetaclassOf: aClass

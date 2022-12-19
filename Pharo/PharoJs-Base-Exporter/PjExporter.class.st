@@ -313,12 +313,6 @@ PjExporter >> writeCoreObjectCopyMethod [
 
 	self transpiler
 		cr;
-		<< 'global.';
-		writeNameForClass: PjCore;
-		<< $.;
-		<< self pharoJsSelectorPrefix;
-		<< 'require=global.require;';
-		cr;
 		writeNameForClass: PjCore;
 		<< $.;
 		<< self copyMethodsSelector;

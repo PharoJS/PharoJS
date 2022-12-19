@@ -45,7 +45,7 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 	self assertInstanceMethod: #foo equals: '(){return 42}'.
 	self
 		assert: (jsCode splitOn:
-				 'i$(function ' , self pharoJsSelectorPrefix , 'foo') size
+				 self pharoJsSelectorPrefix , 'foo') size
 		equals: 2
 ]
 

@@ -349,6 +349,14 @@ PjCore class >> registerDnuForAll: anArray [
 	anArray js_forEach: [ : each | self registerDnu: each ]
 ]
 
+{ #category : #importing }
+PjCore class >> require: moduleName [
+
+	<jsAlias: #require>
+	<javascript: 'return require(moduleName);'>
+	^ global require: moduleName
+]
+
 { #category : #'doesNotUnderstand support' }
 PjCore class >> selector: selector arguments: args [
 	<jsGenerator: #selector_arguments_jsGenerator:>

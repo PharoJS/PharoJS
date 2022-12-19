@@ -44,7 +44,7 @@ PjTJavascriptCodeAnalyser >> assertInstanceMethod: method equals: aString [
 { #category : #'test support' }
 PjTJavascriptCodeAnalyser >> classMethod: aSymbol [
 
-	^ self method: aSymbol prefix: 'static'
+	^ self method: aSymbol prefix: 'static '
 ]
 
 { #category : #accessing }
@@ -78,9 +78,9 @@ PjTJavascriptCodeAnalyser >> method: aSymbol prefix: prefixString [
 
 	| start aString end |
 	aString := String streamContents: [ :aStream | 
-		           aStream 
-							<<  self lineEnding; 
-							<< prefixString.
+		           aStream
+			           << self lineEnding;
+			           << prefixString.
 		           self writeJsSelector: aSymbol onStream: aStream.
 		           aStream << $( ].
 	start := self jsCode findString: aString.
@@ -89,5 +89,5 @@ PjTJavascriptCodeAnalyser >> method: aSymbol prefix: prefixString [
 		       findString: (String with: self lineEnding)
 		       startingAt: start + 1.
 	end = 0 ifTrue: [ end := self jsCode size + 1 ].
-	^ self jsCode copyFrom: start + aString size + 2 to: end - 2
+	^ self jsCode copyFrom: start + aString size -1 to: end - 1
 ]
