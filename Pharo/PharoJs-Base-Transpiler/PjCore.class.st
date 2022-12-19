@@ -34,17 +34,13 @@ PjCore class >> emptyJavascriptObject [
 PjCore class >> fixMetaclassOf: aClass [
 
 	aClass == self ifTrue: [ ^ self ].
-	aClass == PjClass ifTrue: [ 
-		^ PjObject js_setPrototypeOf: aClass with: PjFunction ].
 	aClass == PjObject ifTrue: [ 
 		^ PjObject
 			  js_setPrototypeOf: aClass
 			  with: (PjClass js_at: #prototype) ].
 	(PjObject js_getPrototypeOf: aClass)
 	== (PjFunction js_at: #prototype) ifTrue: [ 
-		^ PjObject
-			  js_setPrototypeOf: aClass
-			  with: PjObject ]
+		^ PjObject js_setPrototypeOf: aClass with: PjObject ]
 ]
 
 { #category : #'doesNotUnderstand support' }

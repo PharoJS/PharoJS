@@ -43,7 +43,8 @@ PjTJavascriptCodeAnalyser >> assertInstanceMethod: method equals: aString [
 
 { #category : #'test support' }
 PjTJavascriptCodeAnalyser >> classMethod: aSymbol [
-	^ self method: aSymbol of: 'c$'
+
+	^ self method: aSymbol prefix: 'static'
 ]
 
 { #category : #accessing }
@@ -63,7 +64,8 @@ PjTJavascriptCodeAnalyser >> does: actualString includes: expectedSubString [
 
 { #category : #'test support' }
 PjTJavascriptCodeAnalyser >> instanceMethod: aSymbol [
-	^ self method: aSymbol of: 'i$'
+
+	^ self method: aSymbol prefix: ''
 ]
 
 { #category : #accessing }
@@ -72,17 +74,20 @@ PjTJavascriptCodeAnalyser >> jsCode [
 ]
 
 { #category : #'test support' }
-PjTJavascriptCodeAnalyser >> method: aSymbol of: methodOwner [
+PjTJavascriptCodeAnalyser >> method: aSymbol prefix: prefixString [
+
 	| start aString end |
-	aString := String streamContents: [: aStream |
-		aStream nextPutAll: methodOwner.
-		aStream nextPutAll: '(function '.
-		self writeJsSelector: aSymbol onStream: aStream.
-		aStream nextPut: $( 
-	].
+	aString := String streamContents: [ :aStream | 
+		           aStream 
+							<<  self lineEnding; 
+							<< prefixString.
+		           self writeJsSelector: aSymbol onStream: aStream.
+		           aStream << $( ].
 	start := self jsCode findString: aString.
 	start = 0 ifTrue: [ ^ nil ].
-	end := self jsCode findString: (String with: self lineEnding) startingAt: start.
+	end := self jsCode
+		       findString: (String with: self lineEnding)
+		       startingAt: start + 1.
 	end = 0 ifTrue: [ end := self jsCode size + 1 ].
-	^ self jsCode copyFrom: start-1+aString size to: end-3
+	^ self jsCode copyFrom: start + aString size + 2 to: end - 2
 ]
