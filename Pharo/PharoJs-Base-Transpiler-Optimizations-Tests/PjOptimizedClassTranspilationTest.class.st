@@ -25,9 +25,9 @@ PjOptimizedClassTranspilationTest >> testBlockTempNames [
 PjOptimizedClassTranspilationTest >> testBlocksAndReturns [
 	self jsCode: (self convertClass: PjClassForTranspilationTest).
 	self assertInstanceMethod: #whileNotAtEnd
-		equals: '(){this._m_(function(x){while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return 42}'.
+		equals: '(){this._m_((x)=>{while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return 42}'.
 	self assertInstanceMethod: #whileAtEnd
-		equals: '(){this._m_(function(x){while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return this}'.
+		equals: '(){this._m_((x)=>{while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return this}'.
 ]
 
 { #category : #testing }

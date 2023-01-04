@@ -303,13 +303,13 @@ PjExporter >> writeCoreObject [
 { #category : #'writing core' }
 PjExporter >> writeCoreObjectBasicMethods [
 
-	self writeCoreObjectCopyMethod ;
+	self writeCoreObjectCopyMethods ;
 		writeCoreObjectInstallClassExtensionMethod;
 		writeCoreObjectInstallAliasesMethods
 ]
 
 { #category : #'writing core' }
-PjExporter >> writeCoreObjectCopyMethod [
+PjExporter >> writeCoreObjectCopyMethods [
 
 	self transpiler
 		cr;
@@ -321,8 +321,11 @@ PjExporter >> writeCoreObjectCopyMethod [
 			/\b';
 		<< self pharoJsSelectorPrefix;
 		<< '/.test(each)
-	  );
-    propertyNames.forEach((name)=>target[name]=source[name]);
+	  ); 
+    propertyNames.forEach('.
+	self writePropertyDefinitionFunctionFrom: 'source' to: 'target'.
+	self transpiler
+		<< ');
 }';
 		cr
 ]
@@ -347,9 +350,10 @@ PjExporter >> writeCoreObjectInstallAliasesMethods [
 		<< coreClassName;
 		<<
 			'.installSelectorAliases=function(aliases, selector, source, target){
-		aliases.forEach((alias)=>{
-			target[alias] = source[selector];
-		});
+		aliases.forEach('.
+		self writePropertyDefinitionFunctionFrom: 'source' at: 'selector' to: 'target'. 
+	self transpiler 
+		<< ');
 	}';
 		cr;
 		<< coreClassName;
@@ -453,4 +457,37 @@ PjExporter >> writeNonBootstrapClasses [
 	self transpiler
 		convertAllClasses: self nonBootstrapClasses
 		writeDnu: true
+]
+
+{ #category : #'writing core' }
+PjExporter >> writePropertyDefinitionFunctionFrom: sourceString at: sourceSelector to: targetString [
+
+	self
+		writePropertyDefinitionFunctionFrom: sourceString
+		at: sourceSelector 
+		to: targetString
+		at: 'name'
+]
+
+{ #category : #'writing core' }
+PjExporter >> writePropertyDefinitionFunctionFrom: sourceString at: sourceSelector to: targetString at: targetSelector [
+
+	self transpiler
+		<< '(';
+		<< targetSelector;
+		<< ')=>Object.defineProperty(';
+		<< targetString;
+		<< ',';
+		<< targetSelector;
+		<< ',{value:';
+		<< sourceString;
+		<< '[';
+		<< sourceSelector;
+		<< '],configurable:true})'
+]
+
+{ #category : #'writing core' }
+PjExporter >> writePropertyDefinitionFunctionFrom: sourceString to: targetString [
+
+	self writePropertyDefinitionFunctionFrom: sourceString at: 'name' to: targetString at: 'name'
 ]

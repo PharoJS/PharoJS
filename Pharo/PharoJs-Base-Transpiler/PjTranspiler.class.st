@@ -585,13 +585,13 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		cr;
 		writeAddToSystemDictionaryClass: aClass;
 		cr;
-		writeClassExtensionSpecicsOf: aClass;
+		writeClassExtensionSpecificsOf: aClass;
 		writeInstallMethodAliasesOf: aClass;
 		writeFixMetaclassOf: aClass
 ]
 
 { #category : #'transpiling classes' }
-PjTranspiler >> writeClassExtensionSpecicsOf: aClass [
+PjTranspiler >> writeClassExtensionSpecificsOf: aClass [
 
 	aClass isClassExtension ifFalse: [^self].
 	self

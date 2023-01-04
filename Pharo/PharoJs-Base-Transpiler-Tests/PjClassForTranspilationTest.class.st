@@ -59,6 +59,18 @@ PjClassForTranspilationTest class >> instanceMethod_jsGenerator: transpiler [
 ]
 
 { #category : #'pharojs support' }
+PjClassForTranspilationTest class >> isClassExtension [
+	^false
+]
+
+{ #category : #'pharojs support' }
+PjClassForTranspilationTest class >> javascriptName [
+
+	<pharoJsSkip>
+	^ #JsClass
+]
+
+{ #category : #'pharojs support' }
 PjClassForTranspilationTest class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^ {
