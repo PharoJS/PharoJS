@@ -97,33 +97,6 @@ PjFileExporter >> writeInto: fileReference match: string startingWith: beginning
 ]
 
 { #category : #files }
-PjFileExporter >> writeInto: f startingWith: beginning  do: aBlock [
-
-	| match |
-	self
-		jsStream: f
-		do: [ beginning
-				ifNotNil: [ self
-						nextPutAll: beginning;
-						cr ].
-			self
-				nextPutAll: match;
-				nextPutAll: ' on ';
-				nextPutAll: DateAndTime now asString.
-			OSPlatform current environment at: 'LOGNAME' ifPresent: [: name |
-				self nextPutAll: ' by ';nextPutAll: name
-			] ifAbsent: [
-				OSPlatform current environment at: 'USER' ifPresent: [: name |
-					self nextPutAll: ' by ';nextPutAll: name
-				] ifAbsent: [
-					OSPlatform current environment at: 'USERNAME' ifPresent: [: name |
-						self nextPutAll: ' by ';nextPutAll: name]]].
-			self cr.
-			self nextPutAll: '''use strict'';';cr.
-			aBlock value: f ]
-]
-
-{ #category : #files }
 PjFileExporter >> writeJavascriptFileNamed: aFileName [
 	"Delete file first, because Windows can't open it for writing later when the file is open."
 	

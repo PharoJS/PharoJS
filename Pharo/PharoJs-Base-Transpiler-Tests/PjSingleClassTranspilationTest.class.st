@@ -14,7 +14,7 @@ PjSingleClassTranspilationTest >> classToTranspile [
 
 { #category : #accessing }
 PjSingleClassTranspilationTest >> expectedClassName [
-	^'JsClass'
+	^classToTranspile nameToUseForJsConversion
 ]
 
 { #category : #running }
@@ -28,7 +28,7 @@ PjSingleClassTranspilationTest >> setUp [
 
 { #category : #tests }
 PjSingleClassTranspilationTest >> testBlockReferencingSelf [
-	self assertInstanceMethod: #blocksReferencingSelf equals: '(){var ',PjStringGenerator selfName,'=this;(function(){return ',PjStringGenerator selfName,'});return this}'
+	self assertInstanceMethod: #blocksReferencingSelf equals: '(){var ',PjStringGenerator selfName,'=this;(()=>{return ',PjStringGenerator selfName,'});return this}'
 ]
 
 { #category : #tests }
@@ -63,9 +63,9 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 	superclassName := transpiler poolReference: PjSuperClassForTranspilationTest for: self classToTranspile.
 	self assertClassMethod: #c1 equals: '(){return this}'.
 	self assertClassMethod: #c2 equals: '(){return this}'.
-	self assertClassMethod: #initialize equals: '(){cp$.A="testA";return this}'.
+	self assertClassMethod: #initialize equals: '(){', className, '.cp$.A="testA";return this}'.
 	self assertClassMethod: #m1 equals: '(){',
-		'cp$.X=cp$.$prototype;',
+		className, '.cp$.X='className, '.cp$.$prototype;',
 		superclassName,'.S=',superclassName,'.S;',
 		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
@@ -85,7 +85,7 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 	sharedPoolName := transpiler poolReference: PjSharedPoolForTest for: self classToTranspile.
 	superclassName := transpiler poolReference: PjSuperClassForTranspilationTest for: self classToTranspile.
 	self assertInstanceMethod: #m1 equals: '(){',
-		'cp$.X=cp$.$prototype;',
+		className, '.cp$.X=', className, 'cp$.$prototype;',
 		superclassName,'.S=',superclassName,'.S;',
 		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
@@ -100,8 +100,10 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 
 { #category : #tests }
 PjSingleClassTranspilationTest >> testMethodAlias [
-	self assert: self jsCode includes: 'i$(function _alias(){return 42},''myAlias'')'.
-	self assert: self jsCode includes: 'i$(function _alias2(){return 21},''myAlias2'',''andAlias2'')'.
+	self assert: self jsCode includes: 'Smalltalk.installAllAliases({'.
+	self assert: self jsCode includes: '"_alias":["myAlias"]'.
+	self assert: self jsCode includes: '"_alias2":["andAlias2","myAlias2"]'.
+
 ]
 
 { #category : #tests }

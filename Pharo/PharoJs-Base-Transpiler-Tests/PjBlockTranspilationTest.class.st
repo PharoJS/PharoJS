@@ -37,7 +37,7 @@ PjBlockTranspilationTest >> openBlock: x [
 PjBlockTranspilationTest >> testBlock1Arg [
 	self 
 		assertStBlock: [ :x | 123]
-		convertsTo: '(function(x){return 123})'
+		convertsTo: '((x)=>{return 123})'
 ]
 
 { #category : #tests }
