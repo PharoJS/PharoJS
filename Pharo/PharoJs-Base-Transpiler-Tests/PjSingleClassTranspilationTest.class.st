@@ -85,7 +85,7 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 	sharedPoolName := transpiler poolReference: PjSharedPoolForTest for: self classToTranspile.
 	superclassName := transpiler poolReference: PjSuperClassForTranspilationTest for: self classToTranspile.
 	self assertInstanceMethod: #m1 equals: '(){',
-		className, '.cp$.X=', className, 'cp$.$prototype;',
+		className, '.cp$.X=', className, '.cp$.$prototype;',
 		superclassName,'.S=',superclassName,'.S;',
 		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.

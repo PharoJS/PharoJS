@@ -18,6 +18,6 @@ PjPrefixForTranspilationTest >> selectorsPrefix [
 PjPrefixForTranspilationTest >> testPrefix [
 	| pjPrefix |
 	pjPrefix := self selectorsPrefix.
-	self assert: self jsCode includes: 'i$(function ',pjPrefix,'literal(){'.
-	self assert: self jsCode includes: 'c$(function ',pjPrefix,'literal(){'.
+	self assert: self jsCode includes: pjPrefix,'literal(){'.
+	self assert: self jsCode includes: 'static ',pjPrefix,'literal(){'.
 ]

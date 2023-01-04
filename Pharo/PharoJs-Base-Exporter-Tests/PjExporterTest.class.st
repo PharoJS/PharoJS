@@ -96,7 +96,7 @@ PjExporterTest >> testImportMethodsFromPharo [
 PjExporterTest >> testJsSelector [
 	| contents |
 	contents := (PjTestFileExporter exportApp: PjTestClassForPolyfill) contents.
-	self assert: (contents includesSubstring: 'function alt_m(').
+	self assert: (contents includesSubstring: 'alt_m(').
 ]
 
 { #category : #testing }

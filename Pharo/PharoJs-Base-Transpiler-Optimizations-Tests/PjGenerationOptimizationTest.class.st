@@ -242,7 +242,7 @@ PjGenerationOptimizationTest >> testSequence [
 	self
 		assert: inputAst
 		asStringEquals:
-			'(function(){if(true==1){2;if(false==1){2};return 3}else{return function(){2;return 3}};2;return 3})'.
+			'(()=>{if(true==1){2;if(false==1){2};return 3}else{return ()=>{2;return 3}};2;return 3})'.
 	inputAst := PjBlockNode
 		parameters: #(a)
 		locals: #(d)
@@ -261,7 +261,7 @@ PjGenerationOptimizationTest >> testSequence [
 			(PjReturnNode expression: (PjArgumentNode identifier: #a))}.
 	self
 		assert: inputAst
-		asStringEquals: '(function(a){var d;if(true==false){d=true};d=false;return a})'.
+		asStringEquals: '((a)=>{var d;if(true==false){d=true};d=false;return a})'.
 	inputAst := PjBlockNode
 		parameters: #(a)
 		locals: #(d)
@@ -275,7 +275,7 @@ PjGenerationOptimizationTest >> testSequence [
 			(PjReturnNode expression: (PjArgumentNode identifier: #a))}.
 	self
 		assert: inputAst
-		asStringEquals: '(function(a){var d;if(true==false){};d=false;return a})'
+		asStringEquals: '((a)=>{var d;if(true==false){};d=false;return a})'
 ]
 
 { #category : #testing }
