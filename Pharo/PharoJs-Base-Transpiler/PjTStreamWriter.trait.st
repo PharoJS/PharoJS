@@ -22,6 +22,12 @@ PjTStreamWriter >> cr [
 	self jsStream nextPut: self lineEnding
 ]
 
+{ #category : #'writing low-level' }
+PjTStreamWriter >> crtab [
+
+	self jsStream crtab
+]
+
 { #category : #accessing }
 PjTStreamWriter >> jsNativePrefix [
 	^ self class jsNativePrefix

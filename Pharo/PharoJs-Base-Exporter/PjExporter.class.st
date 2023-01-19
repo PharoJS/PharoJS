@@ -118,12 +118,38 @@ PjExporter >> cr [
 	jsStream lf
 ]
 
+{ #category : #'writing low-level' }
+PjExporter >> crtab [
+
+	jsStream cr; tab
+]
+
 { #category : #writing }
 PjExporter >> dnuHook [
 
 	^ [ 
 	  self writeGlobalsPolyfills: nil.
 	  true ]
+]
+
+{ #category : #'writing core' }
+PjExporter >> fixMetaclassOfMethodDefinition [
+	^'function(aClass)
+{
+  if (aClass === this) { return this; }
+  if (aClass === Object) {
+    return Object.setPrototypeOf(aClass, PjClass.prototype);
+  }
+  if (Object.getPrototypeOf(aClass) === Function.prototype){ 
+    return Object.setPrototypeOf(aClass, Object);
+  }
+}'
+]
+
+{ #category : #'transpiling classes' }
+PjExporter >> fixMetaclassOfSelector [
+
+	^ #fixMetaclassOf
 ]
 
 { #category : #accessing }
@@ -160,6 +186,11 @@ PjExporter >> installAllAliasesSelector [
 { #category : #writing }
 PjExporter >> installClassExtensionSelector [
 	^self transpiler installClassExtensionSelector
+]
+
+{ #category : #'writing core' }
+PjExporter >> installClassSelector [
+	^self transpiler installClassSelector
 ]
 
 { #category : #testing }
@@ -303,7 +334,10 @@ PjExporter >> writeCoreObject [
 { #category : #'writing core' }
 PjExporter >> writeCoreObjectBasicMethods [
 
-	self writeCoreObjectCopyMethods ;
+	self
+		writeCoreObjectCopyMethods;
+		writeFixMetaclassOfMethod;
+		writeCoreObjectInstallClassMethod;
 		writeCoreObjectInstallClassExtensionMethod;
 		writeCoreObjectInstallAliasesMethods
 ]
@@ -338,7 +372,7 @@ PjExporter >> writeCoreObjectCreation [
 		writeNameForClass: PjCore;
 		<< '=global.';
 		writeNameForClass: PjCore;
-		<< '??{};'
+		<< '??class extends Object{};'
 ]
 
 { #category : #'writing core' }
@@ -387,30 +421,80 @@ PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 		writeNameForClass: PjCore;
 		<< $.;
 		<< self installClassExtensionSelector;
-		<< '=function(extensionClass,targetClass){';
-		cr;
-		writeNameForClass: PjCore;
-		<< $.;
+		<<
+			'=function(extensionClass,targetClass,instanceSideAliasesDict,classSideAliasesDict){';
+		crtab;
+		<< 'this.';
 		<< self copyMethodsSelector;
 		<< '(extensionClass.prototype, targetClass.prototype);';
-		cr;
-		writeNameForClass: PjCore;
-		<< $.;
+		crtab;
+		<< 'this.';
 		<< self copyMethodsSelector;
 		<< '(extensionClass, targetClass);';
-		cr;
+		crtab;
 		<< 'targetClass.';
 		writeClassVarsPoolName;
 		<< '=';
 		<< 'targetClass.';
 		writeClassVarsPoolName;
 		<< '??{};';
-		cr;
+		crtab;
 		<< 'Object.assign(targetClass.';
 		writeClassVarsPoolName;
 		<< ', extensionClass.';
 		writeClassVarsPoolName;
-		<< ');}';
+		<< ');';
+		crtab;
+		<< 'this.';
+		<< self installAllAliasesSelector;
+		<<
+			'(instanceSideAliasesDict, classSideAliasesDict, extensionClass, targetClass);';
+		crtab;
+		<< 'this.';
+		<< self fixMetaclassOfSelector;
+		<< '(targetClass);';
+		cr;
+		<< $};
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectInstallClassMethod [
+
+	self transpiler
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self installClassSelector;
+		<<
+			'=function(newClass,instanceSideAliasesDict,classSideAliasesDict){';
+		crtab;
+		<< 'this.';
+		<< self installAllAliasesSelector;
+		<<
+			'(instanceSideAliasesDict, classSideAliasesDict, newClass, newClass);';
+		crtab;
+		<< 'this.';
+		<< self fixMetaclassOfSelector;
+		<< '(newClass);';
+		crtab;
+		<< 'this[newClass.name]=newClass;';
+		crtab;
+		<< 'global[newClass.name]=newClass;';
+		cr;
+		<< $};
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeFixMetaclassOfMethod [
+
+	self transpiler
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self fixMetaclassOfSelector;
+		<< $=;
+		<< self fixMetaclassOfMethodDefinition;
+		<< $; ;
 		cr
 ]
 

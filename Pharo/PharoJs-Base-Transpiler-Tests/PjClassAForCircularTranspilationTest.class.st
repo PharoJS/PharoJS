@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Tests-Support'
 }
 
-{ #category : #any }
+{ #category : #'pharoJs support' }
 PjClassAForCircularTranspilationTest class >> javascriptName [
 	^#A
 ]

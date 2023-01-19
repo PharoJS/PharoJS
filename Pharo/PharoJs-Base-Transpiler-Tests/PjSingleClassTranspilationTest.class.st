@@ -100,7 +100,6 @@ PjSingleClassTranspilationTest >> testInstanceSideMethods [
 
 { #category : #tests }
 PjSingleClassTranspilationTest >> testMethodAlias [
-	self assert: self jsCode includes: 'Smalltalk.installAllAliases({'.
 	self assert: self jsCode includes: '"_alias":["myAlias"]'.
 	self assert: self jsCode includes: '"_alias2":["andAlias2","myAlias2"]'.
 

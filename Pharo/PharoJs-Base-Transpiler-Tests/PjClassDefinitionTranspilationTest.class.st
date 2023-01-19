@@ -16,5 +16,5 @@ PjClassDefinitionTranspilationTest >> expectedClassName [
 
 { #category : #tests }
 PjClassDefinitionTranspilationTest >> testClassDefinedAsConstructor [
-	self assert: self jsCode includes: 'class ', className, ' extends Object{};'.
+	self assert: self jsCode includes: 'class ', className, ' extends Object{'.
 ]

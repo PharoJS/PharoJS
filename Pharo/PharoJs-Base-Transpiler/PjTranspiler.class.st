@@ -298,11 +298,6 @@ PjTranspiler >> findClassesFor: aClass [
 	^ { aClass }, aClass allSuperclasses
 ]
 
-{ #category : #'transpiling classes' }
-PjTranspiler >> fixMetaclassOfSelector [
-	^#fixMetaclassOf:
-]
-
 { #category : #transpiling }
 PjTranspiler >> generateCodeStringFrom: jsAst [
 	generator asString: jsAst on: self jsStream
@@ -332,6 +327,19 @@ PjTranspiler >> installAllAliasesSelector [
 { #category : #'transpiling classes' }
 PjTranspiler >> installClassExtensionSelector [
 	^#installClassExtension
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> installClassSelector [
+	^#installClass
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> installSelectorFor: aClass [
+
+	^ aClass isClassExtension
+		  ifTrue: [ self installClassExtensionSelector ]
+		  ifFalse: [ self installClassSelector ]
 ]
 
 { #category : #accessing }
@@ -528,18 +536,6 @@ PjTranspiler >> withMethodsOf: aClass do: aBlock [
 		 aBlock value: (aClass compiledMethodAt: selector) ]
 ]
 
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeAddToSystemDictionaryClass: aClass [
-
-	self 
-		nextPutAll: 'Smalltalk.';
-		writeNameForClass: aClass;
-		nextPutAll: '=';
-		writeNameForClass: aClass;
-		nextPut: $;;
-		cr		
-]
-
 { #category : #'transpiling aliases' }
 PjTranspiler >> writeAssociationKey: selector values: aliases [
 
@@ -557,16 +553,13 @@ self
 { #category : #'transpiling classes' }
 PjTranspiler >> writeClassDeclarationOf: aClass [
 
-	aClass isClassExtension ifFalse: [ 
+	self << 'class'.
+	aClass isClassExtension ifTrue: [^self]. 
 		self
-			<< 'global.';
+			space;
 			writeNameForSubclass: aClass;
-			<< $= ].
-	self
-		<< 'class ';
-		writeNameForSubclass: aClass;
-		space;
-		<< 'extends';
+			space;
+			<< 'extends';
 		space;
 		writeNameForClass: aClass superclass
 ]
@@ -574,20 +567,27 @@ PjTranspiler >> writeClassDeclarationOf: aClass [
 { #category : #'transpiling classes' }
 PjTranspiler >> writeClassDefinitionOf: aClass [
 
+	self resetMethodAliasesDictionaries.
 	self
-		resetMethodAliasesDictionaries;
+		writeNameForClass: PjCore;
+		<< '.';
+		<< (self installSelectorFor: aClass);
+		<< $(;
 		writeClassDeclarationOf: aClass;
-		nextPut: ${;
+		<< ${;
 		cr;
 		writeMethodsOf: aClass;
 		writeClassVariableDeclarationsOf: aClass;
-		nextPut: $};
-		cr;
-		writeAddToSystemDictionaryClass: aClass;
-		cr;
-		writeClassExtensionSpecificsOf: aClass;
-		writeInstallMethodAliasesOf: aClass;
-		writeFixMetaclassOf: aClass
+		<< '},'.
+	aClass isClassExtension ifTrue: [ 
+		self
+			writeNameForClass: aClass;
+			<< $, ].
+	self
+		writeInstanceMethodsAliasesDict;
+		<< $,;
+		writeClassMethodsAliasesDict;
+		<< ');'
 ]
 
 { #category : #'transpiling classes' }
@@ -694,28 +694,6 @@ PjTranspiler >> writeDnuList [
 	neededDNUs := Set new.
 ]
 
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeEmptyClassDefinitionOf: aClass [
-
-	self
-		writeClassDeclarationOf: aClass;
-		nextPutAll: '{}';
-		cr
-]
-
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeFixMetaclassOf: aClass [
-
-	(self needMetaclassFixFor: aClass) ifFalse: [ ^self ].
-	self
-		writeNameForClass: self coreClass;
-		<< $.;
-		writeJsSelector: self fixMetaclassOfSelector;
-		<< $(;
-		writeNameForClass: aClass;
-		<< ');'
-]
-
 { #category : #'transpiling aliases' }
 PjTranspiler >> writeInstallMethodAliasesOf: aClass [
 
@@ -804,4 +782,21 @@ PjTranspiler >> writeNameForSubclass: aClass [
 
 	aClass isClassExtension ifFalse: [ ^ self writeNameForClass: aClass ].
 	self writeNameForClassExtension: aClass
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeWrapperWith: aBlock forDefinitionOfClass: aClass [
+
+	aClass isClassExtension ifTrue: [self
+		nextPutAll: 'Smalltalk.';
+		nextPutAll: self installClassExtensionSelector;
+		nextPut: $(.
+ ].
+	aBlock value.
+	aClass isClassExtension ifTrue: [ 
+		self 		nextPut: $,;
+		writeNameForClass: aClass;
+		nextPutAll: ');';
+		cr
+		 ]
 ]
