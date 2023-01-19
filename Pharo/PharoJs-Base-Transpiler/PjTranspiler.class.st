@@ -54,6 +54,16 @@ PjTranspiler class >> installAllAliasesSelector [
 	^ #installAllAliases
 ]
 
+{ #category : #'transpiling classes' }
+PjTranspiler class >> installClassExtensionSelector [
+	^#installClassExtension
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler class >> installClassSelector [
+	^#installClass
+]
+
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
@@ -326,12 +336,14 @@ PjTranspiler >> installAllAliasesSelector [
 
 { #category : #'transpiling classes' }
 PjTranspiler >> installClassExtensionSelector [
-	^#installClassExtension
+
+	^ self class installClassExtensionSelector
 ]
 
 { #category : #'transpiling classes' }
 PjTranspiler >> installClassSelector [
-	^#installClass
+
+	^ self class installClassSelector
 ]
 
 { #category : #'transpiling classes' }

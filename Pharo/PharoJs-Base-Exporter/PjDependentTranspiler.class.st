@@ -170,10 +170,11 @@ PjDependentTranspiler >> initialize [
 PjDependentTranspiler >> invalidateClass: aClass [
 
 	convertedClasses remove: aClass ifAbsent: [  ].
-	self
-		invalidateMethods: aClass classToUseForJsConversion instanceSide methods.
-	self
-		invalidateMethods: aClass classToUseForJsConversion classSide methods
+	alreadyDefinedClasses remove: aClass ifAbsent: [  ].
+	self invalidateMethods:
+		aClass classToUseForJsConversion instanceSide methods.
+	self invalidateMethods:
+		aClass classToUseForJsConversion classSide methods
 ]
 
 { #category : #invalidating }

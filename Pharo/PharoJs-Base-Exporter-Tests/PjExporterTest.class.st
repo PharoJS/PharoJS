@@ -51,21 +51,32 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 
 { #category : #testing }
 PjExporterTest >> testClassInheritanceOrder [
-	exporter initializeWithAppClass: PjApplication.
+
+	exporter initializeWithAppClass: PjDOMApplication.
 	jsCode := exporter javascriptCode.
-	self assert: 'Object.', self pharoJsSelectorPrefix, 'subclass_(Error)' precedes: 'Error.', exporter transpiler pharoJsSelectorPrefix, 'subclass_'
+	self assert: 'class PjApplication' precedes: 'class PjDOMApplication'
 ]
 
 { #category : #testing }
 PjExporterTest >> testCoreClassedLoaded [
-	|pjPrefix|
+
+	| pjPrefix |
 	exporter initializeWithAppClass: PjApplication.
 	pjPrefix := self pharoJsSelectorPrefix. " has to be done after an application has been set "
 	jsCode := exporter javascriptCode.
-	self assert: (jsCode includesSubstring: 'Object.', pjPrefix, 'subclass_("PjApplication")' ).
-	self deny: (jsCode includesSubstring: 'function Object()' ).
-	self assert: (jsCode includes: 'c$(function ', pjPrefix, 'new' before: 'PjApplication' ).
-	self deny: (jsCode includes: 'PjApplication' before: 'c$(function ',pjPrefix,'new' ).
+	self assert: (jsCode includesSubstring:
+			 'installClass(class PjClass extends Function{').
+	self assert: (jsCode includesSubstring:
+			 'installClass(class PjApplication extends Object{').
+	self deny: (jsCode includesSubstring: 'class Object').
+	self assert: (jsCode includes: 'PjClass' before: 'PjApplication').
+	self assert: (jsCode
+			 includes: PjTranspiler installClassSelector , '=function('
+			 before: 'PjApplication').
+	self assert: (jsCode
+			 includes:
+			 PjTranspiler installClassExtensionSelector , '=function('
+			 before: 'PjApplication')
 ]
 
 { #category : #testing }

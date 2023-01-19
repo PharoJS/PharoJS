@@ -453,6 +453,10 @@ PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 		<< 'this.';
 		<< self fixMetaclassOfSelector;
 		<< '(targetClass);';
+		crtab;
+		<< 'this[targetClass.name]=targetClass;';
+		crtab;
+		<< 'global[targetClass.name]=targetClass;';
 		cr;
 		<< $};
 		cr

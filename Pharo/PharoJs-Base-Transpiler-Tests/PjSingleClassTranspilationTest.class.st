@@ -41,19 +41,21 @@ PjSingleClassTranspilationTest >> testCascade [
 
 { #category : #tests }
 PjSingleClassTranspilationTest >> testClassAndPoolVariableDefinition [
+
 	| sharedPoolVarsHolder superVarsHolder |
-	sharedPoolVarsHolder := '$', PjSharedPoolForTest nameToUseForJsConversion.
-	superVarsHolder := '$', PjSuperClassForTranspilationTest nameToUseForJsConversion.
-	self assert: self jsCode includes: className, '.$$def('.
+	sharedPoolVarsHolder := PjSharedPoolForTest nameToUseForJsConversion
+	                        , '.cp$'.
+	superVarsHolder := PjSuperClassForTranspilationTest
+		                   nameToUseForJsConversion , '.cp$'.
 	self assert: self jsCode includes: 'cp$.X=cp$.'.
 	self deny: self jsCode includes: '$$.X'.
 	self deny: self jsCode includes: 'S=null'.
 	self deny: self jsCode includes: '.document='.
-	self assert: self jsCode includes: sharedPoolVarsHolder,'.C'.
-	self assert: self jsCode includes: superVarsHolder,'.B'.
-	self assert: self jsCode includes: superVarsHolder,'.S'.
+	self assert: self jsCode includes: sharedPoolVarsHolder , '.C'.
+	self assert: self jsCode includes: superVarsHolder , '.B'.
+	self assert: self jsCode includes: superVarsHolder , '.S'.
 	self deny: self jsCode includes: 'cp$.S'.
-	self assert: self jsCode includes: '=cp$.A'.
+	self assert: self jsCode includes: '=cp$.A'
 ]
 
 { #category : #tests }
@@ -65,7 +67,7 @@ PjSingleClassTranspilationTest >> testClassSideMethods [
 	self assertClassMethod: #c2 equals: '(){return this}'.
 	self assertClassMethod: #initialize equals: '(){', className, '.cp$.A="testA";return this}'.
 	self assertClassMethod: #m1 equals: '(){',
-		className, '.cp$.X='className, '.cp$.$prototype;',
+		className, '.cp$.X=', className, '.cp$.$prototype;',
 		superclassName,'.S=',superclassName,'.S;',
 		sharedPoolName,'.C=',sharedPoolName,'.C;',
 		'return this}'.
