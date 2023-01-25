@@ -309,12 +309,13 @@ PjCore class >> pharoJsSelectorPrefix_jsGenerator: transpiler [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> propertySet: func [
-	<javascript:
-	'return {
+
+	<javascript: 'return {
 		enumerable: false,
-		configurable: false,
+		configurable: true,
 		writable: true,
 		value: func}'>
+	
 ]
 
 { #category : #'doesNotUnderstand support' }

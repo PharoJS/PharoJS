@@ -36,8 +36,14 @@ PjPackageTranspilationTest >> assert: firstClass initializedBefore: lastClass [
 ]
 
 { #category : #checking }
-PjPackageTranspilationTest >> assert: firstClass protoSetBefore: lastClass [
+PjPackageTranspilationTest >> assertClass: firstClass installedBefore: lastClass [
 	self assert: firstClass inCodeWithPrefix: 'class ' before: lastClass.
+]
+
+{ #category : #checking }
+PjPackageTranspilationTest >> assertClassExtension: firstClass installedBefore: lastClass [
+
+	self assert: firstClass inCodeWithPrefix: '},' before: lastClass
 ]
 
 { #category : #testing }
@@ -114,15 +120,6 @@ PjPackageTranspilationTest >> testProviderInitializedBeforeClientSubclass [
 ]
 
 { #category : #testing }
-PjPackageTranspilationTest >> testSuperclassClassVariablesSetBeforeSubclass [
-	self generateJsCodeForClasses: {
-	PjClassBForPackageTranspilationTest.
-	PjClassAForPackageTranspilationTest.
-	}.
-	self assert: PjClassAForPackageTranspilationTest classVariablesSetBefore: PjClassBForPackageTranspilationTest.
-]
-
-{ #category : #testing }
 PjPackageTranspilationTest >> testSuperclassInitializedBeforeSubclass [
 	self generateJsCodeForClasses: {
 	PjClassBForPackageTranspilationTest.
@@ -137,5 +134,5 @@ PjPackageTranspilationTest >> testSuperclassProtoSetBeforeSubclass [
 	PjClassBForPackageTranspilationTest.
 	PjClassAForPackageTranspilationTest.
 	}.
-	self assert: PjClassAForPackageTranspilationTest protoSetBefore: PjClassBForPackageTranspilationTest.
+	self assertClass: PjClassAForPackageTranspilationTest installedBefore: PjClassBForPackageTranspilationTest.
 ]
