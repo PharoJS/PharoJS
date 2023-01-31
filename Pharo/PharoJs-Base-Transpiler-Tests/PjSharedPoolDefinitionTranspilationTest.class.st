@@ -15,8 +15,24 @@ PjSharedPoolDefinitionTranspilationTest >> expectedClassName [
 ]
 
 { #category : #tests }
+PjSharedPoolDefinitionTranspilationTest >> expectedFullClassDefinition [
+
+	| superclassName |
+	superclassName := self classToTranspile superclass
+		                  nameToUseForJsConversion.
+	^ 'Smalltalk.installClass(class {1} extends {2}\{
+static _initialize()\{{1}.cp$.A="sharedA";{1}.cp$.B="sharedB";{1}.cp$.C="sharedC";return this\}
+static cp$=\{"C":null,"X":null,"A":null,"B":null\}\},\{\},\{\});{1}._initialize();
+' format: { 
+			  className.
+			  superclassName }
+]
+
+{ #category : #tests }
 PjSharedPoolDefinitionTranspilationTest >> testClassVariables [
-	self assert: self jsCode includes: className, '.$$def('.
-	self assert: self jsCode includes: 'cp$.A=cp$.B=cp$.C=cp$.X=null;'.
-	self assert: self jsCode includes: 'cp$.A="sharedA"'.
+
+	
+	self
+		assert: self jsCode
+		includes: self expectedFullClassDefinition 
 ]

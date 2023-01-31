@@ -658,10 +658,10 @@ PjTranspiler >> writeClassVarNamesOf: aClass [
 	aClass classPool keys
 		do: [ :classVarName | 
 			self
-				nextPut: $" ;
+				nextPut: $";
 				nextPutAll: classVarName;
-				nextPut: $" ;
-				nextPutAll: ': null' ]
+				nextPut: $";
+				nextPutAll: ':null' ]
 		separatedBy: [ self nextPut: $, ]
 ]
 

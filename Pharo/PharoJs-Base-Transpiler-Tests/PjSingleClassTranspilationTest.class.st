@@ -42,20 +42,24 @@ PjSingleClassTranspilationTest >> testCascade [
 { #category : #tests }
 PjSingleClassTranspilationTest >> testClassAndPoolVariableDefinition [
 
-	| sharedPoolVarsHolder superVarsHolder |
+	| sharedPoolVarsHolder superVarsHolder classVarHolder |
 	sharedPoolVarsHolder := PjSharedPoolForTest nameToUseForJsConversion
 	                        , '.cp$'.
 	superVarsHolder := PjSuperClassForTranspilationTest
 		                   nameToUseForJsConversion , '.cp$'.
-	self assert: self jsCode includes: 'cp$.X=cp$.'.
-	self deny: self jsCode includes: '$$.X'.
-	self deny: self jsCode includes: 'S=null'.
-	self deny: self jsCode includes: '.document='.
-	self assert: self jsCode includes: sharedPoolVarsHolder , '.C'.
+	classVarHolder := self expectedClassName, '.cp$'. 
+	self assert: self jsCode includes: '"A":null'.
+	self assert: self jsCode includes: classVarHolder , '.A'.
+	self deny: self jsCode includes: sharedPoolVarsHolder , '.A'.
+	self assert: self jsCode includes: '"X":null'.
+	self assert: self jsCode includes: classVarHolder , '.X'.
+	self deny: self jsCode includes: sharedPoolVarsHolder , '.X'.
+	self deny: self jsCode includes: '"B":null'.
 	self assert: self jsCode includes: superVarsHolder , '.B'.
-	self assert: self jsCode includes: superVarsHolder , '.S'.
-	self deny: self jsCode includes: 'cp$.S'.
-	self assert: self jsCode includes: '=cp$.A'
+	self deny: self jsCode includes: sharedPoolVarsHolder , '.B'.
+	self deny: self jsCode includes: '"C":null'.
+	self assert: self jsCode includes: sharedPoolVarsHolder , '.C'.
+
 ]
 
 { #category : #tests }
