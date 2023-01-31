@@ -102,8 +102,9 @@ PjLoggingEvaluatorWebsocketDelegate >> onClose: event [
 
 { #category : #'socket - event handling' }
 PjLoggingEvaluatorWebsocketDelegate >> onError: event [
+
 	super onError: event.
-	self log: 'Error.'
+	self log: 'Error: ' , event message
 ]
 
 { #category : #'socket - event handling' }
