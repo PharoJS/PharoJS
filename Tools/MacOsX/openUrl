@@ -1,0 +1,26 @@
+#!/bin/bash
+# This is a workaround to 
+
+if [ $# -lt 2 ] || [ $# -gt 3 ]; then
+    echo "Usage: openUrl <url> <browserName|default> [background]"
+    exit 0
+fi
+
+currentFolder=$(dirname "$0")
+if [[ $2 == "default" ]]; then
+    echo "Looking for default browser"
+    browserName=$(${currentFolder}/defaultBrowserName)
+    echo Default browser is $browserName
+else
+    browserName=$2
+fi
+
+if [[ "$3" == "background" ]]; then
+    backgroundFlag=$3
+else
+    backgroundFlag="foreground"
+fi
+
+openUrlAppleScript="${currentFolder}/openUrl.scpt"
+
+osascript $openUrlAppleScript $1 "${browserName}" $backgroundFlag
