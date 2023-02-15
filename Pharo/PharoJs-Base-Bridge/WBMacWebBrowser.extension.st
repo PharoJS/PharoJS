@@ -1,7 +1,7 @@
 Extension { #name : #WBMacWebBrowser }
 
 { #category : #'*PharoJs-Base-Bridge' }
-WBMacWebBrowser class >> openBrowser: browserName on: anURLString inBackground: backgroundFlag [
+WBMacWebBrowser class >> openBrowser: browserName on: urlString inBackground: backgroundFlag [
 
 	"Open the webbrowser on the given URL
 	self openBrowser: 'Firefox' on: 'http://pharojs.org' inBackground: false.
@@ -11,28 +11,23 @@ WBMacWebBrowser class >> openBrowser: browserName on: anURLString inBackground: 
 	The backgroundFlag is true when the window of the browser should open behind the Pharo window.
 	"
 
-	| openCommand backgroundCommandFlag browserCommandFlag |
-	backgroundCommandFlag := backgroundFlag
-		                         ifTrue: [ ' -g ' ]
-		                         ifFalse: [ '' ].
-	browserCommandFlag := browserName
-		                      ifNil: [ '' ]
-		                      ifNotNil: [ ' -a "{2}" ' ].
-	openCommand := 'open "{1}" ' , backgroundCommandFlag
-	               , browserCommandFlag format: { 
-			               anURLString.
-			               browserName }.
-	self system: openCommand
-]
-
-{ #category : #'*PharoJs-Base-Bridge' }
-WBMacWebBrowser class >> openInBackgroundUrl: urlString [
-
-	| command |
-	command := 'open -a {1} -g {2}' format: { 
-			           PjBrowserBridgeClient defaultWebBrowserName.
-			           urlString }.
-	^ self system: command
+	| openScriptPath backgroundCommand browserCommandName command |
+	backgroundCommand := backgroundFlag
+		                     ifTrue: [ 'background' ]
+		                     ifFalse: [ '' ].
+	browserCommandName := browserName ifNil: [ 'default' ]. 
+	openScriptPath := PjApplication repositoryPath / 'Tools' / 'MacOsX'
+	                  / 'openUrl'.
+	command := String streamContents: [ :str | 
+		           str
+			           << openScriptPath pathString;
+			           space;
+			           << urlString;
+			           space;
+			           << browserCommandName;
+			           space;
+			           << backgroundCommand ].
+	self system: command
 ]
 
 { #category : #'*PharoJs-Base-Bridge' }
