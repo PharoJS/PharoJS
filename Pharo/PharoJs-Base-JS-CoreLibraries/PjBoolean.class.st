@@ -4,8 +4,8 @@ I represent the Javascript Boolean type.  Many of my operations may be optimized
 Class {
 	#name : #PjBoolean,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass',
-	#classTraits : 'PjTExtensionClass classTrait',
+	#traits : 'PjTKernelClass',
+	#classTraits : 'PjTKernelClass classTrait',
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 

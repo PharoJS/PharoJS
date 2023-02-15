@@ -10,7 +10,6 @@ Class {
 		'convertedClasses',
 		'alreadyDefinedClasses',
 		'alreadyInitializedClasses',
-		'alreadyInheritanceLinkedClasses',
 		'alreadyVariablesDeclaredClasses',
 		'globalPools'
 	],
@@ -163,7 +162,6 @@ PjDependentTranspiler >> initialize [
 	convertedClasses := Set new.
 	alreadyDefinedClasses := Set new.
 	alreadyInitializedClasses := Set new.
-	alreadyInheritanceLinkedClasses := Set new.
 	alreadyVariablesDeclaredClasses := Set new.
 	globalPools := Set new.
 ]
@@ -172,10 +170,11 @@ PjDependentTranspiler >> initialize [
 PjDependentTranspiler >> invalidateClass: aClass [
 
 	convertedClasses remove: aClass ifAbsent: [  ].
-	self
-		invalidateMethods: aClass classToUseForJsConversion instanceSide methods.
-	self
-		invalidateMethods: aClass classToUseForJsConversion classSide methods
+	alreadyDefinedClasses remove: aClass ifAbsent: [  ].
+	self invalidateMethods:
+		aClass classToUseForJsConversion instanceSide methods.
+	self invalidateMethods:
+		aClass classToUseForJsConversion classSide methods
 ]
 
 { #category : #invalidating }
@@ -233,13 +232,6 @@ PjDependentTranspiler >> writeClassDefinitionOf: aClass [
 
 	alreadyDefinedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
 	super writeClassDefinitionOf: aClass
-]
-
-{ #category : #transpiling }
-PjDependentTranspiler >> writeClassInheritanceLinksOf: aClass [
-
-	alreadyInheritanceLinkedClasses addIfNotPresent: aClass ifPresentDo: [ ^ self ].
-	super writeClassInheritanceLinksOf: aClass
 ]
 
 { #category : #transpiling }

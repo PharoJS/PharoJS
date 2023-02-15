@@ -12,8 +12,20 @@ PjTStreamWriter classSide >> jsNativePrefix [
 ]
 
 { #category : #'writing low-level' }
+PjTStreamWriter >> << aString [
+
+	self jsStream << aString
+]
+
+{ #category : #'writing low-level' }
 PjTStreamWriter >> cr [
 	self jsStream nextPut: self lineEnding
+]
+
+{ #category : #'writing low-level' }
+PjTStreamWriter >> crtab [
+
+	self jsStream crtab
 ]
 
 { #category : #accessing }
@@ -49,6 +61,12 @@ PjTStreamWriter >> print: anObject [
 { #category : #'writing low-level' }
 PjTStreamWriter >> space [
 	self jsStream space
+]
+
+{ #category : #writing }
+PjTStreamWriter >> writeJsSelector: aSelector [
+	self writeJsSelector: aSelector onStream: self
+
 ]
 
 { #category : #writing }

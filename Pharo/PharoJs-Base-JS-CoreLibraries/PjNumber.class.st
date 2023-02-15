@@ -4,8 +4,8 @@ I represent the Javascript Number type.  I am the implementation for Integer, Fl
 Class {
 	#name : #PjNumber,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass + PjTMagnitude',
-	#classTraits : 'PjTExtensionClass classTrait + PjTMagnitude classTrait',
+	#traits : 'PjTKernelClass + PjTMagnitude',
+	#classTraits : 'PjTKernelClass classTrait + PjTMagnitude classTrait',
 	#classVars : [
 		'E',
 		'Epsilon',

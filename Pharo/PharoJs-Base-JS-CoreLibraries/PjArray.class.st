@@ -4,8 +4,8 @@ I represent the Javascript Array type.  I am the implementation for Arrays and O
 Class {
 	#name : #PjArray,
 	#superclass : #PjObject,
-	#traits : 'PjTArray + PjTExtensionClass',
-	#classTraits : 'PjTArray classTrait + PjTExtensionClass classTrait',
+	#traits : 'PjTArray + PjTKernelClass',
+	#classTraits : 'PjTArray classTrait + PjTKernelClass classTrait',
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 

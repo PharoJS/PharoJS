@@ -4,12 +4,12 @@ An extension class is a class that provides methods to augment a javascript cons
 The convention is to name extension classes after the javascript constructor, prefixed by 'Pj'.
 "
 Trait {
-	#name : #PjTExtensionClass,
+	#name : #PjTKernelClass,
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
 { #category : #'pharoJs support' }
-PjTExtensionClass classSide >> javascriptName [
+PjTKernelClass classSide >> javascriptName [
 	<pharoJsSkip>
 	^ (self name allButFirst: 2) asSymbol
 ]

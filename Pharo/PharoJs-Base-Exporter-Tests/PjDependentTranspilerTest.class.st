@@ -6,10 +6,11 @@ Class {
 
 { #category : #testing }
 PjDependentTranspilerTest >> testBootstrapClasses [
+
 	transpiler alreadyConvertedClasses: { PjCore }.
-	self generateJsCodeForClasses: PjExporter bootstrapClasses..
-	self assert: PjObject protoSetBefore: PjString.
-	self assert: PjObject protoSetBefore: PjError.
+	self generateJsCodeForClasses: PjExporter bootstrapClasses.
+	self assertClassExtension: PjObject installedBefore: PjString.
+	self assertClassExtension: PjObject installedBefore: PjError
 ]
 
 { #category : #testing }
@@ -18,9 +19,9 @@ PjDependentTranspilerTest >> testClassOrdering [
 	self generateJsCodeForClasses: {
 		PjAlternateClassForTranspilationTest.
 	}.
-	self assert: PjSuperClassForTranspilationTest protoSetBefore: PjAlternateClassForTranspilationTest.
-	self assert: PjSharedPoolForTest protoSetBefore: PjSuperClassForTranspilationTest.
-	self assert: PjClassEForPackageTranspilationTest protoSetBefore: PjAlternateClassForTranspilationTest.
+	self assertClass: PjSuperClassForTranspilationTest installedBefore: PjAlternateClassForTranspilationTest.
+	self assertClass: PjSharedPoolForTest installedBefore: PjSuperClassForTranspilationTest.
+	self assertClass: PjClassEForPackageTranspilationTest installedBefore: PjAlternateClassForTranspilationTest.
 	self assert: PjSharedPoolForTest initializedBefore: PjAlternateClassForTranspilationTest.
 ]
 

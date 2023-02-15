@@ -259,10 +259,6 @@ PjStringGenerator >> visitApplyNode: aPjApplyNode [
 	self atPrecedence: FunctionCallPrecedence do: [
 		self visit: func.
 		args ifNotNil: [
-			(func isSuperSend ) ifTrue: [
-				args := { PjSelfNode new inBlock: func target inBlock }, args.
-				self nextPutAll: '.call'
-			].
 			self atPrecedence: ExpressionPrecedence  do: [
 				args do: [: arg |
 					arg acceptVisitor: self
@@ -391,15 +387,10 @@ PjStringGenerator >> visitFieldNodeWithId: fieldId [
 
 { #category : #visiting }
 PjStringGenerator >> visitFunctionNode: aPjFunctionNode [
-	self visitFunctionNode: aPjFunctionNode includeName: false
-]
 
-{ #category : #visiting }
-PjStringGenerator >> visitFunctionNode: aPjFunctionNode includeName: aBoolean [
-	self atPrecedence: FunctionDefnPrecedence do: [
-		self writeFunctionHeader: aPjFunctionNode includeName: aBoolean.
-		self writeFunctionBody: aPjFunctionNode
-	]
+	self atPrecedence: FunctionDefnPrecedence do: [ 
+		self writeFunctionHeader: aPjFunctionNode.
+		self writeFunctionBody: aPjFunctionNode ]
 ]
 
 { #category : #visiting }
@@ -427,12 +418,18 @@ PjStringGenerator >> visitMessageSelectorNode: aPjMessageSelectorNode [
 
 { #category : #visiting }
 PjStringGenerator >> visitMethodNode: aPjMethodNode [
+
 	| savedClass |
 	savedClass := currentClass.
+	[ 
 	currentClass := aPjMethodNode myClass.
-	[
-		self visitFunctionNode: aPjMethodNode includeName: true
-	] ensure: [ currentClass := savedClass ]
+	self writeJsSelector: aPjMethodNode methodName.
+	self
+		nextPut: $(;
+		writeSafeNames: aPjMethodNode parameters;
+		nextPut: $).
+	self writeFunctionBody: aPjMethodNode ] ensure: [ 
+		currentClass := savedClass ]
 ]
 
 { #category : #visiting }
@@ -512,13 +509,7 @@ PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
 
 { #category : #visiting }
 PjStringGenerator >> visitSuperNode: aPjSuperNode [
-	| class |
-	class := aPjSuperNode myClass superclass.
-	class isMeta
-		ifTrue: [ self nextPutAll: class instanceSide nameToUseForJsConversion ]
-		ifFalse: [ self
-				nextPutAll: class nameToUseForJsConversion;
-				nextPutAll: '.prototype' ]
+	self nextPutAll: 'super'
 ]
 
 { #category : #visiting }
@@ -585,18 +576,12 @@ PjStringGenerator >> writeFunctionBody: aPjFunctionNode [
 ]
 
 { #category : #writing }
-PjStringGenerator >> writeFunctionHeader: aPjFunctionNode includeName: aBoolean [
-	self
-		nextPutAll: 'function'.
-	aBoolean ifTrue: [
-		self
-			nextPut: $ ;
-			writeJsSelector: aPjFunctionNode methodName onStream: self
-	].
+PjStringGenerator >> writeFunctionHeader: aPjFunctionNode [
+
 	self
 		nextPut: $(;
 		writeSafeNames: aPjFunctionNode parameters;
-		nextPut: $).
+		nextPut: $); nextPutAll: '=>'
 ]
 
 { #category : #writing }
@@ -613,17 +598,6 @@ PjStringGenerator >> writeFunctionLocals: aPjFunctionNode [
 				nextPutAll: '=this'
 		].
 		self nextPut: $;
-]
-
-{ #category : #writing }
-PjStringGenerator >> writeJsSelector: aSelector onStream: aStream [
-	| isBinary |
-	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
-			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
-	isBinary := aSelector isBinary.
-	aStream nextPutAll: self pharoJsSelectorPrefix.
-	aSelector do:[ :each | 
-			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]
 
 { #category : #writing }

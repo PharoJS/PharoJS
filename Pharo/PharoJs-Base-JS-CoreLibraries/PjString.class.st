@@ -4,8 +4,8 @@ strings in Javascript world
 Class {
 	#name : #PjString,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass + PjTArray',
-	#classTraits : 'PjTExtensionClass classTrait + PjTArray classTrait',
+	#traits : 'PjTKernelClass + PjTArray',
+	#classTraits : 'PjTKernelClass classTrait + PjTArray classTrait',
 	#pools : [
 		'PjDomGlobals'
 	],

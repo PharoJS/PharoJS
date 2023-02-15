@@ -15,7 +15,7 @@ Class {
 { #category : #'accessing - defaults' }
 PjBrowserBridgeClient class >> defaultWebBrowserName [
 
-	^ defaultWebBrowserName ifNil: [ self safari ]
+	^ defaultWebBrowserName ifNil: [ 'default' ]
 ]
 
 { #category : #'accessing - defaults' }

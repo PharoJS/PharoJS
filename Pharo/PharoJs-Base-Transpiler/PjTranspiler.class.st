@@ -21,7 +21,9 @@ Class {
 		'beforeCodeOutputHook',
 		'shouldWriteDnu',
 		'poolsUsed',
-		'pharoJsSelectorPrefix'
+		'pharoJsSelectorPrefix',
+		'instanceMethodsAliasesDict',
+		'classMethodsAliasesDict'
 	],
 	#category : #'PharoJs-Base-Transpiler-Kernel'
 }
@@ -29,6 +31,11 @@ Class {
 { #category : #accessing }
 PjTranspiler class >> classVariablesHolderName [
 	^ PjStringGenerator classVariablesHolderName
+]
+
+{ #category : #transpiling }
+PjTranspiler class >> classVarsPoolName [
+	^'cp$'
 ]
 
 { #category : #transpiling }
@@ -41,6 +48,22 @@ PjTranspiler class >> coreClass [
 	^ PjCore
 ]
 
+{ #category : #transpiling }
+PjTranspiler class >> installAllAliasesSelector [
+
+	^ #installAllAliases
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler class >> installClassExtensionSelector [
+	^#installClassExtension
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler class >> installClassSelector [
+	^#installClass
+]
+
 { #category : #accessing }
 PjTranspiler class >> lineEnding [
 	^Character cr
@@ -50,6 +73,22 @@ PjTranspiler class >> lineEnding [
 PjTranspiler class >> skipMethodPragmaKeyword [
 	"Methods with this pragma are skipped upon conversion to javascript."
 	^#pharoJsSkip
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> addAliasesForClassMethod: aRBMethodNode [
+
+	self
+		aliasesDict: classMethodsAliasesDict
+		addForMethod: aRBMethodNode
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> addAliasesForInstanceMethod: aRBMethodNode [
+
+	self
+		aliasesDict: instanceMethodsAliasesDict
+		addForMethod: aRBMethodNode
 ]
 
 { #category : #conversions }
@@ -74,6 +113,24 @@ PjTranspiler >> addAllOptionalConversionsExcept: low to: high [
 	discard inspect.
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> aliasesDict: aDict addForMethod: aRBMethodNode [
+	aRBMethodNode pragmas
+		select: [ :pragma | pragma selector beginsWith: #jsAlias: ]
+		thenDo: [ :pragma | 
+		self aliasesDict: aDict at: aRBMethodNode selector addAll: pragma arguments ]
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> aliasesDict: aliasesDict at: methodSelector addAll: newAliases [
+
+	| aliases |
+	aliases := aliasesDict
+		           at: methodSelector
+		           ifAbsentPut: [ Set new ].
+	aliases addAll: newAliases
+]
+
 { #category : #accessing }
 PjTranspiler >> beforeCodeOutputHook: aBlockClosure [ 
 	beforeCodeOutputHook := aBlockClosure
@@ -85,20 +142,25 @@ PjTranspiler >> classVariablesHolderName [
 ]
 
 { #category : #transpiling }
+PjTranspiler >> classVarsPoolName [
+	^self class classVarsPoolName
+]
+
+{ #category : #'transpiling classes' }
 PjTranspiler >> convertAllClasses: classes [
+
 	| actualClassesToConvert classesInWriteOrder |
 	beforeCodeOutputHook ifNotNil: [ beforeCodeOutputHook value ].
-	actualClassesToConvert := classes asIdentitySet collect: #classToUseForJsConversion.
+	actualClassesToConvert := classes asIdentitySet collect:
+		                          #classToUseForJsConversion.
 	classesInWriteOrder := self orderForWriting: actualClassesToConvert.
-	classesInWriteOrder
-		do: [ :aClass | 
-			self writeClassInheritanceLinksOf: aClass.
-			self writeMethodsOf: aClass ].
+	classesInWriteOrder do: [ :aClass | 
+		self writeClassDefinitionOf: aClass. ].
 	self writeDnuList.
 	self writeClassInitializeOfAll: classesInWriteOrder
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> convertAllClasses: classes writeDnu: aBoolean [
 	self 
 		enableWriteDnu: aBoolean
@@ -128,13 +190,13 @@ PjTranspiler >> convertBlock: aBlock [
 	^self generateCodeStringFrom: jsAst.
 ]
 
-{ #category : #transpiling }
-PjTranspiler >> convertClass: aClass [ 
-	| actualClassToConvert | 
+{ #category : #'transpiling classes' }
+PjTranspiler >> convertClass: aClass [
+
+	| actualClassToConvert |
 	actualClassToConvert := aClass classToUseForJsConversion.
-	self writeClassInheritanceLinksOf: actualClassToConvert.
-	self writeMethodsOf: actualClassToConvert.
-	self writeClassInitializeOf: actualClassToConvert.
+	self writeClassDefinitionOf: actualClassToConvert.
+	self writeClassInitializeOf: actualClassToConvert
 ]
 
 { #category : #transpiling }
@@ -267,6 +329,31 @@ PjTranspiler >> initialize [
 	self pharoJsSelectorPrefix: '_'.
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> installAllAliasesSelector [
+	^self class installAllAliasesSelector
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> installClassExtensionSelector [
+
+	^ self class installClassExtensionSelector
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> installClassSelector [
+
+	^ self class installClassSelector
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> installSelectorFor: aClass [
+
+	^ aClass isClassExtension
+		  ifTrue: [ self installClassExtensionSelector ]
+		  ifFalse: [ self installClassSelector ]
+]
+
 { #category : #accessing }
 PjTranspiler >> jsCode [
 	^ self jsStream contents trim
@@ -292,6 +379,12 @@ PjTranspiler >> moveHighestPriorityClassesIn: initialClasses to: orderedClasses 
 	(nextClasses includes: PjObject) ifTrue: [ nextClasses size > 1 ifTrue: [self halt] ].
 	initialClasses removeAll: nextClasses.
 	orderedClasses addAll: nextClasses.
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> needMetaclassFixFor: aClass [
+
+	^ aClass isClassExtension
 ]
 
 { #category : #outputing }
@@ -375,26 +468,20 @@ PjTranspiler >> poolFor: myClass [
 
 { #category : #transpiling }
 PjTranspiler >> poolReference: aClass for: myClass [
-	| index pool |
-	myClass ifNil: [
-		index := 0
-	] ifNotNil: [
-		pool := self poolFor: myClass.
-		(pool includes: aClass) ifFalse: [
-			pool add: aClass
-		].
-		index := pool indexOf: aClass.
-	].
-	^ index < 2 ifTrue: [
-			'cp$'
-		] ifFalse: [
-			'$',aClass name
-		]
+
+	^ aClass nameToUseForJsConversion, '.',  self classVarsPoolName
 ]
 
 { #category : #conversions }
 PjTranspiler >> removeAllConversions: aCollection [ 
 	converter removeAllConversions: aCollection
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> resetMethodAliasesDictionaries [
+	instanceMethodsAliasesDict := Dictionary new.
+	classMethodsAliasesDict := Dictionary new.
+
 ]
 
 { #category : #accessing }
@@ -415,7 +502,7 @@ PjTranspiler >> should: first occurBefore: last with: doesReferenceBlock [
 	^ doesReferenceBlock value: first value: last
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> shouldSkipMethodNode: aRBMethodNode [
 	^aRBMethodNode hasPragmaNamed: self skipMethodPragmaKeyword
 ]
@@ -435,7 +522,7 @@ PjTranspiler >> skipMethodPragmaKeyword [
 	^self class skipMethodPragmaKeyword
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> transpileMethod: aMethod [
 	| jsAst |
 	jsAst := converter
@@ -444,46 +531,90 @@ PjTranspiler >> transpileMethod: aMethod [
 	generator asString: jsAst on: self jsStream
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
 PjTranspiler >> transpileMethodToString: aMethod [
 	^ self onTempStreamDo: [ self transpileMethod: aMethod ]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling methods' }
+PjTranspiler >> withMethodsNoSkipOf: aClass do: aBlock [
+	self withMethodsOf: aClass do: [ :method | 
+		(self shouldSkipMethodNode: method) ifFalse: [aBlock value: method] ]
+]
+
+{ #category : #'transpiling methods' }
 PjTranspiler >> withMethodsOf: aClass do: aBlock [
 	aClass selectorsWithExplicitOrigin do: [ : selector |
 		 aBlock value: (aClass compiledMethodAt: selector) ]
 ]
 
-{ #category : #transpiling }
-PjTranspiler >> writeAliases: aRBMethodNode [
-	^ aRBMethodNode pragmas select: [: pragma |
-			pragma selector beginsWith: #jsAlias:
-		] thenDo:  [: pragma |
-			pragma arguments do: [: key |
-				self nextPut: $,; nextPutAll: key asString printString 
-		]]
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeAssociationKey: selector values: aliases [
+
+self
+				<< $";
+				writeJsSelector: selector;
+				<< '":['.
+			aliases
+				do: [ :each | self print: each ]
+				separatedBy: [ self << $, ].
+			self << $] 
+
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeClassDeclarationOf: aClass [
+
+	self << 'class'.
+	aClass isClassExtension ifTrue: [^self]. 
+		self
+			space;
+			writeNameForSubclass: aClass;
+			space;
+			<< 'extends';
+		space;
+		writeNameForClass: aClass superclass
+]
+
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeClassDefinitionOf: aClass [
-	aClass needsClassDefinition ifFalse: [ ^self ].
-	self 
-		nextPutAll: 'function ';
-		writeNameForClass: aClass;
-		nextPutAll: '(){};';
-		cr
+
+	self resetMethodAliasesDictionaries.
+	self
+		writeNameForClass: PjCore;
+		<< '.';
+		<< (self installSelectorFor: aClass);
+		<< $(;
+		writeClassDeclarationOf: aClass;
+		<< ${;
+		cr;
+		writeMethodsOf: aClass;
+		writeClassVariableDeclarationsOf: aClass;
+		<< '},'.
+	aClass isClassExtension ifTrue: [ 
+		self
+			writeNameForClass: aClass;
+			<< $, ].
+	self
+		writeInstanceMethodsAliasesDict;
+		<< $,;
+		writeClassMethodsAliasesDict;
+		<< ');'
 ]
 
-{ #category : #transpiling }
-PjTranspiler >> writeClassInheritanceLinksOf: aClass [
-	((aClass hasClassMethod: #javascriptSkipSubclassing) and: [ aClass javascriptSkipSubclassing ]) ifTrue: [ ^ self ].
-	self 
-		writeNameForClass: aClass superclass;
-		nextPutAll: '.', self pharoJsSelectorPrefix, 'subclass_("';
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeClassExtensionSpecificsOf: aClass [
+
+	aClass isClassExtension ifFalse: [^self].
+	self
+		nextPutAll: 'Smalltalk.';
+		nextPutAll: self installClassExtensionSelector;
+		nextPut: $(;
+		writeNameForClassExtension: aClass;
+		nextPut: $,;
 		writeNameForClass: aClass;
-		nextPutAll: '");' ;
-		cr.
+		nextPutAll: ');';
+		cr
 ]
 
 { #category : #transpiling }
@@ -504,23 +635,53 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 		do: [ :aClass | self writeClassInitializeOf: aClass ]
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeClassMethodsAliasesDict [
+
+	self writeMethodAliasesDict: classMethodsAliasesDict
+]
+
+{ #category : #'transpiling methods' }
+PjTranspiler >> writeClassMethodsOf: aClass [
+
+	self withMethodsNoSkipOf: aClass class do: [ :aRBMethodNode | 
+		self
+			<< 'static ';
+			transpileMethod: aRBMethodNode;
+			addAliasesForClassMethod:aRBMethodNode ;
+			cr ]
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeClassVarNamesOf: aClass [
+
+	aClass classPool keys
+		do: [ :classVarName | 
+			self
+				nextPut: $";
+				nextPutAll: classVarName;
+				nextPut: $";
+				nextPutAll: ':null' ]
+		separatedBy: [ self nextPut: $, ]
+]
+
 { #category : #transpiling }
 PjTranspiler >> writeClassVariableDeclarationsOf: aClass [
-	| keys count |
-	count := 0.
-	keys := aClass classPool keys sorted.
-	keys isEmpty ifTrue: [ ^ self ].
-	keys do: [: cpName |
-			self
-				nextPutAll: 'cp$.';
-				nextPutAll: cpName;
-				nextPutAll: '='.
-			(count := count + 1) = 10 ifTrue: [
-				self nextPutAll: 'null;';cr.
-				count := 0
-			]
-		].
-	count > 0 ifTrue: [self nextPutAll: 'null;';cr].
+
+	self
+		nextPutAll: 'static';
+		space;
+		writeClassVarsPoolName;
+		nextPutAll: '={';
+		writeClassVarNamesOf: aClass;
+		nextPut: $}. 
+
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeClassVarsPoolName [
+
+	self nextPutAll: self classVarsPoolName
 ]
 
 { #category : #transpiling }
@@ -545,20 +706,45 @@ PjTranspiler >> writeDnuList [
 	neededDNUs := Set new.
 ]
 
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeInstallMethodAliasesOf: aClass [
+
+	(instanceMethodsAliasesDict isEmpty and: [ 
+		 classMethodsAliasesDict isEmpty ]) ifTrue: [ ^ self ].
+	self
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self installAllAliasesSelector;
+		<< $(;
+		writeInstanceMethodsAliasesDict;
+		<< $,;
+		writeClassMethodsAliasesDict;
+		<< $,;
+		writeNameForSubclass: aClass;
+		<< $,;
+		writeNameForClass: aClass;
+		<< ');';
+		cr
+]
+
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeInstanceMethodsAliasesDict [
+	self writeMethodAliasesDict: instanceMethodsAliasesDict 
+]
+
+{ #category : #'transpiling methods' }
+PjTranspiler >> writeInstanceMethodsOf: aClass [
+
+	self withMethodsNoSkipOf: aClass do: [ :aRBMethodNode | 
+		self
+			transpileMethod: aRBMethodNode;
+			addAliasesForInstanceMethod: aRBMethodNode;
+			cr ]
+]
+
 { #category : #transpiling }
 PjTranspiler >> writeInstanceVariable: cvName [
 	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
-]
-
-{ #category : #writing }
-PjTranspiler >> writeJsSelector: aSelector onStream: aStream [
-	| isBinary |
-	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
-			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
-	isBinary := aSelector isBinary.
-	aStream nextPutAll: self pharoJsSelectorPrefix.
-	aSelector do:[ :each | 
-			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]
 
 { #category : #writing }
@@ -568,57 +754,61 @@ PjTranspiler >> writeList: aCollection withPrefix: aString [
 	]
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling aliases' }
+PjTranspiler >> writeMethodAliasesDict: aliasesDict [
+
+	self << ${.
+	aliasesDict keys
+		do: [ :selector | 
+			self
+				writeAssociationKey: selector
+				values: (aliasesDict at: selector) ]
+		separatedBy: [ self << $, ].
+	self << $}
+]
+
+{ #category : #'transpiling methods' }
 PjTranspiler >> writeMethodsOf: aClass [
-	| className methods pools |
-	className := aClass nameToUseForJsConversion.
-	methods := self onTempStreamDo: [
-		self
-			writeMethodsOf: aClass named: className  with: 'i$';
-			writeMethodsOf: aClass class named: className with: 'c$'
-	].
-	pools := self poolFor: aClass.
-	self
-		nextPutAll: className;
-		nextPutAll: '.$$def(function(i$,c$'.
-		pools do: [: each |
-			self
-				nextPutAll: ',';
-				nextPutAll: (self poolReference: each for: aClass)
-		].
-	self
-		nextPutAll: '){';cr;
-		nextPutAll: methods;
-		writeClassVariableDeclarationsOf: aClass;
-		nextPutAll: '}'.
-		pools allButFirst do: [: each |
-			self
-				nextPutAll: ',';
-				writeNameForClass:  each
-		].
-		self nextPutAll: ');';cr.
-]
 
-{ #category : #transpiling }
-PjTranspiler >> writeMethodsOf: aClass named: unused with: reference [
-	"Use JS Object.defineProperty() to ensure that methods are not enumerable. 
-	This is typically required by some third party libraries that create instances of Object, 
-	and expect that no property is available for enumeration. 
-	We set the writable attribute to true to enable reflection (e.g. replacing the method)."
 	converter classForConversion: aClass.
-	self withMethodsOf: aClass do: [ :method |
-		(self shouldSkipMethodNode: method) ifFalse: [
-			self 
-				nextPutAll: reference;
-				nextPutAll: '(';
-				transpileMethod: method;
-				writeAliases: method;
-				nextPutAll: ');';
-				cr
-	]]
+	self
+		writeInstanceMethodsOf: aClass;
+		writeClassMethodsOf: aClass
 ]
 
-{ #category : #transpiling }
+{ #category : #'transpiling classes' }
 PjTranspiler >> writeNameForClass: aClass [
 	self nextPutAll: aClass instanceSide nameToUseForJsConversion
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeNameForClassExtension: aClass [
+
+	self
+		writeNameForClass: aClass;
+		nextPutAll: '$ClassExtension'
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeNameForSubclass: aClass [
+
+	aClass isClassExtension ifFalse: [ ^ self writeNameForClass: aClass ].
+	self writeNameForClassExtension: aClass
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeWrapperWith: aBlock forDefinitionOfClass: aClass [
+
+	aClass isClassExtension ifTrue: [self
+		nextPutAll: 'Smalltalk.';
+		nextPutAll: self installClassExtensionSelector;
+		nextPut: $(.
+ ].
+	aBlock value.
+	aClass isClassExtension ifTrue: [ 
+		self 		nextPut: $,;
+		writeNameForClass: aClass;
+		nextPutAll: ');';
+		cr
+		 ]
 ]

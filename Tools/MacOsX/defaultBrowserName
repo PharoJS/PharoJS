@@ -1,0 +1,16 @@
+#!/bin/bash
+ 
+DefaultBrowser=$(defaults read  ~/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure | awk -F'\"' '/http;|https;/{print window[(NR)-1]}{window[NR]=$2}')
+
+if [[ $DefaultBrowser == *"safari"* ]]; then
+    echo "Safari"
+elif 
+[[ $DefaultBrowser == *"firefox"* ]]; then
+    echo "Firefox"
+elif [[ $DefaultBrowser == *"chrome"* ]]; then
+    echo "Google Chrome"
+elif [[ $DefaultBrowser == *"brave"* ]]; then
+    echo "Brave Browser"
+else
+    echo "Some Web Browser"
+fi

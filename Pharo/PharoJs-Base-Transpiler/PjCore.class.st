@@ -16,49 +16,11 @@ Class {
 		'messageClass',
 		'nilInJs',
 		'selectorCache',
-		'metaclassClass'
+		'metaclassClass',
+		'theClassClass'
 	],
 	#category : #'PharoJs-Base-Transpiler-Globals'
 }
-
-{ #category : #globals }
-PjCore class >> at: jsName [
-	"Get the value of an object in the Smalltalk global space.
-	For now, we use the JS global, but this is likely to evolve once we have environments."
-	^ global js_at: jsName
-]
-
-{ #category : #globals }
-PjCore class >> at: key ifAbsent: aBlock [
-	"Answer the global associated with the key or, if key isn't found,
-	answer the result of evaluating aBlock."
-
-	^global at: key ifAbsent: aBlock
-]
-
-{ #category : #globals }
-PjCore class >> at: aKey ifAbsentPut: aBlock [ 
-	"Return the global at the given key. 
-	If key is not included in the receiver store the result 
-	of evaluating aBlock as new value."
-
-	^global at: aKey ifAbsentPut: aBlock
-]
-
-{ #category : #globals }
-PjCore class >> at: key ifPresent: aBlock [
-	"Lookup the given key in the globals. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer nil."
-
-	^global at: key ifPresent: aBlock
-]
-
-{ #category : #globals }
-PjCore class >> at: jsName put: anObject [ 
-	"Set the global at key to be anObject.  If key is not found, create a
-	new entry for key and set is value to anObject. Answer anObject.
-	For now, we use the JS global, but this is likely to evolve once we have environments."
-	^ global js_at: jsName put: anObject
-]
 
 { #category : #initalize }
 PjCore class >> emptyJavascriptObject [
@@ -85,20 +47,17 @@ PjCore class >> handleDNU: aMessage for: anObject [
 						, aMessage selector ]
 ]
 
+{ #category : #'reflection support' }
+PjCore class >> initInheritanceAndInstantiationLinks [
+
+	Object js_setPrototypeOf: Object to: (theClassClass js_at: #prototype).
+	Object js_setPrototypeOf: theClassClass to: PjFunction
+]
+
 { #category : #'nil support' }
 PjCore class >> initNilInJs [
 	" specifically install in the global space, rather than in the Smalltalk global space "
 	global js_at: self nilTestFunctionName put: (self nilIfUndefined)
-]
-
-{ #category : #'reflection support' }
-PjCore class >> initObject [
-	(Object js_at: #__proto__) 
-		js_at: self subclassSelector
-		put: self makeSubclass.
-	((self js_at: #theClassClass) js_at: #prototype) 
-		js_at: #__proto__
-		put: (BlockClosure js_at: #prototype).
 ]
 
 { #category : #'throw support' }
@@ -112,7 +71,7 @@ PjCore class >> initializeCore [
 	selectorCache := self emptyJavascriptObject.
 	self initNilInJs.
 	self initThrowInJs.
-	self initObject.
+	self initInheritanceAndInstantiationLinks.
 	self messageClass: self.
 	self metaclassClass: self.
 ]
@@ -293,29 +252,6 @@ PjCore class >> makeSmalltalkSelector: aSelector [
 	^ result
 ]
 
-{ #category : #'reflection support' }
-PjCore class >> makeSubclass [
-	<javascript: 'var pjCore=this;
-return function(subclassName){
-	var subclass = (function(){
-		if(global[subclassName]) 
-			return global[subclassName];
-		var newClass = (new Function("return function "+subclassName+"(){}"))();
-		// newClass.name = subclassName;
-		return global[subclassName] = newClass;
-	})();
-	if(subclass.__proto__.__proto__ == this.__proto__){return;}
-	subclass.subclasses = [];
-	if(subclass == this) {
-		this.__proto__ = {__proto__ : pjCore.theClassClass.prototype};
-	}else{
-		subclass.__proto__ = {__proto__ : this.__proto__};
-		subclass.prototype.__proto__ = this.prototype;
-		this.subclasses.push(subclass);	
-	}
-}	'>
-]
-
 { #category : #'doesNotUnderstand support' }
 PjCore class >> messageClass: anObject [
 	messageClass := anObject
@@ -373,12 +309,13 @@ PjCore class >> pharoJsSelectorPrefix_jsGenerator: transpiler [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> propertySet: func [
-	<javascript:
-	'return {
+
+	<javascript: 'return {
 		enumerable: false,
-		configurable: false,
+		configurable: true,
 		writable: true,
 		value: func}'>
+	
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -400,6 +337,14 @@ PjCore class >> registerDnuForAll: anArray [
 	anArray js_forEach: [ : each | self registerDnu: each ]
 ]
 
+{ #category : #importing }
+PjCore class >> require: moduleName [
+
+	<jsAlias: #require>
+	<javascript: 'return require(moduleName);'>
+	^ global require: moduleName
+]
+
 { #category : #'doesNotUnderstand support' }
 PjCore class >> selector: selector arguments: args [
 	<jsGenerator: #selector_arguments_jsGenerator:>
@@ -416,17 +361,6 @@ PjCore class >> selector_arguments_jsGenerator: transpiler [
 			arguments: args,
 			', transpiler pharoJsSelectorPrefix, 'arguments: function(){return this.arguments}
 		}'
-]
-
-{ #category : #'reflection support' }
-PjCore class >> subclassSelector [
-	<jsGenerator: #subclassSelector_jsGenerator:>
-]
-
-{ #category : #'reflection support' }
-PjCore class >> subclassSelector_jsGenerator: transpiler [
-	<pharoJsSkip>
-	^'return ', (transpiler pharoJsSelectorPrefix, #subclass_) asJSON
 ]
 
 { #category : #'throw support' }

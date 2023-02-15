@@ -39,6 +39,12 @@ PjExporter class >> transpilerClass [
 	^ PjDependentTranspiler
 ]
 
+{ #category : #'writing low-level' }
+PjExporter >> << aString [
+
+	jsStream << aString
+]
+
 { #category : #adding }
 PjExporter >> addAllClasses: someClasses [
 
@@ -94,6 +100,12 @@ PjExporter >> convertAllClassesToJs: someClasses [
 			  writeDnu: true ]
 ]
 
+{ #category : #writing }
+PjExporter >> copyMethodsSelector [
+
+	^ #copyMethods
+]
+
 { #category : #accessing }
 PjExporter >> coreClass [
 
@@ -106,12 +118,38 @@ PjExporter >> cr [
 	jsStream lf
 ]
 
+{ #category : #'writing low-level' }
+PjExporter >> crtab [
+
+	jsStream cr; tab
+]
+
 { #category : #writing }
 PjExporter >> dnuHook [
 
 	^ [ 
 	  self writeGlobalsPolyfills: nil.
 	  true ]
+]
+
+{ #category : #'writing core' }
+PjExporter >> fixMetaclassOfMethodDefinition [
+	^'function(aClass)
+{
+  if (aClass === this) { return this; }
+  if (aClass === Object) {
+    return Object.setPrototypeOf(aClass, PjClass.prototype);
+  }
+  if (Object.getPrototypeOf(aClass) === Function.prototype){ 
+    return Object.setPrototypeOf(aClass, Object);
+  }
+}'
+]
+
+{ #category : #'transpiling classes' }
+PjExporter >> fixMetaclassOfSelector [
+
+	^ #fixMetaclassOf
 ]
 
 { #category : #accessing }
@@ -138,6 +176,21 @@ PjExporter >> initializeWithAppClass: aClass [
 	transpiler pharoJsSelectorPrefix: aClass pharoJsSelectorPrefix.
 	self addAllClasses: appClass appClasses.
 	self addAllPackages: appClass appPackages
+]
+
+{ #category : #writing }
+PjExporter >> installAllAliasesSelector [
+	^PjTranspiler installAllAliasesSelector
+]
+
+{ #category : #writing }
+PjExporter >> installClassExtensionSelector [
+	^self transpiler installClassExtensionSelector
+]
+
+{ #category : #'writing core' }
+PjExporter >> installClassSelector [
+	^self transpiler installClassSelector
 ]
 
 { #category : #testing }
@@ -200,6 +253,12 @@ PjExporter >> nonBootstrapClasses [
 			actualBootstrapClasses includes: setClass classToUseForJsConversion]
 ]
 
+{ #category : #writing }
+PjExporter >> pharoJsSelectorPrefix [
+
+	^ self transpiler pharoJsSelectorPrefix
+]
+
 { #category : #'initialize-release' }
 PjExporter >> setUpForPolyfill [
 
@@ -210,6 +269,11 @@ PjExporter >> setUpForPolyfill [
 PjExporter >> setupCode [
 
 	^ self appClass setupCode
+]
+
+{ #category : #writing }
+PjExporter >> space [
+	jsStream space
 ]
 
 { #category : #accessing }
@@ -231,49 +295,211 @@ PjExporter >> transpilerClass [
 	^ self class transpilerClass
 ]
 
-{ #category : #writing }
-PjExporter >> writeCoreObject [
-	| coreName |
-	coreName := self coreClass nameToUseForJsConversion.
+{ #category : #'writing core' }
+PjExporter >> writeCore [
+
+	self writeCoreObject.
+	self writeCoreClass.
 	self transpiler
-		nextPutAll: 'global.';
-		nextPutAll: coreName;
-		nextPutAll: '=global.';
-		nextPutAll: coreName;
-		nextPutAll: '||(function ';
-		nextPutAll: coreName;
-		nextPutAll: '(){});';cr;
-		nextPutAll: 'Object.defineProperty(Object.prototype,"$def",{value:';cr;
-		nextPutAll: ' function $def(aFunc){';cr;
-		nextPutAll: '    var args = Array.from(arguments),self=this;';cr;
-		nextPutAll: '    args[0]=aFunc.name;';cr;
-		nextPutAll: '    args.forEach(function(arg){';cr;
-		nextPutAll: '       Object.defineProperty(self,arg,{writable:true,value:aFunc})})}})';cr;
-		nextPutAll: 'Object.defineProperty(Object.prototype,"$$def",{value:';cr;
-		nextPutAll: ' function $$def(){';cr;
-		nextPutAll:	'   var v=Array.from(arguments),f=v[0];';cr;
-		nextPutAll: '   v[0]=this';cr;
-		nextPutAll: '	  v=Array.from(v,function(x){if(!x.classPool)x.classPool={};return x.classPool})';cr;
-		nextPutAll: '   v.unshift(this.$def.bind(this.prototype),this.$def.bind(this.__proto__));';cr;
-		nextPutAll: '   f.apply(null,v)}})';cr;
-		nextPutAll: 'var require';cr;
-		nextPutAll: 'global.';
-		nextPutAll: coreName;
-		nextPutAll: '.require=require';cr;
-		writeClassDefinitionOf: PjClass;
-		nextPutAll: coreName;
-		nextPutAll: '.theClassClass=';
+		writeNameForClass: PjCore;
+		<< '.theClassClass=';
 		writeNameForClass: PjClass;
-		nextPut: $;;cr;
-		nextPutAll: coreName;
-		nextPutAll: '.$$def(function(i$,c$){';cr;
-		convertMethodAsts: self coreClass classToUseForJsConversion newClasses: OrderedCollection new;
-		writeMethodsOf: self coreClass class named: coreName with: 'c$' ;
-		nextPutAll: '})';cr;
-		nextPutAll: coreName;
-		nextPut: $.;
-		nextPutAll: transpiler pharoJsSelectorPrefix;
-		nextPutAll: 'initializeCore();';cr
+		<< $;;
+		cr;
+		writeNameForClass: PjCore;
+		<< $.;
+		<< transpiler pharoJsSelectorPrefix;
+		<< 'initializeCore();';
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreClass [
+
+	self transpiler
+		convertMethodAsts: PjClass newClasses: Set new;
+		writeClassDefinitionOf: PjClass
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObject [
+
+	self writeCoreObjectCreation.
+	self writeCoreObjectBasicMethods.
+	self transpiler
+		convertMethodAsts: PjCore newClasses: Set new;
+		writeClassDefinitionOf: PjCore
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectBasicMethods [
+
+	self
+		writeCoreObjectCopyMethods;
+		writeFixMetaclassOfMethod;
+		writeCoreObjectInstallClassMethod;
+		writeCoreObjectInstallClassExtensionMethod;
+		writeCoreObjectInstallAliasesMethods
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectCopyMethods [
+
+	self transpiler
+		cr;
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self copyMethodsSelector;
+		<< '=function(source,target){
+    let propertyNames = Object.getOwnPropertyNames(source).filter((each)=>
+			/\b';
+		<< self pharoJsSelectorPrefix;
+		<< '/.test(each)
+	  ); 
+    propertyNames.forEach('.
+	self writePropertyDefinitionFunctionFrom: 'source' to: 'target'.
+	self transpiler
+		<< ');
+}';
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectCreation [
+
+	self transpiler
+		<< 'global.';
+		writeNameForClass: PjCore;
+		<< '=global.';
+		writeNameForClass: PjCore;
+		<< '??class extends Object{};'
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectInstallAliasesMethods [
+
+	| coreClassName |
+	coreClassName := PjCore instanceSide nameToUseForJsConversion.
+	self transpiler
+		<< coreClassName;
+		<<
+			'.installSelectorAliases=function(aliases, selector, source, target){
+		aliases.forEach('.
+		self writePropertyDefinitionFunctionFrom: 'source' at: 'selector' to: 'target'. 
+	self transpiler 
+		<< ');
+	}';
+		cr;
+		<< coreClassName;
+		<< '.installAliasesFromDict=function(aliasesDict, source, target){
+		for(let key of Object.getOwnPropertyNames(aliasesDict)){';
+		<< coreClassName;
+		<< '.installSelectorAliases(aliasesDict[key], key, source, target);
+	}}';
+		cr;
+		<< coreClassName;
+		<< $.;
+		<< self installAllAliasesSelector;
+		<<
+			'=function(instanceSideAliasesDict, classSideAliasesDict, sourceClass, targetClass){';
+		cr;
+		<< coreClassName;
+		<<
+			'.installAliasesFromDict(instanceSideAliasesDict, sourceClass.prototype, targetClass.prototype);';
+		cr;
+		<< coreClassName;
+		<<
+			'.installAliasesFromDict(classSideAliasesDict, sourceClass, targetClass);
+	}';
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectInstallClassExtensionMethod [
+
+	self transpiler
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self installClassExtensionSelector;
+		<<
+			'=function(extensionClass,targetClass,instanceSideAliasesDict,classSideAliasesDict){';
+		crtab;
+		<< 'this.';
+		<< self copyMethodsSelector;
+		<< '(extensionClass.prototype, targetClass.prototype);';
+		crtab;
+		<< 'this.';
+		<< self copyMethodsSelector;
+		<< '(extensionClass, targetClass);';
+		crtab;
+		<< 'targetClass.';
+		writeClassVarsPoolName;
+		<< '=';
+		<< 'targetClass.';
+		writeClassVarsPoolName;
+		<< '??{};';
+		crtab;
+		<< 'Object.assign(targetClass.';
+		writeClassVarsPoolName;
+		<< ', extensionClass.';
+		writeClassVarsPoolName;
+		<< ');';
+		crtab;
+		<< 'this.';
+		<< self installAllAliasesSelector;
+		<<
+			'(instanceSideAliasesDict, classSideAliasesDict, extensionClass, targetClass);';
+		crtab;
+		<< 'this.';
+		<< self fixMetaclassOfSelector;
+		<< '(targetClass);';
+		crtab;
+		<< 'this[targetClass.name]=targetClass;';
+		crtab;
+		<< 'global[targetClass.name]=targetClass;';
+		cr;
+		<< $};
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeCoreObjectInstallClassMethod [
+
+	self transpiler
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self installClassSelector;
+		<<
+			'=function(newClass,instanceSideAliasesDict,classSideAliasesDict){';
+		crtab;
+		<< 'this.';
+		<< self installAllAliasesSelector;
+		<<
+			'(instanceSideAliasesDict, classSideAliasesDict, newClass, newClass);';
+		crtab;
+		<< 'this.';
+		<< self fixMetaclassOfSelector;
+		<< '(newClass);';
+		crtab;
+		<< 'this[newClass.name]=newClass;';
+		crtab;
+		<< 'global[newClass.name]=newClass;';
+		cr;
+		<< $};
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeFixMetaclassOfMethod [
+
+	self transpiler
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self fixMetaclassOfSelector;
+		<< $=;
+		<< self fixMetaclassOfMethodDefinition;
+		<< $; ;
+		cr
 ]
 
 { #category : #writing }
@@ -303,7 +529,7 @@ PjExporter >> writeJsCodeOn: aStream [
 PjExporter >> writeJsCoreAndBootstrap [
 
 	self nextPutAll: self setupCode; cr.
-	self writeCoreObject.
+	self writeCore.
 	self transpiler convertAllClasses: self bootstrapClasses writeDnu: false
 ]
 
@@ -319,4 +545,37 @@ PjExporter >> writeNonBootstrapClasses [
 	self transpiler
 		convertAllClasses: self nonBootstrapClasses
 		writeDnu: true
+]
+
+{ #category : #'writing core' }
+PjExporter >> writePropertyDefinitionFunctionFrom: sourceString at: sourceSelector to: targetString [
+
+	self
+		writePropertyDefinitionFunctionFrom: sourceString
+		at: sourceSelector 
+		to: targetString
+		at: 'name'
+]
+
+{ #category : #'writing core' }
+PjExporter >> writePropertyDefinitionFunctionFrom: sourceString at: sourceSelector to: targetString at: targetSelector [
+
+	self transpiler
+		<< '(';
+		<< targetSelector;
+		<< ')=>Object.defineProperty(';
+		<< targetString;
+		<< ',';
+		<< targetSelector;
+		<< ',{value:';
+		<< sourceString;
+		<< '[';
+		<< sourceSelector;
+		<< '],configurable:true})'
+]
+
+{ #category : #'writing core' }
+PjExporter >> writePropertyDefinitionFunctionFrom: sourceString to: targetString [
+
+	self writePropertyDefinitionFunctionFrom: sourceString at: 'name' to: targetString at: 'name'
 ]

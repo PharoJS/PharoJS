@@ -9,16 +9,17 @@ Class {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
+{ #category : #'as yet unclassified' }
+PjClass class >> classPool_jsGenerator: transpiler [
+
+	<pharoJsSkip>
+	^ 'return this.' , transpiler classVarsPoolName
+]
+
 { #category : #'Behavior: reflection' }
 PjClass class >> hasClassMethod_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'return this.__proto__.hasOwnProperty(Smalltalk.', transpiler pharoJsSelectorPrefix, 'makePharoJsSelector_(aSymbol))'
-]
-
-{ #category : #'pharoJs support' }
-PjClass class >> javascriptName [
-	<pharoJsSkip>
-	^self name
 ]
 
 { #category : #'pharoJs support' }
@@ -39,6 +40,12 @@ PjClass >> adoptInstance: anObject [
 { #category : #'Behavior: reflection' }
 PjClass >> class [
 	^ PjCore metaclassOf: self
+]
+
+{ #category : #accessing }
+PjClass >> classPool [
+	<jsGenerator: #classPool_jsGenerator:>
+	
 ]
 
 { #category : #'Behavior: reflection' }

@@ -18,6 +18,20 @@ PjReflectionTest >> testClassName [
 ]
 
 { #category : #tests }
+PjReflectionTest >> testMetaclassLink [
+	
+	self assertBlock: [( Object getPrototypeOf: PjClass prototype) == PjFunction prototype ].
+	self assertBlock: [( Object getPrototypeOf: PjClass) == PjFunction ].
+	self assertBlock: [( Object getPrototypeOf: PjFunction) == Object ].
+	self assertBlock: [( Object getPrototypeOf: PjArray) == Object ].
+	self assertBlock: [( Object getPrototypeOf: PjBoolean ) == Object ].
+	self assertBlock: [( Object getPrototypeOf: PjDate ) == Object ].
+	self assertBlock: [( Object getPrototypeOf: PjNumber) == Object ].
+	self assertBlock: [( Object getPrototypeOf: PjString) == Object ].
+
+]
+
+{ #category : #tests }
 PjReflectionTest >> testNestedRepeats [
 
 	| class tryNestedRepeatsSelector tryNestedRepeatsMethod |

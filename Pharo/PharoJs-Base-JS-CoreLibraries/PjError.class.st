@@ -4,8 +4,8 @@ I represent the Javascript Error type.
 Class {
 	#name : #PjError,
 	#superclass : #PjObject,
-	#traits : 'PjTExtensionClass',
-	#classTraits : 'PjTExtensionClass classTrait',
+	#traits : 'PjTKernelClass',
+	#classTraits : 'PjTKernelClass classTrait',
 	#instVars : [
 		'message'
 	],

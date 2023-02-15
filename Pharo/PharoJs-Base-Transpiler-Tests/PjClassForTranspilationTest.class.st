@@ -59,9 +59,15 @@ PjClassForTranspilationTest class >> instanceMethod_jsGenerator: transpiler [
 ]
 
 { #category : #'pharojs support' }
+PjClassForTranspilationTest class >> isClassExtension [
+	^false
+]
+
+{ #category : #'pharojs support' }
 PjClassForTranspilationTest class >> javascriptName [
+
 	<pharoJsSkip>
-	^  #JsClass
+	^ #JsClass
 ]
 
 { #category : #'pharojs support' }
@@ -272,6 +278,14 @@ PjClassForTranspilationTest >> optimizeAtTest [
 { #category : #any }
 PjClassForTranspilationTest >> toDoWithObjectAsParameter [
 	1 to: 10 do: Object
+]
+
+{ #category : #any }
+PjClassForTranspilationTest >> twoPragmaWithAliases [
+
+	<jsAlias: #firstAlias>
+	<jsAlias: #secondAlias>
+	^ 200
 ]
 
 { #category : #any }

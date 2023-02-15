@@ -4,7 +4,7 @@ I provide Smalltalk method to the NodeList ""class"" in web browsers. Should not
 Class {
 	#name : #PjNodeList,
 	#superclass : #PjObject,
-	#traits : 'PjTArrayLike + PjTExtensionClass',
-	#classTraits : 'PjTArrayLike classTrait + PjTExtensionClass classTrait',
+	#traits : 'PjTArrayLike + PjTKernelClass',
+	#classTraits : 'PjTArrayLike classTrait + PjTKernelClass classTrait',
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }

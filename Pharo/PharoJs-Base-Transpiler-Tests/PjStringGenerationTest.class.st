@@ -33,8 +33,9 @@ PjStringGenerationTest >> nilTestFunctionName [
 ]
 
 { #category : #'test mock' }
-PjStringGenerationTest >> poolReference: anUndefinedObject for: anUndefinedObject2 [ 
-	^ 'cp$'
+PjStringGenerationTest >> poolReference: anUndefinedObject for: anUndefinedObject2 [
+
+	^ PjTranspiler classVarsPoolName
 ]
 
 { #category : #accessing }
@@ -60,7 +61,7 @@ PjStringGenerationTest >> testBlock [
 					expression: (PjArgumentNode identifier: #for).
 				PjReturnNode expression: (PjArgumentNode identifier: #a)
 			})
-		asStringEquals: '(function(a,$for){var d,$in;$in=$for;return a})'.
+		asStringEquals: '((a,$for)=>{var d,$in;$in=$for;return a})'.
 ]
 
 { #category : #tests }
@@ -195,7 +196,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function _foo(a,$for){var d,$in;$in=$for;return a}'.
+		asStringEquals: '_foo(a,$for){var d,$in;$in=$for;return a}'.
 	self
 		assert:
 			(PjMethodNode
@@ -217,7 +218,7 @@ PjStringGenerationTest >> testMethod [
 				methodName: #foo
 				needsSelf: false
 				isClassMethod: false)
-		asStringEquals: 'function _foo(a){var d;d=[function(){1;2}];return a}'
+		asStringEquals: '_foo(a){var d;d=[()=>{1;2}];return a}'
 ]
 
 { #category : #tests }
@@ -356,10 +357,10 @@ PjStringGenerationTest >> testSelf [
 PjStringGenerationTest >> testSuperCall [
 	self
 		assert: (self apply: (PjSuperNode myClass: Integer) selector: #value)
-		asStringEquals: 'Number.prototype._value.call(this)'.
+		asStringEquals: 'super._value()'.
 	self
 		assert: (self apply: ((PjSuperNode myClass: Integer class) inBlock: true) selector: #value)
-		asStringEquals: 'Number._value.call(',PjStringGenerator selfName,')'
+		asStringEquals: 'super._value()'
 ]
 
 { #category : #tests }

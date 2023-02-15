@@ -35,9 +35,9 @@ PjDOMApplication class >> isAbstract [
 
 { #category : #'accessing - description' }
 PjDOMApplication class >> setupCode [
+
 	<pharoJsSkip>
-	
-	^ super setupCode, 'var global=global||this'
+	^ super setupCode , 'var global=global??this'
 ]
 
 { #category : #accessing }

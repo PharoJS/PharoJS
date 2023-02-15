@@ -45,27 +45,38 @@ PjExporterTest >> testAvoidOverridingOnImportMethodsFromPharo [
 	self assertInstanceMethod: #foo equals: '(){return 42}'.
 	self
 		assert: (jsCode splitOn:
-				 'i$(function ' , self pharoJsSelectorPrefix , 'foo') size
+				 self pharoJsSelectorPrefix , 'foo') size
 		equals: 2
 ]
 
 { #category : #testing }
 PjExporterTest >> testClassInheritanceOrder [
-	exporter initializeWithAppClass: PjApplication.
+
+	exporter initializeWithAppClass: PjDOMApplication.
 	jsCode := exporter javascriptCode.
-	self assert: 'Object.', self pharoJsSelectorPrefix, 'subclass_(Error)' precedes: 'Error.', exporter transpiler pharoJsSelectorPrefix, 'subclass_'
+	self assert: 'class PjApplication' precedes: 'class PjDOMApplication'
 ]
 
 { #category : #testing }
 PjExporterTest >> testCoreClassedLoaded [
-	|pjPrefix|
+
+	| pjPrefix |
 	exporter initializeWithAppClass: PjApplication.
 	pjPrefix := self pharoJsSelectorPrefix. " has to be done after an application has been set "
 	jsCode := exporter javascriptCode.
-	self assert: (jsCode includesSubstring: 'Object.', pjPrefix, 'subclass_("PjApplication")' ).
-	self deny: (jsCode includesSubstring: 'function Object()' ).
-	self assert: (jsCode includes: 'c$(function ', pjPrefix, 'new' before: 'PjApplication' ).
-	self deny: (jsCode includes: 'PjApplication' before: 'c$(function ',pjPrefix,'new' ).
+	self assert: (jsCode includesSubstring:
+			 'installClass(class PjClass extends Function{').
+	self assert: (jsCode includesSubstring:
+			 'installClass(class PjApplication extends Object{').
+	self deny: (jsCode includesSubstring: 'class Object').
+	self assert: (jsCode includes: 'PjClass' before: 'PjApplication').
+	self assert: (jsCode
+			 includes: PjTranspiler installClassSelector , '=function('
+			 before: 'PjApplication').
+	self assert: (jsCode
+			 includes:
+			 PjTranspiler installClassExtensionSelector , '=function('
+			 before: 'PjApplication')
 ]
 
 { #category : #testing }
@@ -96,7 +107,7 @@ PjExporterTest >> testImportMethodsFromPharo [
 PjExporterTest >> testJsSelector [
 	| contents |
 	contents := (PjTestFileExporter exportApp: PjTestClassForPolyfill) contents.
-	self assert: (contents includesSubstring: 'function alt_m(').
+	self assert: (contents includesSubstring: 'alt_m(').
 ]
 
 { #category : #testing }
@@ -144,15 +155,4 @@ PjExporterTest >> testTestsAreIgnored [
 PjExporterTest >> testTraitsAreIgnored [
 	exporter addClass: TComparable.
 	self assert: exporter classes isEmpty.
-]
-
-{ #category : #writing }
-PjExporterTest >> writeJsSelector: aSelector onStream: aStream [
-	| isBinary |
-	(aSelector beginsWith: self jsNativePrefix) ifTrue: [ 
-			^ aStream nextPutAll: ((aSelector keywords first allButFirst: self jsNativePrefix size) copyWithout: $:) ].
-	isBinary := aSelector isBinary.
-	aStream nextPutAll: self pharoJsSelectorPrefix.
-	aSelector do:[ :each | 
-			self writeSelectorChar: each on: aStream isInBinarySelector: isBinary ]
 ]
