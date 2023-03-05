@@ -133,6 +133,30 @@ PjExporter >> dnuHook [
 ]
 
 { #category : #'writing core' }
+PjExporter >> fixInheritanceLinkOfMethodDefinition [
+	^'function(aClass){
+	let currentSuperclass;
+	if(aClass == Object){
+		currentSuperclass = undefined; 
+	}else{
+		currentSuperclass = aClass.__proto__;
+	}
+  if (currentSuperclass == undefined) { return this; }
+  if (!currentSuperclass.hasOwnProperty("subclasses")) {
+    return currentSuperclass.subclasses = [aClass];
+  }
+  if(currentSuperclass.subclasses.includes(aClass)){ return;}
+  currentSuperclass.subclasses.push(aClass);
+}'
+]
+
+{ #category : #'writing core' }
+PjExporter >> fixInheritanceLinkOfSelector [
+
+	^ #fixInheritanceLinkOf
+]
+
+{ #category : #'writing core' }
 PjExporter >> fixMetaclassOfMethodDefinition [
 	^'function(aClass)
 {
@@ -146,7 +170,7 @@ PjExporter >> fixMetaclassOfMethodDefinition [
 }'
 ]
 
-{ #category : #'transpiling classes' }
+{ #category : #'writing core' }
 PjExporter >> fixMetaclassOfSelector [
 
 	^ #fixMetaclassOf
@@ -337,6 +361,7 @@ PjExporter >> writeCoreObjectBasicMethods [
 	self
 		writeCoreObjectCopyMethods;
 		writeFixMetaclassOfMethod;
+		writeFixInheritanceLinkOfMethod;
 		writeCoreObjectInstallClassMethod;
 		writeCoreObjectInstallClassExtensionMethod;
 		writeCoreObjectInstallAliasesMethods
@@ -454,6 +479,10 @@ PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 		<< self fixMetaclassOfSelector;
 		<< '(targetClass);';
 		crtab;
+		<< 'this.';
+		<< self fixInheritanceLinkOfSelector;
+		<< '(targetClass);';
+		crtab;
 		<< 'this[targetClass.name]=targetClass;';
 		crtab;
 		<< 'global[targetClass.name]=targetClass;';
@@ -481,11 +510,28 @@ PjExporter >> writeCoreObjectInstallClassMethod [
 		<< self fixMetaclassOfSelector;
 		<< '(newClass);';
 		crtab;
+		<< 'this.';
+		<< self fixInheritanceLinkOfSelector;
+		<< '(newClass);';
+		crtab;
 		<< 'this[newClass.name]=newClass;';
 		crtab;
 		<< 'global[newClass.name]=newClass;';
 		cr;
 		<< $};
+		cr
+]
+
+{ #category : #'writing core' }
+PjExporter >> writeFixInheritanceLinkOfMethod [
+
+	self transpiler
+		writeNameForClass: PjCore;
+		<< $.;
+		<< self fixInheritanceLinkOfSelector;
+		<< $=;
+		<< self fixInheritanceLinkOfMethodDefinition;
+		<< $; ;
 		cr
 ]
 

@@ -18,6 +18,33 @@ PjReflectionTest >> testClassName [
 ]
 
 { #category : #tests }
+PjReflectionTest >> testDirectSubclasses [
+	
+	self assertBlock: [Object subclasses size > 3 ].
+	self assertBlock: [Object subclasses includesAll: { PjFunction. PjArray.  PjSuperClassForTranspilationTest} ].	
+	self assertBlock: [PjFunction subclasses size = 1 ].
+	self assertBlock: [PjFunction subclasses includes: PjClass ].
+	self bridge loadClass: PjClassForTranspilationTest.
+	self assertBlock: [PjSuperClassForTranspilationTest subclasses size = 1 ].
+	self assertBlock: [PjSuperClassForTranspilationTest subclasses includes: PjClassForTranspilationTest].
+	
+
+]
+
+{ #category : #tests }
+PjReflectionTest >> testDirectSuperclass [
+	
+	self assertBlock: [PjClass superclass == PjFunction ].
+	self assertBlock: [PjFunction superclass == Object ].
+	self assertBlock: [Object superclass isNil ].
+	self assertBlock: [PjArray superclass == Object ].
+	self assertBlock: [PjSuperClassForTranspilationTest superclass == Object ].
+	self assertBlock: [PjClassForTranspilationTest superclass == PjSuperClassForTranspilationTest ].
+	
+
+]
+
+{ #category : #tests }
 PjReflectionTest >> testMetaclassLink [
 	
 	self assertBlock: [( Object getPrototypeOf: PjClass prototype) == PjFunction prototype ].
