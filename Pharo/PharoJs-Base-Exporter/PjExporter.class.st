@@ -134,19 +134,22 @@ PjExporter >> dnuHook [
 
 { #category : #'writing core' }
 PjExporter >> fixInheritanceLinkOfMethodDefinition [
-	^'function(aClass){
-	let currentSuperclass;
-	if(aClass == Object){
-		currentSuperclass = undefined; 
-	}else{
-		currentSuperclass = aClass.__proto__;
-	}
-  if (currentSuperclass == undefined) { return this; }
-  if (!currentSuperclass.hasOwnProperty("subclasses")) {
-    return currentSuperclass.subclasses = [aClass];
-  }
-  if(currentSuperclass.subclasses.includes(aClass)){ return;}
-  currentSuperclass.subclasses.push(aClass);
+	^'function(aClass) {
+    if (!aClass.hasOwnProperty("subclasses")) {
+        aClass.subclasses = [];
+    }
+    let currentSuperclass;
+    if (aClass == Object) {
+        currentSuperclass = undefined;
+    } else {
+        currentSuperclass = aClass.__proto__;
+    }
+    if (currentSuperclass == undefined) { return this; }
+    if (!currentSuperclass.hasOwnProperty("subclasses")) {
+        return currentSuperclass.subclasses = [aClass];
+    }
+    if (currentSuperclass.subclasses.includes(aClass)) { return; }
+    currentSuperclass.subclasses.push(aClass);
 }'
 ]
 

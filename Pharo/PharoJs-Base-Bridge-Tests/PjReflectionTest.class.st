@@ -19,14 +19,23 @@ PjReflectionTest >> testClassName [
 
 { #category : #tests }
 PjReflectionTest >> testDirectSubclasses [
-	
-	self assertBlock: [Object subclasses size > 3 ].
-	self assertBlock: [Object subclasses includesAll: { PjFunction. PjArray.  PjSuperClassForTranspilationTest} ].	
+
+	| objectInitialSubclassesSize objectNewSubclassesSize |
+	objectInitialSubclassesSize := self evalBlock: [ Object subclasses size  ].	
+	self assertBlock: [Object subclasses includesAll: { PjFunction. PjArray. PjNumber. PjBoolean } ].	
+	self assert: objectInitialSubclassesSize > 4.
+	self bridge loadClass: PjArrayClassExtensionForTest.
+	self assertBlock: [ Object subclasses size = objectInitialSubclassesSize].	
 	self assertBlock: [PjFunction subclasses size = 1 ].
 	self assertBlock: [PjFunction subclasses includes: PjClass ].
-	self bridge loadClass: PjClassForTranspilationTest.
-	self assertBlock: [PjSuperClassForTranspilationTest subclasses size = 1 ].
-	self assertBlock: [PjSuperClassForTranspilationTest subclasses includes: PjClassForTranspilationTest].
+	self bridge loadAllClasses: { PjBSubClassOfA . PjCSubClassOfA  }.
+	objectNewSubclassesSize := self evalBlock: [ Object subclasses size  ].	
+	self assert: objectNewSubclassesSize equals: objectInitialSubclassesSize + 1.
+	self assertBlock: [PjASuperClass subclasses size = 2 ].
+	self assertBlock: [PjASuperClass subclasses includes: PjBSubClassOfA].
+	self assertBlock: [PjASuperClass subclasses includes: PjCSubClassOfA].
+	self assertBlock: [PjBSubClassOfA subclasses isEmpty ].
+	self assertBlock: [PjCSubClassOfA subclasses isEmpty ].
 	
 
 ]
@@ -38,8 +47,10 @@ PjReflectionTest >> testDirectSuperclass [
 	self assertBlock: [PjFunction superclass == Object ].
 	self assertBlock: [Object superclass isNil ].
 	self assertBlock: [PjArray superclass == Object ].
-	self assertBlock: [PjSuperClassForTranspilationTest superclass == Object ].
-	self assertBlock: [PjClassForTranspilationTest superclass == PjSuperClassForTranspilationTest ].
+	self bridge loadAllClasses: { PjBSubClassOfA . PjCSubClassOfA  }.
+	self assertBlock: [PjASuperClass superclass == Object ].
+	self assertBlock: [PjBSubClassOfA superclass == PjASuperClass ].
+	self assertBlock: [PjCSubClassOfA superclass == PjASuperClass ].
 	
 
 ]
