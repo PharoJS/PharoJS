@@ -304,6 +304,7 @@ PjCore class >> pharoJsSelectorPrefix [
 
 { #category : #accessing }
 PjCore class >> pharoJsSelectorPrefix_jsGenerator: transpiler [
+	<pharoJsSkip>
 	^ 'return ',transpiler pharoJsSelectorPrefix asJSON
 ]
 
