@@ -22,6 +22,11 @@ PjPharoTimingApplication class >> start [
 	PjTimingApplication runTimings: self new
 ]
 
+{ #category : #accessing }
+PjPharoTimingApplication >> cr [
+	^self
+]
+
 { #category : #initialization }
 PjPharoTimingApplication >> initialize [
 	printedIterations := iterations := 1000000
@@ -48,6 +53,11 @@ PjPharoTimingApplication >> runs [
 ]
 
 { #category : #accessing }
+PjPharoTimingApplication >> show: aString [
+	Transcript show: aString;cr.
+]
+
+{ #category : #accessing }
 PjPharoTimingApplication >> time [
 	PjTimingApplication allTimingOn: self
 ]
@@ -58,10 +68,10 @@ PjPharoTimingApplication >> time: aString with: aBlock ratio: ratio [
 	iters := (iterations * ratio) asInteger.
 	iters isZero ifTrue: [ iters := 1 ].
 	printedIterations = iters ifFalse: [
-		Transcript show: 'Running ';show: iters;show: ' iterations';cr.
+		self show: 'Running ';show: iters;show: ' iterations';cr.
 		printedIterations := iters
 	].
-	Transcript
+	self
 		show: prefix;
 		show: aString;
 		show: ': ';

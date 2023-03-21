@@ -34,6 +34,11 @@ PjBrowserTimingApplication class >> start [
 	PjTimingApplication runTimings: self new
 ]
 
+{ #category : #accessing }
+PjBrowserTimingApplication >> cr [
+	^self
+]
+
 { #category : #initialization }
 PjBrowserTimingApplication >> initialize [
 
@@ -67,6 +72,13 @@ PjBrowserTimingApplication >> runs [
 ]
 
 { #category : #accessing }
+PjBrowserTimingApplication >> show: aString [
+
+	console log: aString.
+	(document getElementById: #log) ifNotNil: [ : log | log innerHTML: log innerHTML, aString ]
+]
+
+{ #category : #accessing }
 PjBrowserTimingApplication >> time [
 
 	PjTimingApplication allTimingOn: self.
@@ -81,7 +93,7 @@ PjBrowserTimingApplication >> time: aString with: aBlock ratio: ratio [
 	iters := (iterations * ratio) asInteger.
 	iters isZero ifTrue: [ iters := 1 ].
 	printedIterations = iters ifFalse: [ 
-		Transcript
+		self
 			show: 'Running ';
 			show: iters;
 			show: ' iterations';

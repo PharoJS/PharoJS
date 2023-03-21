@@ -40,6 +40,11 @@ PjNodeTimingApplication class >> start [
 	PjTimingApplication runTimings: self new
 ]
 
+{ #category : #accessing }
+PjNodeTimingApplication >> cr [
+	^self
+]
+
 { #category : #initialization }
 PjNodeTimingApplication >> initialize [
 	printedIterations := iterations := 1000000
@@ -66,6 +71,11 @@ PjNodeTimingApplication >> runs [
 ]
 
 { #category : #accessing }
+PjNodeTimingApplication >> show: aString [
+	console log: aString
+]
+
+{ #category : #accessing }
 PjNodeTimingApplication >> time [
 	PjTimingApplication allTimingOn: self.
 	PjTimingApplication jsTimingOn: self top: global.
@@ -78,7 +88,7 @@ PjNodeTimingApplication >> time: aString with: aBlock ratio: ratio [
 	iters := (iterations * ratio) asInteger.
 	iters isZero ifTrue: [ iters := 1 ].
 	printedIterations = iters ifFalse: [
-		Transcript show: 'Running ';show: iters;show: ' iterations';cr.
+		self show: 'Running ';show: iters;show: ' iterations';cr.
 		printedIterations := iters
 	].
 	console time: prefix,aString.
