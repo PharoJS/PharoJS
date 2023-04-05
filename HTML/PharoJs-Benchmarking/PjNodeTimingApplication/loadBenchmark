@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+jsFilePath=`dirname $0`/loadTimeBenchmarkNode.js
+count=100
+for i in $(seq $count)
+do
+  node ${jsFilePath}
+done
