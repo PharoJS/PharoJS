@@ -24,7 +24,7 @@ PjPharoTimingApplication class >> start [
 
 { #category : #accessing }
 PjPharoTimingApplication >> cr [
-	^self
+	^Transcript cr
 ]
 
 { #category : #initialization }
@@ -54,7 +54,7 @@ PjPharoTimingApplication >> runs [
 
 { #category : #accessing }
 PjPharoTimingApplication >> show: aString [
-	Transcript show: aString;cr.
+	Transcript show: aString.
 ]
 
 { #category : #accessing }
