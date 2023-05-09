@@ -75,7 +75,7 @@ PjExporterTest >> testCoreClassedLoaded [
 			 before: 'PjApplication').
 	self assert: (jsCode
 			 includes:
-			 PjTranspiler installClassExtensionSelector , '=function('
+			 PjTranspiler installJsClassPlaceholderSelector , '=function('
 			 before: 'PjApplication')
 ]
 

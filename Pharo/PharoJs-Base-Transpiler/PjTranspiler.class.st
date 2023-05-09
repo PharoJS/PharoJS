@@ -55,13 +55,14 @@ PjTranspiler class >> installAllAliasesSelector [
 ]
 
 { #category : #'transpiling classes' }
-PjTranspiler class >> installClassExtensionSelector [
-	^#installClassExtension
+PjTranspiler class >> installClassSelector [
+	^#installClass
 ]
 
 { #category : #'transpiling classes' }
-PjTranspiler class >> installClassSelector [
-	^#installClass
+PjTranspiler class >> installJsClassPlaceholderSelector [
+
+	^ #installJsClassPlaceholder
 ]
 
 { #category : #accessing }
@@ -335,22 +336,22 @@ PjTranspiler >> installAllAliasesSelector [
 ]
 
 { #category : #'transpiling classes' }
-PjTranspiler >> installClassExtensionSelector [
-
-	^ self class installClassExtensionSelector
-]
-
-{ #category : #'transpiling classes' }
 PjTranspiler >> installClassSelector [
 
 	^ self class installClassSelector
 ]
 
 { #category : #'transpiling classes' }
+PjTranspiler >> installJsClassPlaceholderSelector [
+
+	^ self class installJsClassPlaceholderSelector
+]
+
+{ #category : #'transpiling classes' }
 PjTranspiler >> installSelectorFor: aClass [
 
-	^ aClass isClassExtension
-		  ifTrue: [ self installClassExtensionSelector ]
+	^ aClass isJsClassPlaceholder
+		  ifTrue: [ self installJsClassPlaceholderSelector ]
 		  ifFalse: [ self installClassSelector ]
 ]
 
@@ -384,7 +385,7 @@ PjTranspiler >> moveHighestPriorityClassesIn: initialClasses to: orderedClasses 
 { #category : #'transpiling classes' }
 PjTranspiler >> needMetaclassFixFor: aClass [
 
-	^ aClass isClassExtension
+	^ aClass isJsClassPlaceholder
 ]
 
 { #category : #outputing }
@@ -566,7 +567,7 @@ self
 PjTranspiler >> writeClassDeclarationOf: aClass [
 
 	self << 'class'.
-	aClass isClassExtension ifTrue: [^self]. 
+	aClass isJsClassPlaceholder ifTrue: [^self]. 
 		self
 			space;
 			writeNameForSubclass: aClass;
@@ -591,7 +592,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		writeMethodsOf: aClass;
 		writeClassVariableDeclarationsOf: aClass;
 		<< '},'.
-	aClass isClassExtension ifTrue: [ 
+	aClass isJsClassPlaceholder ifTrue: [ 
 		self
 			writeNameForClass: aClass;
 			<< $, ].
@@ -600,21 +601,6 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		<< $,;
 		writeClassMethodsAliasesDict;
 		<< ');'
-]
-
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeClassExtensionSpecificsOf: aClass [
-
-	aClass isClassExtension ifFalse: [^self].
-	self
-		nextPutAll: 'Smalltalk.';
-		nextPutAll: self installClassExtensionSelector;
-		nextPut: $(;
-		writeNameForClassExtension: aClass;
-		nextPut: $,;
-		writeNameForClass: aClass;
-		nextPutAll: ');';
-		cr
 ]
 
 { #category : #transpiling }
@@ -747,6 +733,21 @@ PjTranspiler >> writeInstanceVariable: cvName [
 	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
 ]
 
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeJsClassPlaceholderSpecificsOf: aClass [
+
+	aClass isJsClassPlaceholder ifFalse: [^self].
+	self
+		nextPutAll: 'Smalltalk.';
+		nextPutAll: self installJsClassPlaceholderSelector;
+		nextPut: $(;
+		writeNameForClassExtension: aClass;
+		nextPut: $,;
+		writeNameForClass: aClass;
+		nextPutAll: ');';
+		cr
+]
+
 { #category : #writing }
 PjTranspiler >> writeList: aCollection withPrefix: aString [ 
 	aCollection do: [: each |
@@ -792,20 +793,20 @@ PjTranspiler >> writeNameForClassExtension: aClass [
 { #category : #'transpiling classes' }
 PjTranspiler >> writeNameForSubclass: aClass [
 
-	aClass isClassExtension ifFalse: [ ^ self writeNameForClass: aClass ].
+	aClass isJsClassPlaceholder ifFalse: [ ^ self writeNameForClass: aClass ].
 	self writeNameForClassExtension: aClass
 ]
 
 { #category : #'transpiling classes' }
 PjTranspiler >> writeWrapperWith: aBlock forDefinitionOfClass: aClass [
 
-	aClass isClassExtension ifTrue: [self
+	aClass isJsClassPlaceholder ifTrue: [self
 		nextPutAll: 'Smalltalk.';
-		nextPutAll: self installClassExtensionSelector;
+		nextPutAll: self installJsClassPlaceholderSelector;
 		nextPut: $(.
  ].
 	aBlock value.
-	aClass isClassExtension ifTrue: [ 
+	aClass isJsClassPlaceholder ifTrue: [ 
 		self 		nextPut: $,;
 		writeNameForClass: aClass;
 		nextPutAll: ');';

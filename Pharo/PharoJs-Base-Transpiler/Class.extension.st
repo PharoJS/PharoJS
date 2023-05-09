@@ -29,16 +29,16 @@ Class >> hasJavascriptName [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-Class >> isClassExtension [
-
-	self hasJavascriptPlaceholder ifTrue: [ 
-		^ self javascriptPlaceholder isClassExtension ].
-	^self hasJavascriptName and: [self javascriptName ~= self name]
+Class >> isFreeJavascriptValue [
+	^ true
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-Class >> isFreeJavascriptValue [
-	^ true
+Class >> isJsClassPlaceholder [
+
+	self hasJavascriptPlaceholder ifTrue: [ 
+		^ self javascriptPlaceholder isJsClassPlaceholder ].
+	^self hasJavascriptName and: [self javascriptName ~= self name]
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
@@ -51,7 +51,7 @@ Class >> nameToUseForJsConversion [
 { #category : #'*PharoJs-Base-Transpiler' }
 Class >> needsClassDeclaration [
 
-	^self isClassExtension not
+	^self isJsClassPlaceholder not
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }

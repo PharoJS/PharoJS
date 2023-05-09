@@ -59,7 +59,7 @@ PjClassForTranspilationTest class >> instanceMethod_jsGenerator: transpiler [
 ]
 
 { #category : #'pharojs support' }
-PjClassForTranspilationTest class >> isClassExtension [
+PjClassForTranspilationTest class >> isJsClassPlaceholder [
 	^false
 ]
 

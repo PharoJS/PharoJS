@@ -210,14 +210,14 @@ PjExporter >> installAllAliasesSelector [
 	^PjTranspiler installAllAliasesSelector
 ]
 
-{ #category : #writing }
-PjExporter >> installClassExtensionSelector [
-	^self transpiler installClassExtensionSelector
-]
-
 { #category : #'writing core' }
 PjExporter >> installClassSelector [
 	^self transpiler installClassSelector
+]
+
+{ #category : #writing }
+PjExporter >> installJsClassPlaceholderSelector [
+	^self transpiler installJsClassPlaceholderSelector
 ]
 
 { #category : #testing }
@@ -448,7 +448,7 @@ PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 	self transpiler
 		writeNameForClass: PjCore;
 		<< $.;
-		<< self installClassExtensionSelector;
+		<< self installJsClassPlaceholderSelector;
 		<<
 			'=function(extensionClass,targetClass,instanceSideAliasesDict,classSideAliasesDict){';
 		crtab;

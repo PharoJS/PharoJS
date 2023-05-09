@@ -19,7 +19,7 @@ PjExtensionClassForAliasTest class >> classM2 [
 ]
 
 { #category : #transpiling }
-PjExtensionClassForAliasTest class >> isClassExtension [
+PjExtensionClassForAliasTest class >> isJsClassPlaceholder [
 
 	<pharoJsSkip>
 	^ true
