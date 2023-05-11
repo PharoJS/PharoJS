@@ -32,6 +32,14 @@ PjClassExtensionTest >> testClassMethodAlias [
 ]
 
 { #category : #tests }
+PjClassExtensionTest >> testEmptyClassExtension [
+
+	self bridge loadClass: PjEmptyClassExtensionOfASuperClass.
+	self assertEquivalent: [ PjASuperClass someString ].
+	self assertEquivalent: [ PjASuperClass new someNumber ]
+]
+
+{ #category : #tests }
 PjClassExtensionTest >> testInstanceMessageToSuper [
 
 	self assert: [ PjBSubClassOfA new someNumber ] evaluatesTo: 42

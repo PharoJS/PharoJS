@@ -411,33 +411,35 @@ PjExporter >> writeCoreObjectInstallAliasesMethods [
 	self transpiler
 		<< coreClassName;
 		<<
-			'.installSelectorAliases=function(aliases, selector, source, target){
+			'.installSelectorAliases=function(aliases, selector, target){
 		aliases.forEach('.
-		self writePropertyDefinitionFunctionFrom: 'source' at: 'selector' to: 'target'. 
-	self transpiler 
+	self
+		writePropertyDefinitionFunctionFrom: 'target'
+		at: 'selector'
+		to: 'target'.
+	self transpiler
 		<< ');
 	}';
 		cr;
 		<< coreClassName;
-		<< '.installAliasesFromDict=function(aliasesDict, source, target){
+		<< '.installAliasesFromDict=function(aliasesDict, target){
 		for(let key of Object.getOwnPropertyNames(aliasesDict)){';
 		<< coreClassName;
-		<< '.installSelectorAliases(aliasesDict[key], key, source, target);
+		<< '.installSelectorAliases(aliasesDict[key], key, target);
 	}}';
 		cr;
 		<< coreClassName;
 		<< $.;
 		<< self installAllAliasesSelector;
 		<<
-			'=function(instanceSideAliasesDict, classSideAliasesDict, sourceClass, targetClass){';
+			'=function(instanceSideAliasesDict, classSideAliasesDict, targetClass){';
 		cr;
 		<< coreClassName;
 		<<
-			'.installAliasesFromDict(instanceSideAliasesDict, sourceClass.prototype, targetClass.prototype);';
+			'.installAliasesFromDict(instanceSideAliasesDict, targetClass.prototype);';
 		cr;
 		<< coreClassName;
-		<<
-			'.installAliasesFromDict(classSideAliasesDict, sourceClass, targetClass);
+		<< '.installAliasesFromDict(classSideAliasesDict, targetClass);
 	}';
 		cr
 ]
@@ -476,7 +478,7 @@ PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 		<< 'this.';
 		<< self installAllAliasesSelector;
 		<<
-			'(instanceSideAliasesDict, classSideAliasesDict, extensionClass, targetClass);';
+			'(instanceSideAliasesDict, classSideAliasesDict, targetClass);';
 		crtab;
 		<< 'this.';
 		<< self fixMetaclassOfSelector;
