@@ -21,11 +21,13 @@ PjExtensionOfBSubClassOfA class >> javascriptName [
 { #category : #accessing }
 PjExtensionOfBSubClassOfA class >> someString [
 
-	^ super someString, ' Answer'
+	<jsAlias: #someStringAlias>
+	^ super someString , ' Answer'
 ]
 
 { #category : #accessing }
 PjExtensionOfBSubClassOfA >> someNumber [
 
+		<jsAlias: #someNumberAlias>
 	^ super someNumber + 2
 ]
