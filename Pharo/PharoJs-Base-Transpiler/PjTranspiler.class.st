@@ -566,15 +566,14 @@ self
 { #category : #'transpiling classes' }
 PjTranspiler >> writeClassDeclarationOf: aClass [
 
-	self << 'class'.
-	aClass isJsClassPlaceholder ifTrue: [^self]. 
-		self
+aClass isJsClassPlaceholder ifTrue: [ ^self writeClassExtensionDeclarationOf: aClass ].
+	self << 'class';
 			space;
-			writeNameForSubclass: aClass;
-			space;
-			<< 'extends';
+			writeNameForClass: aClass; 
 		space;
-		writeNameForClass: aClass superclass
+		<< 'extends';
+		space; 
+		writeNameForClass: aClass superclass 
 ]
 
 { #category : #'transpiling classes' }
@@ -601,6 +600,21 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		<< $,;
 		writeClassMethodsAliasesDict;
 		<< ');'
+]
+
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeClassExtensionDeclarationOf: aClass [
+
+	self
+		<< 'class';
+		space;
+		<< 'extends';
+		space;
+		<< '(';
+		writeNameForClass: aClass;
+		<< '.__proto__.prototype == null  ? Object :';
+		writeNameForClass: aClass;
+		<< '.__proto__)'
 ]
 
 { #category : #transpiling }
@@ -706,7 +720,7 @@ PjTranspiler >> writeInstallMethodAliasesOf: aClass [
 		<< $,;
 		writeClassMethodsAliasesDict;
 		<< $,;
-		writeNameForSubclass: aClass;
+		writeNameForClass: aClass;
 		<< $,;
 		writeNameForClass: aClass;
 		<< ');';
@@ -731,21 +745,6 @@ PjTranspiler >> writeInstanceMethodsOf: aClass [
 { #category : #transpiling }
 PjTranspiler >> writeInstanceVariable: cvName [
 	self writeVariable: cvName escapingIfIn: PjStringGenerator JsReservedWordsForInstanceVariables
-]
-
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeJsClassPlaceholderSpecificsOf: aClass [
-
-	aClass isJsClassPlaceholder ifFalse: [^self].
-	self
-		nextPutAll: 'Smalltalk.';
-		nextPutAll: self installJsClassPlaceholderSelector;
-		nextPut: $(;
-		writeNameForClassExtension: aClass;
-		nextPut: $,;
-		writeNameForClass: aClass;
-		nextPutAll: ');';
-		cr
 ]
 
 { #category : #writing }
@@ -780,21 +779,6 @@ PjTranspiler >> writeMethodsOf: aClass [
 { #category : #'transpiling classes' }
 PjTranspiler >> writeNameForClass: aClass [
 	self nextPutAll: aClass instanceSide nameToUseForJsConversion
-]
-
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeNameForClassExtension: aClass [
-
-	self
-		writeNameForClass: aClass;
-		nextPutAll: '$ClassExtension'
-]
-
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeNameForSubclass: aClass [
-
-	aClass isJsClassPlaceholder ifFalse: [ ^ self writeNameForClass: aClass ].
-	self writeNameForClassExtension: aClass
 ]
 
 { #category : #'transpiling classes' }
