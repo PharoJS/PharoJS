@@ -780,20 +780,3 @@ PjTranspiler >> writeMethodsOf: aClass [
 PjTranspiler >> writeNameForClass: aClass [
 	self nextPutAll: aClass instanceSide nameToUseForJsConversion
 ]
-
-{ #category : #'transpiling classes' }
-PjTranspiler >> writeWrapperWith: aBlock forDefinitionOfClass: aClass [
-
-	aClass isJsClassPlaceholder ifTrue: [self
-		nextPutAll: 'Smalltalk.';
-		nextPutAll: self installJsClassPlaceholderSelector;
-		nextPut: $(.
- ].
-	aBlock value.
-	aClass isJsClassPlaceholder ifTrue: [ 
-		self 		nextPut: $,;
-		writeNameForClass: aClass;
-		nextPutAll: ');';
-		cr
-		 ]
-]
