@@ -66,9 +66,11 @@ PjExporter >> addClass: aClass [
 
 { #category : #adding }
 PjExporter >> addPackage: packageName [
-
+	"gather all classes from the package with name packageName. This includes definedClasses
+	and extendedClasses. As there could be a Metaclass in the list we collect only the 
+	instanceSide of Metaclass"
 	self addAllClasses:
-		(SystemOrganizer default classesInCategory: packageName asString)
+		((RPackage organizer packageNamed: packageName) classes collect: #instanceSide) asSet
 ]
 
 { #category : #accessing }
