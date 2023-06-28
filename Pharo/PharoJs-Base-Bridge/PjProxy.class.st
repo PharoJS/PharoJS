@@ -265,12 +265,12 @@ PjProxy >> jsName: aString onBridge: aBridge oid: anOid [
 
 	jsName := aString asSymbol.
 	oid := anOid asSymbol.
-	aBridge ifNotNil: [ 
+	aBridge ifNotNil: [
 		| finalizer |
 		finalizer := PjProxyFinalizationHandler
 			             finalizerForProxyNamed: jsName
 			             onBridge: aBridge.
-		self finalizationRegistry add: self executor: finalizer ].
+		self finalizationRegistry add: self finalizer: finalizer ].
 	proxySpecificBridge := aBridge
 ]
 

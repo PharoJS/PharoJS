@@ -317,7 +317,7 @@ PjBridge >> initialize [
 		                         OrderedCollection new.
 	shouldStartJsInterpreter := true.
 	self server: self serverClass new.
-	self finalizationRegistry add: self executor: (ObjectFinalizer new
+	self finalizationRegistry add: self finalizer: (ObjectFinalizer new
 			 receiver: self server;
 			 selector: #stop;
 			 yourself).
