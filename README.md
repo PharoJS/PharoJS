@@ -43,7 +43,8 @@ Metacello new
   load
 ```
 Where `<pharoVersion>` is one of the following: 
-- `pharo10`: latest, 
+- `pharo11`: latest, under development
+- `pharo10`: stable, maintained 
 - `pharo9`: stable, 
 - `pharo8`: obsolete, should works also with Pharo 7.
 
