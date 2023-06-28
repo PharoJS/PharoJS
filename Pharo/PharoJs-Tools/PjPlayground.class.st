@@ -25,8 +25,8 @@ PjPlayground class >> initialize [
 
 	SystemAnnouncer uniqueInstance
 		unsubscribe: self;
-		when: ClassAnnouncement do: [ 
-			self resetMenuBar ]
+		when: ClassAnnouncement do: [ self resetMenuBar ].
+	MicDocumentBrowser reset.
 ]
 
 { #category : #opening }
@@ -55,26 +55,27 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 		order: 40;
 		label: 'PharoJS';
 		icon: (self iconNamed: #smallWindowIcon);
-		with: [ 
-			self applicationList do: [ :class | 
-					| n |
-					n := class name.
-					(aBuilder item: n asSymbol)
-						label: n;
-						with: [ 
-							(aBuilder item: (n , ':js') asSymbol)
-								label: 'playground';
-								action: [ class playground ].
-							(aBuilder item: (n , ':browse') asSymbol)
-								label: 'export app';
-								action: [ class exportApp ].
-							(aBuilder item: (n , ':browse') asSymbol)
-								label: 'browse';
-								action: [ class browse ] ] ].
+		with: [
 			(aBuilder item: #HelpPharoJs)
 				label: 'PharoJS Help';
 				icon: (self iconNamed: #smallHelp);
-				action: [ HelpBrowser openOn: PharoJsHelp ] ]
+				action: [
+					MicDocumentBrowser openDocument: 'github://PharoJS/PharoJsDoc' ].
+			self applicationList do: [ :class |
+				| n |
+				n := class name.
+				(aBuilder item: n asSymbol)
+					label: n;
+					with: [
+						(aBuilder item: (n , ':js') asSymbol)
+							label: 'playground';
+							action: [ class playground ].
+						(aBuilder item: (n , ':browse') asSymbol)
+							label: 'export app';
+							action: [ class exportApp ].
+						(aBuilder item: (n , ':browse') asSymbol)
+							label: 'browse';
+							action: [ class browse ] ] ] ]
 ]
 
 { #category : #'world menu' }
