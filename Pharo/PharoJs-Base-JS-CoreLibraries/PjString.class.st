@@ -368,6 +368,11 @@ PjString >> split: anArray [
 	^ anArray js_split: self
 ]
 
+{ #category : #splitjoin }
+PjString >> splitOn: anArray [
+	^ anArray split: self
+]
+
 { #category : #converting }
 PjString >> value [
 	<javascript: 'return ""+this'>
