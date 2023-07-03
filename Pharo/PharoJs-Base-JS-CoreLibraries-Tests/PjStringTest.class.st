@@ -75,3 +75,10 @@ PjStringTest >> testSplit [
 	#(a b c) withIndexDo: [ : expected : index | 
 		self assert: (splited at: index) equals: expected]
 ]
+
+{ #category : #tests }
+PjStringTest >> testSplitOn [
+
+	self assertEquivalent: [
+		('a.b.c' splitOn: '.') asArray ]
+]

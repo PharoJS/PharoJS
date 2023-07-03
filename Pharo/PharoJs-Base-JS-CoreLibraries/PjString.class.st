@@ -364,8 +364,14 @@ PjString >> size [
 ]
 
 { #category : #splitjoin }
-PjString >> split: anArray [
-	^ anArray js_split: self
+PjString >> split: aString [
+
+	^ aString js_split: self
+]
+
+{ #category : #splitjoin }
+PjString >> splitOn: anArray [
+	^ anArray split: self
 ]
 
 { #category : #converting }
