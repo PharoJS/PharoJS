@@ -71,3 +71,16 @@ PjExpressApp >> port: anObject [
 
 	port := anObject
 ]
+
+{ #category : #'start-stop' }
+PjExpressApp >> start [ 
+	super start.
+	server listen: self port onStartDo: [ self startUpAction ]
+]
+
+{ #category : #'start-stop' }
+PjExpressApp >> startUpAction [
+
+	console log:
+		self className , ' web app started on port ' , self port asString
+]
