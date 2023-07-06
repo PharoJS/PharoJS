@@ -8,5 +8,5 @@ Class {
 PjHelloWorldExpressApp >> initialize [
 
 	super initialize.
-	server get: '/' handler: [ :req :res | res send: 'Hello World!' ]
+	server get: '/' handler: [ :req :res | res send: 'ExpressJS says hello to PharoJS!' ]
 ]
