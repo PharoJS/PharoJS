@@ -5,7 +5,7 @@ Uses the class PjExpressPolyfill to create an express server.
 
 "
 Class {
-	#name : #PjExpressApp,
+	#name : #PjExpressAppOLD,
 	#superclass : #PjNodeApplication,
 	#instVars : [
 		'server'
@@ -17,38 +17,38 @@ Class {
 }
 
 { #category : #webapp }
-PjExpressApp >> getRequest: path json: json [
+PjExpressAppOLD >> getRequest: path json: json [
 	server get: path action: [ :req :res | res json: json ].
 ]
 
 { #category : #webapp }
-PjExpressApp >> getRequest: path send: obj [
+PjExpressAppOLD >> getRequest: path send: obj [
 	server get: path action: [ :req :res | res send: obj ].
 ]
 
 { #category : #webapp }
-PjExpressApp >> listen: port [
+PjExpressAppOLD >> listen: port [
 	server listen: port anon: [ Object log: 'listening on port ' + port ].
 	
 ]
 
 { #category : #'start-stop' }
-PjExpressApp >> port [
+PjExpressAppOLD >> port [
 	^ 3000
 ]
 
 { #category : #webapp }
-PjExpressApp >> postRequest: path response: logic [
+PjExpressAppOLD >> postRequest: path response: logic [
 	server post: path action: logic.
 ]
 
 { #category : #'start-stop' }
-PjExpressApp >> setupPaths [
+PjExpressAppOLD >> setupPaths [
    self subclassResponsibility
 ]
 
 { #category : #'start-stop' }
-PjExpressApp >> start [
+PjExpressAppOLD >> start [
    server := ExpressServer new.
    self setupPaths.
    self listen: self port.
