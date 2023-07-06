@@ -13,6 +13,7 @@ Class {
 		'Uint16Array',
 		'Uint8Array',
 		'XMLHttpRequest',
+		'MutationObserver',
 		'localStorage'
 	],
 	#pools : [
