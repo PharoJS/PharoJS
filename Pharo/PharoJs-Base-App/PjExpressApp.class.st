@@ -2,7 +2,9 @@
 I use [expressJS](https://expressjs.com) to make a web app.
 I assume that the target folder comply with the following :
 - The folder is an npm initialized folder, i.e you have run `npm init`
-- The expressJS package is installed, i.e. you have run `npm install express --save`
+- The following node modules are installed, i.e. for each you should run `npm install <module> --save`
+	- [express](https://expressjs.com)
+	- [body-parser](https://expressjs.com/en/resources/middleware/body-parser.html)
 
 "
 Class {
@@ -13,15 +15,29 @@ Class {
 		'port'
 	],
 	#classInstVars : [
-		'expressConstructorFunction'
+		'expressConstructorFunction',
+		'bodyParserFactory'
 	],
 	#category : #'PharoJs-Base-App'
 }
 
 { #category : #accessing }
+PjExpressApp class >> bodyParserFactory [
+
+	^ bodyParserFactory ifNil: [ 
+		  self initBodyParserFactory]
+]
+
+{ #category : #accessing }
 PjExpressApp class >> expressConstructorFunction [
 	^expressConstructorFunction ifNil: [ self initExpressConstructorFunction  ].
 	
+]
+
+{ #category : #accessing }
+PjExpressApp class >> initBodyParserFactory [
+
+	^ bodyParserFactory := Smalltalk require: 'body-parser'
 ]
 
 { #category : #accessing }
@@ -36,6 +52,12 @@ PjExpressApp class >> isAbstract [
 	^ self = PjExpressApp 
 		  ifTrue: [ ^ true ]
 		  ifFalse: [ super isAbstract ]
+]
+
+{ #category : #initialization }
+PjExpressApp >> bodyParserFactory [
+
+	^ self class bodyParserFactory
 ]
 
 { #category : #initialization }
