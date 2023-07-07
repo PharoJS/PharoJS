@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Mozilla Firefox
+GenericName=Web Browser
+Comment=Browse the Web
+Exec=firefox -headless
+Icon=firefox.png
+Terminal=false
+Type=Application
+Categories=Application;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;
+StartupNotify=False
