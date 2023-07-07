@@ -19,9 +19,9 @@ PjHelloWorldExpressAppTest >> get: pathString [
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> post: pathString data: anObject [
+PjHelloWorldExpressAppTest >> post: pathString text: aString [
 
-	^ ZnEasy post: self urlString , pathString data: anObject asByteArray
+	^ ZnEasy post: self urlString , pathString data: (ZnEntity text: aString)
 ]
 
 { #category : #tests }
@@ -29,7 +29,7 @@ PjHelloWorldExpressAppTest >> testHttpGetGreetings [
 
 	| response |
 	response := self get: '/greetings'.
-	self assert: response contents equals: 'ExpressJS says hello!'
+	self assert: response contents equals: 'ExpressJS says: Hello!'
 ]
 
 { #category : #tests }
@@ -56,12 +56,10 @@ PjHelloWorldExpressAppTest >> testHttpPostName [
 
 	| response name |
 	name := 'PharoJS'.
-	response := self post: '/name' data: name.
+	response := self post: '/name' text: name.
 	self assert: response code equals: 200.
 	self assert: response contents equals: name.
-	self
-		assert: (self get: '/name') contents
-		equals: name .	
+	self assert: (self get: '/name') contents equals: name.
 	self
 		assert: (self get: '/greetings') contents
 		equals: 'ExpressJS says: Hello ' , name , '!'
