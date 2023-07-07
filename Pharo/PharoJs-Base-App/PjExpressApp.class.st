@@ -2,9 +2,7 @@
 I use [expressJS](https://expressjs.com) to make a web app.
 I assume that the target folder comply with the following :
 - The folder is an npm initialized folder, i.e you have run `npm init`
-- The following node modules are installed, i.e. for each you should run `npm install <module> --save`
-	- [express](https://expressjs.com)
-	- [body-parser](https://expressjs.com/en/resources/middleware/body-parser.html)
+- The express node modules is installed, i.e. you should run `npm install express` in the app's folder
 
 "
 Class {
@@ -21,31 +19,6 @@ Class {
 	#category : #'PharoJs-Base-App'
 }
 
-{ #category : #accessing }
-PjExpressApp class >> bodyParserFactory [
-
-	^ bodyParserFactory ifNil: [ 
-		  self initBodyParserFactory]
-]
-
-{ #category : #accessing }
-PjExpressApp class >> expressConstructorFunction [
-	^expressConstructorFunction ifNil: [ self initExpressConstructorFunction  ].
-	
-]
-
-{ #category : #accessing }
-PjExpressApp class >> initBodyParserFactory [
-
-	^ bodyParserFactory := Smalltalk require: 'body-parser'
-]
-
-{ #category : #accessing }
-PjExpressApp class >> initExpressConstructorFunction [
-
-	^ expressConstructorFunction := Smalltalk require: 'express'
-]
-
 { #category : #testing }
 PjExpressApp class >> isAbstract [
 
@@ -55,19 +28,8 @@ PjExpressApp class >> isAbstract [
 ]
 
 { #category : #initialization }
-PjExpressApp >> bodyParserFactory [
-
-	^ self class bodyParserFactory
-]
-
-{ #category : #initialization }
 PjExpressApp >> defaultPort [
 	^4321
-]
-
-{ #category : #initialization }
-PjExpressApp >> expressConstructorFunction [
-	^self class expressConstructorFunction
 ]
 
 { #category : #initialization }
@@ -79,7 +41,8 @@ PjExpressApp >> initialize [
 
 { #category : #initialization }
 PjExpressApp >> newServer [
-	^self expressConstructorFunction value
+
+	^ (self moduleNamed: 'express') value
 ]
 
 { #category : #accessing }

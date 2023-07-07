@@ -32,3 +32,13 @@ PjNodeApplication class >> isAbstract [
 PjNodeApplication class >> whenJsReady: aBlock [
 	aBlock value
 ]
+
+{ #category : #accessing }
+PjNodeApplication >> moduleNamed: aString [
+	^self modulesManager moduleNamed: aString
+]
+
+{ #category : #accessing }
+PjNodeApplication >> modulesManager [
+	^PjNodeModulesManager default
+]
