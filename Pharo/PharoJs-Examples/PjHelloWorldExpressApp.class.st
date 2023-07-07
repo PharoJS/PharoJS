@@ -15,6 +15,12 @@ Class {
 	#category : #'PharoJs-Examples-ExpressJS'
 }
 
+{ #category : #exporting }
+PjHelloWorldExpressApp class >> exportApp [
+	super exportApp.
+	PjHelloWorldExpressClientApp exportApp
+]
+
 { #category : #accessing }
 PjHelloWorldExpressApp class >> staticFilesFolderName [
 	^'public'
