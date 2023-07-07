@@ -34,6 +34,21 @@ PjNodeApplication class >> whenJsReady: aBlock [
 ]
 
 { #category : #accessing }
+PjNodeApplication >> dirName [
+
+"__dirname is an environment variable that tells you the absolute path of the directory containing the currently executing file."
+	<javascript: 'return __dirname'>
+	
+]
+
+{ #category : #accessing }
+PjNodeApplication >> fullPathFor: relativePathName [
+	^self pathFactory
+		        join: self dirName
+		        with: relativePathName
+]
+
+{ #category : #accessing }
 PjNodeApplication >> moduleNamed: aString [
 	^self modulesManager moduleNamed: aString
 ]
@@ -41,4 +56,10 @@ PjNodeApplication >> moduleNamed: aString [
 { #category : #accessing }
 PjNodeApplication >> modulesManager [
 	^PjNodeModulesManager default
+]
+
+{ #category : #accessing }
+PjNodeApplication >> pathFactory [
+
+	^ self moduleNamed: 'path'
 ]

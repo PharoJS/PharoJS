@@ -1,3 +1,11 @@
+"
+Express-based app. Requires the following node packages be installed in the folder
+	- [express](https://expressjs.com)
+	- [body-parser](https://expressjs.com/en/resources/middleware/body-parser.html): Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
+	- [path]
+	- [serve-static](https://expressjs.com/en/resources/middleware/serve-static.html): Create a new middleware function to serve files from within a given root directory. The file to serve will be determined by combining req.url with the provided root directory. When a file is not found, instead of sending a 404 response, this module will instead call next() to move on to the next middleware, allowing for stacking and fall-backs.
+
+"
 Class {
 	#name : #PjHelloWorldExpressApp,
 	#superclass : #PjExpressApp,
@@ -6,6 +14,11 @@ Class {
 	],
 	#category : #'PharoJs-Examples-ExpressJS'
 }
+
+{ #category : #accessing }
+PjHelloWorldExpressApp class >> staticFilesFolderName [
+	^'public'
+]
 
 { #category : #initialization }
 PjHelloWorldExpressApp >> greetings [
@@ -34,7 +47,8 @@ PjHelloWorldExpressApp >> handlePostNameRequest: req response: res [
 PjHelloWorldExpressApp >> initialize [
 
 	super initialize.
-	server use: self bodyParserFactory text.
+	self serveStaticFilesIn: self staticFilesFolderName.
+	server use: self bodyParser text.
 	server get: '/name' handler: [ :req :res | res send: name ].
 	server
 		post: '/name'
@@ -42,6 +56,10 @@ PjHelloWorldExpressApp >> initialize [
 		self handlePostNameRequest: req response: res ].
 	server
 		get: '/greetings'
-		handler: [ :req :res | res send: self greetings ].
+		handler: [ :req :res | res send: self greetings ]
+]
 
+{ #category : #initialization }
+PjHelloWorldExpressApp >> staticFilesFolderName [
+	^self class staticFilesFolderName
 ]

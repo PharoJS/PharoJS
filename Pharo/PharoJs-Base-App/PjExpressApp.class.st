@@ -27,6 +27,11 @@ PjExpressApp class >> isAbstract [
 		  ifFalse: [ super isAbstract ]
 ]
 
+{ #category : #accessing }
+PjExpressApp >> bodyParser [
+	^self moduleNamed: 'body-parser'
+]
+
 { #category : #initialization }
 PjExpressApp >> defaultPort [
 	^4321
@@ -55,6 +60,22 @@ PjExpressApp >> port [
 PjExpressApp >> port: anObject [
 
 	port := anObject
+]
+
+{ #category : #initialization }
+PjExpressApp >> serveStaticFilesIn: localFolderName [
+
+	| path serveStatic |
+	path := self fullPathFor: localFolderName.
+	serveStatic := self serveStaticFunction value: path.
+	server use: serveStatic.
+
+]
+
+{ #category : #accessing }
+PjExpressApp >> serveStaticFunction [
+
+	^ self moduleNamed: 'serve-static'
 ]
 
 { #category : #'start-stop' }

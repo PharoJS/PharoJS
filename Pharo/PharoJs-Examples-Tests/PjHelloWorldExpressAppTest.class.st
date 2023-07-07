@@ -46,9 +46,10 @@ PjHelloWorldExpressAppTest >> testHttpGetName [
 PjHelloWorldExpressAppTest >> testHttpGetRoot [
 
 	| response |
-	self fail: #todo.
 	response := self get: '/'.
-	self assert: response contents equals: 'ExpressJS says hello!'
+	self assert: response isSuccess.
+	self assert: (response contentType matches: ZnMimeType textHtml).
+	self assert: (response contents includesSubstring: 'pharoJsLogo')
 ]
 
 { #category : #tests }
