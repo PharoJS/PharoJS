@@ -1,5 +1,5 @@
 Class {
-	#name : #PjHelloWorldExpressAppTest,
+	#name : #PjHelloWorldExpressAppApiTest,
 	#superclass : #PjAppTestCase,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
@@ -7,25 +7,25 @@ Class {
 }
 
 { #category : #'suite parameters' }
-PjHelloWorldExpressAppTest class >> appClass [
+PjHelloWorldExpressAppApiTest class >> appClass [
 
 	^ PjHelloWorldExpressApp 
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> get: pathString [
+PjHelloWorldExpressAppApiTest >> get: pathString [
 
 	^ ZnEasy get: self urlString , pathString
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> post: pathString text: aString [
+PjHelloWorldExpressAppApiTest >> post: pathString text: aString [
 
 	^ ZnEasy post: self urlString , pathString data: (ZnEntity text: aString)
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> testHttpGetGreetings [
+PjHelloWorldExpressAppApiTest >> testHttpGetGreetings [
 
 	| response |
 	response := self get: '/greetings'.
@@ -33,7 +33,7 @@ PjHelloWorldExpressAppTest >> testHttpGetGreetings [
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> testHttpGetName [
+PjHelloWorldExpressAppApiTest >> testHttpGetName [
 
 	| response |
 	response := self get: '/name'.
@@ -43,7 +43,7 @@ PjHelloWorldExpressAppTest >> testHttpGetName [
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> testHttpGetRoot [
+PjHelloWorldExpressAppApiTest >> testHttpGetRoot [
 
 	| response |
 	response := self get: '/'.
@@ -53,7 +53,7 @@ PjHelloWorldExpressAppTest >> testHttpGetRoot [
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> testHttpPostName [
+PjHelloWorldExpressAppApiTest >> testHttpPostName [
 
 	| response name |
 	name := 'PharoJS'.
@@ -67,7 +67,7 @@ PjHelloWorldExpressAppTest >> testHttpPostName [
 ]
 
 { #category : #tests }
-PjHelloWorldExpressAppTest >> urlString [
+PjHelloWorldExpressAppApiTest >> urlString [
 
 	^ 'http://localhost:4321'
 ]

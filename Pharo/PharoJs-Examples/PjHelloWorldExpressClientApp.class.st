@@ -33,7 +33,7 @@ PjHelloWorldExpressClientApp >> greetings: aString [
 	self greetingsContainer textContent: aString
 ]
 
-{ #category : #acting }
+{ #category : #accessing }
 PjHelloWorldExpressClientApp >> greetingsContainer [
 	^self elementAt: #greetingsMessageContainer
 ]
@@ -42,11 +42,13 @@ PjHelloWorldExpressClientApp >> greetingsContainer [
 PjHelloWorldExpressClientApp >> initialize [
 
 	super initialize.
-	self onClick: #updateGreetingsButton do: [ self updateGreetings ].
-	self onClick: #setNameButton do: [ self setName ]
+	self
+		onClickElement: self updateGreetingsButton
+		do: [ self updateGreetings ].
+	self onClickElement: self setNameButton do: [ self setName ]
 ]
 
-{ #category : #acting }
+{ #category : #accessing }
 PjHelloWorldExpressClientApp >> nameInput [
 
 	^ self elementAt: #nameTextInput
@@ -63,6 +65,12 @@ PjHelloWorldExpressClientApp >> setName [
 		then: [ :response | self setNameResponse: response ]
 ]
 
+{ #category : #accessing }
+PjHelloWorldExpressClientApp >> setNameButton [
+
+	^self elementAt: #setNameButton
+]
+
 { #category : #acting }
 PjHelloWorldExpressClientApp >> setNameResponse: response [
 	response ok ifFalse: [ ^window alert: 'Setting name failed!' ].
@@ -75,4 +83,10 @@ PjHelloWorldExpressClientApp >> updateGreetings [
 
 	(window fetch: '/greetings') then: [ :response | 
 		response text then: [ :value | self greetings: value ] ]
+]
+
+{ #category : #accessing }
+PjHelloWorldExpressClientApp >> updateGreetingsButton [
+
+	^self elementAt: #updateGreetingsButton
 ]
