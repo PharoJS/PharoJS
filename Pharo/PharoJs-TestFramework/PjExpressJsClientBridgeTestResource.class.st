@@ -20,6 +20,44 @@ PjExpressJsClientBridgeTestResource >> bridgeForAppClass [
 	
 ]
 
+{ #category : #initialization }
+PjExpressJsClientBridgeTestResource >> initBridgeClientUrl [
+
+	| serverApp serverPort |
+	serverApp := serverBridge
+		             evalSelector: #currentInstance
+		             sentTo: serverClassName.
+	serverPort := serverApp port.
+	self bridge client urlString:
+		'http://localhost:' , serverPort asString , urlPath
+]
+
+{ #category : #initialization }
+PjExpressJsClientBridgeTestResource >> initFrom: aTestAsserter [
+
+	serverBridge := aTestAsserter serverClass bridge.
+	serverClassName := aTestAsserter serverClass name.
+	urlPath := aTestAsserter urlPath.
+	serverBridge shouldStartJsInterpreter: false.
+	self startBridge: serverBridge.
+	super initFrom: aTestAsserter
+]
+
+{ #category : #running }
+PjExpressJsClientBridgeTestResource >> resetClient [
+
+	serverBridge resetClient.
+	super resetClient
+]
+
+{ #category : #running }
+PjExpressJsClientBridgeTestResource >> startJsInterpreter [
+
+	serverBridge startJsInterpreter.
+	self initBridgeClientUrl.
+	super startJsInterpreter
+]
+
 { #category : #running }
 PjExpressJsClientBridgeTestResource >> tearDown [
 	serverBridge stop.

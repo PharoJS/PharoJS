@@ -87,6 +87,25 @@ PjBridgeTestResource >> ensureFreshClient [
 ]
 
 { #category : #initialization }
+PjBridgeTestResource >> initBridge [
+
+	self bridge: self bridgeForAppClass.
+	PjBridge soleBridge: self bridge
+]
+
+{ #category : #initialization }
+PjBridgeTestResource >> initFrom: aTestAsserter [
+
+	appClass := aTestAsserter appClassToExport.
+	appClass resetAppFolder.
+	self initBridge.
+	self bridge shouldStartJsInterpreter: false.
+	self setUpClient.
+	self startBridge: 
+		self bridge 
+]
+
+{ #category : #initialization }
 PjBridgeTestResource >> initialize [
 	super initialize.
 	self description: 'I manage a bridge dedicated to testing a PharoJS app'.
@@ -106,6 +125,16 @@ PjBridgeTestResource >> resetClient [
 { #category : #running }
 PjBridgeTestResource >> setUpClient [
 	^self bridge client openBrowserInBackground: self isClientBrowserOpenedInBackground
+]
+
+{ #category : #running }
+PjBridgeTestResource >> startBridge: aBridge [
+
+	"Avoid bridge resource process being killed by test runner.
+	So, we force DefaultExecutionEnvironment  instead of the implicit TestExecutionEnvironment "
+
+	DefaultExecutionEnvironment beActiveDuring: [ 
+		aBridge startWithoutWaitingForClient ]
 ]
 
 { #category : #running }

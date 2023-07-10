@@ -12,6 +12,14 @@ PjHelloWorldExpressClientAppTest class >> appClass [
 	^ PjHelloWorldExpressClientApp
 ]
 
+{ #category : #running }
+PjHelloWorldExpressClientAppTest >> debugBridgeResourceClass [
+
+	^ self
+	defaultBridgeResourceClass
+
+]
+
 { #category : #accessing }
 PjHelloWorldExpressClientAppTest >> defaultBridgeResourceClass [
 
