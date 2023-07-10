@@ -31,10 +31,10 @@ PjHelloWorldExpressApp >> greetings [
 
 	^ String streamContents: [ :str | 
 		  str << 'ExpressJS says: Hello'.
-		  name ifNotNil: [ 
+		  self name ifNotNil: [ 
 			  str
 				  space;
-				  << name ].
+				  << self name ].
 		  str << $! ]
 ]
 
@@ -45,8 +45,8 @@ PjHelloWorldExpressApp >> handlePostNameRequest: req response: res [
 	Request doc https://expressjs.com/en/4x/api.html#req
 	Response doc https://expressjs.com/en/4x/api.html#res"
 
-	name := req body.
-	res send: name
+	self name: req body.
+	res send: self name
 ]
 
 { #category : #initialization }
@@ -55,7 +55,7 @@ PjHelloWorldExpressApp >> initialize [
 	super initialize.
 	self serveStaticFilesIn: self staticFilesFolderName.
 	server use: self bodyParser text.
-	server get: '/name' handler: [ :req :res | res send: name ].
+	server get: '/name' handler: [ :req :res | res send: self name ].
 	server
 		post: '/name'
 		handler: [ :req :res | 
@@ -63,6 +63,18 @@ PjHelloWorldExpressApp >> initialize [
 	server
 		get: '/greetings'
 		handler: [ :req :res | res send: self greetings ]
+]
+
+{ #category : #accessing }
+PjHelloWorldExpressApp >> name [
+
+	^ name
+]
+
+{ #category : #accessing }
+PjHelloWorldExpressApp >> name: anObject [
+
+	name := anObject
 ]
 
 { #category : #initialization }

@@ -29,17 +29,22 @@ PjHelloWorldExpressAppApiTest >> testHttpGetGreetings [
 
 	| response |
 	response := self get: '/greetings'.
-	self assert: response contents equals: 'ExpressJS says: Hello!'
+	self assert: response contents equals: 'ExpressJS says: Hello!'.
+	app name: 'Spiderman'.
+	self assert: (self get: '/greetings') contents equals: 'ExpressJS says: Hello Spiderman!'.
+
 ]
 
 { #category : #tests }
 PjHelloWorldExpressAppApiTest >> testHttpGetName [
 
-	| response |
+	| response providedName |
 	response := self get: '/name'.
 	self assert: response code equals: 200.
 	self assert: response contents equals: nil.
-
+	providedName := 'Smalltalk Balloon'.
+	app name: providedName.
+	self assert: (self get: '/name') contents equals: providedName
 ]
 
 { #category : #tests }
