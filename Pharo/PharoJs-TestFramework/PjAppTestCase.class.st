@@ -26,6 +26,11 @@ PjAppTestCase class >> isAbstract [
 ]
 
 { #category : #accessing }
+PjAppTestCase >> app [
+	^app
+]
+
+{ #category : #accessing }
 PjAppTestCase >> appClass [
 	^self class appClass
 ]

@@ -13,21 +13,25 @@ Class {
 }
 
 { #category : #running }
+PjBridgeTestResource class >> appClassToExportFor: aTestAsserter [
+	^aTestAsserter appClassToExport 
+]
+
+{ #category : #running }
 PjBridgeTestResource class >> availableFor: aTestAsserter [
+
 	super availableFor: aTestAsserter.
 	self ensureAppClassFor: aTestAsserter.
-	self ensureFreshClient
+	self current ensureFreshClient
 ]
 
 { #category : #running }
 PjBridgeTestResource class >> ensureAppClassFor: aTestAsserter [
-	self current appClass == aTestAsserter appClassToExport ifTrue: [ ^self ].
-	self setCurrentWithNewForAppClass: aTestAsserter appClassToExport
-]
 
-{ #category : #running }
-PjBridgeTestResource class >> ensureFreshClient [
-	self current ensureFreshClient
+	self current appClass == aTestAsserter appClassToExport ifTrue: [ 
+		^ self ].
+	current := self new.
+	current initFrom: aTestAsserter
 ]
 
 { #category : #accessing }
@@ -38,18 +42,6 @@ PjBridgeTestResource class >> isClientBrowserOpenedInBackground [
 { #category : #accessing }
 PjBridgeTestResource class >> isClientBrowserOpenedInBackground: aBoolean [
 	^OpenWebBrowserInBackground := aBoolean 
-]
-
-{ #category : #'instance creation' }
-PjBridgeTestResource class >> newWithAppClass: aClass [
-	^ self new
-		initializeWithAppClass: aClass;
-		yourself
-]
-
-{ #category : #'instance creation' }
-PjBridgeTestResource class >> setCurrentWithNewForAppClass: aClass [
-	current := self newWithAppClass: aClass
 ]
 
 { #category : #accessing }
@@ -81,10 +73,17 @@ PjBridgeTestResource >> bridge: aBridge [
 	bridge := aBridge.
 ]
 
+{ #category : #accessing }
+PjBridgeTestResource >> bridgeForAppClass [
+
+	^ appClass bridge
+]
+
 { #category : #running }
 PjBridgeTestResource >> ensureFreshClient [
-	self bridge isConnected ifTrue: [^self resetClient].
-	self bridge startJsInterpreter
+
+	self bridge isConnected ifTrue: [ ^ self resetClient ].
+	self startJsInterpreter
 ]
 
 { #category : #initialization }
@@ -92,19 +91,6 @@ PjBridgeTestResource >> initialize [
 	super initialize.
 	self description: 'I manage a bridge dedicated to testing a PharoJS app'.
 	self name: 'PharoJS Bridge TestResource'.
-]
-
-{ #category : #accessing }
-PjBridgeTestResource >> initializeWithAppClass: aClass [
-
-	appClass := aClass.
-	appClass resetAppFolder.
-	self bridge: appClass bridge.
-	PjBridge soleBridge: self bridge.
-	self bridge shouldStartJsInterpreter: false.
-	self setUpClient.
-	DefaultExecutionEnvironment beActiveDuring: [ 
-		self bridge startWithoutWaitingForClient ]
 ]
 
 { #category : #running }
@@ -118,12 +104,14 @@ PjBridgeTestResource >> resetClient [
 ]
 
 { #category : #running }
-PjBridgeTestResource >> setUp [
+PjBridgeTestResource >> setUpClient [
+	^self bridge client openBrowserInBackground: self isClientBrowserOpenedInBackground
 ]
 
 { #category : #running }
-PjBridgeTestResource >> setUpClient [
-	^self bridge client openBrowserInBackground: self isClientBrowserOpenedInBackground
+PjBridgeTestResource >> startJsInterpreter [
+	self bridge startJsInterpreter
+	
 ]
 
 { #category : #running }

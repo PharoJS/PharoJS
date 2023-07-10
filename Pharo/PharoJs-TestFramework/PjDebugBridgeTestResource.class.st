@@ -6,7 +6,8 @@ Class {
 
 { #category : #running }
 PjDebugBridgeTestResource >> ensureFreshClient [
-	self bridge startJsInterpreter
+
+	self startJsInterpreter
 ]
 
 { #category : #running }
