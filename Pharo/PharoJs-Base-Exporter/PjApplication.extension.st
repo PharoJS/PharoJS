@@ -1,6 +1,13 @@
 Extension { #name : #PjApplication }
 
 { #category : #'*PharoJs-Base-Exporter-App' }
+PjApplication class >> afterExportApp [
+
+	<pharoJsSkip>
+	self inform: 'DONE exporting JS code for ' , self name
+]
+
+{ #category : #'*PharoJs-Base-Exporter-App' }
 PjApplication class >> appFolder [
 	<pharoJsSkip>
 	
@@ -53,6 +60,13 @@ PjApplication class >> appJsSubFolder [
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
+PjApplication class >> beforeExportApp [
+
+	<pharoJsSkip>
+	^self
+]
+
+{ #category : #'*PharoJs-Base-Exporter-App' }
 PjApplication class >> defaultAppFolder [
 
 	<pharoJsSkip>
@@ -92,10 +106,10 @@ PjApplication class >> defaultAppFolderPath [
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjApplication class >> exportApp [
+
 	<pharoJsSkip>
-	
 	self exporterClass exportApp: self appClass.
-	self inform: 'DONE exporting JS code for ', self name
+
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }

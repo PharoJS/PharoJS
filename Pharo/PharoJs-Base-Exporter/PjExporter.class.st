@@ -582,9 +582,12 @@ PjExporter >> writeGlobalsPolyfills: pools [
 
 { #category : #writing }
 PjExporter >> writeJsCode [
-		self writeJsCoreAndBootstrap.
-		self writeNonBootstrapClasses.
-		self writeLaunchCode
+
+	self appClass beforeExportApp.
+	self writeJsCoreAndBootstrap.
+	self writeNonBootstrapClasses.
+	self writeLaunchCode.
+	self appClass afterExportApp
 ]
 
 { #category : #writing }

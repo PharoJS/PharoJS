@@ -1,6 +1,15 @@
 Extension { #name : #PjNodeApplication }
 
 { #category : #'*PharoJs-Base-Exporter' }
+PjNodeApplication class >> beforeExportApp [
+
+	<pharoJsSkip>
+	super beforeExportApp.
+	self ensureRequiredModulesInstalled.
+
+]
+
+{ #category : #'*PharoJs-Base-Exporter' }
 PjNodeApplication class >> ensureRequiredModulesInstalled [
 
 	<pharoJsSkip>
@@ -8,15 +17,6 @@ PjNodeApplication class >> ensureRequiredModulesInstalled [
 	(self appFolder / 'package-lock.json') exists ifFalse: [ ^ self ].
 	self inform: 'Installing NPM modules for ' , self name.
 	LibC runCommand: self installNpmModulesCommandLine
-]
-
-{ #category : #'*PharoJs-Base-Exporter' }
-PjNodeApplication class >> exportApp [
-
-	<pharoJsSkip>
-	self ensureRequiredModulesInstalled.
-	super exportApp.
-
 ]
 
 { #category : #'*PharoJs-Base-Exporter' }
