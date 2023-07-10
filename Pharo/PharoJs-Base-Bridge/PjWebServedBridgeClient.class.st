@@ -1,28 +1,28 @@
 Class {
-	#name : #PjExpressJsClientAppBridgeClient,
+	#name : #PjWebServedBridgeClient,
 	#superclass : #PjFileBasedBridgeClient,
 	#traits : 'PjTWebBridgeClient',
 	#classTraits : 'PjTWebBridgeClient classTrait',
 	#instVars : [
 		'urlString'
 	],
-	#category : #'PharoJs-Examples-Tests-ExpressJS'
+	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
 { #category : #'accessing - defaults' }
-PjExpressJsClientAppBridgeClient >> defaultAppClass [
+PjWebServedBridgeClient >> defaultAppClass [
 
 	^ PjMinimalWebApplication
 ]
 
 { #category : #accessing }
-PjExpressJsClientAppBridgeClient >> urlString [
+PjWebServedBridgeClient >> urlString [
 
 	^ urlString
 ]
 
 { #category : #accessing }
-PjExpressJsClientAppBridgeClient >> urlString: anObject [
+PjWebServedBridgeClient >> urlString: anObject [
 
 	urlString := anObject
 ]

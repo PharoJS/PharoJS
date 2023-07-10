@@ -12,7 +12,7 @@ Class {
 { #category : #accessing }
 PjExpressJsClientBridgeTestResource >> bridgeForAppClass [
 	| bridgeClient |
-	bridgeClient := PjExpressJsClientAppBridgeClient 
+	bridgeClient := PjWebServedBridgeClient 
 		                      newWithAppClass: self appClass.
 	^PjBridge
 		                bridgeForAppClass: self appClass
