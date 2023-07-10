@@ -28,6 +28,18 @@ PjNodeApplication class >> isAbstract [
 		 		   ifFalse: [ super isAbstract ]
 ]
 
+{ #category : #accessing }
+PjNodeApplication class >> modulesFolder [
+
+	<pharoJsSkip>
+	^ (self appFolder / self modulesFolderName) 
+]
+
+{ #category : #accessing }
+PjNodeApplication class >> modulesFolderName [
+	^'node_modules'
+]
+
 { #category : #private }
 PjNodeApplication class >> whenJsReady: aBlock [
 	aBlock value

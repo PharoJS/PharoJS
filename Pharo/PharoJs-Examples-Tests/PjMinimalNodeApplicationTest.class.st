@@ -41,6 +41,15 @@ PjMinimalNodeApplicationTest >> testLoadClass [
 ]
 
 { #category : #tests }
+PjMinimalNodeApplicationTest >> testRequiredJsModulesInstalled [
+
+	self appClass modulesFolder ensureDeleteAll.
+	self deny: self appClass modulesFolder exists.
+	self appClass exportApp.
+	self assert: self appClass modulesFolder exists
+]
+
+{ #category : #tests }
 PjMinimalNodeApplicationTest >> testResetApp [
 
 	| initialChangeTime latestChangeTime |
