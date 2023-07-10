@@ -10,6 +10,7 @@ Class {
 		'Float32Array',
 		'FormData',
 		'Image',
+		'MutationObserver',
 		'Uint16Array',
 		'Uint8Array',
 		'XMLHttpRequest',
