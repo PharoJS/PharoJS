@@ -16,8 +16,10 @@ Class {
 }
 
 { #category : #exporting }
-PjHelloWorldExpressApp class >> exportApp [
-	super exportApp.
+PjHelloWorldExpressApp class >> afterExportApp [ 
+
+	<pharoJsSkip>
+	super afterExportApp.
 	PjHelloWorldExpressClientApp exportApp
 ]
 
