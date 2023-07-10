@@ -8,13 +8,6 @@ Class {
 }
 
 { #category : #accessing }
-PjHelloWorldExpressClientApp class >> appJsSubFolder [
-
-	<pharoJsSkip>
-	^ 'js'
-]
-
-{ #category : #accessing }
 PjHelloWorldExpressClientApp class >> defaultAppFolderName [
 	<pharoJsSkip>
 
