@@ -8,8 +8,10 @@ Class {
 }
 
 { #category : #'pharoJs support' }
-PjRxParser class >> javascriptName [ 
-	^ 'RegExp'
+PjRxParser class >> javascriptName [
+
+	<pharoJsSkip>
+	^ 'RegExp' 
 ]
 
 { #category : #testing }
