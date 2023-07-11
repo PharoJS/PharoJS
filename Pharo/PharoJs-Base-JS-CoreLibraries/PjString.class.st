@@ -143,7 +143,8 @@ PjString >> asNumber [
 
 { #category : #converting }
 PjString >> asRegex [
-	<javascript: 'return new RegExp(this)'>
+
+	^ PjRxParser new: self with: 'g'
 ]
 
 { #category : #converting }

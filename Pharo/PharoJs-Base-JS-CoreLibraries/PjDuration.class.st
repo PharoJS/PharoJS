@@ -36,3 +36,20 @@ PjDuration >> addDateAndTime: aDateAndTime [
 		setMilliseconds: (aDateAndTime getMilliseconds + self millisecondsCount);
 		yourself
 ]
+
+{ #category : #adding }
+PjDuration >> printString [
+
+	^ (self asNanoSeconds < 0
+		   ifTrue: [ '-' ]
+		   ifFalse: [ '+' ]) , (self printWithLeading0: self hoursCount)
+	  , ':' , (self printWithLeading0: self minutesCount)
+]
+
+{ #category : #adding }
+PjDuration >> printWithLeading0: aNumber [
+
+	^ aNumber abs < 10
+		  ifTrue: [ '0' , aNumber abs asString ]
+		  ifFalse: [ aNumber abs asString ]
+]
