@@ -15,12 +15,11 @@ Class {
 	#category : #'PharoJs-Examples-ExpressJS'
 }
 
-{ #category : #exporting }
-PjHelloWorldExpressApp class >> afterExportApp [ 
+{ #category : #accessing }
+PjHelloWorldExpressApp class >> clientAppClasses [
 
 	<pharoJsSkip>
-	super afterExportApp.
-	PjHelloWorldExpressClientApp exportApp
+	^{PjHelloWorldExpressClientApp }
 ]
 
 { #category : #accessing }

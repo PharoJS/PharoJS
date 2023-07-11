@@ -4,21 +4,16 @@ I rely on the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch
 Class {
 	#name : #PjHelloWorldExpressClientApp,
 	#superclass : #PjFileBasedWebApp,
+	#traits : 'PjTWebClientApp',
+	#classTraits : 'PjTWebClientApp classTrait',
 	#category : #'PharoJs-Examples-ExpressJS'
 }
 
 { #category : #accessing }
-PjHelloWorldExpressClientApp class >> defaultAppFolderName [
-	<pharoJsSkip>
-
-	^ PjHelloWorldExpressApp staticFilesFolderName
-]
-
-{ #category : #accessing }
-PjHelloWorldExpressClientApp class >> defaultAppFolderParent [
+PjHelloWorldExpressClientApp class >> serverAppClass [
 
 	<pharoJsSkip>
-	^ PjHelloWorldExpressApp appFolder
+	^ PjHelloWorldExpressApp
 ]
 
 { #category : #acting }

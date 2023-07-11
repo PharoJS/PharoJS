@@ -1,8 +1,8 @@
 Class {
 	#name : #PjHelloWorldExpressClientAppTest,
 	#superclass : #PjWebAppTestCase,
-	#traits : 'PjTAppRunsInJS',
-	#classTraits : 'PjTAppRunsInJS classTrait',
+	#traits : 'PjTAppRunsInJS + PjTWebClientAppTestCase',
+	#classTraits : 'PjTAppRunsInJS classTrait + PjTWebClientAppTestCase classTrait',
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 
@@ -10,25 +10,6 @@ Class {
 PjHelloWorldExpressClientAppTest class >> appClass [
 
 	^ PjHelloWorldExpressClientApp
-]
-
-{ #category : #running }
-PjHelloWorldExpressClientAppTest >> debugBridgeResourceClass [
-
-	^ self
-	defaultBridgeResourceClass
-
-]
-
-{ #category : #accessing }
-PjHelloWorldExpressClientAppTest >> defaultBridgeResourceClass [
-
-	^ PjExpressJsClientBridgeTestResource
-]
-
-{ #category : #initialization }
-PjHelloWorldExpressClientAppTest >> serverClass [
-	^PjHelloWorldExpressApp 
 ]
 
 { #category : #tests }
@@ -52,6 +33,6 @@ PjHelloWorldExpressClientAppTest >> testGreetingsUpdatedAfterSettingName [
 ]
 
 { #category : #initialization }
-PjHelloWorldExpressClientAppTest >> urlPath [
+PjHelloWorldExpressClientAppTest >> urlPathString [
 	^'/'
 ]

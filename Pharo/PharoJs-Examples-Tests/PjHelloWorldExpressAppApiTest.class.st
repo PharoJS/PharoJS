@@ -1,8 +1,8 @@
 Class {
 	#name : #PjHelloWorldExpressAppApiTest,
 	#superclass : #PjAppTestCase,
-	#traits : 'PjTAppRunsInJS',
-	#classTraits : 'PjTAppRunsInJS classTrait',
+	#traits : 'PjTAppRunsInJS + PjTWebServerApiTestCase',
+	#classTraits : 'PjTAppRunsInJS classTrait + PjTWebServerApiTestCase classTrait',
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 
@@ -10,18 +10,6 @@ Class {
 PjHelloWorldExpressAppApiTest class >> appClass [
 
 	^ PjHelloWorldExpressApp 
-]
-
-{ #category : #tests }
-PjHelloWorldExpressAppApiTest >> get: pathString [
-
-	^ ZnEasy get: self urlString , pathString
-]
-
-{ #category : #tests }
-PjHelloWorldExpressAppApiTest >> post: pathString text: aString [
-
-	^ ZnEasy post: self urlString , pathString data: (ZnEntity text: aString)
 ]
 
 { #category : #tests }
@@ -69,10 +57,4 @@ PjHelloWorldExpressAppApiTest >> testHttpPostName [
 	self
 		assert: (self get: '/greetings') contents
 		equals: 'ExpressJS says: Hello ' , name , '!'
-]
-
-{ #category : #tests }
-PjHelloWorldExpressAppApiTest >> urlString [
-
-	^ 'http://localhost:4321'
 ]

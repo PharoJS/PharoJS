@@ -1,16 +1,16 @@
 Class {
-	#name : #PjExpressJsClientBridgeTestResource,
+	#name : #PjWebClientAppBridgeTestResource,
 	#superclass : #PjBridgeTestResource,
 	#instVars : [
 		'serverBridge',
 		'serverClassName',
-		'urlPath'
+		'urlPathString'
 	],
 	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #accessing }
-PjExpressJsClientBridgeTestResource >> bridgeForAppClass [
+PjWebClientAppBridgeTestResource >> bridgeForAppClass [
 	| bridgeClient |
 	bridgeClient := PjWebServedBridgeClient 
 		                      newWithAppClass: self appClass.
@@ -21,7 +21,7 @@ PjExpressJsClientBridgeTestResource >> bridgeForAppClass [
 ]
 
 { #category : #initialization }
-PjExpressJsClientBridgeTestResource >> initBridgeClientUrl [
+PjWebClientAppBridgeTestResource >> initBridgeClientUrl [
 
 	| serverApp serverPort |
 	serverApp := serverBridge
@@ -29,29 +29,30 @@ PjExpressJsClientBridgeTestResource >> initBridgeClientUrl [
 		             sentTo: serverClassName.
 	serverPort := serverApp port.
 	self bridge client urlString:
-		'http://localhost:' , serverPort asString , urlPath
+		'http://localhost:' , serverPort asString , urlPathString
 ]
 
 { #category : #initialization }
-PjExpressJsClientBridgeTestResource >> initFrom: aTestAsserter [
+PjWebClientAppBridgeTestResource >> initFrom: aTestAsserter [
 
-	serverBridge := aTestAsserter serverClass bridge.
-	serverClassName := aTestAsserter serverClass name.
-	urlPath := aTestAsserter urlPath.
+	serverBridge := aTestAsserter serverAppClass bridge.
+	serverClassName := aTestAsserter serverAppClass name.
+	urlPathString := aTestAsserter urlPathString.
 	serverBridge shouldStartJsInterpreter: false.
 	self startBridge: serverBridge.
 	super initFrom: aTestAsserter
 ]
 
 { #category : #running }
-PjExpressJsClientBridgeTestResource >> resetClient [
+PjWebClientAppBridgeTestResource >> resetClient [
 
+	super resetClient.
 	serverBridge resetClient.
-	super resetClient
+
 ]
 
 { #category : #running }
-PjExpressJsClientBridgeTestResource >> startJsInterpreter [
+PjWebClientAppBridgeTestResource >> startJsInterpreter [
 
 	serverBridge startJsInterpreter.
 	self initBridgeClientUrl.
@@ -59,7 +60,7 @@ PjExpressJsClientBridgeTestResource >> startJsInterpreter [
 ]
 
 { #category : #running }
-PjExpressJsClientBridgeTestResource >> tearDown [
+PjWebClientAppBridgeTestResource >> tearDown [
 	serverBridge stop.
 	super tearDown.
 	
