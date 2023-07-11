@@ -35,7 +35,10 @@ jobs:
         with:
           packages: xdg-utils 
       - run: xdg-settings set default-web-browser firefox.desktop 
-      - run: npm install -g ws
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install -g npm@latest
       - name: setup-xvfb
         uses: coactions/setup-xvfb@v1.0.1
         with:
