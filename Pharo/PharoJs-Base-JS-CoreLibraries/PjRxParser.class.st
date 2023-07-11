@@ -14,7 +14,7 @@ PjRxParser class >> javascriptName [
 
 { #category : #testing }
 PjRxParser >> matchesIn: aString [
-	<javascript: 'return aString.match(this)'>
+	^ aString match: self
 ]
 
 { #category : #testing }

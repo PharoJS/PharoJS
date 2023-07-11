@@ -167,13 +167,14 @@ PjDateAndTime >> monthIndex: anInteger [
 
 { #category : #accessing }
 PjDateAndTime >> offset [
-	^ offset 
+
+	^ offset ifNil: [ offset := (-1 * self getTimezoneOffset) minutes ]
 ]
 
 { #category : #accessing }
 PjDateAndTime >> offset: aDuration [
 
-	offset := aDuration ifNil: [ (-1 * self getTimezoneOffset) minutes ]
+	offset := aDuration
 ]
 
 { #category : #printing }

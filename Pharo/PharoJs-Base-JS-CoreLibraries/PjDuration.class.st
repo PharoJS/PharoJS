@@ -48,8 +48,8 @@ PjDuration >> printString [
 
 { #category : #adding }
 PjDuration >> printWithLeading0: aNumber [
-"there must be nicer solution for that..."
-	^ aNumber abs < 10
-		  ifTrue: [ '0' , aNumber abs asString ]
-		  ifFalse: [ aNumber abs asString ]
+
+	^ String streamContents: [ :str | 
+		  aNumber abs < 10 ifTrue: [ str print: 0 ].
+		  str print: aNumber abs ]
 ]
