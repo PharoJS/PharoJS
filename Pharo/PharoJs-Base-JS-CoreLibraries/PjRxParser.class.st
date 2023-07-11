@@ -1,3 +1,6 @@
+"
+I am a minimal implementation of RxParser.
+"
 Class {
 	#name : #PjRxParser,
 	#superclass : #PjObject,
