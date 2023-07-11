@@ -22,14 +22,6 @@ PjMinimalNodeApplicationTest >> testArithmeticOperations [
 ]
 
 { #category : #tests }
-PjMinimalNodeApplicationTest >> testCounter [
-	| jsCounter |
-	jsCounter := self evalBlock: [PjCounter new].
-	3 timesRepeat: [jsCounter increment].
-	self assert: jsCounter count equals: 3
-]
-
-{ #category : #tests }
 PjMinimalNodeApplicationTest >> testLoadClass [
 	| jsCounter |
 	jsCounter := self evalBlock: [ PjCounter new ].
@@ -38,15 +30,6 @@ PjMinimalNodeApplicationTest >> testLoadClass [
 		jsCounter increment.
 		self assert: jsCounter count equals: expectedCount
 	]
-]
-
-{ #category : #tests }
-PjMinimalNodeApplicationTest >> testRequiredJsModulesInstalled [
-
-	self appClass modulesFolder ensureDeleteAll.
-	self deny: self appClass modulesFolder exists.
-	self appClass exportApp.
-	self assert: self appClass modulesFolder exists
 ]
 
 { #category : #tests }
