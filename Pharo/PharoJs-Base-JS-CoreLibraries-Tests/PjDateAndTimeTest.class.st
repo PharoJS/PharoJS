@@ -22,6 +22,6 @@ PjDateAndTimeTest >> testConversion [
 			               printYMD: today
 			               withLeadingSpace: false
 			               on: str ].
-	self assertEquivalent: [ " works because both Smalltalk and Javascript default to local timezone - see testWeirdTimezoneBug for case with timezone" 
+	self assertEquivalent: [ 
 		(DateAndTime fromString: todayString , 'T12:30:21') printString ]
 ]
