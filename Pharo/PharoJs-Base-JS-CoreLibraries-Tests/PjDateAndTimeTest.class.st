@@ -14,6 +14,8 @@ PjDateAndTimeTest >> testConversion [
 		(DateAndTime fromString: '2022-01-02T12:30:21-04:00') printString ].
 	self assertEquivalent: [ 
 		(DateAndTime fromString: '2022-01-02T12:30:21-00:00') printString ].
+	self assertEquivalent: [ 
+		(DateAndTime fromString: '2022-01-02T12:30:21+04:00') printString ].
 	today := DateAndTime today.
 	todayString := String streamContents: [ :str | 
 		               BasicDatePrinter default
