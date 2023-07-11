@@ -178,11 +178,11 @@ PjDateAndTime >> offset: aDuration [
 ]
 
 { #category : #printing }
-PjDateAndTime >> printString [
+PjDateAndTime >> printOn: str [
 
-	^ (self getTimezoneOffset minutes addDateAndTime:
-		   (self offset addDateAndTime: self)) basicPrintString
-	  , self offset printString
+	str << (self getTimezoneOffset minutes addDateAndTime:
+		 (self offset addDateAndTime: self)) basicPrintString.
+	self offset printStringAsTimzoneOn: str
 ]
 
 { #category : #accessing }
