@@ -22,6 +22,12 @@ PjBridgeAppClassDecorator class >> websocketDelegateClass [
 	^ PjEvaluatorWebsocketDelegate
 ]
 
+{ #category : #exporting }
+PjBridgeAppClassDecorator >> afterExportApp [
+
+	rawAppClass afterExportApp
+]
+
 { #category : #accessing }
 PjBridgeAppClassDecorator >> appClasses [
 
@@ -44,6 +50,11 @@ PjBridgeAppClassDecorator >> appLaunchBlock [
 PjBridgeAppClassDecorator >> appPackages [
 
 	^ self rawAppClass appPackages
+]
+
+{ #category : #exporting }
+PjBridgeAppClassDecorator >> beforeExportApp [ 
+	rawAppClass beforeExportApp
 ]
 
 { #category : #accessing }
