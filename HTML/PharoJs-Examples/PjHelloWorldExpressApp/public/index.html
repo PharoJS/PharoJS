@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+
+<head>
+    <title>PharoJS: ExpressJS Hello World App</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div id="banner">
+        <a href="http://pharojs.org" target="_blank"><img src="img/pharoJsLogo.png"></a>
+        +
+        <a href="https://expressjs.com/" target="_blank">ExpressJS</a>
+    </div>
+
+    <h1>PharoJS Client talking to a PharoJS ExpressJS-based server</h1>
+
+
+    <h2>Greetings</h2>
+    <h4 id="greetingsMessageContainer">---</h4>
+    <button id="updateGreetingsButton">GET Greetings</button>
+
+    <h2>Name Used for Greetings</h2>
+    <div>
+        <label>Name :</label>
+        <input type="text" id="nameTextInput" placeholder="Your name" />
+        <button id="setNameButton">POST Name</button>
+    </div>
+
+    <h2>Download Static File</h2>
+    <p>Download Pharo's syntax on a postcard!</p>
+    <a href="pharoSyntaxPostcard-A6.pdf"><img style="width:100px; display: block;" id="downloadButton"
+            src="img/pharoSyntaxPostcard-A6.jpg"></a>
+
+    <script language="javascript" type="text/javascript" src="index.js">
+    </script>
+</body>
+
+</html>

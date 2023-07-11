@@ -22,14 +22,6 @@ PjMinimalNodeApplicationTest >> testArithmeticOperations [
 ]
 
 { #category : #tests }
-PjMinimalNodeApplicationTest >> testCounter [
-	| jsCounter |
-	jsCounter := self evalBlock: [PjCounter new].
-	3 timesRepeat: [jsCounter increment].
-	self assert: jsCounter count equals: 3
-]
-
-{ #category : #tests }
 PjMinimalNodeApplicationTest >> testLoadClass [
 	| jsCounter |
 	jsCounter := self evalBlock: [ PjCounter new ].

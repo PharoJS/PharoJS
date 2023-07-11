@@ -10,7 +10,7 @@ PjBridgeServedFileBasedBrowserBridgeClient >> folderName [
 	^ self appClass appFullHtmlFolderPath 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 PjBridgeServedFileBasedBrowserBridgeClient >> initMappingOn: server andFolder: aString [
 
 	server delegate map: #web to: (ZnStaticFileServerDelegate new
