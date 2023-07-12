@@ -199,6 +199,6 @@ PjApplication class >> setUpAppFolder [
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjApplication class >> setUpAppFolderPrompt [
-
+	<pharoJsSkip>
 	^ 'PharoJS: Folder for app ' , self name , ' please?'
 ]
