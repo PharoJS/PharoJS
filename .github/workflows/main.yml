@@ -30,6 +30,8 @@ jobs:
           smalltalk-image: 'Pharo64-10'
       - uses: browser-actions/setup-firefox@v1
       - run: firefox --version
+      - run: npm i ws
+        working-directory: ./HTML/PharoJs-Examples/PjHelloWorldExpressApp
       - name: Cache apt-install
         uses: daaku/gh-action-apt-install@v4
         with:
