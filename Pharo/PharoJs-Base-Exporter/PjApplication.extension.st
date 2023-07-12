@@ -183,6 +183,7 @@ PjApplication class >> repositoryPath [
 
 { #category : #'*PharoJs-Base-Exporter' }
 PjApplication class >> resetAppFolder [
+	<pharoJsSkip>
 	self appFolder: nil
 ]
 
