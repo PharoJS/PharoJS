@@ -16,4 +16,5 @@ SmalltalkCISpec {
     #coverage : {
       #packages : [ 'PharoJs.*' ]
     }
+  }
 }
