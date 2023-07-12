@@ -268,13 +268,26 @@ PjBridge >> evalMessage: jsMessage [
 ]
 
 { #category : #public }
-PjBridge >> evalMessage: aMessage sentTo: receiverName [
+PjBridge >> evalMessage: aMessage sentTo: receiverJsID [
+
+	^self evalSelector: aMessage selector sentTo: receiverJsID args: aMessage arguments
+
+]
+
+{ #category : #public }
+PjBridge >> evalSelector: aSymbol sentTo: receiverJsID [
+
+	^self evalSelector: aSymbol sentTo: receiverJsID args: #()
+]
+
+{ #category : #public }
+PjBridge >> evalSelector: aSymbol sentTo: receiverJsID args: args [
 
 	| jsMessage |
 	jsMessage := PjJavascriptMessage
-		             receiverId: receiverName
-		             selector: aMessage selector
-		             arguments: aMessage arguments.
+		             receiverId: receiverJsID
+		             selector: aSymbol
+		             arguments: args.
 	^ self evalMessage: jsMessage
 ]
 

@@ -19,13 +19,6 @@ PjDomControllerPharoTest >> appClassToExport [
 	^PjAppWrapperForRunningInPharo on: self appClass
 ]
 
-{ #category : #accessing }
-PjDomControllerPharoTest >> currentApp [
-	^self appClass
-		start; 
-		currentInstance.
-]
-
 { #category : #running }
 PjDomControllerPharoTest >> setUp [
 	super setUp.

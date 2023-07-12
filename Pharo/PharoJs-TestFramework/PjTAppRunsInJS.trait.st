@@ -15,7 +15,8 @@ PjTAppRunsInJS >> appClassToExport [
 
 { #category : #accessing }
 PjTAppRunsInJS >> currentApp [
-	| jsMessage |
-	jsMessage := PjJavascriptMessage receiverId: self appClass name selector: #currentInstance arguments: #().
-	^self bridge evalMessage: jsMessage
+
+	^ self bridge
+		  evalSelector: #currentInstance
+		  sentTo: self appClass name
 ]

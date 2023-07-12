@@ -6,6 +6,9 @@ Class {
 	#superclass : #Object,
 	#traits : 'PjTDateAndTime',
 	#classTraits : 'PjTDateAndTime classTrait',
+	#instVars : [
+		'offset'
+	],
 	#pools : [
 		'ChronologyConstants'
 	],
@@ -13,8 +16,25 @@ Class {
 }
 
 { #category : #'instance creation' }
-PjDateAndTime class >> fromString: aString [
+PjDateAndTime class >> basicfromString: aString [
 	<javascript: 'return new this(aString)'>
+]
+
+{ #category : #'instance creation' }
+PjDateAndTime class >> fromString: aString [
+
+	| offset |
+	'[-+](\d\d)\:(\d\d)$' asRegex matchesIn: aString do: [ :match | 
+		| sign hoursAndMinutes |
+		sign := (match includes: $+)
+			        ifTrue: [ 1 ]
+			        ifFalse: [ -1 ].
+		hoursAndMinutes := '(\d\d)' asRegex matchesIn: match.
+		offset := (sign * hoursAndMinutes first asNumber * 60
+		           + (sign * hoursAndMinutes second asNumber)) minutes ].
+	^ (self basicfromString: aString)
+		  offset: offset;
+		  yourself
 ]
 
 { #category : #'pharoJs support' }
@@ -73,6 +93,24 @@ PjDateAndTime >> asDateAndTime [
 	^self
 ]
 
+{ #category : #printing }
+PjDateAndTime >> basicPrintString [
+
+	<javascript: 'let d;
+	d = [
+    "0" + (this.getMonth() + 1),
+    "0" + this.getDate(),
+    "0" + this.getHours(),
+    "0" + this.getMinutes(),
+    "0" + this.getSeconds()
+  ].map(component => component.slice(-2)); // take last 2 digits of every component
+
+  // join the components into date
+  return ("000"+ this.getFullYear()).slice(-4)+"-"+d.slice(0, 2).join("-")+ "T" + d.slice(2,5).join(":")'>
+
+ 
+]
+
 { #category : #arithmetics }
 PjDateAndTime >> basicSubtractFromDateAndTime: other [
 	<javascript: 'return other - this;'>
@@ -127,22 +165,24 @@ PjDateAndTime >> monthIndex: anInteger [
 	^self month: anInteger - 1
 ]
 
+{ #category : #accessing }
+PjDateAndTime >> offset [
+
+	^ offset ifNil: [ offset := (-1 * self getTimezoneOffset) minutes ]
+]
+
+{ #category : #accessing }
+PjDateAndTime >> offset: aDuration [
+
+	offset := aDuration
+]
+
 { #category : #printing }
-PjDateAndTime >> printString [
+PjDateAndTime >> printOn: str [
 
-	<javascript: 'let d = Math.abs(this.getTimezoneOffset());
-	d = [
-    "0" + (this.getMonth() + 1),
-    "0" + this.getDate(),
-    "0" + this.getHours(),
-    "0" + this.getMinutes(),
-    "0" + this.getSeconds(),
-		"0" + (d/60|0),
-		"0" + d%60
-  ].map(component => component.slice(-2)); // take last 2 digits of every component
-
-  // join the components into date
-  return ("000"+ this.getFullYear()).slice(-4)+"-"+d.slice(0, 2).join("-") + "T" + d.slice(2,5).join(":") + (this.getTimezoneOffset()<0?"+":"-") + d.slice(-2).join(":")'>
+	str << (self getTimezoneOffset minutes addDateAndTime:
+		 (self offset addDateAndTime: self)) basicPrintString.
+	self offset printStringAsTimzoneOn: str
 ]
 
 { #category : #accessing }

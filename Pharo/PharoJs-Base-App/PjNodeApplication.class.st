@@ -28,7 +28,50 @@ PjNodeApplication class >> isAbstract [
 		 		   ifFalse: [ super isAbstract ]
 ]
 
+{ #category : #accessing }
+PjNodeApplication class >> modulesFolder [
+
+	<pharoJsSkip>
+	^ (self appFolder / self modulesFolderName) 
+]
+
+{ #category : #accessing }
+PjNodeApplication class >> modulesFolderName [
+	^'node_modules'
+]
+
 { #category : #private }
 PjNodeApplication class >> whenJsReady: aBlock [
 	aBlock value
+]
+
+{ #category : #accessing }
+PjNodeApplication >> dirName [
+
+"__dirname is an environment variable that tells you the absolute path of the directory containing the currently executing file."
+	<javascript: 'return __dirname'>
+	
+]
+
+{ #category : #accessing }
+PjNodeApplication >> fullPathFor: relativePathName [
+	^self pathFactory
+		        join: self dirName
+		        with: relativePathName
+]
+
+{ #category : #accessing }
+PjNodeApplication >> moduleNamed: aString [
+	^self modulesManager moduleNamed: aString
+]
+
+{ #category : #accessing }
+PjNodeApplication >> modulesManager [
+	^PjNodeModulesManager default
+]
+
+{ #category : #accessing }
+PjNodeApplication >> pathFactory [
+
+	^ self moduleNamed: 'path'
 ]

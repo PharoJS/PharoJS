@@ -8,19 +8,19 @@ Usage
 4) node server.js
 "
 Class {
-	#name : #PjHelloWorldExample,
-	#superclass : #PjExpressApp,
+	#name : #PjHelloWorldExampleExpressAppOLD,
+	#superclass : #PjExpressAppOLD,
 	#category : #'PharoJs-Base-JS-Express'
 }
 
 { #category : #exporting }
-PjHelloWorldExample class >> appJsFileName [
+PjHelloWorldExampleExpressAppOLD class >> appJsFileName [
 	<pharoJsSkip>
 	^ 'server.js'
 ]
 
 { #category : #'start-stop' }
-PjHelloWorldExample >> setupPaths [
+PjHelloWorldExampleExpressAppOLD >> setupPaths [
 	| john |
 	self getRequest: '/' send: 'hello world from pharojs-express!'.
 	john := 'John'.
