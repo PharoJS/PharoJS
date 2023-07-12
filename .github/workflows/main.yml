@@ -43,6 +43,8 @@ jobs:
       - run: npm install -g npm@latest
       - name: setup-xvfb
         uses: coactions/setup-xvfb@v1.0.1
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # Command to execute using xvfb
           run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}

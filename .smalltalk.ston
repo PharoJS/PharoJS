@@ -10,6 +10,10 @@ SmalltalkCISpec {
     'scripts/setup.st'
   ],
   #testing : {
-    #packages : [ 'PharoJs.*' ]
-  }
+    #include : {
+      #packages : [ 'PharoJS.*' ]
+    },
+    #coverage : {
+      #packages : [ 'PharoJs.*' ]
+    }
 }
