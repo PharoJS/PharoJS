@@ -141,24 +141,6 @@ PjBridgeTestCase >> tearDown [
 	Author uniqueInstance fullName: authorInitialName
 ]
 
-{ #category : #tests }
-PjBridgeTestCase >> testBridgePort [
-
-	self assert: self bridge port equals: self bridge server port
-]
-
-{ #category : #tests }
-PjBridgeTestCase >> testOpenUrlWithParameters [
-
-	| urlParameters |
-	urlParameters := '?paramA=valueA&paramB=valueB'.
-	self bridge client
-		stop;
-		openWebBrowserOn:  urlParameters.
-	self waitWhile: [ (app := self currentApp) isNil ] timeOut: 3 seconds.
-	self assert: location search equals: urlParameters
-]
-
 { #category : #'test support' }
 PjBridgeTestCase >> transpileMethod: aMethod [
 

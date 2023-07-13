@@ -71,16 +71,16 @@ PjBrowserBridgeClient >> initializeWithBridge: aBridge [
 ]
 
 { #category : #actions }
-PjBrowserBridgeClient >> openWebBrowserOn: urlPathString [
+PjBrowserBridgeClient >> openWebBrowserOn: urlString [
 
 	WebBrowser
-		openOn: self urlString, urlPathString 
+		openOn: urlString 
 		inBackground: self openBrowserInBackground
 ]
 
 { #category : #accessing }
-PjBrowserBridgeClient >> serverUrlString [
-	^self server urlString
+PjBrowserBridgeClient >> serverUrl [
+	^self server url
 ]
 
 { #category : #actions }
@@ -94,5 +94,6 @@ PjBrowserBridgeClient >> start [
 
 { #category : #accessing }
 PjBrowserBridgeClient >> urlString [
-	^self serverUrlString
+
+	^self server urlString
 ]
