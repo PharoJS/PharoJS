@@ -188,9 +188,7 @@ PjProxyTest >> testProxyGarbageCollection [
 { #category : #tests }
 PjProxyTest >> testProxyMissingError [
 
-	"This test fails intermittently because of interfering garbage collection effects of released proxies"
-	self timeLimit: 120 seconds.
-	1 to: 10 by: 1 do: [ :num | 
+	1 to: 10 do: [ :num | 
 		document body children.
 		num milliSeconds wait ]
 ]
