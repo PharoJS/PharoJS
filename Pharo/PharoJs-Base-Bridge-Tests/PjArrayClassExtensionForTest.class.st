@@ -6,5 +6,6 @@ Class {
 
 { #category : #'pharoJs support' }
 PjArrayClassExtensionForTest class >> javascriptName [ 
+	<pharoJsSkip>
 	^#Array
 ]
