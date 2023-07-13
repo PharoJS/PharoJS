@@ -2,6 +2,6 @@
 Smalltalk vm maxExternalSemaphoresSilently: 1000.
 newRepository := IceRepositoryCreator new
 				repository: nil;
-				location: '/home/runner/work/PharoJS/PharoJS' asFileReference ;
+				location: '.' asFileReference ;
 				createRepository .
 newRepository register.
