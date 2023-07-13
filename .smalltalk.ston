@@ -11,9 +11,6 @@ SmalltalkCISpec {
   ],
   #testing : { 
     #packages : [ 'PharoJs.*' ],
-    #exclude : {
-      #classes : [ #PjHtmlCollectionTest, #PjNodeListTest, #PhxBridgedDateAndDateAndTimeTests, #PjBridgeTestCase ]
-    },
     #coverage : {
       #packages : [ 'PharoJs.*' ]
     }
