@@ -28,14 +28,14 @@ jobs:
         id: smalltalkci
         with:
           smalltalk-image: 'Pharo64-10'
-      - uses: browser-actions/setup-firefox@v1
-      - run: firefox --version
+      - uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
 
       - name: Cache apt-install
         uses: daaku/gh-action-apt-install@v4
         with:
           packages: xdg-utils 
-      - run: xdg-settings set default-web-browser firefox.desktop 
+      - run: xdg-settings set default-web-browser chrome.desktop 
       - uses: actions/setup-node@v3
         with:
           node-version: 18

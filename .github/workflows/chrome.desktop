@@ -1,10 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Mozilla Firefox
+Name=Chrome
 GenericName=Web Browser
 Comment=Browse the Web
-Exec=firefox -headless
-Icon=firefox.png
+Exec=chrome --headless
+Icon=chrome.png
 Terminal=false
 Type=Application
 Categories=Application;Network;WebBrowser;
