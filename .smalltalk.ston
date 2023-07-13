@@ -11,7 +11,7 @@ SmalltalkCISpec {
   ],
   #testing : {
     #include : {
-      #classes : [ #PjHelloWorldExpressAppApiTest ]
+      #packages : [ 'PharoJs.*' ]
     },
     #coverage : {
       #packages : [ 'PharoJs.*' ]
