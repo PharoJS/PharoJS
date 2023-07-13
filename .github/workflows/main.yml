@@ -30,13 +30,6 @@ jobs:
           smalltalk-image: 'Pharo64-10'
       - uses: browser-actions/setup-chrome@v1
       - run: chrome --version
-
-      - name: Cache apt-install
-        uses: daaku/gh-action-apt-install@v4
-        with:
-          packages: xdg-utils 
-      - run: xdg-settings set default-web-browser ./chrome.desktop 
-        working-directory: .github/workflows/
       - uses: actions/setup-node@v3
         with:
           node-version: 18
