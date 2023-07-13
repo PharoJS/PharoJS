@@ -36,10 +36,9 @@ jobs:
       - run: npm install -g npm@latest
       - run: npm i ws
         working-directory: ./HTML/PharoJs-Examples/PjHelloWorldExpressApp
-      - name: setup-xvfb
-        uses: coactions/setup-xvfb@v1.0.1
+      - name: run tests
+#        uses: coactions/setup-xvfb@v1.0.1
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # Command to execute using xvfb
-          run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+#        with:
+        run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
