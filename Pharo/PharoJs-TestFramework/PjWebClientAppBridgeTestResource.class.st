@@ -29,7 +29,7 @@ PjWebClientAppBridgeTestResource >> initBridgeClientUrl [
 		             sentTo: serverClassName.
 	serverPort := serverApp port.
 	self bridge client urlString:
-		'http://localhost:' , serverPort asString , urlPathString
+		'http://127.0.0.1:' , serverPort asString , urlPathString
 ]
 
 { #category : #initialization }
