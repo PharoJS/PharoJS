@@ -28,7 +28,7 @@ Class {
 { #category : #'suite parameters' }
 PjBridgeTestCase class >> appClass [
 
-	^ PjMinimalFileBasedWebApp
+	^ PjMinimalWebApplication
 ]
 
 { #category : #'test support' }
@@ -154,8 +154,7 @@ PjBridgeTestCase >> testOpenUrlWithParameters [
 	urlParameters := '?paramA=valueA&paramB=valueB'.
 	self bridge client
 		stop;
-		openWebBrowserOn:
-			self appClass appHtmlUrlString , urlParameters.
+		openWebBrowserOn:  urlParameters.
 	self waitWhile: [ (app := self currentApp) isNil ] timeOut: 3 seconds.
 	self assert: location search equals: urlParameters
 ]
