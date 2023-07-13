@@ -76,11 +76,13 @@ PjInfrastructureTest >> testOpenUrlWithParameters [
 
 	| clientUrl |
 	clientUrl := self bridge server url ? (#paramA -> #valueA)
-	             & (#paramB -> #valueB). 
-	self bridge client
-		stop;
-		openWebBrowserOn: clientUrl asString.
-	self waitWhile: [ (app := self currentApp) isNil ] timeOut: 3 seconds.
+	             & (#paramB -> #valueB).
+	self bridge client stop.
+	self bridge resetProxiesImmediately.
+	self waitWhile: [ self bridge isConnected ] timeOut: 2 seconds.
+	self bridge client openWebBrowserOn: clientUrl asString.
+	self waitUntil: [ self bridge isConnected ] timeOut: 2 seconds.
+	self waitWhile: [ (app := self currentApp) isNil ] timeOut: 2 seconds.
 	self assert: location search equals: '?paramA=valueA&paramB=valueB'
 ]
 
