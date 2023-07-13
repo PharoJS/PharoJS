@@ -36,7 +36,7 @@ jobs:
         with:
           packages: xdg-utils 
       - run: xdg-settings set default-web-browser ./chrome.desktop 
-        working-directory: ./.github/workflow/
+        working-directory: .github/workflows/
       - uses: actions/setup-node@v3
         with:
           node-version: 18
