@@ -6,7 +6,7 @@ name: Continuous Integration (CI)
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "pharo10", "actions" ]
+    branches: [ "pharo10", "ci" ]
   pull_request:
     branches: [ "pharo10" ]
 
@@ -28,11 +28,15 @@ jobs:
         id: smalltalkci
         with:
           smalltalk-image: 'Pharo64-10'
+          cache: 'smalltalkci'
       - uses: browser-actions/setup-chrome@v1
+        with:
+          cache: 'chromium'
       - run: chromium --version
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
+          cache: 'npm'
       - run: npm install -g npm@latest
       - name: run tests
         uses: coactions/setup-xvfb@v1.0.1
