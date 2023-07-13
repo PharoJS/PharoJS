@@ -29,7 +29,7 @@ jobs:
         with:
           smalltalk-image: 'Pharo64-10'
       - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
+      - run: chromium --version
       - uses: actions/setup-node@v3
         with:
           node-version: 18
