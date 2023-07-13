@@ -28,16 +28,16 @@ jobs:
         id: smalltalkci
         with:
           smalltalk-image: 'Pharo64-10'
-          cache: 'smalltalkci'
+          cache: 'smalltalk-image'
       - uses: browser-actions/setup-chrome@v1
         with:
-          cache: 'chromium'
+          cache: 'chrome-version'
       - run: chromium --version
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm install -g npm@latest
+          cache-dependency-path: '**/package-lock.json'
       - name: run tests
         uses: coactions/setup-xvfb@v1.0.1
         env: 
