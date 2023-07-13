@@ -9,10 +9,8 @@ SmalltalkCISpec {
   #postLoading : [
     'scripts/setup.st'
   ],
-  #testing : {
-    #include : {
-      #packages : [ 'PharoJs.*' ]
-    },
+  #testing : { 
+    #packages : [ 'PharoJs.*' ],
     #exclude : {
       #classes : [ #PjHtmlCollectionTest, #PjNodeListTest, #PhxBridgedDateAndDateAndTimeTests, #PjBridgeTestCase ]
     },
