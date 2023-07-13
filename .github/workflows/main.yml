@@ -39,8 +39,6 @@ jobs:
       - name: setup-xvfb
         uses: coactions/setup-xvfb@v1.0.1
         env: 
-          LIBGL_ALWAYS_INDIRECT: 1
-          DISPLAY: :0
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # Command to execute using xvfb
