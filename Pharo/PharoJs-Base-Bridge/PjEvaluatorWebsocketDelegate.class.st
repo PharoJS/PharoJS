@@ -161,6 +161,7 @@ PjEvaluatorWebsocketDelegate >> onClose: event [
 
 { #category : #connecting }
 PjEvaluatorWebsocketDelegate >> onError: event [
+	console log: event.
 	self reconnect
 ]
 
