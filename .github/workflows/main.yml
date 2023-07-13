@@ -35,7 +35,8 @@ jobs:
         uses: daaku/gh-action-apt-install@v4
         with:
           packages: xdg-utils 
-      - run: xdg-settings set default-web-browser chrome.desktop 
+      - run: xdg-settings set default-web-browser ./chrome.desktop 
+        working-directory: ./.github/workflow/
       - uses: actions/setup-node@v3
         with:
           node-version: 18
