@@ -6,7 +6,7 @@ SmalltalkCISpec {
       #platforms : [ #pharo ]
     }
   ],
-  #postLoading : [
+  #preTesting : [
     'scripts/setup.st'
   ],
   #testing : { 
