@@ -49,7 +49,7 @@ PjLoadingTest >> testEvalBlock [
 PjLoadingTest >> testLiteralGeneration [
 
 	self assertEquivalent: [ PjLoadForTest literal ].
-	self assertEquivalent: [ PjLoadForTest new literalGenerator ]
+	self assertEquivalent: [ PjLoadForTest new literal ]
 ]
 
 { #category : #tests }
