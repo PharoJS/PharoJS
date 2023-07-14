@@ -48,7 +48,8 @@ PjLoadingTest >> testEvalBlock [
 
 { #category : #tests }
 PjLoadingTest >> testLiteralGeneration [
-
+	PjLoadForTest reset.
+	self bridge loadClass: PjLoadForTest.
 	self assertEquivalent: [ PjLoadForTest literal ].
 	self assertEquivalent: [ PjLoadForTest new literal ]
 ]
