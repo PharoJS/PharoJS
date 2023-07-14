@@ -10,7 +10,6 @@ Class {
 { #category : #tests }
 PjLoadingTest >> testEvalBlock [
 	PjLoadForTest reset.
-	self bridge loadClass: PjLoadForTest.
 	self bridge evalBlock: [ window js_at: #valueForEvalTest put: 42 ].
 	self
 		assert: (self bridge evalBlock: [ window js_at: #valueForEvalTest ])
@@ -48,8 +47,7 @@ PjLoadingTest >> testEvalBlock [
 
 { #category : #tests }
 PjLoadingTest >> testLiteralGeneration [
-	PjLoadForTest reset.
-	self bridge loadClass: PjLoadForTest.
+
 	self assertEquivalent: [ PjLoadForTest literal ].
 	self assertEquivalent: [ PjLoadForTest new literal ]
 ]
