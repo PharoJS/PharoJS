@@ -58,8 +58,8 @@ PjLoadForTest class >> y [
 
 { #category : #any }
 PjLoadForTest >> literal [
+	<pharoJsSkip>
 	<jsLiteralGenerator>
-	
 	^ 3 + 4
 ]
 
