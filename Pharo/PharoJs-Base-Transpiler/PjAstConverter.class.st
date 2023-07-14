@@ -210,7 +210,6 @@ PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 		ifTrue: [ ^self handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode ].
 	(aRBMethodNode hasPragmaNamed: self jsLiteralGeneratorPragmaKeyword)
 		ifTrue: [ 
-			Transcript crShow: aRBMethodNode.
 			^self handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode ].
 	pushingReturnClass := nil.	"PjReturnNode"
 	needSelfReturn := false.

@@ -205,6 +205,7 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 
 	| jsAst |
+	convertedMethods keys do: [:method | Transcript crShow: method name ].
 	jsAst := convertedMethods at: aMethod.
 	generator asString: jsAst on: self jsStream
 ]
