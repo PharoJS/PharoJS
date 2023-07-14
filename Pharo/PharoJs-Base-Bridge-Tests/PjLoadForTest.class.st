@@ -57,7 +57,7 @@ PjLoadForTest class >> y [
 ]
 
 { #category : #any }
-PjLoadForTest >> literal [
+PjLoadForTest >> literalGenerator [
 	<jsLiteralGenerator>
 	^ 3 + 4
 ]
