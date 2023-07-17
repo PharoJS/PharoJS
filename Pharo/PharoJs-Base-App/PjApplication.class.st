@@ -73,6 +73,7 @@ PjApplication class >> pharoJsSelectorPrefix [
 PjApplication class >> resetCurrentInstance [
 	<script>
 	
+	self stop.
 	currentInstance := nil
 ]
 
