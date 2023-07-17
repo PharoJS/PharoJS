@@ -31,6 +31,12 @@ PjBridgeTestCase class >> appClass [
 	^ PjMinimalWebApplication
 ]
 
+{ #category : #'suite parameters' }
+PjBridgeTestCase class >> defaultTimeLimit [
+
+	^ 2 minutes
+]
+
 { #category : #'test support' }
 PjBridgeTestCase >> addToDOM: html [
 
