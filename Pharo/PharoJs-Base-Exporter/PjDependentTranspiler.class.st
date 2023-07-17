@@ -93,7 +93,7 @@ PjDependentTranspiler >> convertClass: aClass [
 { #category : #transpiling }
 PjDependentTranspiler >> convertMethodAst: aMethod [
 	(self shouldSkipMethodNode: aMethod) ifTrue: [ ^self ].
-	convertedMethods at: aMethod ifAbsentPut: [
+	^convertedMethods at: aMethod ifAbsentPut: [
 		converter
 			classForConversion: aMethod methodClass classToUseForJsConversion;
 			convertAst: aMethod ast withPrimitive: aMethod primitive]
@@ -204,7 +204,7 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 
 	| jsAst |
-	jsAst := convertedMethods at: aMethod.
+	jsAst := self convertMethodAst: aMethod.
 	generator asString: jsAst on: self jsStream
 ]
 
