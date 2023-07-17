@@ -92,9 +92,8 @@ PjDependentTranspiler >> convertClass: aClass [
 
 { #category : #transpiling }
 PjDependentTranspiler >> convertMethodAst: aMethod [
-
 	(self shouldSkipMethodNode: aMethod) ifTrue: [ ^self ].
-	convertedMethods at: aMethod ifAbsentPut: [
+	convertedMethods at: aMethod name ifAbsentPut: [
 		converter
 			classForConversion: aMethod methodClass classToUseForJsConversion;
 			convertAst: aMethod ast withPrimitive: aMethod primitive]
@@ -157,7 +156,7 @@ PjDependentTranspiler >> importMethodsAll: aCollection forClass: aClass [
 PjDependentTranspiler >> initialize [
 
 	super initialize.
-	convertedMethods := IdentityDictionary new.
+	convertedMethods := Dictionary new.
 	classesToConvert := Set new.
 	convertedClasses := Set new.
 	alreadyDefinedClasses := Set new.
@@ -180,7 +179,7 @@ PjDependentTranspiler >> invalidateClass: aClass [
 { #category : #invalidating }
 PjDependentTranspiler >> invalidateMethod: aMethod [
 
-	convertedMethods removeKey: aMethod ifAbsent: [].
+	convertedMethods removeKey: aMethod name ifAbsent: [].
 ]
 
 { #category : #invalidating }
@@ -205,15 +204,13 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 
 	| jsAst |
-	jsAst := convertedMethods at: aMethod ifAbsent: [ 
+	jsAst := convertedMethods at: aMethod name ifAbsent: [ 
 		         Transcript crShow: 'Coult not find: ' , aMethod name.
 		         Transcript crShow: 'In: '.
 		         convertedMethods keys do: [ :method | 
-			         aMethod methodClass className
-			         = method methodClass className ifTrue: [ 
-				         Transcript crShow: method name ] ].
-					Transcript crShow: 'End'.
-					convertedMethods errorKeyNotFound: aMethod ].
+			         Transcript crShow: method ].
+		         Transcript crShow: 'End'.
+		         convertedMethods errorKeyNotFound: aMethod ].
 	generator asString: jsAst on: self jsStream
 ]
 
