@@ -204,13 +204,7 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 
 	| jsAst |
-	jsAst := convertedMethods at: aMethod name ifAbsent: [ 
-		         Transcript crShow: 'Coult not find: ' , aMethod name.
-		         Transcript crShow: 'In: '.
-		         convertedMethods keys do: [ :method | 
-			         Transcript crShow: method ].
-		         Transcript crShow: 'End'.
-		         convertedMethods errorKeyNotFound: aMethod ].
+	jsAst := convertedMethods at: aMethod name.
 	generator asString: jsAst on: self jsStream
 ]
 
