@@ -9,7 +9,6 @@ Class {
 
 { #category : #tests }
 PjLoadingTest >> testEvalBlock [
-self skip.
 	PjLoadForTest reset.
 	self bridge evalBlock: [ window js_at: #valueForEvalTest put: 42 ].
 	self
