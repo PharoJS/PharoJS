@@ -93,7 +93,7 @@ PjDependentTranspiler >> convertClass: aClass [
 { #category : #transpiling }
 PjDependentTranspiler >> convertMethodAst: aMethod [
 	(self shouldSkipMethodNode: aMethod) ifTrue: [ ^self ].
-	convertedMethods at: aMethod name ifAbsentPut: [
+	^convertedMethods at: aMethod ifAbsentPut: [
 		converter
 			classForConversion: aMethod methodClass classToUseForJsConversion;
 			convertAst: aMethod ast withPrimitive: aMethod primitive]
@@ -156,7 +156,7 @@ PjDependentTranspiler >> importMethodsAll: aCollection forClass: aClass [
 PjDependentTranspiler >> initialize [
 
 	super initialize.
-	convertedMethods := Dictionary new.
+	convertedMethods := IdentityDictionary new.
 	classesToConvert := Set new.
 	convertedClasses := Set new.
 	alreadyDefinedClasses := Set new.
@@ -179,7 +179,7 @@ PjDependentTranspiler >> invalidateClass: aClass [
 { #category : #invalidating }
 PjDependentTranspiler >> invalidateMethod: aMethod [
 
-	convertedMethods removeKey: aMethod name ifAbsent: [].
+	convertedMethods removeKey: aMethod ifAbsent: [].
 ]
 
 { #category : #invalidating }
@@ -204,7 +204,7 @@ PjDependentTranspiler >> numberOfMethods [
 PjDependentTranspiler >> transpileMethod: aMethod [
 
 	| jsAst |
-	jsAst := convertedMethods at: aMethod name.
+	jsAst := self convertMethodAst: aMethod.
 	generator asString: jsAst on: self jsStream
 ]
 
