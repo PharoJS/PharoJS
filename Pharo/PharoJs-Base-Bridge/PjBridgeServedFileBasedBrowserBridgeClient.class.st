@@ -27,8 +27,8 @@ PjBridgeServedFileBasedBrowserBridgeClient >> url [
 	^ self server url / self appUrlPrefixString 
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
 PjBridgeServedFileBasedBrowserBridgeClient >> urlString [
 
-	^ self server url / 'web' / 'index.html'
+	^ self url asString
 ]

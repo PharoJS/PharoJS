@@ -73,7 +73,7 @@ PjBridgeServer >> bridge: anObject [
 
 { #category : #accessing }
 PjBridgeServer >> css [
-	^ css
+	^ css ifNil: [ '' ]
 ]
 
 { #category : #accessing }
@@ -82,9 +82,68 @@ PjBridgeServer >> css: anObject [
 ]
 
 { #category : #accessing }
+PjBridgeServer >> defaultHTML [
+	^'<!DOCTYPE html>
+<html>
+<head>
+    <title>PharoJS - Develop in Pharo, Run on JavaScript</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666666;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PharoJS - Develop in Pharo, Run on JavaScript</h1>
+        <p>Thank you for being a part of the PharoJS community. We appreciate your dedication to developing in Pharo and running your applications on JavaScript.</p>
+        <p>PharoJS is open-source under the MIT License. You can find the source code on <a href="https://github.com/PharoJS/PharoJS" target="_blank">GitHub</a>.</p>
+        <p>Visit <a href="https://pharojs.org" target="_blank">PharoJS.org</a> to learn more and get started.</p>
+    </div>
+</body>
+</html>
+'
+]
+
+{ #category : #accessing }
 PjBridgeServer >> delegate [
 
 	^ znServer delegate
+]
+
+{ #category : #accessing }
+PjBridgeServer >> delegate: znServerDelegate [ 
+	znServer delegate: znServerDelegate 
 ]
 
 { #category : #accessing }
@@ -117,7 +176,7 @@ PjBridgeServer >> handleMessage: rawSocketMessage forSocket: aWebSocket [
 
 { #category : #accessing }
 PjBridgeServer >> html [
-	^ html
+	^ html ifNil: [ self defaultHTML]
 ]
 
 { #category : #accessing }
@@ -199,7 +258,7 @@ PjBridgeServer >> logSocketWritten: aString [
 PjBridgeServer >> newServerDelegate [
 
 	| newDelegate |
-	newDelegate := self serverDelegateClass empty.
+	newDelegate := PjBridgeServerDelegate empty.
 	newDelegate map: '/' to: 'index.html'.
 	newDelegate
 		map: 'index.html'
@@ -263,12 +322,6 @@ PjBridgeServer >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 		do: [ :ex | 
 			self halt.
 			ex return ]
-]
-
-{ #category : #initialization }
-PjBridgeServer >> serverDelegateClass [
-
-	^ PjBridgeServerDelegate
 ]
 
 { #category : #start }

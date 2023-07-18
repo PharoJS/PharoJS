@@ -70,14 +70,6 @@ PjBrowserBridgeClient >> initializeWithBridge: aBridge [
 	self server html: self codeGenerator html.
 ]
 
-{ #category : #actions }
-PjBrowserBridgeClient >> openWebBrowserOn: urlString [
-
-	WebBrowser
-		openOn: urlString 
-		inBackground: self openBrowserInBackground
-]
-
 { #category : #accessing }
 PjBrowserBridgeClient >> serverUrl [
 	^self server url
