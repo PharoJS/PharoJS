@@ -4,27 +4,27 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #'accessing - files' }
-PjBridgeServedFileBasedBrowserBridgeClient >> folderName [
-
-	^ self appClass appFullHtmlFolderPath 
-]
-
-{ #category : #initialization }
-PjBridgeServedFileBasedBrowserBridgeClient >> initMappingOn: server andFolder: aString [
-
-	server delegate map: #web to: (ZnStaticFileServerDelegate new
-			 prefixFromString: 'web';
-			 directory: aString asFileReference;
-			 yourself)
+{ #category : #actions }
+PjBridgeServedFileBasedBrowserBridgeClient >> appUrlPrefixString [
+	^self appClass name
 ]
 
 { #category : #accessing }
 PjBridgeServedFileBasedBrowserBridgeClient >> initializeWithBridge: aBridge [
 
+	| staticFileDelegate |
 	super initializeWithBridge: aBridge.
-	self initMappingOn: self server andFolder: self folderName fullName.
+	staticFileDelegate := ZnStaticFileServerDelegate new.
+	staticFileDelegate
+		prefixFromString: self appUrlPrefixString;
+		directory: self appClass appFullHtmlFolderPath asFileReference.
+	self server delegate map: self appUrlPrefixString to: staticFileDelegate
+]
 
+{ #category : #actions }
+PjBridgeServedFileBasedBrowserBridgeClient >> url [
+
+	^ self server url / self appUrlPrefixString 
 ]
 
 { #category : #actions }
