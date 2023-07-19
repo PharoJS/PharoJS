@@ -383,6 +383,12 @@ PjBridge >> isServerStopped [
 ]
 
 { #category : #public }
+PjBridge >> jsGlobalAt: globalID [
+
+	^ self evalJavascript: globalID
+]
+
+{ #category : #public }
 PjBridge >> loadAllClasses: classes [
 
 	| javaScriptClassesDefinition |
