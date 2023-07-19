@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #tests }
+PjInfrastructureTest >> testBridgePort [
+
+	self assert: self bridge port equals: self bridge server port
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testCallGetsTrampolined [
 
 	self assert: (self bridge evalBlock: [ 
@@ -63,6 +69,21 @@ PjInfrastructureTest >> testJSSelector [
 	self assert: [PjCore makePharoJsSelector: prefix, 'foo'] evaluatesTo: prefix, 'foo'.
 	self assert: [PjCore makePharoJsSelector: prefix, 'foo_'] evaluatesTo: prefix, 'foo_'.
 	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: prefix, '$foo_'.
+]
+
+{ #category : #tests }
+PjInfrastructureTest >> testOpenUrlWithParameters [
+
+	| clientUrl |
+	clientUrl := self bridge server url ? (#paramA -> #valueA)
+	             & (#paramB -> #valueB).
+	self bridge client stop.
+	self bridge resetProxiesImmediately.
+	self waitWhile: [ self bridge isConnected ] timeOut: 2 seconds.
+	self bridge client openWebBrowserOn: clientUrl asString.
+	self waitUntil: [ self bridge isConnected ] timeOut: 2 seconds.
+	self waitWhile: [ (app := self currentApp) isNil ] timeOut: 2 seconds.
+	self assert: location search equals: '?paramA=valueA&paramB=valueB'
 ]
 
 { #category : #tests }

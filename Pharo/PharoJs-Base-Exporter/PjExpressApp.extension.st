@@ -1,7 +1,7 @@
 Extension { #name : #PjExpressApp }
 
 { #category : #'*PharoJs-Base-Exporter' }
-PjExpressApp classSide >> afterExportApp [
+PjExpressApp class >> afterExportApp [
 
 	<pharoJsSkip>
 	super afterExportApp.
@@ -9,7 +9,7 @@ PjExpressApp classSide >> afterExportApp [
 ]
 
 { #category : #'*PharoJs-Base-Exporter' }
-PjExpressApp classSide >> clientAppClasses [
+PjExpressApp class >> clientAppClasses [
 
 	<pharoJsSkip>
 	^ #(  ) 

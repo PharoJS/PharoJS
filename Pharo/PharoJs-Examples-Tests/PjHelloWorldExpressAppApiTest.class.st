@@ -1,8 +1,6 @@
 Class {
 	#name : #PjHelloWorldExpressAppApiTest,
-	#superclass : #PjAppTestCase,
-	#traits : 'PjTAppRunsInJS + PjTWebServerApiTestCase',
-	#classTraits : 'PjTAppRunsInJS classTrait + PjTWebServerApiTestCase classTrait',
+	#superclass : #PjWebServerAppTestCase,
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 

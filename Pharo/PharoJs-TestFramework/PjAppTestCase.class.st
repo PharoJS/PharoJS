@@ -140,5 +140,5 @@ PjAppTestCase >> tearDown [
 
 { #category : #testing }
 PjAppTestCase >> timeOutForAppStartUp [
-	^3 seconds
+	^ 20 seconds
 ]

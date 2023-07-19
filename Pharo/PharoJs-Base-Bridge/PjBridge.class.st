@@ -544,12 +544,6 @@ PjBridge >> serverUrl: aString [
 	^ self server serverUrl: aString
 ]
 
-{ #category : #accessing }
-PjBridge >> serverUrlString [
-
-	^ self server urlString
-]
-
 { #category : #public }
 PjBridge >> setExtraBindings: aDictionary [
 

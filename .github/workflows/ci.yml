@@ -1,0 +1,46 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Continuous Integration (CI)
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "pharo10", "ci" ]
+  pull_request:
+    branches: [ "pharo10", "ci" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: hpi-swa/setup-smalltalkCI@v1
+        id: smalltalkci
+        with:
+          smalltalk-image: 'Pharo64-10'
+          cache: 'smalltalk-image'
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          cache: 'chrome-version'
+      - run: chromium --version
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: run tests
+        uses: coactions/setup-xvfb@v1.0.1
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}

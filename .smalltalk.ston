@@ -1,0 +1,18 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'PharoJS',
+      #directory : 'Pharo',  
+      #platforms : [ #pharo ]
+    }
+  ],
+  #preTesting : [
+    'scripts/setup.st'
+  ],
+  #testing : { 
+    #packages : [ 'PharoJs.*' ],
+    #coverage : {
+      #packages : [ 'PharoJs.*' ]
+    }
+  }
+}
