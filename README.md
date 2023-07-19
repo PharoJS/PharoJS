@@ -4,7 +4,7 @@
     <a href="https://lbesson.mit-license.org/" alt="MIT license">
         <img src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>    
     <a href="https://pharo.org/">
-        <img src="https://img.shields.io/badge/Pharo%20Smalltalk-10-ff69b4.svg"/></a>
+        <img src="https://img.shields.io/badge/Pharo%20Smalltalk-11-ff69b4.svg"/></a>
     <a href="https://github.com/PharoJS?tab=followers" alt="GitHub followers">
         <img src="https://img.shields.io/github/followers/PharoJS.svg" /></a>
     <a href="https://github.com/PharoJS/PharoJS/graphs/commit-activity"><img src="https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS" /></a>
