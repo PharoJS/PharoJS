@@ -176,13 +176,10 @@ PjProxyTest >> testProxyGarbageCollection [
 	b := document body.
 	jsName := b javascriptName.
 	self deny: jsName isNil.
-	
-	"Following lines to mimic the effect of garbage collection in a deteministic way."
-	(self finalizationRegistry remove: b ifAbsent: [ nil ])
-		ifNotNil: [ :finalizerItem | finalizerItem finalizeValues ].
+	self assert: (global includesKey: jsName).
 	b := nil.
-	
-	self deny: (global includesKey: jsName)
+	Smalltalk garbageCollect.
+	self waitWhile: [global includesKey: jsName]
 ]
 
 { #category : #tests }

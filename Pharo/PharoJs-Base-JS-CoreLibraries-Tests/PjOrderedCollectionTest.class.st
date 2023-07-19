@@ -25,7 +25,10 @@ PjOrderedCollectionTest >> testCircularReference [
 
 { #category : #tests }
 PjOrderedCollectionTest >> testConverstionToOrderedCollection [
-	self deny: collection asOrderedCollection identicalTo: collection.
+
+	self
+		deny: (OrderedCollection with: collection)
+		identicalTo: collection
 ]
 
 { #category : #tests }

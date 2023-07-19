@@ -85,6 +85,7 @@ BlockClosure >> externalVariablesDictOf: aBlock [
 
 	| context method variablesDict tempValue scope |
 	variablesDict := Dictionary new.
+	aBlock isClean ifTrue: [ ^variablesDict ]. 
 	context := aBlock asContext.
 	scope := aBlock outerContext sourceNode scope.
 	scope allTemps do: [ :variable | 		

@@ -219,22 +219,21 @@ PjBridge >> enableClientLogging [
 { #category : #'closure handling' }
 PjBridge >> ensureProxyForEventListenerBlock: aBlockClosure [
 
-	^ self blockClosures
-		at: aBlockClosure
-		ifAbsentPut: [ | thisArg includeEventTarget msg proxy |
-			(aBlockClosure isKindOf: BlockClosure)
-				ifFalse: [ ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
-			aBlockClosure hasMethodReturn
-				ifTrue: [ ^ PjJavascriptError signal: 'Block cannot have return' ].
-			thisArg := aBlockClosure argumentNames
-				findFirst: [ :name | name = 'this' ].
-			includeEventTarget := thisArg > 0.
-			msg := PjMessageMakeBlockClosureProxy newWithId.
-			msg includeEventTarget: includeEventTarget.
-			msg stopPropagation: true.
-			proxy := self sendMessageAndWaitForResponse: msg.
-			proxy closure: aBlockClosure.
-			proxy ]
+	^ self blockClosures at: aBlockClosure ifAbsentPut: [
+		  | thisArg includeEventTarget msg proxy |
+		  (aBlockClosure isKindOf: BlockClosure) ifFalse: [
+			  ^ PjJavascriptError signal: 'Must be a BlockClosure' ].
+		  aBlockClosure hasNonLocalReturn ifTrue: [
+			  ^ PjJavascriptError signal: 'Block cannot have return' ].
+		  thisArg := aBlockClosure argumentNames findFirst: [ :name |
+			             name = 'this' ].
+		  includeEventTarget := thisArg > 0.
+		  msg := PjMessageMakeBlockClosureProxy newWithId.
+		  msg includeEventTarget: includeEventTarget.
+		  msg stopPropagation: true.
+		  proxy := self sendMessageAndWaitForResponse: msg.
+		  proxy closure: aBlockClosure.
+		  proxy ]
 ]
 
 { #category : #public }

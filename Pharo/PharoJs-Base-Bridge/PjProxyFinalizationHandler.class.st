@@ -41,11 +41,9 @@ PjProxyFinalizationHandler >> cleanUpJsSide [
 ]
 
 { #category : #accessing }
-PjProxyFinalizationHandler >> finalizer [
+PjProxyFinalizationHandler >> finalize [
 
-	^ ObjectFinalizer new
-		  receiver: self;
-		  selector: #cleanUpJsSide yourself
+	^ self cleanUpJsSide
 ]
 
 { #category : #'initialize-release' }

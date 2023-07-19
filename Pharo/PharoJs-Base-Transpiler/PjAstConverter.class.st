@@ -186,7 +186,7 @@ PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
 { #category : #visiting }
 PjAstConverter >> handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode [ 
 	| jsCode forClass selector result |
-	forClass := aRBMethodNode scope outerScope.
+	forClass := aRBMethodNode scope outerScope targetClass.
 	selector := aRBMethodNode selector.
 	jsCode := String streamContents: [: s |
 		s nextPutAll: 'return '.
@@ -613,17 +613,19 @@ PjAstConverter >> visitGlobalVariableNode: aRBVariableNode [
 
 { #category : #visiting }
 PjAstConverter >> visitInlineBlock: aRBProgramNode [
-	| statements  |
+
+	| statements |
 	aRBProgramNode isBlock ifFalse: [
 		^ self returnNodeWith: aRBProgramNode ].
-	statements := (aRBProgramNode statements ifEmpty: [RBLiteralValueNode new]
-			) copy asOrderedCollection.
-	aRBProgramNode temporaries do: [ : variable |
+	statements := OrderedCollection with:
+		              (aRBProgramNode statements ifEmpty: [
+			               RBLiteralValueNode new ]) copy.
+	aRBProgramNode temporaries do: [ :variable |
 		extraTempVariablesToDeclare add: variable name.
-		loopNestingLevel >0 ifTrue: [
-			statements addFirst: (RBAssignmentNode variable: variable value: RBLiteralValueNode new).
-	]].
-	^ (self visitAllNodes: statements) asSimpleNode.
+		loopNestingLevel > 0 ifTrue: [
+			statements addFirst:
+				(RBAssignmentNode variable: variable value: RBLiteralValueNode new) ] ].
+	^ (self visitAllNodes: statements) asSimpleNode
 ]
 
 { #category : #visiting }
