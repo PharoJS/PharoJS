@@ -11,13 +11,13 @@ Trait {
 }
 
 { #category : #'instance creation' }
-PjTClosedBlockClosure classSide >> startpc: startpc numArgs: numArgs originalBlock: aBlock [
+PjTClosedBlockClosure classSide >> compiledBlock: aCompiledBlock numArgs: numArgs originalBlock: aBlock [
 
 	^ (self
 		   outerContext: nil
-		   startpc: startpc
+		   compiledBlock: aCompiledBlock
 		   numArgs: numArgs
-		   copiedValues: #())
+		   copiedValues: #(  ))
 		  originalBlock: aBlock;
 		  yourself
 ]

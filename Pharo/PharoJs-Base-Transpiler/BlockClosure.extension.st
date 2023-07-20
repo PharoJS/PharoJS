@@ -9,7 +9,7 @@ BlockClosure >> arguments [
 BlockClosure >> asClosedBlock [
 
 	^ self closedBlockClass
-		  startpc: self basicStartpc
+		  compiledBlock: self compiledBlock
 		  numArgs: self numArgs
 		  originalBlock: self
 ]
@@ -27,11 +27,6 @@ BlockClosure >> asValuedBlock [
 { #category : #'*PharoJs-Base-Transpiler' }
 BlockClosure >> asValuedBlockWithArgs: args [
 	^PjValuedClosedBlockClosure newFrom: self withArgs: args
-]
-
-{ #category : #'*PharoJs-Base-Transpiler' }
-BlockClosure >> basicStartpc [
-	^startpc
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
@@ -120,17 +115,15 @@ BlockClosure >> originalBlock [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-BlockClosure class >> outerContext: aContext startpc: startPcOrOuterCode numArgs: anInteger copiedValues: copiedValues [ 
+BlockClosure class >> outerContext: aContext compiledBlock: aCompiledBlock numArgs: anInteger copiedValues: copiedValues [
+
 	| newBlock |
 	newBlock := self new: copiedValues size.
 	newBlock
 		outerContext: aContext;
-		compiledBlock: startPcOrOuterCode;
+		compiledBlock: aCompiledBlock;
 		numArgs: anInteger.
-	1 to: newBlock numCopiedValues do:
-		[:i|
-		newBlock at: i put: (copiedValues at: i)].
-	^newBlock 
-	
-		
+	1 to: newBlock numCopiedValues do: [ :i |
+	newBlock at: i put: (copiedValues at: i) ].
+	^ newBlock
 ]

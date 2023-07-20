@@ -24,7 +24,7 @@ PjValuedClosedBlockClosure class >> newFrom: aBlock withArgs: args [
 		PjJavascriptTranspilationError signal:
 			'Cannot build a valued block from a closed one' ].
 	newInstance := self
-		               startpc: aBlock startpc
+		               compiledBlock: aBlock startpc
 		               numArgs: aBlock numArgs
 		               originalBlock: aBlock.
 	^ newInstance
