@@ -39,7 +39,7 @@ PjObject class >> allEnumeratableKeysDo_jsGenerator: transpiler [
 PjObject class >> jsTranspilationImportMethods [
 
 	<pharoJsSkip>
-	^ { 
+	^ {
 		  (ProtoObject
 		   -> #( isNil ifNil: ifNotNil: #ifNil:ifNotNil: #ifNotNil:ifNil: )).
 		  (Object
@@ -48,7 +48,8 @@ PjObject class >> jsTranspilationImportMethods [
 			      isMemberOf: className isNotNil notNil isString isClass
 			      isBlock isNumber isBehavior isCollection isArray isFloat
 			      isInteger isCharacter isSymbol isStream isPjProxyOrNil
-			      printOn: shouldBePrintedAsLiteral isLiteral isSelfEvaluating )).
+			      printOn: shouldBePrintedAsLiteral shouldBePrintedAsLiteral:
+			      isLiteral isSelfEvaluating isSelfEvaluating:)).
 		  (Collection
 		   -> #( addAll: #ifEmpty:ifNotEmpty: #ifNotEmpty:ifEmpty:
 			      ifEmpty: ifNotEmpty: )).

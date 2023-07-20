@@ -80,14 +80,14 @@ PjNumber class >> jsTranspilationImportMethods [
 		                      integerPart // strictlyPositive
 		                      positive negative raisedToInteger:
 		                      raisedTo: isNumber isZero quo: rem: ).
-	^ self jsTranspilationImportMethodsMagnitude , { 
+	^ self jsTranspilationImportMethodsMagnitude , {
 		  (Number -> numberSelectors).
 		  (Number class -> #( one )).
-		  (Integer -> #( asCharacter isPowerOfTwo isLiteral)).
+		  (Integer -> #( asCharacter isPowerOfTwo isLiteral )).
 		  (SmallInteger
 		   -> #( highBit basicIdentityHash identityHash hashMultiply
 		      hash )).
-		  (Float -> #( isInfinite rounded asFloat isSelfEvaluating)).
+		  (Float -> #( isInfinite rounded asFloat isSelfEvaluating )).
 		  (Float class
 		   ->
 			   #( denormalized e emax emin epsilon fmax fmin fminDenormalized
