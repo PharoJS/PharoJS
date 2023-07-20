@@ -21,7 +21,7 @@ PjBoolean class >> identityHash_jsGenerator: transpiler [
 PjBoolean class >> jsTranspilationImportMethods [
 
 	<pharoJsSkip>
-	^ { (Boolean -> #( ==> eqv: isLiteral)) }
+	^ { (Boolean -> #( ==> eqv: isLiteral isSelfEvaluating)) }
 ]
 
 { #category : #'logical operations' }

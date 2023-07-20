@@ -9,9 +9,9 @@ Class {
 
 { #category : #'pharojs support' }
 PjAssociation class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^{
-		Association -> #( = key:value: value value: ).
-		Association class -> #( key:value: ).
-	}
+	^ {
+		  (Association -> #( = #key:value: value value: isSelfEvaluating)).
+		  (Association class -> #( #key:value: )) }
 ]

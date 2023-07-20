@@ -293,6 +293,12 @@ PjString >> isSelfEvaluating [
 ]
 
 { #category : #testing }
+PjString >> isSelfEvaluating: alreadyVisited [
+
+	^ true
+]
+
+{ #category : #testing }
 PjString >> isSeparator [ 
 	| in |
 	^ (in := (self js_charCodeAt: 0) asInteger) == 32 or: [ in == 13 or: [ in == 9 or: [ in == 10 or: [ in == 12 ] ] ] ]
@@ -356,6 +362,11 @@ PjString >> reversed [
 
 { #category : #testing }
 PjString >> shouldBePrintedAsLiteral [
+	^true
+]
+
+{ #category : #testing }
+PjString >> shouldBePrintedAsLiteral: alreadyVisited [
 	^true
 ]
 
