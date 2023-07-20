@@ -147,6 +147,14 @@ PjAstConverter >> convertValuedBlock: block [
 ]
 
 { #category : #visiting }
+PjAstConverter >> copyStatementsFrom: aRBProgramNode [
+
+	aRBProgramNode statements ifEmpty: [
+		^ OrderedCollection with: RBLiteralValueNode new ].
+	^ aRBProgramNode statements copy
+]
+
+{ #category : #visiting }
 PjAstConverter >> discoveredGlobalsPool: aClass [
 	self transpiler ifNotNil: [ 
 	transpiler discoveredGlobalsPool: aClass]
@@ -618,9 +626,7 @@ PjAstConverter >> visitInlineBlock: aRBProgramNode [
 	| statements |
 	aRBProgramNode isBlock ifFalse: [
 		^ self returnNodeWith: aRBProgramNode ].
-	statements := OrderedCollection with:
-		              (aRBProgramNode statements ifEmpty: [
-			               RBLiteralValueNode new ]) copy.
+	statements := self copyStatementsFrom: aRBProgramNode.
 	aRBProgramNode temporaries do: [ :variable |
 		extraTempVariablesToDeclare add: variable name.
 		loopNestingLevel > 0 ifTrue: [
