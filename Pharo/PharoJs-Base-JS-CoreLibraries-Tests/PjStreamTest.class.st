@@ -27,6 +27,13 @@ PjStreamTest >> testArrayWrite [
 ]
 
 { #category : #tests }
+PjStreamTest >> testStringNewWrite [
+
+	self assertEquivalent: [ 
+		String new: 10 streamContents: [ :stream | stream << 'hello world' ] ]
+]
+
+{ #category : #tests }
 PjStreamTest >> testStringPeek [
 	self assertEquivalent: ['abc' readStream peek asString].
 	self assertEquivalent: [('abc' readStream peek;next) asString].
