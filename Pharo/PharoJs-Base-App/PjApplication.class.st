@@ -63,6 +63,18 @@ PjApplication class >> headerLine [
 ]
 
 { #category : #accessing }
+PjApplication class >> modulesFolder [
+
+	<pharoJsSkip>
+	^ self appFullJsFolderPath / self modulesFolderName
+]
+
+{ #category : #accessing }
+PjApplication class >> modulesFolderName [
+	^'node_modules'
+]
+
+{ #category : #accessing }
 PjApplication class >> pharoJsSelectorPrefix [
 	<pharoJsSkip>
 	
