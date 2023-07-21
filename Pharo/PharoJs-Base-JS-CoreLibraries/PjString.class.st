@@ -43,6 +43,11 @@ PjString class >> new: ignored [
 ]
 
 { #category : #'instance creation' }
+PjString class >> new: anInteger streamContents: aBlock [
+	^ self streamContents: aBlock
+]
+
+{ #category : #'instance creation' }
 PjString class >> streamContents: aBlock [
 	| stream |
 	stream := PjStringStream new.
