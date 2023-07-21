@@ -16,6 +16,9 @@
         <img src="https://img.shields.io/twitter/follow/PharoJS.svg?style=flat&label=@PharoJS&logo=twitter&color=blue" /></a>
     <a href="https://github.com/PharoJS/jsource/issues" alt="contributions welcome">
         <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" /></a>
+    <a href='https://github.com/PharoJS/PharoJS/actions/workflows/ci.yml'><img src='https://github.com/PharoJS/PharoJS/actions/workflows/ci.yml/badge.svg?branch=pharo11&event=push' alt='Coverage Status' /></a>
+    <a href='https://coveralls.io/github/PharoJS/PharoJS?branch=pharo11'><img src='https://coveralls.io/repos/github/PharoJS/PharoJS/badge.svg?branch=pharo11' alt='Coverage Status' /></a>
+   
 </p>
 
 <!-- [![Build Status](https://dev.azure.com/nushell/nushell/_apis/build/status/nushell.nushell?branchName=main)](https://dev.azure.com/nushell/nushell/_build/latest?definitionId=2&branchName=main)
