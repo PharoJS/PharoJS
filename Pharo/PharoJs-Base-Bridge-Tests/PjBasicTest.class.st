@@ -300,6 +300,26 @@ PjBasicTest >> testTimesRepeat [
 ]
 
 { #category : #tests }
+PjBasicTest >> testToDoBy [
+
+	self assertEquivalent: [ 
+		| tot |
+		tot := 0.
+		1 to: 2 by: 1 do: [ :i | tot := tot + 1 ].
+		tot ].
+	self assertEquivalent: [ 
+		| tot |
+		tot := 0.
+		2 to: 1 by: 1 do: [ :i | tot := tot + 1 ].
+		tot ].
+	self assertEquivalent: [ 
+		| tot |
+		tot := 0.
+		2 to: 1 by: -1 do: [ :i | tot := tot + 1 ].
+		tot ]
+]
+
+{ #category : #tests }
 PjBasicTest >> testUnicode [
 
 	self assert: $€ asJSON equals: '"\u20AC"'.

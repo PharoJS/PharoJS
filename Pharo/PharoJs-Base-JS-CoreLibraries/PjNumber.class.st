@@ -430,6 +430,21 @@ PjNumber >> to: end [
 
 { #category : #looping }
 PjNumber >> to: end by: step do: aBlock [
+
+	step >= 0
+		ifTrue: [ self to: end byPositive: step do: aBlock ]
+		ifFalse: [ self to: end byNegative: step do: aBlock ]
+]
+
+{ #category : #looping }
+PjNumber >> to: end byNegative: step do: aBlock [
+	
+	<javascript: 'for(var i=this; i >= end; i += step){aBlock(i);}'>
+]
+
+{ #category : #looping }
+PjNumber >> to: end byPositive: step do: aBlock [
+	
 	<javascript: 'for(var i=this; i <= end; i += step){aBlock(i);}'>
 ]
 
