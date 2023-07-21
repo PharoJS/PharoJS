@@ -8,8 +8,6 @@
     <a href="https://github.com/PharoJS?tab=followers" alt="GitHub followers">
         <img src="https://img.shields.io/github/followers/PharoJS.svg" /></a>
     <a href="https://github.com/PharoJS/PharoJS/graphs/commit-activity"><img src="https://img.shields.io/github/commit-activity/m/PharoJS/PharoJS" /></a>
-    <a href="https://join.slack.com/t/pharojs/shared_invite/zt-os5ppigw-YnDyAn1dR0deyeOHesZlWg" rel="nofollow">
-	<img src="https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=slack&label=slack" alt="Join our Slack!" style="max-width:100%;"></a>
     <a href="https://GitHub.com/PharoJS/PharoJS/stargazers/" alt="GitHub stars">
         <img src="https://img.shields.io/github/stars/PharoJS/PharoJS.svg" /></a>
 	<a href="https://twitter.com/PharoJS" alt="Twitter">
@@ -18,12 +16,9 @@
         <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" /></a>
     <a href='https://github.com/PharoJS/PharoJS/actions/workflows/ci.yml'><img src='https://github.com/PharoJS/PharoJS/actions/workflows/ci.yml/badge.svg?branch=pharo11&event=push' alt='Coverage Status' /></a>
     <a href='https://coveralls.io/github/PharoJS/PharoJS?branch=pharo11'><img src='https://coveralls.io/repos/github/PharoJS/PharoJS/badge.svg?branch=pharo11' alt='Coverage Status' /></a>
+    <a href='https://discord.gg/QewZMZa'><img src='https://img.shields.io/discord/223421264751099906?label=discord&labelColor=%235865F2'></a>
    
 </p>
-
-<!-- [![Build Status](https://dev.azure.com/nushell/nushell/_apis/build/status/nushell.nushell?branchName=main)](https://dev.azure.com/nushell/nushell/_build/latest?definitionId=2&branchName=main)
-[![Discord](https://img.shields.io/discord/601130461678272522.svg?logo=discord)](https://discord.gg/NtAbbGn)
- -->
 
 
 
