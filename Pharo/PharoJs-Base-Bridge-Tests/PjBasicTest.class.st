@@ -169,6 +169,15 @@ PjBasicTest >> testIfTrueIfFalse [
 ]
 
 { #category : #tests }
+PjBasicTest >> testJsGlobalAccess [
+
+	self
+		assert: (self bridge evalBlock: [ Date ])
+		equals: (self bridge jsGlobalAt: #Date).
+	self assert: (self bridge evalBlock: [ Object ]) equals: (self bridge jsGlobalAt: #Object)
+]
+
+{ #category : #tests }
 PjBasicTest >> testMethodsForBitManipulation [
 
 	self assertEquivalent: [ -257 bitShift: -4 ].

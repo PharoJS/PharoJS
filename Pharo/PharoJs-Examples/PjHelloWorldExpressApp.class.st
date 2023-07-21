@@ -2,7 +2,6 @@
 Express-based app. Requires the following node packages be installed in the folder
 	- [express](https://expressjs.com)
 	- [body-parser](https://expressjs.com/en/resources/middleware/body-parser.html): Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
-	- [path]
 	- [serve-static](https://expressjs.com/en/resources/middleware/serve-static.html): Create a new middleware function to serve files from within a given root directory. The file to serve will be determined by combining req.url with the provided root directory. When a file is not found, instead of sending a 404 response, this module will instead call next() to move on to the next middleware, allowing for stacking and fall-backs.
 
 "
@@ -55,7 +54,6 @@ PjHelloWorldExpressApp >> initialize [
 
 	super initialize.
 	self serveStaticFilesIn: self staticFilesFolderName.
-	server use: self bodyParser text.
 	server get: '/name' handler: [ :req :res | res send: self name ].
 	server
 		post: '/name'

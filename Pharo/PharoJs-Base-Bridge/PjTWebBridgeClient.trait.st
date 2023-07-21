@@ -21,6 +21,14 @@ PjTWebBridgeClient >> openBrowserInBackground: aBoolean [
 	openBrowserInBackground := aBoolean
 ]
 
+{ #category : #actions }
+PjTWebBridgeClient >> openWebBrowserOn: urlString [
+
+	WebBrowser
+		openOn: urlString 
+		inBackground: self openBrowserInBackground
+]
+
 { #category : #initialization }
 PjTWebBridgeClient >> reset [
 	self sendMessage: PjMessageReload new.
