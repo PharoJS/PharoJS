@@ -27,96 +27,88 @@ PjES5vsES6BenchmarkChartsApp class >> bridgeClientClass [
 PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString [
 
 	| canvas data |
-	canvas := self addElement: 'canvas'.
-	data := window Papa parse: csvString , { 
-			                (#header -> true) } asJsObject.
+	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
+	data := window Papa parse:
+		        csvString , { (#header -> true) } asJsObject.
 	console log: data
 ]
 
 { #category : #initialization }
 PjES5vsES6BenchmarkChartsApp >> initialize [
 
+	self initializePharoJsLoadTime 
+]
+
+{ #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> initializeChartJsBars [
+
 	| canvas data |
 	super initialize.
-	canvas := self addElement: 'canvas'.
-	data := { 
-		        { 
+	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
+	data := {
+		        {
 			        (#year -> 2010).
 			        (#count -> 10) }.
-		        { 
+		        {
 			        (#year -> 2011).
 			        (#count -> 20) }.
-		        { 
+		        {
 			        (#year -> 2012).
 			        (#count -> 15) }.
-		        { 
+		        {
 			        (#year -> 2013).
 			        (#count -> 25) }.
-		        { 
+		        {
 			        (#year -> 2014).
 			        (#count -> 22) }.
-		        { 
+		        {
 			        (#year -> 2015).
 			        (#count -> 30) }.
-		        { 
+		        {
 			        (#year -> 2016).
 			        (#count -> 28) } } asJsObject.
-	self newChartIn: canvas config: { 
+	self newChartIn: canvas config: {
 			(#type -> 'bar').
-			(#data -> { 
+			(#data -> {
 				 (#labels -> (data collect: [ :row | row year ])).
-				 (#datasets -> { { 
+				 (#datasets -> { {
 					  (#label -> 'Acquisitions by year').
 					  (#data -> (data collect: [ :row | row count ])) } }) }) }
 			asJsObject
 ]
 
 { #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> initializeNew [
+PjES5vsES6BenchmarkChartsApp >> initializeChartJsErrorBars [
+
+	| canvas  |
+	super initialize.
+	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
+
+	self newChartIn: canvas config: {
+			(#type -> 'barWithErrorBars').
+			(#data -> {
+				 (#labels -> #( 'A' 'B' )).
+				 (#datasets -> { {
+					  (#label -> 'Data with Error bars').
+					  (#data -> {
+						   {
+							   (#y -> 4).
+							   (#yMin -> 2.5).
+							   (#yMax -> 5.5) }.
+						   {
+							   (#y -> 2).
+							   (#yMin -> 1).
+							   (#yMax -> 3.5) } }) } }) }) } asJsObject
+]
+
+{ #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> initializePharoJsLoadTime [
 
 	super initialize.
 	(window fetch: 'data/loadTime.csv')
-		then: [ :response | 
+		then: [ :response |
 			response text then: [ :text | self chartCSV: text ] ];
 		catch: [ :err | console log: err ]
-]
-
-{ #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> initializeOLD [
-
-	| canvas data |
-	super initialize.
-	canvas := self addElement: 'canvas'.
-	data := { 
-		        { 
-			        (#year -> 2010).
-			        (#count -> 10) }.
-		        { 
-			        (#year -> 2011).
-			        (#count -> 20) }.
-		        { 
-			        (#year -> 2012).
-			        (#count -> 15) }.
-		        { 
-			        (#year -> 2013).
-			        (#count -> 25) }.
-		        { 
-			        (#year -> 2014).
-			        (#count -> 22) }.
-		        { 
-			        (#year -> 2015).
-			        (#count -> 30) }.
-		        { 
-			        (#year -> 2016).
-			        (#count -> 28) } } asJsObject.
-	self newChartIn: canvas config: { 
-			(#type -> 'bar').
-			(#data -> { 
-				 (#labels -> (data collect: [ :row | row year ])).
-				 (#datasets -> { { 
-					  (#label -> 'Acquisitions by year').
-					  (#data -> (data collect: [ :row | row count ])) } }) }) }
-			asJsObject
 ]
 
 { #category : #'instance creation' }
