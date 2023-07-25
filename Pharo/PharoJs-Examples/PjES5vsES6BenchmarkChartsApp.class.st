@@ -24,85 +24,42 @@ PjES5vsES6BenchmarkChartsApp class >> bridgeClientClass [
 ]
 
 { #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviation: stdDeviation [
+
+	^aCollection add: {
+		  (#y -> value).
+		  (#yMin -> (value - stdDeviation)).
+		  (#yMax -> (value + stdDeviation)) }
+]
+
+{ #category : #initialization }
 PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString [
 
-	| canvas data |
+	| csvParseResult canvas chartConfig es5Data es6Data |
+	csvParseResult := self parseCsvString: csvString.
+	es5Data := OrderedCollection new.
+	es6Data := OrderedCollection new.
+	csvParseResult data do: [ :row |
+		self addTo: es5Data dataDictfrom: row ES5Median stdDeviation:  row ES5Deviation.
+		self addTo: es6Data dataDictfrom: row ES6Median stdDeviation:  row ES6Deviation.].
+	chartConfig := {
+		               (#type -> 'barWithErrorBars').
+		               (#data -> {
+			                (#labels
+			                 -> { 'NodeJS Application'. 'Web Application' }).
+			                (#datasets -> {
+				                 {
+					                 (#label -> 'PharoJS ES5').
+					                 (#data -> es5Data) }.
+				                 {
+					                 (#label -> 'PharoJS ES6').
+					                 (#data -> es6Data) } }) }) } asJsObject.
 	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
-	data := window Papa parse:
-		        csvString , { (#header -> true) } asJsObject.
-	console log: data
+	self newChartIn: canvas config: chartConfig
 ]
 
 { #category : #initialization }
 PjES5vsES6BenchmarkChartsApp >> initialize [
-
-	self initializePharoJsLoadTime 
-]
-
-{ #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> initializeChartJsBars [
-
-	| canvas data |
-	super initialize.
-	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
-	data := {
-		        {
-			        (#year -> 2010).
-			        (#count -> 10) }.
-		        {
-			        (#year -> 2011).
-			        (#count -> 20) }.
-		        {
-			        (#year -> 2012).
-			        (#count -> 15) }.
-		        {
-			        (#year -> 2013).
-			        (#count -> 25) }.
-		        {
-			        (#year -> 2014).
-			        (#count -> 22) }.
-		        {
-			        (#year -> 2015).
-			        (#count -> 30) }.
-		        {
-			        (#year -> 2016).
-			        (#count -> 28) } } asJsObject.
-	self newChartIn: canvas config: {
-			(#type -> 'bar').
-			(#data -> {
-				 (#labels -> (data collect: [ :row | row year ])).
-				 (#datasets -> { {
-					  (#label -> 'Acquisitions by year').
-					  (#data -> (data collect: [ :row | row count ])) } }) }) }
-			asJsObject
-]
-
-{ #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> initializeChartJsErrorBars [
-
-	| canvas  |
-	super initialize.
-	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
-
-	self newChartIn: canvas config: {
-			(#type -> 'barWithErrorBars').
-			(#data -> {
-				 (#labels -> #( 'A' 'B' )).
-				 (#datasets -> { {
-					  (#label -> 'Data with Error bars').
-					  (#data -> {
-						   {
-							   (#y -> 4).
-							   (#yMin -> 2.5).
-							   (#yMax -> 5.5) }.
-						   {
-							   (#y -> 2).
-							   (#yMin -> 1).
-							   (#yMax -> 3.5) } }) } }) }) } asJsObject
-]
-
-{ #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> initializePharoJsLoadTime [
 
 	super initialize.
 	(window fetch: 'data/loadTime.csv')
@@ -116,4 +73,14 @@ PjES5vsES6BenchmarkChartsApp >> newChartIn: containerDom config: chartConfig [
 
 	<javascript: 'return new Chart(containerDom, chartConfig)'>
 	
+]
+
+{ #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> parseCsvString: csvString [
+
+	| csvParseResult |
+	csvParseResult := window Papa parse: csvString with: {
+			                  (#header -> true).
+			                  (#dynamicTyping -> true) } asJsObject.
+	^ csvParseResult
 ]
