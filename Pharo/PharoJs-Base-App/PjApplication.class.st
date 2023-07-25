@@ -123,6 +123,17 @@ PjApplication class >> whenJsReady: aBlock [
 	self subclassResponsibility
 ]
 
+{ #category : #modules }
+PjApplication >> modulesManager [
+	^PjNodeModulesManager default
+]
+
+{ #category : #modules }
+PjApplication >> require: aString [
+
+	^ self modulesManager require: aString
+]
+
 { #category : #'start-stop' }
 PjApplication >> start [
 ]

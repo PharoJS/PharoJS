@@ -49,17 +49,7 @@ PjNodeApplication >> fullPathFor: relativePathName [
 ]
 
 { #category : #accessing }
-PjNodeApplication >> moduleNamed: aString [
-	^self modulesManager moduleNamed: aString
-]
-
-{ #category : #accessing }
-PjNodeApplication >> modulesManager [
-	^PjNodeModulesManager default
-]
-
-{ #category : #accessing }
 PjNodeApplication >> pathFactory [
 
-	^ self moduleNamed: 'path'
+	^ self require: 'path'
 ]

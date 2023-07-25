@@ -31,7 +31,8 @@ PjExpressApp class >> isAbstract [
 
 { #category : #accessing }
 PjExpressApp >> bodyParser [
-	^self moduleNamed: 'body-parser'
+
+	^ self require: 'body-parser'
 ]
 
 { #category : #initialization }
@@ -60,7 +61,7 @@ PjExpressApp >> initialize [
 { #category : #initialization }
 PjExpressApp >> newServer [
 
-	^ (self moduleNamed: 'express') value
+	^ (self require: 'express') value
 ]
 
 { #category : #accessing }
@@ -88,7 +89,7 @@ PjExpressApp >> serveStaticFilesIn: localFolderName [
 { #category : #accessing }
 PjExpressApp >> serveStaticFunction [
 
-	^ self moduleNamed: 'serve-static'
+	^ self require: 'serve-static'
 ]
 
 { #category : #'start-stop' }

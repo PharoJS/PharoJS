@@ -16,9 +16,9 @@ PjNodeModulesManager class >> default [
 ]
 
 { #category : #accessing }
-PjNodeModulesManager class >> moduleNamed: aString [
-	^self default moduleNamed: aString
+PjNodeModulesManager class >> require: aString [
 
+	^ self default require: aString
 ]
 
 { #category : #accessing }
@@ -34,15 +34,9 @@ PjNodeModulesManager >> initialize [
 ]
 
 { #category : #accessing }
-PjNodeModulesManager >> moduleNamed: aString [
+PjNodeModulesManager >> require: aString [
 
 	^ modulesDict
 		  at: aString asSymbol
-		  ifAbsentPut: [ self require: aString ]
-]
-
-{ #category : #accessing }
-PjNodeModulesManager >> require: moduleName [
-
-	^ Smalltalk require: moduleName
+		  ifAbsentPut: [ Smalltalk require: aString ]
 ]
