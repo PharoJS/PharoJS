@@ -26,10 +26,11 @@ PjES5vsES6BenchmarkChartsApp class >> bridgeClientClass [
 { #category : #initialization }
 PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviation: stdDeviation [
 
-	^aCollection add: {
-		  (#y -> value).
-		  (#yMin -> (value - stdDeviation)).
-		  (#yMax -> (value + stdDeviation)) }
+	^ aCollection add: {
+			  (#y -> value).
+			  (#yMin -> (value - stdDeviation)).
+			  (#yMax -> (value + stdDeviation)).
+			  (#tootipLabel -> (value asString , ' ± ' , stdDeviation asString)) }
 ]
 
 { #category : #initialization }
@@ -40,21 +41,41 @@ PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString [
 	es5Data := OrderedCollection new.
 	es6Data := OrderedCollection new.
 	csvParseResult data do: [ :row |
-		self addTo: es5Data dataDictfrom: row ES5Median stdDeviation:  row ES5Deviation.
-		self addTo: es6Data dataDictfrom: row ES6Median stdDeviation:  row ES6Deviation.].
+		self
+			addTo: es5Data
+			dataDictfrom: row ES5Median
+			stdDeviation: row ES5Deviation.
+		self
+			addTo: es6Data
+			dataDictfrom: row ES6Median
+			stdDeviation: row ES6Deviation ].
 	chartConfig := {
 		               (#type -> 'barWithErrorBars').
+		               (#options -> { (#plugins -> {
+			                 (#tooltip -> { (#callbacks
+			                   ->
+			                   { (#label
+			                    -> [ :context |
+			                    self tooltipLabelForContext: context ]) }) })}).
+			                 (#scales -> { (#y -> { (#title -> {
+				                    (#display -> true).
+				                    (#text -> 'Load Time (ms)') }) }) }) }) .
+
 		               (#data -> {
 			                (#labels
 			                 -> { 'NodeJS Application'. 'Web Application' }).
 			                (#datasets -> {
 				                 {
 					                 (#label -> 'PharoJS ES5').
+					                 (#backgroundColor -> '#ff6699').
 					                 (#data -> es5Data) }.
 				                 {
 					                 (#label -> 'PharoJS ES6').
+					                 (#backgroundColor -> '#33ccff').
 					                 (#data -> es6Data) } }) }) } asJsObject.
-	canvas := self addElement: 'canvas' style: { (#width -> '500px') }.
+	canvas := self addElement: 'canvas' style: {
+			          (#'min-width' -> '400px').
+			          (#height -> '400px') }.
 	self newChartIn: canvas config: chartConfig
 ]
 
@@ -83,4 +104,9 @@ PjES5vsES6BenchmarkChartsApp >> parseCsvString: csvString [
 			                  (#header -> true).
 			                  (#dynamicTyping -> true) } asJsObject.
 	^ csvParseResult
+]
+
+{ #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> tooltipLabelForContext: aContext [
+	^ aContext raw tootipLabel.
 ]
