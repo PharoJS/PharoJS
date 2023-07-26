@@ -201,8 +201,12 @@ PjCore class >> makeDNU_jsGenerator: transpiler [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> makeGetter: selector [
-	<javascript:
-	'return function Getter(){return this[selector]}'>
+
+	<javascript: 'return function(){
+        if (this[selector] != null) {return this[selector]}
+        return this[selector] = this.pharoJsDynamicGetterDefaultValue();        
+	}'>
+	
 ]
 
 { #category : #accessing }
@@ -230,8 +234,10 @@ PjCore class >> makePharoJsSelector: aSelector [
 
 { #category : #'doesNotUnderstand support' }
 PjCore class >> makeSetter: selector [
+
 	<javascript:
-	'return function Setter(value){return this[selector]=value}'>
+	'return function (value){return this[selector]=value}'>
+	
 ]
 
 { #category : #accessing }

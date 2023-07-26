@@ -289,6 +289,13 @@ PjObject >> perform: selector withArguments: argArray inSuperclass: lookupClass 
 	^ (lookupClass prototype js_at: (PjCore registerDnu: selector)) apply: self with: argArray
 ]
 
+{ #category : #'doesNotUnderstand support' }
+PjObject >> pharoJsDynamicGetterDefaultValue [
+	"Used by getters dynamically generated. See PjCore class >> #makeGetter: "
+	<jsAlias: 'pharoJsDynamicGetterDefaultValue'>
+	^ nil
+]
+
 { #category : #copying }
 PjObject >> postCopy [
 	^self
