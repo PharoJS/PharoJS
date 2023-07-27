@@ -27,7 +27,7 @@ PjES5vsES6BenchmarkChartsApp class >> bridgeClientClass [
 ]
 
 { #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviation: stdDeviation label: dataSetLabel [
+PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviation: stdDeviation label: dataSetLabel unit: unitString [
 
 	| tootipLabel config |
 	tootipLabel := String streamContents: [ :str |
@@ -35,24 +35,25 @@ PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviat
 			               << dataSetLabel;
 			               << $:;
 			               space;
-			               print: value.
-			stdDeviation = 0 ifFalse: [
-				str
-			               << ' ± ';
-			               print: stdDeviation] ].
-	config := PjJsConfigObject with: [ : cfg | 
-cfg
-		          y: value;
+			               print: value;
+			<< unitString.
+		               stdDeviation = 0 ifFalse: [
+			               str
+				               << ' ± ';
+				               print: stdDeviation ] ].
+	config := PjJsConfig with: [ :cfg |
+		          cfg
+			          y: value;
 			          tootipLabel: tootipLabel.
-stdDeviation = 0 ifFalse: [cfg			          yMin: value - stdDeviation;
-		          yMax: value + stdDeviation]
-
-		].
+		          stdDeviation = 0 ifFalse: [
+			          cfg
+				          yMin: value - stdDeviation;
+				          yMax: value + stdDeviation ] ].
 	aCollection add: config
 ]
 
 { #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: titleString [
+PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: titleString unit: unitString [
 
 	| csvData chartConfig es5Data es6Data es5DataLabel es6DataLabel canvas |
 	csvData := self dataFromCSV: csvString.
@@ -65,13 +66,15 @@ PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: ti
 		initEs5: es5Data
 		label: es5DataLabel
 		es6: es6Data
-		label: es6DataLabel.
+		label: es6DataLabel
+		unit: unitString.
 	chartConfig := self
 		               chartConfigYLabel: yAxisLabel
 		               es5: es5Data
 		               label: es5DataLabel
 		               es6: es6Data
 		               label: es6DataLabel.
+	console log: chartConfig.
 	canvas := self newCanvasTitle: titleString.
 	self newChartIn: canvas config: chartConfig
 ]
@@ -79,11 +82,14 @@ PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: ti
 { #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel [
 
-	^ PjJsConfigObject with: [ :config |
+	^ PjJsConfig asJsObjectWith: [ :config |
 		  config type: #barWithErrorBars.
 		  config options with: [ :options |
-			  options plugins tooltip callbacks label: [ :context |
-				  self tooltipLabelForContext: context ].
+			  options
+				  errorBarWhiskerLineWidth: 2;
+				  errorBarLineWidth: 2.
+			  options plugins tooltip callbacks label:
+				  self tooltipLabelFunction.
 			  options scales y title
 				  display: true;
 				  text: yAxisLabel ].
@@ -91,12 +97,12 @@ PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label
 			  data
 				  labels: { 'NodeJS Application'. 'Web Application' };
 				  datasets: {
-						  (PjJsConfigObject with: [ :dataSet |
+						  (PjJsConfig with: [ :dataSet |
 								   dataSet
 									   label: es5DataLabel;
 									   backgroundColor: '#ff6699';
 									   data: es5Data ]).
-						  (PjJsConfigObject with: [ :dataSet |
+						  (PjJsConfig with: [ :dataSet |
 							   dataSet
 								   label: es6DataLabel;
 								   backgroundColor: '#33ccff';
@@ -104,11 +110,12 @@ PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label
 ]
 
 { #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> chartCsvFile: csvFileName label: label title: titleString [
+PjES5vsES6BenchmarkChartsApp >> chartCsvFile: csvFileName label: label title: titleString unit: unitString [
 
 	(window fetch: csvFileName)
 		then: [ :response |
-			response text then: [ :text | self chartCSV: text yLabel: label  title: titleString] ];
+			response text then: [ :text |
+					self chartCSV: text yLabel: label title: titleString unit: unitString ] ];
 		catch: [ :err | console log: err ]
 ]
 
@@ -130,19 +137,24 @@ PjES5vsES6BenchmarkChartsApp >> initialize [
 	self
 		chartCsvFile: 'data/exportTime.csv'
 		label: 'Export Time (ms)'
-		title: 'JS Export Time';
+		title: 'JS Export Time'
+		unit: 'ms';
 		chartCsvFile: 'data/loadTime.csv'
 		label: 'Load Time (ms)'
-		title: 'JS Load Time';
+		title: 'JS Load Time'
+		unit: 'ms';
 		chartCsvFile: 'data/deltaBlue.csv'
 		label: 'Delta Blue Benchmark (ms)'
-		title: 'Delta Blue Benchmark';
+		title: 'Delta Blue Benchmark'
+		unit: 'ms';
 		chartCsvFile: 'data/richards.csv'
 		label: 'Richards Benchmark (ms)'
-		title: 'Richards Benchmark';
-				chartCsvFile: 'data/fileSize.csv'
+		title: 'Richards Benchmark'
+		unit: 'ms';
+		chartCsvFile: 'data/fileSize.csv'
 		label: 'File Size (KB)'
 		title: 'JS File Size'
+		unit: 'KB'
 ]
 
 { #category : #'chart creation' }
@@ -168,23 +180,25 @@ PjES5vsES6BenchmarkChartsApp >> newChartIn: containerDom config: chartConfig [
 ]
 
 { #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> tooltipLabelForContext: aContext [
+PjES5vsES6BenchmarkChartsApp >> tooltipLabelFunction [
 
-	^ aContext raw tootipLabel
+	^ [ :context | context raw tootipLabel ]
 ]
 
 { #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> withCsv: csvData initEs5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel [
+PjES5vsES6BenchmarkChartsApp >> withCsv: csvData initEs5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel unit: unitString [
 
 	csvData do: [ :row |
 		self
 			addTo: es5Data
 			dataDictfrom: row ES5Median
 			stdDeviation: row ES5Deviation
-			label: es5DataLabel.
+			label: es5DataLabel
+			unit: unitString.
 		self
 			addTo: es6Data
 			dataDictfrom: row ES6Median
 			stdDeviation: row ES6Deviation
-			label: es6DataLabel ]
+			label: es6DataLabel
+			unit: unitString ]
 ]
