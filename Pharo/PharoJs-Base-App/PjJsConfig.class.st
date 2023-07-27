@@ -1,7 +1,7 @@
 "
 I make it easier to build JS configuration objects. Properties are created on the fly by simply using accessors. Example
 ```
-PjJsConfigObject with: [: config| 
+PjJsConfig with: [: config| 
 	config 
 		name: 'C3P0';
 		model: 'Protocol Droid';
@@ -9,9 +9,9 @@ PjJsConfigObject with: [: config|
 			parts head with: [: head | 
 				head 
 					eyes: {
-						PjJsConfigObject with: [: leftEye | 
+						PjJsConfig with: [: leftEye | 
 							leftEye side: 'left'; color: 'yellow'].
-						PjJsConfigObject with: [: rightEye | ...].
+						PjJsConfig with: [: rightEye | ...].
 					};
 					mouth:  ...
 			].
@@ -61,20 +61,36 @@ The old basic way would be to use the PharoJS asJsObject as following:
 ```
 "
 Class {
-	#name : #PjJsConfigObject,
+	#name : #PjJsConfig,
 	#superclass : #Object,
 	#category : #'PharoJs-Base-App'
 }
 
 { #category : #'instance creation' }
-PjJsConfigObject class >> with: aBlock [
-	^self new
+PjJsConfig class >> asJsObjectWith: aBlock [
+
+	^ self new 
 		with: aBlock;
-		yourself 
+		asJsObject 
+]
+
+{ #category : #'instance creation' }
+PjJsConfig class >> with: aBlock [
+
+	^ self new
+		  with: aBlock
 ]
 
 { #category : #'reflective operations' }
-PjJsConfigObject >> doesNotUnderstand: aMessage [
+PjJsConfig >> asJsObject [
+
+	Object adoptInstance: self.
+	self valuesDo: [ :each |
+		(each isKindOf: PjJsConfig) ifTrue: [ each asJsObject ] ]
+]
+
+{ #category : #'reflective operations' }
+PjJsConfig >> doesNotUnderstand: aMessage [
 
 	| propertyName value |
 	aMessage arguments size > 1 ifTrue: [
@@ -88,14 +104,15 @@ PjJsConfigObject >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjJsConfigObject >> pharoJsDynamicGetterDefaultValue [
+PjJsConfig >> pharoJsDynamicGetterDefaultValue [
 
 	<jsAlias: 'pharoJsDynamicGetterDefaultValue'>
 	^ self class new
 ]
 
 { #category : #'reflective operations' }
-PjJsConfigObject >> with: aBlock [
+PjJsConfig >> with: aBlock [
 
-	aBlock value: self
+	aBlock value: self.
+	^self
 ]
