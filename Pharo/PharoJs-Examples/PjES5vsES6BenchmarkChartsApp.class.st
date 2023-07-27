@@ -8,6 +8,9 @@ Just like PharoJS, ChartJS open-source and distributed via GitHub under a MIT Li
 Class {
 	#name : #PjES5vsES6BenchmarkChartsApp,
 	#superclass : #PjWebApplication,
+	#instVars : [
+		'chartsContainer'
+	],
 	#category : #'PharoJs-Examples-ChartJS'
 }
 
@@ -23,7 +26,7 @@ PjES5vsES6BenchmarkChartsApp class >> bridgeClientClass [
 	^ PjBridgeServedFileBasedBrowserBridgeClient
 ]
 
-{ #category : #initialization }
+{ #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviation: stdDeviation label: dataSetLabel [
 
 	| tootipLabel config |
@@ -48,10 +51,10 @@ stdDeviation = 0 ifFalse: [cfg			          yMin: value - stdDeviation;
 	aCollection add: config
 ]
 
-{ #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel [
+{ #category : #'chart creation' }
+PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: titleString [
 
-	| csvData canvas chartConfig es5Data es6Data es5DataLabel es6DataLabel |
+	| csvData chartConfig es5Data es6Data es5DataLabel es6DataLabel canvas |
 	csvData := self dataFromCSV: csvString.
 	es5Data := OrderedCollection new.
 	es5DataLabel := 'PharoJS ES5'.
@@ -69,13 +72,11 @@ PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel [
 		               label: es5DataLabel
 		               es6: es6Data
 		               label: es6DataLabel.
-	canvas := self addElement: 'canvas' style: {
-			          (#width -> '400px').
-			          (#height -> '300px') }.
+	canvas := self newCanvasTitle: titleString.
 	self newChartIn: canvas config: chartConfig
 ]
 
-{ #category : #initialization }
+{ #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel [
 
 	^ PjJsConfigObject with: [ :config |
@@ -103,11 +104,11 @@ PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label
 ]
 
 { #category : #initialization }
-PjES5vsES6BenchmarkChartsApp >> chartCsvFile: csvFileName label: label [
-(window fetch:csvFileName)
+PjES5vsES6BenchmarkChartsApp >> chartCsvFile: csvFileName label: label title: titleString [
+
+	(window fetch: csvFileName)
 		then: [ :response |
-			response text then: [ :text |
-					self chartCSV: text yLabel: label ] ];
+			response text then: [ :text | self chartCSV: text yLabel: label  title: titleString] ];
 		catch: [ :err | console log: err ]
 ]
 
@@ -125,27 +126,54 @@ PjES5vsES6BenchmarkChartsApp >> dataFromCSV: csvString [
 PjES5vsES6BenchmarkChartsApp >> initialize [
 
 	super initialize.
+	chartsContainer := self elementAt: #chartsContainer.
 	self
-		chartCsvFile: 'data/fileSize.csv' label: 'File Size (KB)';
-		chartCsvFile: 'data/exportTime.csv' label: 'Export Time (ms)';
-				chartCsvFile: 'data/loadTime.csv' label: 'Load Time (ms)';
-		chartCsvFile: 'data/deltaBlue.csv' label: 'Delta Blue Benchmark (ms)';
-		chartCsvFile: 'data/richards.csv' label: 'Richards Benchmark (ms)'
+		chartCsvFile: 'data/exportTime.csv'
+		label: 'Export Time (ms)'
+		title: 'JS Export Time';
+		chartCsvFile: 'data/loadTime.csv'
+		label: 'Load Time (ms)'
+		title: 'JS Load Time';
+		chartCsvFile: 'data/deltaBlue.csv'
+		label: 'Delta Blue Benchmark (ms)'
+		title: 'Delta Blue Benchmark';
+		chartCsvFile: 'data/richards.csv'
+		label: 'Richards Benchmark (ms)'
+		title: 'Richards Benchmark';
+				chartCsvFile: 'data/fileSize.csv'
+		label: 'File Size (KB)'
+		title: 'JS File Size'
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'chart creation' }
+PjES5vsES6BenchmarkChartsApp >> newCanvasTitle: titleString [
+
+	| card body title |
+	card := self addElement: 'div' to: chartsContainer.
+	card className: 'card mt-5'.
+	body := self addElement: 'div' to: card.
+	body className: 'card-body'.
+	title := self addElement: 'h3' to: body.
+	title className: 'card-title'.
+	title textContent: titleString.
+	^ self addElement: 'canvas' to: body style: {
+			  (#width -> '350px').
+			  (#height -> '300px') }
+]
+
+{ #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> newChartIn: containerDom config: chartConfig [
 
 	^ global Chart new: containerDom with: chartConfig
 ]
 
-{ #category : #initialization }
+{ #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> tooltipLabelForContext: aContext [
 
 	^ aContext raw tootipLabel
 ]
 
-{ #category : #initialization }
+{ #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> withCsv: csvData initEs5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel [
 
 	csvData do: [ :row |
