@@ -74,7 +74,6 @@ PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: ti
 		               label: es5DataLabel
 		               es6: es6Data
 		               label: es6DataLabel.
-	console log: chartConfig.
 	canvas := self newCanvasTitle: titleString.
 	self newChartIn: canvas config: chartConfig
 ]
