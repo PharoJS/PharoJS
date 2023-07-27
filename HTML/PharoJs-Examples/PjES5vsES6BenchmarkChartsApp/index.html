@@ -3,10 +3,13 @@
 
 <head>
     <title>PharoJS 2023 Benchmarks with ChartJS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
+    <div class="container-fluid">
     <div id="banner">
         <a href="http://pharojs.org" target="_blank"><img src="img/pharoJsLogo.png" alt="PharoJS"></a>
         +
@@ -14,13 +17,20 @@
     </div>
 
     <h1>PharoJS 2023 Benchmarks with ChartJS</h1>
+ 
+    <div class="d-flex flex-wrap justify-content-evenly align-content-between" id="chartsContainer"></div>
+</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 
     <!-- ChartJS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1/dist/chart.umd.min.js"></script>
 
     <!-- Error Bars Plugin for ChartJS -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-error-bars@4.3.0/build/index.umd.min.js"></script> 
- 
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-error-bars@4.3.0/build/index.umd.min.js"></script>
+
     <!-- PapaParse parses csv files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"></script>
 

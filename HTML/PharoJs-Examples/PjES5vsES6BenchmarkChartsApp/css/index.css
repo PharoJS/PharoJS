@@ -1,7 +1,6 @@
 #banner{
 	width:100%;
 	text-align:center; 
-	background-color:rgb(230,250,255);
 	box-sizing:border-box; 
 	padding:15px;
 	font-weight: bold;
@@ -11,12 +10,4 @@
 #banner img{
 	height:100px;
 	vertical-align:middle;
-}
-
-canvas{
-	max-width:400px; 
-	width:100px; 
-	height:100px; 
-	display: block; 
-	margin: auto;
 }
