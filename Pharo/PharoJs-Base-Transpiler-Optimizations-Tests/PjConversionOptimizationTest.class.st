@@ -642,37 +642,68 @@ PjConversionOptimizationTest >> testToDo [
 
 { #category : #testing }
 PjConversionOptimizationTest >> testWhile [
+
 	| for in a |
 	for := PjTempVariableNode identifier: #for.
 	a := PjTempVariableNode identifier: #a.
 	in := PjTempVariableNode identifier: #in.
 	messageConverter addAllConversions: {
-		PjWhileTrueOptimization. PjWhileTrueDoOptimization.
-		PjWhileFalseOptimization. PjWhileFalseDoOptimization.
-	}. 
+			PjWhileTrueOptimization.
+			PjWhileTrueDoOptimization.
+			PjWhileFalseOptimization.
+			PjWhileFalseDoOptimization }.
 	self
-		assertContentsOf: [ [self] whileTrue: [ in := for. ^ a]]
-		convertsTo: (PjWhileNode test: selfNode body:  {
-				PjAssignNode
-					target: in
-					expression: for.
-				PjReturnNode expression: a
-			}).
+		assertContentsOf: [
+			[ self ] whileTrue: [
+				in := for.
+				^ a ] ]
+		convertsTo: (PjWhileNode test: selfNode body: {
+					 (PjAssignNode target: in expression: for).
+					 (PjReturnNode expression: a) }).
 	self
-		assertContentsOf: [ [self. in] whileTrue ]
-		convertsTo: (PjWhileNode test: (PjSequenceNode expressions: {selfNode. in}) body:  {}).
+		assertContentsOf: [
+			[
+			self.
+			in ] whileTrue ]
+		convertsTo: (PjWhileNode
+				 test: (PjSequenceNode expressions: {
+							  selfNode.
+							  in })
+				 body: {  }).
 	self
-		assertContentsOf: [ [self] whileFalse: [ in := for. ^ a]]
-		convertsTo:  (PjWhileNode test: selfNode not body:  {
-				PjAssignNode
-					target: in
-					expression: for.
-				PjReturnNode expression: a
-			}).
+		assertContentsOf: [
+			[ self ] whileFalse: [
+				in := for.
+				^ a ] ]
+		convertsTo: (PjWhileNode test: selfNode not body: {
+					 (PjAssignNode target: in expression: for).
+					 (PjReturnNode expression: a) }).
 	self
-		assertContentsOf: [ [self. in] whileFalse ]
-		convertsTo: (PjWhileNode test: (PjSequenceNode expressions: {selfNode. in}) not body:  {}).
+		assertContentsOf: [
+			[
+			self.
+			in ] whileFalse ]
+		convertsTo: (PjWhileNode
+				 test: (PjSequenceNode expressions: {
+							  selfNode.
+							  in }) not
+				 body: {  }).
 	self
-		assertContentsOf: [ self foo: [[self. in] whileFalse] ]
-		convertsTo: (PjApplyNode receiver: selfNode selector: #foo: args: (PjBlockNode parameters: #() locals: #() body: {PjWhileNode test: (PjSequenceNode expressions: {selfNodeInBlock. in}) not body:  {}}) asOrderedCollection).
+		assertContentsOf: [
+			self foo: [
+				[
+				self.
+				in ] whileFalse ] ]
+		convertsTo: (PjApplyNode
+				 receiver: selfNode
+				 selector: #foo:
+				 args: (OrderedCollection with:
+						  (PjBlockNode
+							   parameters: #(  )
+							   locals: #(  )
+							   body: { (PjWhileNode
+									    test: (PjSequenceNode expressions: {
+												     selfNodeInBlock.
+												     in }) not
+									    body: {  }) })))
 ]
