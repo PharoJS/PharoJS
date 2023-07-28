@@ -38,9 +38,17 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
+
       - name: run tests
-        uses: coactions/setup-xvfb@v1.0.1
+        uses: Wandalen/wretry.action@master
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+          action: coactions/setup-xvfb@v1.0.1
+          with:
+            run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
+        attempt_limit: 3
+        
+
+
+        
