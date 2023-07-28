@@ -184,6 +184,11 @@ PjBridgeServer >> html: anObject [
 	html := anObject
 ]
 
+{ #category : #start }
+PjBridgeServer >> incrementCurrentUsablePortNumber [
+	self class incrementCurrentUsablePortNumber
+]
+
 { #category : #initialization }
 PjBridgeServer >> indexHtmlResponse [
 	^ ZnResponse ok: (ZnEntity html: self html)
@@ -327,14 +332,16 @@ PjBridgeServer >> safelyHandleMessage: aMessage forSocket: aWebSocket [
 { #category : #start }
 PjBridgeServer >> start [
 
+	"We change the current usable port number before starting to avoid collision with potentially other bridge servers. This happens sometimes in tests before bridges are garbageCollected"
 	| attempts |
 	self isStarted ifTrue: [ ^ self ].
+	self incrementCurrentUsablePortNumber.
 	attempts := 1.
-	[ 
+	[
 	self startOnCurrentUsablePortNumber.
-	self isStartedWithinTimeout ] whileFalse: [ 
+	self isStartedWithinTimeout ] whileFalse: [
 		attempts := attempts + 1.
-		self class incrementCurrentUsablePortNumber ]
+		self incrementCurrentUsablePortNumber ]
 ]
 
 { #category : #start }
