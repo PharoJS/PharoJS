@@ -14,11 +14,6 @@ PjDomControllerPharoTest class >> appClass [
 	^PjMinimalFileBasedWebApp
 ]
 
-{ #category : #accessing }
-PjDomControllerPharoTest >> appClassToExport [
-	^PjAppWrapperForRunningInPharo on: self appClass
-]
-
 { #category : #running }
 PjDomControllerPharoTest >> setUp [
 	super setUp.
