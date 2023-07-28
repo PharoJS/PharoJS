@@ -1,22 +1,25 @@
 "
 I make it easier to build JS configuration objects. Properties are created on the fly by simply using accessors. Example
 ```
-PjJsConfig with: [: config| 
-	config 
+PjConfig jsObject: [: config| 
+	(config 
 		name: 'C3P0';
 		model: 'Protocol Droid';
-		parts with: [: parts |
-			parts head with: [: head | 
+		parts)	 << [: parts |
+			parts head << [: head | 
 				head 
 					eyes: {
-						PjJsConfig with: [: leftEye | 
-							leftEye side: 'left'; color: 'yellow'].
-						PjJsConfig with: [: rightEye | ...].
+						PjConfig << [: leftEye | 
+							leftEye 
+								side: 'left'; 
+								color: 'yellow'
+						].
+						PjConfig << [: rightEye | ""...""].
 					};
-					mouth:  ...
+					mouth: { ""..."" }
 			].
-			parts arms: {...}
-		]
+			parts arms: { ""..."" }
+	]
 ]
 ```
 
@@ -61,36 +64,41 @@ The old basic way would be to use the PharoJS asJsObject as following:
 ```
 "
 Class {
-	#name : #PjJsConfig,
+	#name : #PjConfig,
 	#superclass : #Object,
-	#category : #'PharoJs-Base-App'
+	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
 { #category : #'instance creation' }
-PjJsConfig class >> asJsObjectWith: aBlock [
+PjConfig class >> << aBlock [
 
-	^ self new 
-		with: aBlock;
-		asJsObject 
+	^ self new
+		  << aBlock
 ]
 
 { #category : #'instance creation' }
-PjJsConfig class >> with: aBlock [
+PjConfig class >> jsObject: aBlock [
 
-	^ self new
-		  with: aBlock
+	^ (self << aBlock) becomeJsObject
 ]
 
 { #category : #'reflective operations' }
-PjJsConfig >> asJsObject [
+PjConfig >> << aBlock [
+
+	aBlock value: self.
+	^ self
+]
+
+{ #category : #'reflective operations' }
+PjConfig >> becomeJsObject [
 
 	Object adoptInstance: self.
 	self valuesDo: [ :each |
-		(each isKindOf: PjJsConfig) ifTrue: [ each asJsObject ] ]
+		(each isKindOf: PjConfig) ifTrue: [ each asJsObject ] ]
 ]
 
 { #category : #'reflective operations' }
-PjJsConfig >> doesNotUnderstand: aMessage [
+PjConfig >> doesNotUnderstand: aMessage [
 
 	| propertyName value |
 	aMessage arguments size > 1 ifTrue: [
@@ -104,15 +112,9 @@ PjJsConfig >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjJsConfig >> pharoJsDynamicGetterDefaultValue [
+PjConfig >> pharoJsGetterDefaultValue [
+	"Used by getters dynamically generated. See PjCore class >> #makeGetter: "
 
-	<jsAlias: 'pharoJsDynamicGetterDefaultValue'>
+	<jsAlias: 'pharoJsGetterDefaultValue'>
 	^ self class new
-]
-
-{ #category : #'reflective operations' }
-PjJsConfig >> with: aBlock [
-
-	aBlock value: self.
-	^self
 ]

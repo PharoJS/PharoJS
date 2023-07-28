@@ -290,9 +290,10 @@ PjObject >> perform: selector withArguments: argArray inSuperclass: lookupClass 
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjObject >> pharoJsDynamicGetterDefaultValue [
+PjObject >> pharoJsGetterDefaultValue [
 	"Used by getters dynamically generated. See PjCore class >> #makeGetter: "
-	<jsAlias: 'pharoJsDynamicGetterDefaultValue'>
+
+	<jsAlias: 'pharoJsGetterDefaultValue'>
 	^ nil
 ]
 

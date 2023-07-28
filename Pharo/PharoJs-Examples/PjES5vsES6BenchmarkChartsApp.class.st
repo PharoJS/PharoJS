@@ -36,12 +36,12 @@ PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviat
 			               << $:;
 			               space;
 			               print: value;
-			<< unitString.
+			               << unitString.
 		               stdDeviation = 0 ifFalse: [
 			               str
 				               << ' ± ';
 				               print: stdDeviation ] ].
-	config := PjJsConfig with: [ :cfg |
+	config := PjConfig << [ :cfg |
 		          cfg
 			          y: value;
 			          tootipLabel: tootipLabel.
@@ -81,31 +81,30 @@ PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: ti
 { #category : #'chart creation' }
 PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel [
 
-	^ PjJsConfig asJsObjectWith: [ :config |
+	^ PjConfig jsObject: [ :config |
 		  config type: #barWithErrorBars.
-		  config options with: [ :options |
-			  options
-				  errorBarWhiskerLineWidth: 2;
-				  errorBarLineWidth: 2.
-			  options plugins tooltip callbacks label:
-				  self tooltipLabelFunction.
-			  options scales y title
-				  display: true;
-				  text: yAxisLabel ].
-		  config data with: [ :data |
+		  config options << [ :options |
+		  options
+			  errorBarWhiskerLineWidth: 2;
+			  errorBarLineWidth: 2.
+		  options plugins tooltip callbacks label: self tooltipLabelFunction.
+		  options scales y title
+			  display: true;
+			  text: yAxisLabel ].
+		  config data << [ :data |
 			  data
 				  labels: { 'NodeJS Application'. 'Web Application' };
 				  datasets: {
-						  (PjJsConfig with: [ :dataSet |
-								   dataSet
-									   label: es5DataLabel;
-									   backgroundColor: '#ff6699';
-									   data: es5Data ]).
-						  (PjJsConfig with: [ :dataSet |
+						  (PjConfig << [ :dataSet |
 							   dataSet
-								   label: es6DataLabel;
-								   backgroundColor: '#33ccff';
-								   data: es6Data ]) } ] ]
+								   label: es5DataLabel;
+								   backgroundColor: '#ff6699';
+								   data: es5Data ]).
+						  (PjConfig << [ :dataSet |
+						   dataSet
+							   label: es6DataLabel;
+							   backgroundColor: '#33ccff';
+							   data: es6Data ]) } ] ]
 ]
 
 { #category : #initialization }
