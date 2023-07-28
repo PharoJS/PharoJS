@@ -1,5 +1,7 @@
 "
-I make it easier to build JS configuration objects. Properties are created on the fly by simply using accessors. Example
+I make it easier to build JS configuration objects. Properties are created on the fly by simply using accessors. If you don't use the `PjConfig class >> #jsObject:` constructor, then you need to ""freeze"" the object to avoid creating further properties using the `becomeJsObject` message.
+
+Example
 ```
 PjConfig jsObject: [: config| 
 	(config 
@@ -51,16 +53,16 @@ The old basic way would be to use the PharoJS asJsObject as following:
 		#head -> {
 			#eyes -> { 
 					{
-					#side -> 'left'.
-					#color -> 'yellow'
+						#side -> 'left'.
+						#color -> 'yellow'
 					}. 
-					{...}
-				}
-			#mouth -> {...}
-		}
-		#arms -> {...}
+					{""...""}
+				}.
+			#mouth -> {""...""}
+		}.
+		#arms -> {""...""}	
 	}
-}
+} asJsObject
 ```
 "
 Class {

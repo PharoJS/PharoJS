@@ -1,11 +1,11 @@
 Class {
-	#name : #PjJsConfigTest,
+	#name : #PjConfigTest,
 	#superclass : #PjBridgeTestCase,
 	#category : #'PharoJs-Base-Bridge-Tests-Tests'
 }
 
 { #category : #tests }
-PjJsConfigTest >> testFlatObject [
+PjConfigTest >> testFlatObject [
 
 	| config |
 	config := self evalBlock: [
@@ -23,7 +23,7 @@ PjJsConfigTest >> testFlatObject [
 ]
 
 { #category : #tests }
-PjJsConfigTest >> testFrozenObject [
+PjConfigTest >> testFrozenObject [
 
 	| config |
 	config := self evalBlock: [ PjConfig new ].
@@ -39,7 +39,7 @@ PjJsConfigTest >> testFrozenObject [
 ]
 
 { #category : #tests }
-PjJsConfigTest >> testMultiLevelsObject [
+PjConfigTest >> testMultiLevelsObject [
 
 	| config bar |
 	config := self evalBlock: [
@@ -57,4 +57,15 @@ PjJsConfigTest >> testMultiLevelsObject [
 	self assert: ((bar y at: #block) value: 9) equals: 81.
 	self assert: bar y array size equals: 3.
 	self assert: bar y array second equals: 2
+]
+
+{ #category : #tests }
+PjConfigTest >> testPropertyAddedEveyIfAccessorExistsForOtherObject [
+
+	| config other |
+	other := self evalBlock: [{ #universal -> 42 } asJsObject].
+	self assert: other universal equals: 42.
+	config := self evalBlock: [PjConfig jsObject: [ : o | o universal x: 1; y: 2 ] ].
+	self assert: config universal x equals: 1.
+	self assert: config universal y equals: 2
 ]

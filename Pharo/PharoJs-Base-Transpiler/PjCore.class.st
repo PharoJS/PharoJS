@@ -204,7 +204,7 @@ PjCore class >> makeGetter: selector [
 
 	<javascript: 'return function(){
         if (this[selector] != null) {return this[selector]}
-        return this[selector] = this.pharoJsDynamicGetterDefaultValue();        
+        return this[selector] = this.pharoJsGetterDefaultValue();        
 	}'>
 	
 ]
