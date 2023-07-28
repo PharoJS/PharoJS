@@ -47,8 +47,8 @@ jobs:
           action: coactions/setup-xvfb@v1.0.1
           with:
             run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
-        attempt_limit: 3
-        
+          attempt_limit: 3
+
 
 
         
