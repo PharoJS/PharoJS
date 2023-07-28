@@ -56,6 +56,14 @@ PjDictionary >> at: key put: value [
 	^super at: (self keyFrom: key) put: value
 ]
 
+{ #category : #converting }
+PjDictionary >> becomeJsObject [
+
+	self valuesDo: [ :value |
+		value becomeJsObject ].
+
+]
+
 { #category : #enumerating }
 PjDictionary >> collect: aBlock [
 	| resultDict |

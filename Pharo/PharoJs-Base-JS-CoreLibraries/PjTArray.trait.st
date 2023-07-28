@@ -111,6 +111,12 @@ PjTArray >> at: index ifAbsent: aBlock [
 	^self at: index
 ]
 
+{ #category : #converting }
+PjTArray >> becomeJsObject [
+
+	self do: [ :each | each becomeJsObject ]
+]
+
 { #category : #enumerating }
 PjTArray >> collect: aBlock [
 	<jsGenerator: #collect_jsGenerator:>

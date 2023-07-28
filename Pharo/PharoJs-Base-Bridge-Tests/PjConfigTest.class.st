@@ -14,12 +14,32 @@ PjConfigTest >> testFlatObject [
 				          int: 42;
 				          string: 'pharo';
 				          array: #( 1 2 3 );
-				          block: [ :x | x * x ]] ].
+				          block: [ :x | x * x ] ] ].
 	self assert: config int equals: 42.
 	self assert: config string equals: 'pharo'.
 	self assert: ((config at: #block) value: 9) equals: 81.
 	self assert: config array size equals: 3.
 	self assert: config array second equals: 2
+]
+
+{ #category : #tests }
+PjConfigTest >> testFreesingInnerObjects [
+
+	| config  |
+	config := self evalBlock: [ PjConfig jsObject: [ : o |
+			 o array: {
+			                  PjConfig new.
+			                  PjConfig new}.
+			o dict: {
+			                 (#x -> PjConfig new).
+			                 (#y -> PjConfig new) } asDictionary ]].
+	config becomeJsObject.
+	console log: config.
+	self should: [ config foo ] raise: Error.
+	self should: [ config array first foo ] raise: Error.
+	self should: [ config array last foo ] raise: Error.
+	self should: [ (config dict at: #x) foo ] raise: Error.
+	self should: [ (config dict at: #y) foo ] raise: Error
 ]
 
 { #category : #tests }
@@ -29,13 +49,12 @@ PjConfigTest >> testFrozenObject [
 	config := self evalBlock: [ PjConfig new ].
 	config a: 1.
 	config b: 2.
-	config := config becomeJsObject.
+	config becomeJsObject.
 	self assert: config a equals: 1.
 	self assert: config b equals: 2.
 	config a: 99.
 	self assert: config a equals: 99.
-	self should: [ config c: 3 ] raise: Error.
-
+	self should: [ config c: 3 ] raise: Error
 ]
 
 { #category : #tests }

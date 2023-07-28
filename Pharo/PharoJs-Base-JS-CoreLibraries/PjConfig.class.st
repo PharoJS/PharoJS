@@ -96,7 +96,7 @@ PjConfig >> becomeJsObject [
 
 	Object adoptInstance: self.
 	self valuesDo: [ :each |
-		(each isKindOf: PjConfig) ifTrue: [ each asJsObject ] ]
+		each becomeJsObject ]
 ]
 
 { #category : #'reflective operations' }

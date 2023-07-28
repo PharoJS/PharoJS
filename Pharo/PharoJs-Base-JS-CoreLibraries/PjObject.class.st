@@ -163,6 +163,12 @@ PjObject >> at: key put: value [
 	<javascript: 'return this[key]=value'>
 ]
 
+{ #category : #converting }
+PjObject >> becomeJsObject [
+
+	^ self
+]
+
 { #category : #reflection }
 PjObject >> class [
 	^ self js_at: #constructor
