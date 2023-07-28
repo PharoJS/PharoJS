@@ -66,7 +66,8 @@ PjAppTestCase >> bridgeResource [
 
 { #category : #accessing }
 PjAppTestCase >> bridgeResourceClass [
-	^bridgeResourceClass ifNil: [ self defaultBridgeResourceClass ]
+
+	^ bridgeResourceClass ifNil: [bridgeResourceClass := self defaultBridgeResourceClass ]
 ]
 
 { #category : #private }
