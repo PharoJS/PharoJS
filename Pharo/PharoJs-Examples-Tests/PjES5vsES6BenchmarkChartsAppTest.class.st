@@ -15,12 +15,12 @@ PjES5vsES6BenchmarkChartsAppTest class >> appClass [
 { #category : #tests }
 PjES5vsES6BenchmarkChartsAppTest >> testAllCanvasBuilt [
 
-	| allCanvas emptyCanvas emptyCanvasUrl aCanvas  |
+	| allCanvas emptyCanvas emptyCanvasUrl aCanvas |
 	self
 		waitUntil: [
 			allCanvas := document querySelectorAll: 'canvas'.
 			allCanvas size = 5 ]
-		timeOut: 3 seconds.
+		timeOut: self defaultTimeLimit .
 	emptyCanvas := document createElement: 'canvas'.
 	emptyCanvas width: allCanvas first width.
 	emptyCanvas height: allCanvas first height.
