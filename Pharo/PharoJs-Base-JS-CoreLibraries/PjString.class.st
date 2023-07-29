@@ -188,6 +188,12 @@ PjString >> basicAt: aNumber [
 	^ 	self js_charCodeAt: aNumber-1
 ]
 
+{ #category : #converting }
+PjString >> becomeJsObject [
+
+	^self
+]
+
 { #category : #comparing }
 PjString >> beginsWith: prefix [
 	^ (self js_substring: 0 to: prefix size)=prefix
