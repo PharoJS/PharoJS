@@ -19,8 +19,7 @@ PjES5vsES6BenchmarkChartsAppTest >> testAllCanvasBuilt [
 	self
 		waitUntil: [
 			allCanvas := document querySelectorAll: 'canvas'.
-			allCanvas size = 5 ]
-		timeOut: self defaultTimeLimit .
+			allCanvas size = 5 ].
 	emptyCanvas := document createElement: 'canvas'.
 	emptyCanvas width: allCanvas first width.
 	emptyCanvas height: allCanvas first height.

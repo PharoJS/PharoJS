@@ -1,8 +1,6 @@
 Class {
 	#name : #PjHelloWorldAppTest,
 	#superclass : #PjWebAppTestCase,
-	#traits : 'PjTWaitUntilReady',
-	#classTraits : 'PjTWaitUntilReady classTrait',
 	#instVars : [
 		'nameInput',
 		'sayHelloButton',
