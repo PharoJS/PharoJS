@@ -12,8 +12,10 @@ PjAppPathTest >> resetAppClass [
 
 	appClass appHtmlSubFolder: nil.
 	appClass appJsSubFolder: nil.
-	appClass defaultAppFolderPath deleteAll.
-	appClass appFolder: appClass defaultAppFolder 
+	appClass defaultAppFolder exists ifTrue: [
+		appClass defaultAppFolderPath deleteAll].
+	appClass appFolder: appClass defaultAppFolder.
+	appClass appFolder ensureCreateDirectory 
 ]
 
 { #category : #running }
