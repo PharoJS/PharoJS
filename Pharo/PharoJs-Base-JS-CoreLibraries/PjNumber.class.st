@@ -79,7 +79,7 @@ PjNumber class >> jsTranspilationImportMethods [
 		                      asNumber squared even odd fractionPart
 		                      integerPart // strictlyPositive
 		                      positive negative raisedToInteger:
-		                      raisedTo: isNumber isZero quo: rem: ).
+		                      raisedTo: isNumber isZero quo: rem: #adaptToPoint:andSend:).
 	^ self jsTranspilationImportMethodsMagnitude , {
 		  (Number -> numberSelectors).
 		  (Number class -> #( one )).

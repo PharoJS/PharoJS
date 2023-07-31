@@ -9,12 +9,12 @@ Class {
 
 { #category : #'pharojs support' }
 PjRectangle class >> jsTranspilationImportMethods [
+
 	<pharoJsSkip>
-	^ {(Rectangle  
-				->
-					#(containsPoint: setPoint:point:)).
-		(Rectangle class 
-				->
-					#(origin:corner:)).
-							}
+	^ {
+		  (Rectangle
+		   ->
+			   #( containsPoint: #setPoint:point: #center #bottomRight
+			      #topRight #bottomLeft #topLeft )).
+		  (Rectangle class -> #( #origin:corner: )) }
 ]

@@ -49,7 +49,8 @@ PjObject class >> jsTranspilationImportMethods [
 			      isBlock isNumber isBehavior isCollection isArray isFloat
 			      isInteger isCharacter isSymbol isStream isPjProxyOrNil
 			      printOn: shouldBePrintedAsLiteral shouldBePrintedAsLiteral:
-			      isLiteral isSelfEvaluating isSelfEvaluating:)).
+			      isLiteral isSelfEvaluating isSelfEvaluating:
+			      isPoint )).
 		  (Collection
 		   -> #( addAll: #ifEmpty:ifNotEmpty: #ifNotEmpty:ifEmpty:
 			      ifEmpty: ifNotEmpty: )).
