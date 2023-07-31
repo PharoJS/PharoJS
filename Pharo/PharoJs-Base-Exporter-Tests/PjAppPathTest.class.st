@@ -9,17 +9,18 @@ Class {
 
 { #category : #running }
 PjAppPathTest >> resetAppClass [
+
 	appClass appHtmlSubFolder: nil.
 	appClass appJsSubFolder: nil.
-	appClass defaultAppFolderPath deleteIfAbsent: [ ]
-
+	appClass defaultAppFolderPath deleteAll.
+	appClass appFolder: appClass defaultAppFolder 
 ]
 
 { #category : #running }
 PjAppPathTest >> setUp [
+
 	super setUp.
 	appClass := PjAppForPathTest.
-	appClass appFolder: '/some/folder' asFileReference. 
 	self resetAppClass
 ]
 
@@ -52,10 +53,18 @@ PjAppPathTest >> testNilHtmlFolderFolderButNotNilJsFolder [
 
 { #category : #running }
 PjAppPathTest >> testNotNilHtmlFolderAndNotNilJsFolder [
+
 	appClass appHtmlSubFolder: 'www'.
 	appClass appJsSubFolder: 'js'.
-	self assert: appClass appFullHtmlFolderPath equals: appClass appFolder/'www'.
-	self assert: appClass appFullJsFolderPath equals: appClass appFullHtmlFolderPath / 'js'.
+	self
+		assert: appClass appFullHtmlFolderPath
+		equals: appClass appFolder / 'www'.
+	self assert: appClass appFullHtmlFolderPath exists.
+	self
+		assert: appClass appFullJsFolderPath
+		equals: appClass appFullHtmlFolderPath / 'js'.
+	self assert: appClass appFullJsFolderPath exists.
+
 ]
 
 { #category : #running }

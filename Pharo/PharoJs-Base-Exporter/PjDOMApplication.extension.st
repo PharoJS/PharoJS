@@ -11,18 +11,16 @@ PjDOMApplication class >> appFullHtmlFileName [
 PjDOMApplication class >> appFullHtmlFolderPath [
 
 	<pharoJsSkip>
-	self appHtmlSubFolder ifNotNil: [ :subfolder | 
-		^ self appFolder / subfolder ].
-	^ self appFolder
+	self appHtmlSubFolder ifNil: [ ^ self appFolder ].
+	^ self ensureSubFolder: self appHtmlSubFolder in: self appFolder
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
 PjDOMApplication class >> appFullJsFolderPath [
+
 	<pharoJsSkip>
-	
-	self appJsSubFolder ifNotNil: [ :subfolder | 
-		^ self appFullHtmlFolderPath / subfolder ].
-	^ self appFullHtmlFolderPath
+	self appJsSubFolder ifNil: [^self appFullHtmlFolderPath].
+	^self ensureSubFolder: self appJsSubFolder in: self appFullHtmlFolderPath
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
