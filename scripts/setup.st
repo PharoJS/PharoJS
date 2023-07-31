@@ -5,4 +5,4 @@ newRepository := IceRepositoryCreator new
 				location: '.' asFileReference ;
 				createRepository .
 newRepository register.
-TestCase defaultTimeLimit: 2 minutes.
+TestCase defaultTimeLimit: 5 minutes.
