@@ -4,23 +4,33 @@ Trait {
 }
 
 { #category : #waiting }
+PjTWaitUntilReady classSide >> waitStepDuration [
+	^100 milliSeconds
+]
+
+{ #category : #waiting }
+PjTWaitUntilReady classSide >> waitTimeoutDuration [ 
+	^2 seconds
+]
+
+{ #category : #waiting }
 PjTWaitUntilReady >> defaultTimeOutActionBlock [
 	^[ self fail ]
 ]
 
 { #category : #waiting }
-PjTWaitUntilReady >> defaultWaitTimeOutDuration [ 
-	^2 seconds
+PjTWaitUntilReady >> waitStepDuration [
+	^ self class waitStepDuration
 ]
 
 { #category : #waiting }
-PjTWaitUntilReady >> stepDuration [
-	^100 milliSeconds
+PjTWaitUntilReady >> waitTimeoutDuration [
+	^ self class waitTimeoutDuration
 ]
 
 { #category : #waiting }
 PjTWaitUntilReady >> waitUntil: conditionBlock [
-	self waitUntil: conditionBlock timeOut: self defaultWaitTimeOutDuration
+	self waitUntil: conditionBlock timeOut: self waitTimeoutDuration
 ]
 
 { #category : #waiting }
@@ -41,7 +51,7 @@ PjTWaitUntilReady >> waitUntil: conditionBlock timeOut: maxToWait ifTimeOutDo: t
 
 { #category : #waiting }
 PjTWaitUntilReady >> waitWhile: conditionBlock [
-	self waitWhile: conditionBlock timeOut: self defaultWaitTimeOutDuration
+	self waitWhile: conditionBlock timeOut: self waitTimeoutDuration
 ]
 
 { #category : #waiting }
@@ -57,7 +67,7 @@ PjTWaitUntilReady >> waitWhile: conditionBlock timeOut: maxToWait ifTimeOutDo: t
 	| totalWaited |
 	totalWaited := 0 second.
 	[totalWaited < maxToWait and: conditionBlock] whileTrue: [
-		self stepDuration wait.
-		totalWaited := totalWaited + self stepDuration].
+		self waitStepDuration wait.
+		totalWaited := totalWaited + self waitStepDuration].
 	totalWaited >= maxToWait ifTrue: timeOutBlock
 ]

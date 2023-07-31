@@ -2,10 +2,14 @@ Class {
 	#name : #PjAppTestCase,
 	#superclass : #ParametrizedTestCase,
 	#traits : 'PjTWaitUntilReady + PjTAppRunsInPharo',
-	#classTraits : 'PjTWaitUntilReady classTrait + PjTAppRunsInPharo classTrait',
+	#classTraits : 'PjTWaitUntilReady classTrait @ {#defaultWaitTimeoutDuration->#waitTimeoutDuration. #defaultWaitStepDuration->#waitStepDuration} + PjTAppRunsInPharo classTrait',
 	#instVars : [
 		'app',
 		'bridgeResourceClass'
+	],
+	#classVars : [
+		'WaitStepDuration',
+		'WaitTimeOutDuration'
 	],
 	#pools : [
 		'PjUniversalGlobals'
@@ -23,6 +27,31 @@ PjAppTestCase class >> isAbstract [
 	^self == PjAppTestCase or: [
 		#(currentApp appClassToExport) anySatisfy: [: selector |
 			(self canUnderstand: selector) not] ].
+]
+
+{ #category : #waiting }
+PjAppTestCase class >> waitStepDuration [
+
+	^ WaitStepDuration ifNil: [ WaitStepDuration := self defaultWaitStepDuration ]
+]
+
+{ #category : #waiting }
+PjAppTestCase class >> waitStepDuration: aDuration [
+
+	WaitStepDuration := aDuration
+]
+
+{ #category : #waiting }
+PjAppTestCase class >> waitTimeoutDuration [
+
+	^ WaitTimeOutDuration ifNil: [
+		  WaitTimeOutDuration := self defaultWaitTimeoutDuration ]
+]
+
+{ #category : #waiting }
+PjAppTestCase class >> waitTimeoutDuration: aDuration [
+
+		  WaitTimeOutDuration := aDuration 
 ]
 
 { #category : #accessing }
