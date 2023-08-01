@@ -18,7 +18,7 @@ PjES5vsES6BenchmarkChartsAppTest >> testAllCanvasBuilt [
 	| allCanvas emptyCanvas emptyCanvasUrl aCanvas |
 	self waitUntil: [
 		allCanvas := document querySelectorAll: 'canvas'.
-		console log: allCanvas size.
+		self trace: 'allCanvas size = '; traceCr:  allCanvas size.
 		allCanvas size = 5 ].
 	emptyCanvas := document createElement: 'canvas'.
 	emptyCanvas width: allCanvas first width.
