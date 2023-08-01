@@ -125,14 +125,15 @@ PjReflectionTest >> testTemporaries [
 
 { #category : #'test support' }
 PjReflectionTest >> tryNestedRepeats [
-		| x |
-		x := 1.
-		5 timesRepeat: [| w |
-			w := w ifNil: [ x ].
-			10 timesRepeat: [
-				x := x + 1].
-			x := x + w].
-		^ x
+
+	| someVar |
+	someVar := 1.
+	5 timesRepeat: [
+		| w |
+		w := w ifNil: [ someVar ].
+		10 timesRepeat: [ someVar := someVar + 1 ].
+		someVar := someVar + w ].
+	^ someVar
 ]
 
 { #category : #'test support' }
