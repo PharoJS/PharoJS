@@ -29,6 +29,13 @@ PjExpressApp class >> isAbstract [
 		  ifFalse: [ super isAbstract ]
 ]
 
+{ #category : #'node package management' }
+PjExpressApp class >> npmPackageNames [
+
+	<pharoJsSkip>
+	^ #('express' 'body-parser')
+]
+
 { #category : #accessing }
 PjExpressApp >> bodyParser [
 

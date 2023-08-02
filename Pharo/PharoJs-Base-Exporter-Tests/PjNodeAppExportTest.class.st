@@ -11,6 +11,13 @@ PjNodeAppExportTest class >> appClass [
 ]
 
 { #category : #tests }
+PjNodeAppExportTest >> tearDown [
+
+	super tearDown.
+	self appClass modulesFolder ensureDeleteAll
+]
+
+{ #category : #tests }
 PjNodeAppExportTest >> testRequiredJsModulesInstalled [
 
 	self appClass modulesFolder ensureDeleteAll.

@@ -62,8 +62,7 @@ PjApplication class >> appJsSubFolder [
 PjApplication class >> beforeExportApp [
 
 	<pharoJsSkip>
-	self ensureRequiredModulesInstalled.
-
+	self ensureRequiredPackagesInstalled
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
@@ -102,16 +101,6 @@ PjApplication class >> defaultAppFolderPath [
 	<pharoJsSkip>
 
 	^ self defaultAppFolderParent / self defaultAppFolderName
-]
-
-{ #category : #'*PharoJs-Base-Exporter' }
-PjApplication class >> ensureRequiredModulesInstalled [
-
-	<pharoJsSkip>
-	self modulesFolder exists ifTrue: [ ^ self ].
-	self npmPackageLockFile exists ifFalse: [ ^ self ].
-	self inform: 'Installing NPM modules for ' , self name.
-	LibC runCommand: self installNpmModulesCommandLine
 ]
 
 { #category : #'*PharoJs-Base-Exporter-App' }
@@ -169,16 +158,6 @@ PjApplication class >> ifInvalidFolder: folder do: aBlock [
 	<pharoJsSkip>
 	
 	(folder isNil or: [folder exists not]) ifTrue: aBlock
-]
-
-{ #category : #'*PharoJs-Base-Exporter' }
-PjApplication class >> installNpmModulesCommandLine [
-	<pharoJsSkip>
-	^String streamContents: [ : str |
-		str << 
-		'cd';
-		space ; << self appFullJsFolderPath  pathString; << $; ;
-		<< 'npm install']
 ]
 
 { #category : #'*PharoJs-Base-Exporter' }

@@ -55,6 +55,31 @@ PjApplication class >> currentInstance [
 	^ currentInstance
 ]
 
+{ #category : #'node package management' }
+PjApplication class >> ensureNpmFolderInitialized [
+
+	<pharoJsSkip>
+	self inform: 'Ensure NPM folder initialized for ', self name.
+	self inAppFolderRunCommandLine: [ :str | str << 'npm init -y' ]
+]
+
+{ #category : #'node package management' }
+PjApplication class >> ensureRequiredPackagesInstalled [
+
+	<pharoJsSkip>
+	self npmPackageNames ifEmpty: [
+		^ self inform: 'No NPM package required' ].
+	self ensureNpmFolderInitialized.
+	self inform:
+		'Ensure required NPM pacakges installed for ' , self name.
+	self inAppFolderRunCommandLine: [ :str |
+		self npmPackageNames do: [ :packageName |
+			str
+				<< 'npm install ';
+				<< packageName;
+				<< $; ] ]
+]
+
 { #category : #accessing }
 PjApplication class >> headerLine [
 	<pharoJsSkip>
@@ -62,16 +87,37 @@ PjApplication class >> headerLine [
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : #'node package management' }
+PjApplication class >> inAppFolderRunCommandLine: aBlock [
+
+	<pharoJsSkip>
+	| commandLine |
+	commandLine := String streamContents: [ :str |
+		               str
+			               << 'cd ';
+			               << self appFullJsFolderPath pathString;
+			               << $;.
+		               aBlock value: str ].
+	LibC system: commandLine
+]
+
+{ #category : #'node package management' }
 PjApplication class >> modulesFolder [
 
 	<pharoJsSkip>
 	^ self appFullJsFolderPath / self modulesFolderName
 ]
 
-{ #category : #accessing }
+{ #category : #'node package management' }
 PjApplication class >> modulesFolderName [
 	^'node_modules'
+]
+
+{ #category : #'node package management' }
+PjApplication class >> npmPackageNames [
+
+	<pharoJsSkip>
+	^#()
 ]
 
 { #category : #accessing }
