@@ -67,15 +67,21 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 				(aBuilder item: n asSymbol)
 					label: n;
 					with: [
-						(aBuilder item: (n , ':js') asSymbol)
-							label: 'playground';
+						(aBuilder item: (n , ':playground') asSymbol)
+							label: 'open playground';
 							action: [ class playground ].
-						(aBuilder item: (n , ':browse') asSymbol)
+						(aBuilder item: (n , ':export') asSymbol)
 							label: 'export app';
 							action: [ class exportApp ].
 						(aBuilder item: (n , ':browse') asSymbol)
 							label: 'browse';
-							action: [ class browse ] ] ] ]
+							action: [ class browse ].
+						(aBuilder item: (n , ':fileList') asSymbol)
+							label: 'list files';
+							action: [ class fileList ].
+						(aBuilder item: (n , ':osFiles') asSymbol)
+							label: 'browse OS files';
+							action: [ class browseFiles ] ] ] ]
 ]
 
 { #category : #'world menu' }

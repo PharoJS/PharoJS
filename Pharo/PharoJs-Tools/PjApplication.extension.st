@@ -1,6 +1,12 @@
 Extension { #name : #PjApplication }
 
 { #category : #'*PharoJs-Tools' }
+PjApplication class >> browseFiles [
+
+	self appFolder openInOSFileBrowser
+]
+
+{ #category : #'*PharoJs-Tools' }
 PjApplication class >> classSubclassResponsibilitySet [
 	| set |
 	set := self == PjApplication ifTrue: [ Set new ] ifFalse: [ self superclass classSubclassResponsibilitySet ].
@@ -12,6 +18,13 @@ PjApplication class >> classSubclassResponsibilitySet [
 				set remove: selector ifAbsent: [ ]
 			]]..
 	^ set
+]
+
+{ #category : #'*PharoJs-Tools' }
+PjApplication class >> fileList [
+
+	<pharoJsSkip>
+	(FileList openOn: self appFolder) 
 ]
 
 { #category : #'*PharoJs-Tools' }
