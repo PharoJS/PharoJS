@@ -5,7 +5,7 @@ newRepository := IceRepositoryCreator new
 				location: '.' asFileReference ;
 				createRepository .
 newRepository register.
-TestCase defaultTimeLimit: 3 minutes.
+TestCase defaultTimeLimit: 2 minutes.
 PjAppTestCase 
-	waitTimeoutDuration: 2 minutes;
-	waitStepDuration: 300 milliSeconds
+	waitTimeoutDuration: 1 minute;
+	waitStepDuration: 100 milliSeconds
