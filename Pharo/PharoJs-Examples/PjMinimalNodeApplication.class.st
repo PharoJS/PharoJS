@@ -7,6 +7,13 @@ Class {
 	#category : #'PharoJs-Examples-Minimal'
 }
 
+{ #category : #'node package management' }
+PjMinimalNodeApplication class >> npmPackageNames [
+
+	<pharoJsSkip>
+	^ #( yes )
+]
+
 { #category : #'event handling' }
 PjMinimalNodeApplication class >> start [
 	super start.
