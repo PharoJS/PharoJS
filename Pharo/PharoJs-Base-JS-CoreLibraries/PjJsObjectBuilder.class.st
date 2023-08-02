@@ -1,3 +1,16 @@
+"
+I am designed to simulate object creation on JavaScript using the `{}` notation.
+I am used by `asJsObject` message.
+Example
+```
+{
+  #name -> 'John'.
+  #age -> 42.
+  #favoritePlaces -> #('Toronto'. 'Douai').
+} asJsObject
+```
+
+"
 Class {
 	#name : #PjJsObjectBuilder,
 	#superclass : #Object,
