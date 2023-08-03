@@ -56,23 +56,15 @@ PjApplication class >> currentInstance [
 ]
 
 { #category : #'node package management' }
-PjApplication class >> ensureNpmFolderInitialized [
-
-	<pharoJsSkip>
-	self inform: 'Ensure NPM folder initialized for ', self name.
-	self inAppFolderRunCommandLine: [ :str | str << 'npm init -y' ]
-]
-
-{ #category : #'node package management' }
 PjApplication class >> ensureRequiredPackagesInstalled [
 
 	<pharoJsSkip>
 	self npmPackageNames ifEmpty: [
 		^ self inform: 'No NPM package required' ].
-	self ensureNpmFolderInitialized.
 	self inform:
 		'Ensure required NPM pacakges installed for ' , self name.
 	self inAppFolderRunCommandLine: [ :str |
+		str << 'npm init -y;'.
 		self npmPackageNames do: [ :packageName |
 			str
 				<< 'npm install ';
