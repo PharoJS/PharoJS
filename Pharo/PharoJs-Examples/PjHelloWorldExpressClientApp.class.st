@@ -3,7 +3,7 @@ I rely on the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch
 "
 Class {
 	#name : #PjHelloWorldExpressClientApp,
-	#superclass : #PjFileBasedWebApp,
+	#superclass : #PjWebApplication,
 	#traits : 'PjTWebClientApp',
 	#classTraits : 'PjTWebClientApp classTrait',
 	#category : #'PharoJs-Examples-ExpressJS'
@@ -47,10 +47,10 @@ PjHelloWorldExpressClientApp >> setName [
 
 	| providedName |
 	providedName := self nameInput value.
-	providedName size < 2 ifTrue: [ 
+	providedName size < 2 ifTrue: [
 		^ window alert: 'Please provide a name with at least 2 characters' ].
-	(window fetch: '/name' with: { (#method -> 'POST'). #body -> providedName } asJsObject) 
-		then: [ :response | self setNameResponse: response ]
+	self post: '/name' text: providedName then: [ :response |
+		self setNameResponse: response ]
 ]
 
 { #category : #accessing }
@@ -69,8 +69,7 @@ PjHelloWorldExpressClientApp >> setNameResponse: response [
 { #category : #acting }
 PjHelloWorldExpressClientApp >> updateGreetings [
 
-	(window fetch: '/greetings') then: [ :response | 
-		response text then: [ :value | self greetings: value ] ]
+	self get: '/greetings' withTextDo: [ :value | self greetings: value ]
 ]
 
 { #category : #accessing }
