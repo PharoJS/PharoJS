@@ -20,13 +20,13 @@ Class {
 PjReadWriteStream class >> jsTranspilationImportMethods [
 
 	<pharoJsSkip>
-	^ { 
+	^ {
 		  (PositionableStream
 		   ->
 			   #( back isEmpty match: next: nextDelimited: peek peekBack
 			      peekFor: position position: positionError reset resetContents
 			      #setFrom:to: setToEnd skip: upTo: )).
-		  (WriteStream -> #( << space tab )).
+		  (WriteStream -> #( << space tab cr )).
 		  (Stream -> #( print: )) }
 ]
 

@@ -53,11 +53,10 @@ PjHelloWorldExpressApp >> handlePostNameRequest: req response: res [
 PjHelloWorldExpressApp >> initialize [
 
 	super initialize.
-	self serveStaticFilesIn: self staticFilesFolderName.
 	server get: '/name' handler: [ :req :res | res send: self name ].
 	server
 		post: '/name'
-		handler: [ :req :res | 
+		handler: [ :req :res |
 		self handlePostNameRequest: req response: res ].
 	server
 		get: '/greetings'
@@ -74,9 +73,4 @@ PjHelloWorldExpressApp >> name [
 PjHelloWorldExpressApp >> name: anObject [
 
 	name := anObject
-]
-
-{ #category : #initialization }
-PjHelloWorldExpressApp >> staticFilesFolderName [
-	^self class staticFilesFolderName
 ]
