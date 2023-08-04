@@ -330,7 +330,7 @@ PjBridge >> initialize [
 	shouldStartJsInterpreter := true.
 	self server: self serverClass new.
 	self finalizationRegistry add: self finalizer: (ObjectFinalizer new
-			 receiver: self server;
+			 receiver: self;
 			 selector: #stop;
 			 yourself).
 	monitor := Monitor new

@@ -3,6 +3,13 @@ Trait {
 	#category : #'PharoJs-Base-App'
 }
 
+{ #category : #accessing }
+PjTWebClientApp classSide >> bridgeClientClass [
+
+	<pharoJsSkip>
+	^ PjLocalWebServedBridgeClient
+]
+
 { #category : #exporting }
 PjTWebClientApp classSide >> defaultAppFolderName [
 

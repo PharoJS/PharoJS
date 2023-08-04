@@ -1,8 +1,8 @@
 Class {
 	#name : #PjHelloWorldExpressClientAppTest,
 	#superclass : #PjWebAppTestCase,
-	#traits : 'PjTAppRunsInJS + PjTWebClientAppTestCase',
-	#classTraits : 'PjTAppRunsInJS classTrait + PjTWebClientAppTestCase classTrait',
+	#traits : 'PjTAppRunsInJS',
+	#classTraits : 'PjTAppRunsInJS classTrait',
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 
@@ -30,9 +30,4 @@ PjHelloWorldExpressClientAppTest >> testGreetingsUpdatedAfterSettingName [
 	self waitUntil: [ 
 		app greetingsContainer textContent
 		= 'ExpressJS says: Hello Test Name!' ]
-]
-
-{ #category : #initialization }
-PjHelloWorldExpressClientAppTest >> urlPathString [
-	^'/'
 ]
