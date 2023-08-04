@@ -64,8 +64,7 @@ PjApplication class >> title [
 PjApplication class >> writePlaygroundContentsOn: str [
 
 	<pharoJsSkip>
-	str
-		<< $"
+	str << $";
 		<<
 			'PharoJS playground preset bindings including the bridge and JS globals.';
 		cr;

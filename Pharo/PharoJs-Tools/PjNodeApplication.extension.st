@@ -1,7 +1,7 @@
-Extension { #name : #PjMinimalNodeApplication }
+Extension { #name : #PjNodeApplication }
 
 { #category : #'*PharoJs-Tools' }
-PjMinimalNodeApplication class >> writePlaygroundContentsOn: str [
+PjNodeApplication class >> writePlaygroundContentsOn: str [
 
 	<pharoJsSkip>
 	super writePlaygroundContentsOn: str.
