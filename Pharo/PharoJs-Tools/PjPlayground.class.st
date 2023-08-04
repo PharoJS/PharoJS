@@ -48,13 +48,28 @@ PjPlayground class >> openFor: aPjBridge [
 ]
 
 { #category : #'world menu' }
+PjPlayground class >> pharoJsIcon [
+
+	^ ImageReadWriter formFromFileNamed:
+		  PjApplication repositoryPath / 'Graphics'/ 'oWithJsInside-16x16.png'
+]
+
+{ #category : #'world menu' }
+PjPlayground class >> pharoJsIconFile [
+
+	^
+		  PjApplication repositoryPath / 'Graphics'
+		  / 'oWithJsInside-16x16.png'
+]
+
+{ #category : #'world menu' }
 PjPlayground class >> pharoJsMenuOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: #PharoJsPlayground)
 		order: 40;
 		label: 'PharoJS';
-		icon: (self iconNamed: #smallWindowIcon);
+		icon: (self pharoJsIcon);
 		with: [
 			(aBuilder item: #HelpPharoJs)
 				label: 'PharoJS Help';
