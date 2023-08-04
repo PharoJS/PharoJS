@@ -7,7 +7,24 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
-{ #category : #initialization }
+{ #category : #accessing }
+PjLocalWebServedBridgeClient >> serverApp [
+
+	^ serverBridge app
+]
+
+{ #category : #accessing }
+PjLocalWebServedBridgeClient >> serverBridge [
+	^serverBridge
+]
+
+{ #category : #accessing }
+PjLocalWebServedBridgeClient >> serverBridgeClient [
+
+	^ serverBridge client
+]
+
+{ #category : #actions }
 PjLocalWebServedBridgeClient >> start [
 
 	| serverClass serverApp serverPort |

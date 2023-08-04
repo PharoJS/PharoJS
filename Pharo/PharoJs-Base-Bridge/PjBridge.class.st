@@ -143,6 +143,25 @@ PjBridge >> acceptIncomingMessageFromClient: aMessage [
 			monitor signal ]
 ]
 
+{ #category : #accessing }
+PjBridge >> app [
+
+	^ self evalSelector: #currentInstance sentTo: self appClassName
+]
+
+{ #category : #accessing }
+PjBridge >> appClass [
+	client ifNil: [ ^nil ].
+	^client appClass
+	
+]
+
+{ #category : #accessing }
+PjBridge >> appClassName [
+	self appClass ifNil: [ ^nil ].
+	^self appClass name
+]
+
 { #category : #'closure handling' }
 PjBridge >> blockClosures [
 
