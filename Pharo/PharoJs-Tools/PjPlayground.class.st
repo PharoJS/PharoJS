@@ -69,7 +69,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 	(aBuilder item: #PharoJsPlayground)
 		order: 40;
 		label: 'PharoJS';
-		icon: (self pharoJsIcon);
+		icon: self pharoJsIcon;
 		with: [
 			(aBuilder item: #HelpPharoJs)
 				label: 'PharoJS Help';
@@ -83,19 +83,19 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 					label: n;
 					with: [
 						(aBuilder item: (n , ':playground') asSymbol)
-							label: 'open playground';
+							label: 'playground';
 							action: [ class playground ].
 						(aBuilder item: (n , ':export') asSymbol)
-							label: 'export app';
+							label: 'export';
 							action: [ class exportApp ].
 						(aBuilder item: (n , ':browse') asSymbol)
 							label: 'browse';
 							action: [ class browse ].
 						(aBuilder item: (n , ':fileList') asSymbol)
-							label: 'list files';
+							label: 'files';
 							action: [ class fileList ].
 						(aBuilder item: (n , ':osFiles') asSymbol)
-							label: 'browse OS files';
+							label: 'OS files';
 							action: [ class browseFiles ] ] ] ]
 ]
 
