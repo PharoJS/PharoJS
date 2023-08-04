@@ -67,7 +67,9 @@ PjApplication class >> ensureRequiredPackagesInstalled [
 		str << 'npm init -y;'.
 		self npmPackageNames do: [ :packageName |
 			str
-				<< 'npm install ';
+				<< 'npm list ';
+				<< packageName;
+				<< '||npm install ';
 				<< packageName;
 				<< $; ] ]
 ]
