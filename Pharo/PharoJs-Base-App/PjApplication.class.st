@@ -96,6 +96,13 @@ PjApplication class >> inAppFolderRunCommandLine: aBlock [
 ]
 
 { #category : #'node package management' }
+PjApplication class >> isPackageInitialized [
+
+	^ (self packageJsonFile ) exists
+
+]
+
+{ #category : #'node package management' }
 PjApplication class >> modulesFolder [
 
 	<pharoJsSkip>
@@ -112,6 +119,12 @@ PjApplication class >> npmPackageNames [
 
 	<pharoJsSkip>
 	^#()
+]
+
+{ #category : #'node package management' }
+PjApplication class >> packageJsonFile [
+
+	^ (self appFullJsFolderPath / 'package.json')
 ]
 
 { #category : #accessing }
