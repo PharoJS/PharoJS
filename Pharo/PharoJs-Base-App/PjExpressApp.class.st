@@ -34,9 +34,9 @@ PjExpressApp class >> npmPackageNames [
 
 	<pharoJsSkip>
 	| npmPackageNames |
-	npmPackageNames := #('express' 'body-parser').
-	self staticFilesFolderName ifNil: [^npmPackageNames].
-	^npmPackageNames copyWith: 'serve-static'
+	npmPackageNames := super npmPackageNames, #( 'express' 'body-parser' ).
+	self staticFilesFolderName ifNil: [ ^ npmPackageNames ].
+	^ npmPackageNames copyWith: 'serve-static'
 ]
 
 { #category : #initialization }

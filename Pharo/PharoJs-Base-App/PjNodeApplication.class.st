@@ -28,6 +28,13 @@ PjNodeApplication class >> isAbstract [
 		 		   ifFalse: [ super isAbstract ]
 ]
 
+{ #category : #'node package management' }
+PjNodeApplication class >> npmPackageNames [
+"WebSocket is required during development for PharoJS bridge connection"
+	<pharoJsSkip>
+	^ #( ws )
+]
+
 { #category : #private }
 PjNodeApplication class >> whenJsReady: aBlock [
 	aBlock value
