@@ -57,9 +57,8 @@ PjPlayground class >> pharoJsIcon [
 { #category : #'world menu' }
 PjPlayground class >> pharoJsIconFile [
 
-	^
-		  PjApplication repositoryPath / 'Graphics'
-		  / 'oWithJsInside-16x16.png'
+	^ self pharoJsRepositoryFolder / 'Graphics'
+	  / 'oWithJsInside-16x16.png'
 ]
 
 { #category : #'world menu' }
@@ -97,6 +96,18 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 						(aBuilder item: (n , ':osFiles') asSymbol)
 							label: 'OS files';
 							action: [ class browseFiles ] ] ] ]
+]
+
+{ #category : #'world menu' }
+PjPlayground class >> pharoJsRepository [
+
+	^ IceRepository registry detect: [ :repo | repo name = #PharoJS ]
+]
+
+{ #category : #'world menu' }
+PjPlayground class >> pharoJsRepositoryFolder [
+
+	^ self pharoJsRepository location
 ]
 
 { #category : #'world menu' }
