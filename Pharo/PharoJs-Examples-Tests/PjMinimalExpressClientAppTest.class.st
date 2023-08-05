@@ -12,7 +12,7 @@ PjMinimalExpressClientAppTest class >> appClass [
 ]
 
 { #category : #accessing }
-PjMinimalExpressClientAppTest >> testSetGetData [
+PjMinimalExpressClientAppTest >> testDataAccess [
 
 	| display |
 	display := app elementAt: #dataDisplaySpan.
