@@ -50,8 +50,7 @@ PjPlayground class >> openFor: aPjBridge [
 { #category : #'world menu' }
 PjPlayground class >> pharoJsIcon [
 
-	^ ImageReadWriter formFromFileNamed:
-		  PjApplication repositoryPath / 'Graphics'/ 'oWithJsInside-16x16.png'
+	^ ImageReadWriter formFromFileNamed: self pharoJsIconFile
 ]
 
 { #category : #'world menu' }
