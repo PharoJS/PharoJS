@@ -86,7 +86,7 @@ PjApplication class >> defaultAppFolderName [
 PjApplication class >> defaultAppFolderParent [
 	<pharoJsSkip>
 	
-	^ self repositoryPath / self defaultAppFolderParentName / self package name
+	^ self repositoryFolder / self defaultAppFolderParentName / self package name
 ]
 
 { #category : #'*PharoJs-Base-Exporter' }
@@ -190,7 +190,7 @@ PjApplication class >> repository [
 ]
 
 { #category : #'*PharoJs-Base-Exporter' }
-PjApplication class >> repositoryPath [
+PjApplication class >> repositoryFolder [
 	<pharoJsSkip>
 	
 	^self repository location

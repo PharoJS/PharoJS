@@ -16,7 +16,7 @@ WBMacWebBrowser class >> openBrowser: browserName on: urlString inBackground: ba
 		                     ifTrue: [ 'background' ]
 		                     ifFalse: [ '' ].
 	browserCommandName := browserName ifNil: [ 'default' ].
-	openScriptPath := PjApplication repositoryPath / 'Tools' / 'MacOsX'
+	openScriptPath := PjApplication repositoryFolder / 'Tools' / 'MacOsX'
 	                  / 'openUrl'.
 	command := String streamContents: [ :str | 
 		           str

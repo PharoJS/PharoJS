@@ -50,7 +50,10 @@ PjPlayground class >> openFor: aPjBridge [
 { #category : #'world menu' }
 PjPlayground class >> pharoJsIcon [
 
-	^ ImageReadWriter formFromFileNamed: self pharoJsIconFile
+	^ [
+	  ImageReadWriter formFromFileNamed: self pharoJsIconFile ]
+		  on: Error
+		  do: [ nil ]
 ]
 
 { #category : #'world menu' }
@@ -98,15 +101,9 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 ]
 
 { #category : #'world menu' }
-PjPlayground class >> pharoJsRepository [
-
-	^ IceRepository registry detect: [ :repo | repo name = #PharoJS ]
-]
-
-{ #category : #'world menu' }
 PjPlayground class >> pharoJsRepositoryFolder [
 
-	^ self pharoJsRepository location
+	^PjApplication repositoryFolder
 ]
 
 { #category : #'world menu' }
