@@ -4,8 +4,29 @@ Class {
 	#instVars : [
 		'count'
 	],
+	#classInstVars : [
+		'defaultInstance'
+	],
 	#category : #'PharoJs-Examples-Counter'
 }
+
+{ #category : #accessing }
+PjCounter class >> defaultInstance [
+
+	defaultInstance ifNil: [ self initDefaultInstance].
+	^ defaultInstance
+]
+
+{ #category : #accessing }
+PjCounter class >> initDefaultInstance [
+	defaultInstance := self new 
+]
+
+{ #category : #accessing }
+PjCounter class >> resetDefaultInstance [
+
+	defaultInstance := nil
+]
 
 { #category : #accessing }
 PjCounter >> count [
@@ -17,7 +38,7 @@ PjCounter >> count: anObject [
 	count := anObject
 ]
 
-{ #category : #'initialize - release' }
+{ #category : #operations }
 PjCounter >> increment [
 	self count: self count + 1
 ]
@@ -28,7 +49,7 @@ PjCounter >> initialize [
 	self reset
 ]
 
-{ #category : #'initialize - release' }
+{ #category : #operations }
 PjCounter >> reset [
 	self count: 0
 ]
