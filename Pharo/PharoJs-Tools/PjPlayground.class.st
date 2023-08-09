@@ -4,6 +4,9 @@ Class {
 	#instVars : [
 		'bridge'
 	],
+	#classInstVars : [
+		'pharoJsIcon'
+	],
 	#category : #'PharoJs-Tools-Playground'
 }
 
@@ -50,10 +53,9 @@ PjPlayground class >> openFor: aPjBridge [
 { #category : #'world menu' }
 PjPlayground class >> pharoJsIcon [
 
-	^ [
-	  ImageReadWriter formFromFileNamed: self pharoJsIconFile ]
+	^ pharoJsIcon ifNil: [  [pharoJsIcon := ImageReadWriter formFromFileNamed: self pharoJsIconFile ]
 		  on: Error
-		  do: [ nil ]
+		  do: [ nil ]]
 ]
 
 { #category : #'world menu' }
