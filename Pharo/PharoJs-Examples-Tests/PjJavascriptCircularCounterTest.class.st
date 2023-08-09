@@ -8,16 +8,18 @@ Class {
 PjJavascriptCircularCounterTest >> testDefaultCircularCounterDifferentForDefaultCounter [
 	"Ceration order is important!"
 
-	| defaultCounter defaultCircularCounter defaulCircularCounter | 
+	| defaultCounter defaultCircularCounter |
 	defaultCounter := self evalBlock: [ PjCounter defaultInstance ].
+	self deny: defaultCounter isNil.
 	defaultCircularCounter := self evalBlock: [
 		                          PjCircularCounter defaultInstance ].
-	self deny: defaulCircularCounter == defaultCounter.
-	self assert: [ defaultCounter className ] evaluatesTo: PjCounter name.
+	self deny: defaultCircularCounter isNil.
+	self deny: defaultCircularCounter identicalTo: defaultCounter.
+	self assert: defaultCounter jsClassName equals: PjCounter name.
 	self
-		assert: [ defaulCircularCounter className ]
-		evaluatesTo: PjCircularCounter name.
+		assert: defaultCircularCounter jsClassName
+		equals: PjCircularCounter name.
 	3 timesRepeat: [ defaultCounter increment ].
 	self assert: defaultCounter count equals: 3.
-	self assert: defaulCircularCounter count equals: 0
+	self assert: defaultCircularCounter count equals: 0
 ]

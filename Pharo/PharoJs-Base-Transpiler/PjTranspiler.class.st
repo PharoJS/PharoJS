@@ -709,25 +709,25 @@ PjTranspiler >> writeDnuList [
 
 { #category : #'transpiling classes' }
 PjTranspiler >> writeInheritedClassInstanceVariablesFixFor: aClass [
-| transpiledClass jsClassName transpiledSuperclasses currentSuperclass |
-transpiledClass := aClass classToUseForJsConversion.
-jsClassName := transpiledClass instanceSide nameToUseForJsConversion.
-transpiledSuperclasses := Set new.
-currentSuperclass := transpiledClass superclass classToUseForJsConversion.
-[ currentSuperclass isNil or: [ currentSuperclass == PjObject ] ] whileFalse: [  
-transpiledSuperclasses add: currentSuperclass.
-currentSuperclass := currentSuperclass superclass classToUseForJsConversion.
-].
- transpiledSuperclasses do: [: each |
-	each class instVarNames do: [ : ivName | 
-		self
-			<< jsClassName;
-			<< $. ;
-			<< ivName;
-			<< '=null;'
-	] 
-].
 
+	| transpiledClass jsClassName transpiledSuperclasses currentSuperclass |
+	transpiledClass := aClass classToUseForJsConversion.
+	jsClassName := transpiledClass instanceSide nameToUseForJsConversion.
+	transpiledSuperclasses := Set new.
+	currentSuperclass := transpiledClass superclass
+		                     classToUseForJsConversion.
+	[ currentSuperclass isNil or: [ currentSuperclass == PjObject ] ]
+		whileFalse: [
+			transpiledSuperclasses add: currentSuperclass.
+			currentSuperclass := currentSuperclass superclass
+				                     classToUseForJsConversion ].
+	transpiledSuperclasses do: [ :each |
+		each class instVarNames do: [ :ivName |
+			self
+				<< jsClassName;
+				<< $.;
+				<< ivName;
+				<< '=null;' ] ]
 ]
 
 { #category : #'transpiling aliases' }

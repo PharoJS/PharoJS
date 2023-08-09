@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #'instance creation' }
+PjCircularCounter class >> createDefaultInstance [
+
+	super createDefaultInstance.
+	^defaultInstance max: 3; yourself
+]
+
+{ #category : #'instance creation' }
 PjCircularCounter class >> max: maxValue [
 	^self new
 		max: maxValue;

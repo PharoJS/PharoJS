@@ -260,6 +260,19 @@ PjProxy >> jsBridge: aBlock [
 	self error: 'no bridge for proxy: ' , jsName
 ]
 
+{ #category : #accessing }
+PjProxy >> jsClass [
+
+	^ self jsBridge: [ :bridge |
+		  bridge evalSelector: #class sentTo: jsName ]
+]
+
+{ #category : #accessing }
+PjProxy >> jsClassName [
+
+	^self jsBridge: [ :bridge | bridge evalSelector: #className sentTo: jsName]
+]
+
 { #category : #'initialize-release' }
 PjProxy >> jsName: aString onBridge: aBridge oid: anOid [
 

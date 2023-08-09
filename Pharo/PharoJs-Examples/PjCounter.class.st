@@ -11,15 +11,16 @@ Class {
 }
 
 { #category : #accessing }
-PjCounter class >> defaultInstance [
+PjCounter class >> createDefaultInstance [
 
-	defaultInstance ifNil: [ self initDefaultInstance].
-	^ defaultInstance
+	^defaultInstance := self new
 ]
 
 { #category : #accessing }
-PjCounter class >> initDefaultInstance [
-	defaultInstance := self new 
+PjCounter class >> defaultInstance [
+
+	^defaultInstance ifNil: [ self createDefaultInstance ].
+
 ]
 
 { #category : #accessing }
