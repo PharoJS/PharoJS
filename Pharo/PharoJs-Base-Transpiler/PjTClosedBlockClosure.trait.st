@@ -32,12 +32,6 @@ PjTClosedBlockClosure >> asClosedBlock [
 	^self
 ]
 
-{ #category : #accessing }
-PjTClosedBlockClosure >> basicOriginalBlock: aBlock [
-	originalBlock := aBlock.
-	externalVariablesDict := self externalVariablesDictOf: originalBlock
-]
-
 { #category : #converting }
 PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [ 
 	aPjTranspiler convertClosedBlock: self
