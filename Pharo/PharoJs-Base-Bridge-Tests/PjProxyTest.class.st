@@ -170,6 +170,19 @@ PjProxyTest >> testIterateOverChildren [
 ]
 
 { #category : #tests }
+PjProxyTest >> testPrinting [
+
+	| proxyOnObject proxyOnArray |
+	proxyOnObject := self evalBlock: [ Object new ].
+	self assert: ('a PjProxy (oid: *) on JS object: an Object' match:
+			 proxyOnObject printString).
+	proxyOnArray := self evalBlock: [ #( 1 2 3 ) ].
+	self assert: ('a PjProxy (oid: *) on JS object: #(1 2 3)' match:
+			 proxyOnArray printString).
+	
+]
+
+{ #category : #tests }
 PjProxyTest >> testProxyGarbageCollection [
 
 	| b jsName |
