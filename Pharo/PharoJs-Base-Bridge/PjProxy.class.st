@@ -323,7 +323,9 @@ PjProxy >> printOn: ws [
 	super printOn: ws.
 	ws << ' (oid: '.
 	self oid ifNil: [ ws << '-' ] ifNotNil: [ ws << self oid ].
-	ws << ')'
+	ws << ') on JS object: '.
+	self jsBridge: [ :bridge |
+		ws << (bridge evalSelector: #printString sentTo: jsName) ]
 ]
 
 { #category : #'reflective operations' }
