@@ -320,12 +320,14 @@ PjProxy >> printJsOn: aStream [
 { #category : #printing }
 PjProxy >> printOn: ws [
 
+	ws << 'JS: '.
+	self jsBridge: [ :bridge |
+		ws << (bridge evalSelector: #printString sentTo: jsName) ].
+	ws << ' - '.
 	super printOn: ws.
 	ws << ' (oid: '.
 	self oid ifNil: [ ws << '-' ] ifNotNil: [ ws << self oid ].
-	ws << ') on JS object: '.
-	self jsBridge: [ :bridge |
-		ws << (bridge evalSelector: #printString sentTo: jsName) ]
+	ws << $)
 ]
 
 { #category : #'reflective operations' }

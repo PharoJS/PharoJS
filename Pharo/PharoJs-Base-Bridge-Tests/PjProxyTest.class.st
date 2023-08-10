@@ -174,12 +174,11 @@ PjProxyTest >> testPrinting [
 
 	| proxyOnObject proxyOnArray |
 	proxyOnObject := self evalBlock: [ Object new ].
-	self assert: ('a PjProxy (oid: *) on JS object: an Object' match:
+	self assert: ('JS: an Object - a PjProxy (oid: *)' match:
 			 proxyOnObject printString).
 	proxyOnArray := self evalBlock: [ #( 1 2 3 ) ].
-	self assert: ('a PjProxy (oid: *) on JS object: #(1 2 3)' match:
-			 proxyOnArray printString).
-	
+	self assert: ('JS: #(1 2 3) - a PjProxy (oid: *)' match:
+			 proxyOnArray printString)
 ]
 
 { #category : #tests }
