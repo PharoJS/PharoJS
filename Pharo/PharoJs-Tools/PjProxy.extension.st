@@ -18,18 +18,25 @@ PjProxy >> gefFieldValueFor: key [
 ]
 
 { #category : #'*PharoJs-Tools-Inspector' }
-PjProxy >> gtInspectorProxyIn: composite [
-	<gtInspectorPresentationOrder: 1>
-	
+PjProxy >> inspectionItems: aBuilder [
+
+<inspectorPresentationOrder: 1 title: 'Javascript'>
 	| associations |
 	associations := OrderedCollection new.
 	self keysForProxy associationsDo: [ :assoc | associations add: assoc ].
-	^ composite table
-		  title: 'Javascript';
-		  display: [ :each | associations ];
-		  column: 'Key' evaluated: #key;
-		  column: 'Value' evaluated: #value;
-		  send: #value
+	^ aBuilder newTable
+		  addColumn: (SpStringTableColumn
+				   title: 'Key'
+				   evaluated: [ :each |
+					   StObjectPrinter asTruncatedTextFrom: each key ]) beSortable;
+		  addColumn: (SpStringTableColumn
+				   title: 'Value'
+				   evaluated: [ :each |
+					   StObjectPrinter asTruncatedTextFrom: each value ]) beSortable;
+		  items: (associations collect: [ :e |
+					   StInspectorAssociationNode hostObject: e ]);
+		  yourself
+	
 ]
 
 { #category : #'*PharoJs-Tools-Inspector' }
