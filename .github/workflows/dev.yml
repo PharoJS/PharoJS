@@ -4,8 +4,9 @@ name: Build with Pharo 12
 # Controls when the workflow will run
 on:
   # Triggers the workflow on schedule see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
-  # Run every Wednesday at 13:00
-  cron: 0 13 * * 3
+  schedule:
+    # Run every Wednesday at 13:00
+    - cron: 0 13 * * 3
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
