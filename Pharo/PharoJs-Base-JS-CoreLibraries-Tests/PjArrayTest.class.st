@@ -152,6 +152,14 @@ PjArrayTest >> testCopy [
 ]
 
 { #category : #tests }
+PjArrayTest >> testCopyWith [
+
+	self assertEquivalent: [ #(  ) copyWith: 4 ].
+	self assertEquivalent: [ #( 2 3 4 5 ) copyWith: 6 ].
+	
+]
+
+{ #category : #tests }
 PjArrayTest >> testDetectIfFound [
 	self
 		assertEquivalent: [|array found|

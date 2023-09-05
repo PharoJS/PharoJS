@@ -17,19 +17,17 @@ PjTCollection classSide >> atRandom_jsGenerator: transpiler [
 
 { #category : #'pharojs support' }
 PjTCollection classSide >> jsTranspilationImportMethodsCollection [
+
 	<pharoJsSkip>
 	^ {
-		Collection ->#(asSet reject: asOrderedCollection
-			allSatisfy: anySatisfy: noneSatisfy: inject:into: 
-			detect:ifFound:ifNone: detect:ifNone: detect:ifFound: remove: isCollection 
-			asDictionary associationsDo: addAll: isEmptyOrNil removeAll: 
-			includesAll: includesAny:
-		).
-		Collection class ->#(
-			withAll: 
-		).
-		OrderedCollection class -> #( newFrom: ).
-	}
+		  (Collection
+		   -> #( asSet reject: asOrderedCollection allSatisfy: anySatisfy:
+			      noneSatisfy: #inject:into: #detect:ifFound:ifNone:
+			      #detect:ifNone: #detect:ifFound: remove: isCollection
+			      asDictionary associationsDo: addAll: isEmptyOrNil
+			      removeAll: includesAll: includesAny: copyWith: )).
+		  (Collection class -> #( withAll: )).
+		  (OrderedCollection class -> #( newFrom: )) }
 ]
 
 { #category : #testing }
