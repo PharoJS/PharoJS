@@ -27,84 +27,48 @@ PjES5vsES6BenchmarkChartsApp class >> bridgeClientClass [
 ]
 
 { #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> addTo: aCollection dataDictfrom: value stdDeviation: stdDeviation label: dataSetLabel unit: unitString [
+PjES5vsES6BenchmarkChartsApp >> chartCSVOLD: csvString yLabel: yAxisLabel title: titleString unit: unitString [
 
-	| tootipLabel config |
-	tootipLabel := String streamContents: [ :str |
-		               str
-			               << dataSetLabel;
-			               << $:;
-			               space;
-			               print: value;
-			               << unitString.
-		               stdDeviation = 0 ifFalse: [
-			               str
-				               << ' ± ';
-				               print: stdDeviation ] ].
-	config := PjConfig << [ :cfg |
-		          cfg
-			          y: value;
-			          tootipLabel: tootipLabel.
-		          stdDeviation = 0 ifFalse: [
-			          cfg
-				          yMin: value - stdDeviation;
-				          yMax: value + stdDeviation ] ].
-	aCollection add: config
-]
-
-{ #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> chartCSV: csvString yLabel: yAxisLabel title: titleString unit: unitString [
-
-	| csvData chartConfig es5Data es6Data es5DataLabel es6DataLabel canvas |
+	| csvData chartConfig es5Data es6Data es5DataLabel es6DataLabel p10Data p10DataLabel canvas |
 	csvData := self dataFromCSV: csvString.
 	es5Data := OrderedCollection new.
+	es6Data := OrderedCollection new.
+	p10Data := OrderedCollection new.
 	es5DataLabel := 'PharoJS ES5'.
 	es6DataLabel := 'PharoJS ES6'.
-	es6Data := OrderedCollection new.
+	p10DataLabel := 'Pharo 10'.
 	self
 		withCsv: csvData
 		initEs5: es5Data
 		label: es5DataLabel
 		es6: es6Data
 		label: es6DataLabel
-		unit: unitString.
+		unit: unitString
+		pharo10: p10Data
+		label: p10DataLabel.
 	chartConfig := self
 		               chartConfigYLabel: yAxisLabel
 		               es5: es5Data
 		               label: es5DataLabel
 		               es6: es6Data
-		               label: es6DataLabel.
-	canvas := self newCanvasTitle: titleString.
+		               label: es6DataLabel
+		               pharo10: p10Data
+		               label: p10DataLabel.
+	canvas := self newCanvasWithTitle: titleString.
 	self newChartIn: canvas config: chartConfig
 ]
 
-{ #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> chartConfigYLabel: yAxisLabel es5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel [
+{ #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> chartCSVString: csvString yLabel: yAxisLabel title: titleString unit: unitString [
 
-	^ PjConfig jsObject: [ :config |
-		  config type: #barWithErrorBars.
-		  config options << [ :options |
-		  options
-			  errorBarWhiskerLineWidth: 2;
-			  errorBarLineWidth: 2.
-		  options plugins tooltip callbacks label: self tooltipLabelFunction.
-		  options scales y title
-			  display: true;
-			  text: yAxisLabel ].
-		  config data << [ :data |
-			  data
-				  labels: { 'NodeJS Application'. 'Web Application' };
-				  datasets: {
-						  (PjConfig << [ :dataSet |
-							   dataSet
-								   label: es5DataLabel;
-								   backgroundColor: '#ff6699';
-								   data: es5Data ]).
-						  (PjConfig << [ :dataSet |
-						   dataSet
-							   label: es6DataLabel;
-							   backgroundColor: '#33ccff';
-							   data: es6Data ]) } ] ]
+	| csvData chartFactoryClass |
+	csvData := self dataFromCSV: csvString.
+	chartFactoryClass := self chartFactoryClassForCsvData: csvData.
+	^chartFactoryClass
+		chartData: csvData
+		yLabel: yAxisLabel
+		title: titleString
+		unit: unitString
 ]
 
 { #category : #initialization }
@@ -113,8 +77,14 @@ PjES5vsES6BenchmarkChartsApp >> chartCsvFile: csvFileName label: label title: ti
 	(window fetch: csvFileName)
 		then: [ :response |
 			response text then: [ :text |
-					self chartCSV: text yLabel: label title: titleString unit: unitString ] ];
+					self chartCSVString: text yLabel: label title: titleString unit: unitString ] ];
 		catch: [ :err | console log: err ]
+]
+
+{ #category : #initialization }
+PjES5vsES6BenchmarkChartsApp >> chartFactoryClassForCsvData: csvData [
+csvData last app = 'Pharo10' ifTrue: [^PjES5vsES6vsPharo10ChartJsFactory ]
+. ^PjES5vsES6ChartJsFactory 
 ]
 
 { #category : #initialization }
@@ -156,47 +126,30 @@ PjES5vsES6BenchmarkChartsApp >> initialize [
 ]
 
 { #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> newCanvasTitle: titleString [
+PjES5vsES6BenchmarkChartsApp >> withCsv: csvData initEs5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel unit: unitString pharo10: p10Data label: p10DataLabel [
 
-	| card body title |
-	card := self addElement: 'div' to: chartsContainer.
-	card className: 'card mt-5'.
-	body := self addElement: 'div' to: card.
-	body className: 'card-body'.
-	title := self addElement: 'h3' to: body.
-	title className: 'card-title'.
-	title textContent: titleString.
-	^ self addElement: 'canvas' to: body style: {
-			  (#width -> '350px').
-			  (#height -> '300px') }
-]
-
-{ #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> newChartIn: containerDom config: chartConfig [
-
-	^ global Chart new: containerDom with: chartConfig
-]
-
-{ #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> tooltipLabelFunction [
-
-	^ [ :context | context raw tootipLabel ]
-]
-
-{ #category : #'chart creation' }
-PjES5vsES6BenchmarkChartsApp >> withCsv: csvData initEs5: es5Data label: es5DataLabel es6: es6Data label: es6DataLabel unit: unitString [
-
+	| es5 es6 es5Label es6Label |
 	csvData do: [ :row |
-		self
-			addTo: es5Data
+		row app == 'Pharo10'
+			ifTrue: [
+				es5 := p10Data.
+				es6 := p10Data.
+				es5Label := p10DataLabel.
+				es6Label := p10DataLabel ]
+			ifFalse: [
+				es5 := es5Data.
+				es6 := es6Data.
+				es5Label := es5DataLabel.
+				es6Label := es6DataLabel ]. self
+			addTo: es5
 			dataDictfrom: row ES5Median
 			stdDeviation: row ES5Deviation
-			label: es5DataLabel
+			label: es5Label
 			unit: unitString.
 		self
-			addTo: es6Data
+			addTo: es6
 			dataDictfrom: row ES6Median
 			stdDeviation: row ES6Deviation
-			label: es6DataLabel
+			label: es6Label
 			unit: unitString ]
 ]
