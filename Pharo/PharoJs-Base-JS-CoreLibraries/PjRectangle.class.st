@@ -15,6 +15,6 @@ PjRectangle class >> jsTranspilationImportMethods [
 		  (Rectangle
 		   ->
 			   #( containsPoint: #setPoint:point: #center #bottomRight
-			      #topRight #bottomLeft #topLeft )).
+			      #topRight #bottomLeft #topLeft #width #height #translateBy: )).
 		  (Rectangle class -> #( #origin:corner: )) }
 ]
