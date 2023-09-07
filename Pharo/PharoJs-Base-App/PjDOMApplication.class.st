@@ -33,13 +33,6 @@ PjDOMApplication class >> isAbstract [
 		  ifFalse: [ super isAbstract ]
 ]
 
-{ #category : #'accessing - description' }
-PjDOMApplication class >> setupCode [
-
-	<pharoJsSkip>
-	^ super setupCode , 'var global=global??this'
-]
-
 { #category : #accessing }
 PjDOMApplication >> document [
 

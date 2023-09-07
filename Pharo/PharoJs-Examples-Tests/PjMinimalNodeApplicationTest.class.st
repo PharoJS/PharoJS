@@ -36,11 +36,11 @@ PjMinimalNodeApplicationTest >> testLoadClass [
 PjMinimalNodeApplicationTest >> testResetApp [
 
 	| initialChangeTime latestChangeTime |
-	self evalBlock: [ global instVarNamed: #forTest put: 3 ].
-	self assert: [ global instVarNamed: #forTest ] evaluatesTo: 3.
+	self evalBlock: [ globalThis instVarNamed: #forTest put: 3 ].
+	self assert: [ globalThis instVarNamed: #forTest ] evaluatesTo: 3.
 	initialChangeTime := self exportedAppJsFileChangeTime.
 	self resetApp.
-	self assert: [ global instVarNamed: #forTest ] evaluatesTo: nil.
+	self assert: [ globalThis instVarNamed: #forTest ] evaluatesTo: nil.
 	latestChangeTime := self exportedAppJsFileChangeTime.
 	self assert: latestChangeTime equals: initialChangeTime
 ]

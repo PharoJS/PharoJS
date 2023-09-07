@@ -71,10 +71,10 @@ PjEvaluatorWebsocketDelegate class >> includeClasses [
 PjEvaluatorWebsocketDelegate class >> initialize [
 
 	Smalltalk at: #PjBridge ifPresent: [ ^ self ].
-	#( JSON Math WebSocket console global document history location
+	#( JSON Math WebSocket console globalThis document history location
 	   navigator screen window localStorage module process require ) do: [ 
 		:each | 
-		(global at: each) ifNotNil: [ :obj | 
+		(globalThis at: each) ifNotNil: [ :obj | 
 			obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
 ]
 
@@ -84,7 +84,7 @@ PjEvaluatorWebsocketDelegate class >> initializePrivate [
 	#( JSON Math WebSocket console global document history location
 	   navigator screen window localStorage module process require ) do: [ 
 		:each | 
-		(global at: each) ifNotNil: [ :obj | 
+		(globalThis at: each) ifNotNil: [ :obj | 
 			obj instVarNamed: PjProxyManager oidInstVarName putHidden: each ] ]
 ]
 

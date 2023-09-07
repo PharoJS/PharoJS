@@ -188,10 +188,10 @@ PjProxyTest >> testProxyGarbageCollection [
 	b := document body.
 	jsName := b javascriptName.
 	self deny: jsName isNil.
-	self assert: (global includesKey: jsName).
+	self assert: (globalThis includesKey: jsName).
 	b := nil.
 	Smalltalk garbageCollect.
-	self waitWhile: [global includesKey: jsName]
+	self waitWhile: [globalThis includesKey: jsName]
 ]
 
 { #category : #tests }

@@ -159,7 +159,7 @@ PjES5vsES6ChartJsFactory >> newChartWithTitle: titleString [
 
 	| canvas |
 	canvas := self newCanvasWithTitle: titleString.
-	^ global Chart new: canvas with: config becomeJsObject
+	^ globalThis Chart new: canvas with: config becomeJsObject
 ]
 
 { #category : #'chart creation' }

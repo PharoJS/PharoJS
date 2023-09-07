@@ -30,7 +30,7 @@ PjMessageEvaluateJavascript >> evaluateInContextPrivate: aMessageContext [
 PjMessageEvaluateJavascript >> evaluateJsString: aString [
 
 	| resultObject resultString |
-	resultObject := (global eval: aString) ifNotNil: [ :result | 
+	resultObject := (globalThis eval: aString) ifNotNil: [ :result | 
 		                result proxyResponse ].
 	resultObject class == PjProxyInfo ifTrue: [ ^ resultObject ].
 	resultString := JSON stringify: resultObject.

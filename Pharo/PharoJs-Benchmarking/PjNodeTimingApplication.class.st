@@ -78,7 +78,7 @@ PjNodeTimingApplication >> show: aString [
 { #category : #accessing }
 PjNodeTimingApplication >> time [
 	PjTimingApplication allTimingOn: self.
-	PjTimingApplication jsTimingOn: self top: global.
+	PjTimingApplication jsTimingOn: self top: globalThis.
 	PjTimingApplication nodeTimingOn: self
 ]
 

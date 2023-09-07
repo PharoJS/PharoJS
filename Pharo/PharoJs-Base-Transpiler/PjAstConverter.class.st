@@ -597,7 +597,7 @@ PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 		at: id
 		ifAbsent: [ ^ self visitClassOrPoolVariable: aRBGlobalNode id: id ].
 	global isClass
-		ifFalse: [ self signal: 'global' ifClosedBlockReferences: id.
+		ifFalse: [ self signal: 'globalThis' ifClosedBlockReferences: id.
 			^ PjGlobalNode identifier: id ].
 	self discoveredReferenceToClass: global.
 	^ PjClassNode identifier: global nameToUseForJsConversion

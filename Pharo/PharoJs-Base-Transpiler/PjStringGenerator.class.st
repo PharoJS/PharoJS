@@ -221,6 +221,11 @@ PjStringGenerator >> maybeWriteSemicolon [
 	wroteCloseBrace ifFalse: [ ^ self writeNonBrace: $; ]
 ]
 
+{ #category : #'writing low-level' }
+PjStringGenerator >> nextPutAll: string [
+	self jsStream nextPutAll: string
+]
+
 { #category : #accessing }
 PjStringGenerator >> nilTestFunctionName [
 	^self class nilTestFunctionName

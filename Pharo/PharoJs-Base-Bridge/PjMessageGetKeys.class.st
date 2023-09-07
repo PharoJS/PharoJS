@@ -13,7 +13,7 @@ PjMessageGetKeys >> evaluateInContext: aMessageContext [
 	| wsd responseMsg jsObject assocs |
 	wsd := aMessageContext websocketDelegate.
 	responseMsg := PjMessageGetKeysResponse newWithId.
-	jsObject := global instVarNamed: self proxyInfo globalName.
+	jsObject := globalThis instVarNamed: self proxyInfo globalName.
 	console log: 'get keys object:' with: jsObject.
 	assocs := self keyValuePairsOf: jsObject.
 	console log: 'get keys assocs:' with: assocs.

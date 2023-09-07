@@ -413,9 +413,9 @@ PjExporter >> writeCoreObjectCopyMethods [
 PjExporter >> writeCoreObjectCreation [
 
 	self transpiler
-		<< 'global.';
+		<< 'globalThis.';
 		writeNameForClass: PjCore;
-		<< '=global.';
+		<< '=globalThis.';
 		writeNameForClass: PjCore;
 		<< '??class extends Object{};'
 ]
@@ -507,7 +507,7 @@ PjExporter >> writeCoreObjectInstallClassExtensionMethod [
 		crtab;
 		<< 'this[targetClass.name]=targetClass;';
 		crtab;
-		<< 'global[targetClass.name]=targetClass;';
+		<< 'globalThis[targetClass.name]=targetClass;';
 		cr;
 		<< $};
 		cr
@@ -538,7 +538,7 @@ PjExporter >> writeCoreObjectInstallClassMethod [
 		crtab;
 		<< 'this[newClass.name]=newClass;';
 		crtab;
-		<< 'global[newClass.name]=newClass;';
+		<< 'globalThis[newClass.name]=newClass;';
 		cr;
 		<< $};
 		cr
