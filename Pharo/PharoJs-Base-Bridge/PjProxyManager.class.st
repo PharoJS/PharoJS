@@ -16,7 +16,7 @@ Class {
 { #category : #'instance creation' }
 PjProxyManager class >> atGlobalVarName: globalId put: anObject [
 
-	global at: globalId put: anObject
+	globalThis at: globalId put: anObject
 ]
 
 { #category : #'default instance' }
@@ -24,8 +24,8 @@ PjProxyManager class >> deleteGlobalVarNamed: globalId [
 
 	globalId ifNil: [ ^ self ].
 	globalId isEmpty ifTrue: [ ^ self ].
-	(global instVarNamed: globalId) ifNotNil: [ :obj | 
-		obj ifNotNil: [ global removeKey: globalId ] ]
+	(globalThis instVarNamed: globalId) ifNotNil: [ :obj | 
+		obj ifNotNil: [ globalThis removeKey: globalId ] ]
 ]
 
 { #category : #'instance creation' }

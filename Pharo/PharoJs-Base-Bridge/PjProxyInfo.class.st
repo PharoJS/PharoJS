@@ -15,7 +15,7 @@ Class {
 { #category : #public }
 PjProxyInfo >> getJsObject [
 
-	^ global instVarNamed: self globalName
+	^ globalThis instVarNamed: self globalName
 ]
 
 { #category : #accessing }

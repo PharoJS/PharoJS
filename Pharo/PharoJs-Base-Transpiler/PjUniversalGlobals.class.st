@@ -8,7 +8,7 @@ Class {
 		'JSON',
 		'Math',
 		'console',
-		'global'
+		'globalThis'
 	],
 	#category : #'PharoJs-Base-Transpiler-Globals'
 }

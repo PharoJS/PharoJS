@@ -57,13 +57,13 @@ PjCore class >> initInheritanceAndInstantiationLinks [
 { #category : #'nil support' }
 PjCore class >> initNilInJs [
 	" specifically install in the global space, rather than in the Smalltalk global space "
-	global js_at: self nilTestFunctionName put: (self nilIfUndefined)
+	globalThis js_at: self nilTestFunctionName put: (self nilIfUndefined) 
 ]
 
 { #category : #'throw support' }
 PjCore class >> initThrowInJs [
 	" specifically install in the global space, rather than in the Smalltalk global space "
-	global js_at: self throwFunctionName put: (self throwFunction)
+	globalThis js_at: self throwFunctionName put: (self throwFunction)
 ]
 
 { #category : #initalize }
@@ -289,7 +289,7 @@ PjCore class >> metaclassOf_jsGenerator: transpiler [
 { #category : #'nil support' }
 PjCore class >> nilIfUndefined [
 	"In case PjUndefinedObject is not created yet, use a placeholder object, just for declaring."
-	<javascript: 'global.PjUndefinedObject |= {};
+	<javascript: 'globalThis.PjUndefinedObject |= {};
 	return function(arg){if(arg == undefined){
 		return PjUndefinedObject.uniqueInstance;
 	}
@@ -349,7 +349,7 @@ PjCore class >> require: moduleName [
 
 	<jsAlias: #require>
 	<javascript: 'return require(moduleName);'>
-	^ global require: moduleName
+	^ globalThis require: moduleName
 ]
 
 { #category : #'doesNotUnderstand support' }
