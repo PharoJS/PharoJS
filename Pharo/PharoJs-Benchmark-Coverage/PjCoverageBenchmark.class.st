@@ -29,8 +29,10 @@ PjCoverageBenchmark >> benchAllClasses: classes [
 		cr;
 		show: 'Classes Count: ';
 		show: classes size.
-	duration := [ classes withIndexDo: [ :each :index | self benchClass: each index: index] ]
-		            timeToRun.
+	duration := 
+[	classes withIndexDo: [ :each :index |
+		self benchClass: each index: index.
+		Processor yield ]] timeToRun.
 	Transcript
 		cr;
 		show: '>>>Transpilation coverage benchmark finished after ';
@@ -61,15 +63,6 @@ PjCoverageBenchmark >> benchClass: aClass index: index [
 		Transcript show: 'OK :-)'.
 		^ successClasses add: aClass ].
 	Transcript show: 'Failed'.
-	failures add: result
-]
-
-{ #category : #benchmarking }
-PjCoverageBenchmark >> convertToJs: aClass [
-
-	| result |
-	result := [self newTranspiler convertClass: aClass] on: Error do: [^errorClasses add: aClass].
-	result isSuccess ifTrue: [ ^successClasses add: aClass ].
 	failures add: result
 ]
 
