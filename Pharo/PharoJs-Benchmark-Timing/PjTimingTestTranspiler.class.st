@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'delayDNU'
 	],
-	#category : #'PharoJs-Benchmarking-Timing'
+	#category : #'PharoJs-Benchmark-Timing-Timing'
 }
 
 { #category : #accessing }

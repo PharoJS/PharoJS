@@ -4,7 +4,7 @@ I constrain two variables to have the same value: ""v1 = v2"".
 Class {
 	#name : #PjDbEqualityConstraint,
 	#superclass : #PjDbBinaryConstraint,
-	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue-Constraints'
 }
 
 { #category : #'instance creation' }

@@ -11,7 +11,7 @@ Class {
 		'WorkPacketKind',
 		'Worker'
 	],
-	#category : #'PharoJs-Benchmarking-Richards'
+	#category : #'PharoJs-Benchmark-Timing-Richards'
 }
 
 { #category : #'class initialization' }

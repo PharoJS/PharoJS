@@ -8,7 +8,7 @@ Class {
 		'datum',
 		'data'
 	],
-	#category : #'PharoJs-Benchmarking-Richards'
+	#category : #'PharoJs-Benchmark-Timing-Richards'
 }
 
 { #category : #'instance creation' }

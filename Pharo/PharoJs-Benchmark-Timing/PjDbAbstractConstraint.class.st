@@ -14,7 +14,7 @@ Class {
 	#instVars : [
 		'strength'
 	],
-	#category : #'PharoJs-Benchmarking-DeltaBlue'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue'
 }
 
 { #category : #testing }

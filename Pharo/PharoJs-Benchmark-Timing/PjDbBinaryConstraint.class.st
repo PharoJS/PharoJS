@@ -17,7 +17,7 @@ Class {
 		'v2',
 		'direction'
 	],
-	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue-Constraints'
 }
 
 { #category : #testing }

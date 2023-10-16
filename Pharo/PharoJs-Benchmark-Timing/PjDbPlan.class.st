@@ -7,7 +7,7 @@ Class {
 	#name : #PjDbPlan,
 	#superclass : #OrderedCollection,
 	#type : #variable,
-	#category : #'PharoJs-Benchmarking-DeltaBlue'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue'
 }
 
 { #category : #execution }

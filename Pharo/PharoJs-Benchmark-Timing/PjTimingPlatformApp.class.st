@@ -13,7 +13,7 @@ Class {
 		'iterations',
 		'minimumTrials'
 	],
-	#category : #'PharoJs-Benchmarking-Client'
+	#category : #'PharoJs-Benchmark-Timing-Client'
 }
 
 { #category : #exporting }

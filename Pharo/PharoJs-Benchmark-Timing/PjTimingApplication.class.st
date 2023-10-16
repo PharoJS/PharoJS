@@ -13,7 +13,7 @@ Class {
 	#pools : [
 		'PjBrowserGlobals'
 	],
-	#category : #'PharoJs-Benchmarking-Application'
+	#category : #'PharoJs-Benchmark-Timing-Application'
 }
 
 { #category : #timings }

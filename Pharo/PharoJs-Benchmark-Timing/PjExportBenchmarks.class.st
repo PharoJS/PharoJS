@@ -1,7 +1,7 @@
 Class {
 	#name : #PjExportBenchmarks,
 	#superclass : #Object,
-	#category : #'PharoJs-Benchmarking-Application'
+	#category : #'PharoJs-Benchmark-Timing-Application'
 }
 
 { #category : #benchmarking }

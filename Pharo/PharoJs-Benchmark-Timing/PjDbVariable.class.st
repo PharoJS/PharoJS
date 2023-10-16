@@ -23,7 +23,7 @@ Class {
 		'stay',
 		'mark'
 	],
-	#category : #'PharoJs-Benchmarking-DeltaBlue'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue'
 }
 
 { #category : #'instance creation' }

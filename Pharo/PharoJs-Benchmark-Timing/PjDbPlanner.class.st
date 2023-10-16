@@ -16,7 +16,7 @@ Class {
 	#classInstVars : [
 		'currentPlanner'
 	],
-	#category : #'PharoJs-Benchmarking-DeltaBlue'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue'
 }
 
 { #category : #benchmarks }

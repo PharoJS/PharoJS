@@ -13,7 +13,7 @@ Class {
 		'output',
 		'satisfied'
 	],
-	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue-Constraints'
 }
 
 { #category : #testing }

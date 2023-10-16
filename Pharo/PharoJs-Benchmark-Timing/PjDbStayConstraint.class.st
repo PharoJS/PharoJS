@@ -7,7 +7,7 @@ plan execution. This is called ""stay optimization.""
 Class {
 	#name : #PjDbStayConstraint,
 	#superclass : #PjDbUnaryConstraint,
-	#category : #'PharoJs-Benchmarking-DeltaBlue-Constraints'
+	#category : #'PharoJs-Benchmark-Timing-DeltaBlue-Constraints'
 }
 
 { #category : #'instance creation' }
