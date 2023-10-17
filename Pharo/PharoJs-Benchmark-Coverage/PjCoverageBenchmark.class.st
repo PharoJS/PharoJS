@@ -6,42 +6,29 @@ Class {
 		'successClasses',
 		'failures',
 		'duration',
-		'startTimeStamp'
+		'processedClasses'
 	],
 	#category : #'PharoJs-Benchmark-Coverage'
 }
 
 { #category : #benchmarking }
-PjCoverageBenchmark >> benchAllClasses: classes [
+PjCoverageBenchmark >> benchAllClasses: classesToAnalyse [
 
-	| allClasses |
-	startTimeStamp := DateAndTime now.
-	allClasses := SystemNavigation default allClasses.
+	processedClasses := classesToAnalyse.
 	Transcript
 		cr;
-		show: '>>>Transpilation coverage benchmark started';
-		cr;
-		show: 'Time: ';
-		show: startTimeStamp asTime print24;
-		cr;
-		show: 'Date: ';
-		show: startTimeStamp asDate;
-		cr;
-		show: 'Classes Count: ';
-		show: classes size.
-	duration := 
-[	classes withIndexDo: [ :each :index |
-		self benchClass: each index: index.
-		Processor yield ]] timeToRun.
-	Transcript
-		cr;
-		show: '>>>Transpilation coverage benchmark finished after ';
-		show: duration humanReadablePrintString
+		show: '>>>Transpilation coverage benchmark started'.
+			duration := [
+	            processedClasses withIndexDo: [ :each :index |
+		            self benchClass: each index: index.
+		            Processor yield ] ] timeToRun.
+	self traceSummary
 ]
 
 { #category : #benchmarking }
 PjCoverageBenchmark >> benchAllImageClasses [
-self benchAllClasses: SystemNavigation default allClasses
+
+	[self benchAllClasses: SystemNavigation default allClasses] fork
 ]
 
 { #category : #benchmarking }
@@ -66,16 +53,24 @@ PjCoverageBenchmark >> benchClass: aClass index: index [
 	failures add: result
 ]
 
+{ #category : #benchmarking }
+PjCoverageBenchmark >> classDeclarationFailures [
+
+	^failures collect: #isClassDeclarationFailed
+]
+
 { #category : #accessing }
 PjCoverageBenchmark >> errorClasses [
 
 	^ errorClasses
 ]
 
-{ #category : #accessing }
-PjCoverageBenchmark >> failures [
+{ #category : #benchmarking }
+PjCoverageBenchmark >> failedMethodsCount [
 
-	^ failures
+	^ self methodTranspileFailures
+		  inject: 0
+		  into: [ :total :result | total + result failedMethods size ]
 ]
 
 { #category : #initialization }
@@ -87,6 +82,12 @@ PjCoverageBenchmark >> initialize [
 ]
 
 { #category : #benchmarking }
+PjCoverageBenchmark >> methodTranspileFailures [
+
+	^failures select: #isMethodTranspilationFailed
+]
+
+{ #category : #benchmarking }
 PjCoverageBenchmark >> newTranspiler [
 	^self transpilerClass new
 ]
@@ -95,6 +96,43 @@ PjCoverageBenchmark >> newTranspiler [
 PjCoverageBenchmark >> successClasses [
 
 	^ successClasses
+]
+
+{ #category : #benchmarking }
+PjCoverageBenchmark >> totalMethodsCount [
+	^processedClasses inject: 0 into: [ : total : cl | total + cl selectors size ]
+]
+
+{ #category : #benchmarking }
+PjCoverageBenchmark >> traceSummary [
+
+	Transcript
+		cr;
+		show: '>>>Transpilation coverage benchmark finished';
+		cr;
+		show: '- Duration: ';
+		show: duration humanReadablePrintString;
+		cr;
+		show: '- Total Processed classes: ';
+		show: processedClasses size;
+		cr;
+		show: '- Passing classes: ';
+		show: self successClasses size;
+		cr;
+		show: '- Class with Declaration Failures: ';
+		show: self classDeclarationFailures size;
+		cr;
+		show: '- Classes with Method Failures: ';
+		show: self methodTranspileFailures size;
+		cr;
+		show: '- Others Errors: ';
+		show: self errorClasses size;
+		cr;
+		show: '- Total Methods: ';
+		show: self totalMethodsCount;
+		cr;
+		show: '- Failed Methods: ';
+		show: self failedMethodsCount
 ]
 
 { #category : #benchmarking }

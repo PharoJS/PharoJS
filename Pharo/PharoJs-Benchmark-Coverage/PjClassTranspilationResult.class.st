@@ -28,6 +28,12 @@ PjClassTranspilationResult >> classSelectors [
 ]
 
 { #category : #accessing }
+PjClassTranspilationResult >> failedMethods [
+
+	^ failedMethods 
+]
+
+{ #category : #accessing }
 PjClassTranspilationResult >> failedSelectors [
 
 	^ failedMethods collect: #selector
@@ -49,17 +55,17 @@ PjClassTranspilationResult >> isClassDeclarationFailed [
 
 { #category : #testing }
 PjClassTranspilationResult >> isFailure [
-	^self isClassDeclarationFailed or: [ self isTranspileMethodsFailed  ] 
+	^self isClassDeclarationFailed or: [ self isMethodTranspilationFailed  ] 
+]
+
+{ #category : #testing }
+PjClassTranspilationResult >> isMethodTranspilationFailed [
+	^failedMethods notEmpty
 ]
 
 { #category : #testing }
 PjClassTranspilationResult >> isSuccess [
 	^self isFailure not
-]
-
-{ #category : #testing }
-PjClassTranspilationResult >> isTranspileMethodsFailed [
-	^failedMethods notEmpty
 ]
 
 { #category : #accessing }

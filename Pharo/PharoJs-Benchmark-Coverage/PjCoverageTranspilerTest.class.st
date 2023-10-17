@@ -27,7 +27,7 @@ PjCoverageTranspilerTest >> testClassDeclrationTranspilationFailure [
 	result := self transpileClass: nil.
 	self deny: result isSuccess.
 	self assert: result isClassDeclarationFailed.
-	self deny: result isTranspileMethodsFailed
+	self deny: result isMethodTranspilationFailed
 ]
 
 { #category : #tests }
@@ -42,7 +42,7 @@ PjCoverageTranspilerTest >> testTranspileClassWith1EmptyMethod [
 		assertCollection: result successSelectors
 		hasSameElements: #( m ).
 	self deny: result isClassDeclarationFailed.
-	self deny: result isTranspileMethodsFailed
+	self deny: result isMethodTranspilationFailed
 ]
 
 { #category : #tests }
@@ -59,7 +59,7 @@ PjCoverageTranspilerTest >> testTranspileClassWith1PrimitiveMethod [
 	result := self transpileClass: class.
 	self deny: result isSuccess.
 	self deny: result isClassDeclarationFailed.
-	self assert: result isTranspileMethodsFailed.
+	self assert: result isMethodTranspilationFailed.
 	self
 		assertCollection: result successSelectors
 		hasSameElements: #( m1 m2 ).
@@ -79,7 +79,7 @@ PjCoverageTranspilerTest >> testTranspileClassWithMethodAccessingThisContext [
 	result := self transpileClass: class.
 	self deny: result isSuccess.
 	self deny: result isClassDeclarationFailed.
-	self assert: result isTranspileMethodsFailed.
+	self assert: result isMethodTranspilationFailed.
 	self
 		assertCollection: result successSelectors
 		hasSameElements: #( m1 m2 ).
@@ -94,7 +94,7 @@ PjCoverageTranspilerTest >> testTranspileEmptyClass [
 	self assert: result isSuccess.
 	self assert: result successSelectors isEmpty.
 	self deny: result isClassDeclarationFailed.
-	self deny: result isTranspileMethodsFailed
+	self deny: result isMethodTranspilationFailed
 ]
 
 { #category : #tests }
