@@ -79,43 +79,41 @@ PjCore class >> initializeCore [
 { #category : #'doesNotUnderstand support' }
 PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anObject else: aBlock [
 	" this could be a smalltalk object or a native JS object "
+
 	| type func functionName |
-	(type := anObject js_at: selector) ifNotNil: [
-		(self isFunction: type) ifTrue: [
-			functionName := type js_at: #name.
-			'' = functionName ifTrue: [
-				type := 2
-			] ifFalse: [
-				functionName asCharacter = functionName asCharacter capitalized "We rely on the JS convention that constructors are capiltalized"
-					ifTrue: [type := 0 " this is a constructor "]
-					ifFalse: [ type := 2 ]
-			]
-		] ifFalse: [
-			type := args js_at: #length
-	]].
-	2 > type ifTrue: [
-		0 = type ifTrue: [
-			func := self makeGetter: selector
-		] ifFalse: [
-			func := self makeSetter: selector.
-		].
-		(Object js_defineProperty: (anObject js_at:'__proto__')
+	(type := anObject js_at: selector) ifNil: [ type := 0 ] ifNotNil: [
+		(self isFunction: type)
+			ifTrue: [
+				functionName := type js_at: #name.
+				'' = functionName
+					ifTrue: [ type := 2 ]
+					ifFalse: [
+						functionName asCharacter = functionName asCharacter capitalized
+							ifTrue: [ type := 0 " this is a constructor " ]
+							ifFalse: [ type := 2 ] "We rely on the JS convention that constructors are capiltalized" ] ]
+			ifFalse: [ type := args js_at: #length ] ].
+	2 > type
+		ifTrue: [
+			0 = type
+				ifTrue: [ func := self makeGetter: selector ]
+				ifFalse: [ func := self makeSetter: selector ].
+			Object
+				js_defineProperty: (anObject js_at: '__proto__')
 				field: jsSelector
-				properties: (self propertySet: func)).
-		^ func js_apply: anObject args: args 
-	] ifFalse: [
-		type := anObject.
-		[ nil = type ] whileFalse: [
-			((type js_hasOwnProperty: selector) and: [
-				'function'  = (type js_at: selector) typeof ]) ifTrue: [
-				func := type js_at: selector.
-				(Object js_defineProperty: type
+				properties: (self propertySet: func).
+			^ func js_apply: anObject args: args ]
+		ifFalse: [
+			type := anObject.
+			[ nil = type ] whileFalse: [
+				((type js_hasOwnProperty: selector) and: [
+					 'function' = (type js_at: selector) typeof ]) ifTrue: [
+					func := type js_at: selector.
+					Object
+						js_defineProperty: type
 						field: jsSelector
-						properties: (self propertySet: func)).
-				^ func js_apply: anObject args: args 
-			].
-			type := type instVarNamed:'__proto__'
-	]].
+						properties: (self propertySet: func).
+					^ func js_apply: anObject args: args ].
+				type := type instVarNamed: '__proto__' ] ].
 	^ aBlock value
 ]
 
