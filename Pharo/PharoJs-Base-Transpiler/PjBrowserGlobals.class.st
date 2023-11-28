@@ -14,6 +14,7 @@ Class {
 		'Uint16Array',
 		'Uint8Array',
 		'XMLHttpRequest',
+		'Event',
 		'localStorage'
 	],
 	#pools : [
