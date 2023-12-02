@@ -81,17 +81,21 @@ PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anOb
 	" this could be a smalltalk object or a native JS object "
 
 	| type func functionName |
-	(type := anObject js_at: selector) ifNil: [ type := 0 ] ifNotNil: [
-		(self isFunction: type)
-			ifTrue: [
-				functionName := type js_at: #name.
-				'' = functionName
-					ifTrue: [ type := 2 ]
-					ifFalse: [
-						functionName asCharacter = functionName asCharacter capitalized
-							ifTrue: [ type := 0 " this is a constructor " ]
-							ifFalse: [ type := 2 ] "We rely on the JS convention that constructors are capiltalized" ] ]
-			ifFalse: [ type := args js_at: #length ] ].
+	(type := anObject js_at: selector)
+		ifNil: [
+		(anObject js_hasOwnProperty: selector) ifTrue: [ type := 0 ] ]
+		ifNotNil: [
+			(self isFunction: type)
+				ifTrue: [
+					functionName := type js_at: #name.
+					'' = functionName
+						ifTrue: [ type := 2 ]
+						ifFalse: [
+							functionName asCharacter = functionName asCharacter capitalized
+								ifTrue: [ type := 0 " this is a constructor " ]
+								ifFalse: [ "We rely on the JS convention that constructors are capiltalized"
+									type := 2 ] ] ]
+				ifFalse: [ type := args js_at: #length ] ].
 	2 > type
 		ifTrue: [
 			0 = type
