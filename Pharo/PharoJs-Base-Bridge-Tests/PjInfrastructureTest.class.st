@@ -39,6 +39,19 @@ PjInfrastructureTest >> testDNUSetup [
 ]
 
 { #category : #tests }
+PjInfrastructureTest >> testGetterDoesNotInstallSetter [
+
+	self assert: (self bridge evalBlock: [
+			 | o |
+			 o := Object new.
+			 o at: 'someProp' put: nil.
+			 o someProp. "this makes a setter"
+			 o at: 'someProp' put: 10.
+			 console log: 'someProp =' with: o someProp.
+			 o someProp = 10 ])
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testGetterGetsTrampolined [
 
 	self assert: (self bridge evalBlock: [ document body ~= nil ])
