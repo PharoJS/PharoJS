@@ -142,7 +142,6 @@ PhxBridgedJsonSerialisationTests >> testSerializeDictionary [
 			d := Dictionary new.
 			d at: 'a' put: 'abc'.
 			d at: 'b' put: '123'.
-			console log: d.
 			d ]
 		literal: '{"class":"Dictionary","instance":{"a":"abc","b":"123"}}'
 		testEq: false "#assertEquivalent: doesn't work for this type of object"
