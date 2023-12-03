@@ -7,6 +7,7 @@ Class {
 	#name : #PjBrowserGlobals,
 	#superclass : #PjJavascriptGlobals,
 	#classVars : [
+		'Event',
 		'Float32Array',
 		'FormData',
 		'Image',
