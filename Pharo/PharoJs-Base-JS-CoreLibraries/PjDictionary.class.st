@@ -13,7 +13,7 @@ Class {
 PjDictionary class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
-		Dictionary -> #(at:ifAbsentPut:).
+		Dictionary -> #(at:ifAbsentPut: =).
 	}
 ]
 
