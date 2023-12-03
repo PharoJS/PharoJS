@@ -18,6 +18,18 @@ PjInfrastructureTest >> testCallGetsTrampolined [
 ]
 
 { #category : #tests }
+PjInfrastructureTest >> testDNUInstallsAGetterAndNotASetter [
+    self assert: (self bridge evalBlock: [
+             | obj |
+             obj := Object new.
+             obj instVarNamed: 'someProp' put: nil.
+             obj someProp. "this should install a getter, but a setter method gets installed instead, because the value of someProp is nil"
+             obj instVarNamed: 'someProp' put: 10.
+             console log: 'someProp =' with: obj someProp. "Observe in console log that 'obj someProp' returns nil, instead of 10"
+             obj someProp = 10 ])
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testDNUSetup [
 
 	| prefix |
