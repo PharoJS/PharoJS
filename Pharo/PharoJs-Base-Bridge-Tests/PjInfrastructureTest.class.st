@@ -62,6 +62,18 @@ PjInfrastructureTest >> testBridgePort [
 ]
 
 { #category : #tests }
+PjInfrastructureTest >> testBugDnuInstallsSetterInsteadOfGetter [
+
+	self assertBlock: [
+			 | o |
+			 o := Object new.
+			 o at: 'someProp' put: nil.
+			 o someProp. "this should make a getter and not a setter"
+			 o at: 'someProp' put: 10.
+			 o someProp = 10 ]
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testCallGetsTrampolined [
 
 	self assert: (self bridge evalBlock: [ 
@@ -99,19 +111,6 @@ PjInfrastructureTest >> testDNUSetup [
 		assert:
 			(self bridge
 				evalJavascript: 'HTMLDocument.prototype.', prefix, 'children === document.', prefix, 'children')
-]
-
-{ #category : #tests }
-PjInfrastructureTest >> testGetterDoesNotInstallSetter [
-
-	self assert: (self bridge evalBlock: [
-			 | o |
-			 o := Object new.
-			 o at: 'someProp' put: nil.
-			 o someProp. "this makes a setter"
-			 o at: 'someProp' put: 10.
-			 console log: 'someProp =' with: o someProp.
-			 o someProp = 10 ])
 ]
 
 { #category : #tests }
