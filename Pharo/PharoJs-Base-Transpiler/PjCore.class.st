@@ -104,16 +104,23 @@ PjCore class >> initializeCore [
 ]
 
 { #category : #'doesNotUnderstand support' }
+PjCore class >> install: aFunction named: pjSelector in: target [
+
+	(Object js_isFrozen: target) ifFalse: [
+		Object
+			js_defineProperty: target
+			field: pjSelector
+			properties: (self propertySet: aFunction) ]
+]
+
+{ #category : #'doesNotUnderstand support' }
 PjCore class >> installAndPerform: selector alias: pjSelector for: anObject args: args function: aFunction [
 
 	| target |
 	target := anObject.
 	[ target js_hasOwnProperty: selector ] whileFalse: [
 		target := target js_at: '__proto__' ].
-	Object
-		js_defineProperty: target
-		field: pjSelector
-		properties: (self propertySet: aFunction).
+	self install: aFunction named: pjSelector in: target.
 	^ aFunction js_apply: anObject args: args
 ]
 
@@ -128,10 +135,7 @@ PjCore class >> installAndPerformAccessor: pjSelector property: peropertyName fo
 		ifTrue: [ accessor := self makeGetter: peropertyName ]
 		ifFalse: [ accessor := self makeSetter: peropertyName ].
 	target := self accessorTargetFor: anObject.
-	Object
-		js_defineProperty: target
-		field: pjSelector
-		properties: (self propertySet: accessor).
+	self install: accessor named: pjSelector in: target.
 	^ accessor js_apply: anObject args: args
 ]
 

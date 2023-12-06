@@ -196,8 +196,11 @@ PjObject >> halt [
 
 { #category : #testing }
 PjObject >> hasOrInheritsProperty: propertyName [
-	<javascript: 'return propertyName in this'>
-	
+	"We cannot use JS `propertyName in this` because the `in` operator cannot be used for some objects such as strings"
+	| property |
+	property := self js_at: propertyName.
+	property ifNotNil: [ ^true ].
+	^self hasOwnProperty: propertyName
 ]
 
 { #category : #comparing }
