@@ -37,14 +37,14 @@ PjCore class >> handleDNU: aMessage for: anObject [
 	| selector |
 	selector := (aMessage selector js_split: ':') js_at: 0.
 	^ self
-		installDnuArgs: aMessage arguments
-		selector: selector
-		js: (self makePharoJsSelector: aMessage selector)
-		for: anObject
-		else: [ self
-				error:
-					'Message not understood: ' , anObject className , '>>#'
-						, aMessage selector ]
+		  installDnu: selector
+		  for: anObject
+		  args: aMessage arguments
+		  pjSelector: (self makePharoJsSelector: aMessage selector)
+		  else: [
+			  self error:
+				  'Message not understood: ' , anObject className , '>>#'
+				  , aMessage selector ]
 ]
 
 { #category : #'reflection support' }
@@ -77,7 +77,61 @@ PjCore class >> initializeCore [
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjCore class >> installDnuArgs: args selector: selector js: jsSelector for: anObject else: aBlock [
+PjCore class >> installAndPerformAccessor: pjSelector for: anObject args: args [
+
+	| accessor prototype target |
+	accessor := args size = 0
+		            ifTrue: [ self makeGetter: pjSelector ]
+		            ifFalse: [ self makeSetter: pjSelector ].
+	prototype := anObject js_at: '__proto__'.
+	target := prototype == Object prototype ifTrue: [ anObject ] ifFalse: [ prototype ].
+	Object
+		js_defineProperty: target
+		field: pjSelector
+		properties: (self propertySet: accessor).
+	^ accessor js_apply: anObject args: args
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> installAndPerformAlias: pjSelector for: anObject args: args function: aFunction [
+
+		Object
+		js_defineProperty: anObject
+		field: pjSelector
+		properties: (self propertySet: aFunction).
+	^ aFunction js_apply: anObject args: args
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> installDnu: selector for: anObject args: args pjSelector: pjSelector else: aBlock [
+	"anObject could be a smalltalk object or a native JS object for a JS library"
+
+	"pjSelector is the result of transpiling a Smalltalk selector to be JS compatible see PjCore class >> #makePharoJsSelector: "
+
+	"If a property named selector is missing 
+		Then value the else block which typically signals message not understood. 
+	Else
+		If property is a function (js function without the PharoJS pj_ prefix) 
+			Then Install an alias with pj_ prefix and perform the function/method. 
+		Else  
+			Install and perform a getter or a setter based on the number or args 
+	"
+
+	| property |
+	(anObject hasOrInheritsProperty: selector) ifFalse: [ ^ aBlock value ].
+	property := anObject instVarNamed: selector.
+	(self isFunction: property) ifTrue: [
+		^ self
+			  installAndPerformAlias: pjSelector
+			  for: anObject
+			  args: args
+			  function: property ].
+	args size > 1 ifTrue: [ ^ aBlock value ].
+	^self installAndPerformAccessor:  pjSelector for: anObject args: args
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> installDnuArgsOLD: args selector: selector js: jsSelector for: anObject else: aBlock [
 	" this could be a smalltalk object or a native JS object "
 
 	| type func functionName |
