@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #tests }
+PjInfrastructureTest >> testAccessorForClass [
+
+	| a jsObject |
+	jsObject :=  self evalBlock: [ Object].
+	a := self evalBlock: [ { (#x -> Object) } asJsObject ].
+	self assert: a x identicalTo: jsObject.
+	a x: 111.
+	self assert: a x equals: 111.
+
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testAccessorInstalledOnClass [
 
 	| a b |

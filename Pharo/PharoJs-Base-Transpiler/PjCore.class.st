@@ -30,11 +30,9 @@ PjCore class >> accessorTargetFor: anObject [
 	"Classes are functions. Their properties are equivalent to Smalltalk's class side IVs. So, they belong to the class itself"
 
 	| prototype |
-	(self isFunction: anObject) ifTrue: [
-		^ anObject ].
+	(self isClass: anObject) ifTrue: [ ^ anObject ].
 	prototype := anObject js_at: #__proto__.
-	prototype == Object prototype ifTrue: [
-		^ anObject ].
+	prototype == Object prototype ifTrue: [ ^ anObject ].
 	^ prototype
 ]
 
@@ -61,6 +59,19 @@ PjCore class >> handleDNU: aMessage for: anObject [
 			  self error:
 				  'Message not understood: ' , anObject className , '>>#'
 				  , aMessage selector ]
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> hasCapitalizedName: anObject [
+	"Name being a property we need to access it directly. 
+	We cannot rely on accessor generation through since this method is this exact purpose.
+	Otherwise we enter an infinite loop."
+
+	| jsName firstCharacter |
+	jsName := anObject js_at: #name.
+	jsName = '' ifTrue: [ ^false ].
+	firstCharacter := jsName first.
+	^ firstCharacter = firstCharacter capitalized
 ]
 
 { #category : #'reflection support' }
@@ -93,6 +104,20 @@ PjCore class >> initializeCore [
 ]
 
 { #category : #'doesNotUnderstand support' }
+PjCore class >> installAndPerform: selector alias: pjSelector for: anObject args: args function: aFunction [
+
+	| target |
+	target := anObject.
+	[ target js_hasOwnProperty: selector ] whileFalse: [
+		target := target js_at: '__proto__' ].
+	Object
+		js_defineProperty: target
+		field: pjSelector
+		properties: (self propertySet: aFunction).
+	^ aFunction js_apply: anObject args: args
+]
+
+{ #category : #'doesNotUnderstand support' }
 PjCore class >> installAndPerformAccessor: pjSelector property: peropertyName for: anObject args: args [
 
 	| accessor target |
@@ -108,16 +133,6 @@ PjCore class >> installAndPerformAccessor: pjSelector property: peropertyName fo
 		field: pjSelector
 		properties: (self propertySet: accessor).
 	^ accessor js_apply: anObject args: args
-]
-
-{ #category : #'doesNotUnderstand support' }
-PjCore class >> installAndPerformAlias: pjSelector for: anObject args: args function: aFunction [
-
-		Object
-		js_defineProperty: anObject
-		field: pjSelector
-		properties: (self propertySet: aFunction).
-	^ aFunction js_apply: anObject args: args
 ]
 
 { #category : #'doesNotUnderstand support' }
@@ -138,14 +153,26 @@ PjCore class >> installDnu: selector for: anObject args: args pjSelector: pjSele
 	| property |
 	(anObject hasOrInheritsProperty: selector) ifFalse: [ ^ aBlock value ].
 	property := anObject instVarNamed: selector.
-	(self isFunction: property) ifTrue: [
+	(self isBasicFunction: property) ifTrue: [
 		^ self
-			  installAndPerformAlias: pjSelector
+			  installAndPerform: selector
+			alias: pjSelector
 			  for: anObject
 			  args: args
 			  function: property ].
 	args size > 1 ifTrue: [ ^ aBlock value ].
-	^ self installAndPerformAccessor: pjSelector property: selector for: anObject args: args
+	^ self
+		  installAndPerformAccessor: pjSelector
+		  property: selector
+		  for: anObject
+		  args: args
+]
+
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> isBasicFunction: anObject [
+
+	(self isClassOrBasicFunction: anObject) ifFalse: [ ^ false ].
+	^ (self hasCapitalizedName: anObject) not
 ]
 
 { #category : #'nil support' }
@@ -153,14 +180,24 @@ PjCore class >> isBrowserPlatform [
 	^ (self at: #navigator) isNotNil
 ]
 
-{ #category : #'nil support' }
-PjCore class >> isDomPlatform [
-	^ (self at: #document) isNotNil
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> isClass: anObject [
+
+	(self isClassOrBasicFunction: anObject) ifFalse: [ ^false ].
+	^self hasCapitalizedName: anObject
+
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjCore class >> isFunction: type [
-	<javascript: 'return "function" == typeof type'>
+PjCore class >> isClassOrBasicFunction: anObject [
+
+	<javascript: 'return "function" == typeof anObject'>
+	
+]
+
+{ #category : #'nil support' }
+PjCore class >> isDomPlatform [
+	^ (self at: #document) isNotNil
 ]
 
 { #category : #'nil support' }
