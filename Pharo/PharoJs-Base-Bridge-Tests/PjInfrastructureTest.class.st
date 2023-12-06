@@ -5,6 +5,57 @@ Class {
 }
 
 { #category : #tests }
+PjInfrastructureTest >> testAccessorInstalledOnClass [
+
+	| a b |
+	b := self evalBlock: [ PjBSubClassOfA ].
+	a := self evalBlock: [ PjASuperClass ].
+	b instVarNamed: #y put: 0.
+	b y: 222.
+	self assert: b y equals: 222.
+	{
+		[ a y ].
+		[ a y: 444 ] } do: [ :aBlock | self should: aBlock raise: Error ]
+]
+
+{ #category : #tests }
+PjInfrastructureTest >> testAccessorInstalledOnObject [
+
+	| a b |
+	a := self evalBlock: [ { (#x -> 0) } asJsObject ].
+	self assert: a jsClassName equals: #Object.
+	a x: 111.
+	self assert: a x equals: 111.
+	b := self evalBlock: [ { (#y -> 0) } asJsObject ].
+	self assert: b jsClassName equals: #Object.
+	b y: 222.
+	self assert: b y equals: 222.
+	{
+		[ b x ].
+		[ b x: 333 ].
+		[ a y ].
+		[ a y: 444 ] } do: [ :aBlock | self should: aBlock raise: Error ]
+]
+
+{ #category : #tests }
+PjInfrastructureTest >> testAccessorInstalledOnPrototype [
+
+	| a b |
+	a := self evalBlock: [ PjASuperClass new ].
+	a instVarNamed: #x put: nil.
+	a x: 111.
+	self assert: a x equals: 111.
+	self should: [ a y ] raise: Error.
+	b := self evalBlock: [ PjASuperClass new ].
+	self assert: b x isNil.
+	b instVarNamed: #y put: nil.
+	b y: 222.
+	self assert: b y equals: 222.
+	self assert: a y isNil.
+
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testBridgePort [
 
 	self assert: self bridge port equals: self bridge server port

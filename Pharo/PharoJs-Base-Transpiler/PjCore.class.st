@@ -30,9 +30,11 @@ PjCore class >> accessorTargetFor: anObject [
 	"Classes are functions. Their properties are equivalent to Smalltalk's class side IVs. So, they belong to the class itself"
 
 	| prototype |
-	(self isFunction: anObject) ifTrue: [ ^ anObject ].
+	(self isFunction: anObject) ifTrue: [
+		^ anObject ].
 	prototype := anObject js_at: #__proto__.
-	prototype == Object prototype ifTrue: [ ^ anObject ].
+	prototype == Object prototype ifTrue: [
+		^ anObject ].
 	^ prototype
 ]
 
@@ -91,15 +93,15 @@ PjCore class >> initializeCore [
 ]
 
 { #category : #'doesNotUnderstand support' }
-PjCore class >> installAndPerformAccessor: pjSelector for: anObject args: args [
+PjCore class >> installAndPerformAccessor: pjSelector property: peropertyName for: anObject args: args [
 
 	| accessor target |
 	"By default, add accessors to the prototype of the constructor.
 	But, JS objects created with the brace notation are instances of Object.
 	But, it does not make sense to add to Object getter/setters on properties of such objects."
-	accessor := args size = 0
-		            ifTrue: [ self makeGetter: pjSelector ]
-		            ifFalse: [ self makeSetter: pjSelector ].
+	args size = 0
+		ifTrue: [ accessor := self makeGetter: peropertyName ]
+		ifFalse: [ accessor := self makeSetter: peropertyName ].
 	target := self accessorTargetFor: anObject.
 	Object
 		js_defineProperty: target
@@ -143,52 +145,7 @@ PjCore class >> installDnu: selector for: anObject args: args pjSelector: pjSele
 			  args: args
 			  function: property ].
 	args size > 1 ifTrue: [ ^ aBlock value ].
-	^self installAndPerformAccessor:  pjSelector for: anObject args: args
-]
-
-{ #category : #'doesNotUnderstand support' }
-PjCore class >> installDnuArgsOLD: args selector: selector js: jsSelector for: anObject else: aBlock [
-	" this could be a smalltalk object or a native JS object "
-
-	| type func functionName |
-	(type := anObject js_at: selector)
-		ifNil: [
-		(anObject js_hasOwnProperty: selector) ifTrue: [ type := 0 ] ]
-		ifNotNil: [
-			(self isFunction: type)
-				ifTrue: [
-					functionName := type js_at: #name.
-					'' = functionName
-						ifTrue: [ type := 2 ]
-						ifFalse: [
-							functionName asCharacter = functionName asCharacter capitalized
-								ifTrue: [ type := 0 " this is a constructor " ]
-								ifFalse: [ "We rely on the JS convention that constructors are capiltalized"
-									type := 2 ] ] ]
-				ifFalse: [ type := args js_at: #length ] ].
-	2 > type
-		ifTrue: [
-			0 = type
-				ifTrue: [ func := self makeGetter: selector ]
-				ifFalse: [ func := self makeSetter: selector ].
-			Object
-				js_defineProperty: (anObject js_at: '__proto__')
-				field: jsSelector
-				properties: (self propertySet: func).
-			^ func js_apply: anObject args: args ]
-		ifFalse: [
-			type := anObject.
-			[ nil = type ] whileFalse: [
-				((type js_hasOwnProperty: selector) and: [
-					 'function' = (type js_at: selector) typeof ]) ifTrue: [
-					func := type js_at: selector.
-					Object
-						js_defineProperty: type
-						field: jsSelector
-						properties: (self propertySet: func).
-					^ func js_apply: anObject args: args ].
-				type := type instVarNamed: '__proto__' ] ].
-	^ aBlock value
+	^ self installAndPerformAccessor: pjSelector property: selector for: anObject args: args
 ]
 
 { #category : #'nil support' }
