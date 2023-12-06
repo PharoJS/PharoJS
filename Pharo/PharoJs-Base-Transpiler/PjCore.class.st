@@ -22,6 +22,20 @@ Class {
 	#category : #'PharoJs-Base-Transpiler-Globals'
 }
 
+{ #category : #'doesNotUnderstand support' }
+PjCore class >> accessorTargetFor: anObject [
+	"JS objects created with the brace notation are instances of Object.
+	It does not make sense to add to Object getter/setters on properties of such objects."
+
+	"Classes are functions. Their properties are equivalent to Smalltalk's class side IVs. So, they belong to the class itself"
+
+	| prototype |
+	(self isFunction: anObject) ifTrue: [ ^ anObject ].
+	prototype := anObject js_at: #__proto__.
+	prototype == Object prototype ifTrue: [ ^ anObject ].
+	^ prototype
+]
+
 { #category : #initalize }
 PjCore class >> emptyJavascriptObject [
 	"Object.create(null) creates an even emptier JS object, but it isn't an Object (i.e. has no methods)."
@@ -79,12 +93,14 @@ PjCore class >> initializeCore [
 { #category : #'doesNotUnderstand support' }
 PjCore class >> installAndPerformAccessor: pjSelector for: anObject args: args [
 
-	| accessor prototype target |
+	| accessor target |
+	"By default, add accessors to the prototype of the constructor.
+	But, JS objects created with the brace notation are instances of Object.
+	But, it does not make sense to add to Object getter/setters on properties of such objects."
 	accessor := args size = 0
 		            ifTrue: [ self makeGetter: pjSelector ]
 		            ifFalse: [ self makeSetter: pjSelector ].
-	prototype := anObject js_at: '__proto__'.
-	target := prototype == Object prototype ifTrue: [ anObject ] ifFalse: [ prototype ].
+	target := self accessorTargetFor: anObject.
 	Object
 		js_defineProperty: target
 		field: pjSelector
