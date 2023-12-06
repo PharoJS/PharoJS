@@ -5,6 +5,14 @@ Class {
 }
 
 { #category : #tests }
+PjCoreLibrariesTranspilationTest >> testPjClassWithSerializedSlot [
+
+	self jsCode:
+		(self convertClass: PjDummyTestObjectWithSeleriazedClassVar). jsCode
+			halt
+]
+
+{ #category : #tests }
 PjCoreLibrariesTranspilationTest >> testPjStringClass [
 	self jsCode: (self convertClass: PjString).
 	self assertInstanceMethod: #= equals: '(other){return this==other}'.
