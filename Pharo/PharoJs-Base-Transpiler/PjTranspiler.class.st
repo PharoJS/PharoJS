@@ -592,7 +592,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		writeMethodsOf: aClass;
 		writeClassVariableDeclarationsOf: aClass;
 		<< '},'.
-	aClass isJsClassPlaceholder ifTrue: [ 
+	aClass isJsClassPlaceholder ifTrue: [
 		self
 			writeNameForClass: aClass;
 			<< $, ].
@@ -601,7 +601,8 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		<< $,;
 		writeClassMethodsAliasesDict;
 		<< ');'.
-	self writeInheritedClassInstanceVariablesFixFor: aClass
+	self writeInheritedClassInstanceVariablesFixFor: aClass.
+	self writeClassStateInitializationOf: aClass
 ]
 
 { #category : #'transpiling classes' }
@@ -636,7 +637,8 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 	sortedClassesToInit := self orderForInitialization: classesToInit.
 	^ sortedClassesToInit do: [ :aClass |
 		  self writeClassInitializeOf: aClass.
-		self writeClassStateInitializationOf: aClass ]
+		  self writeClassStateInitializationOf: aClass.
+		  self writeClassStateInitializationOf: aClass ]
 ]
 
 { #category : #'transpiling aliases' }

@@ -7,5 +7,5 @@ Class {
 { #category : #'as yet unclassified' }
 JavascriptSerializedInstanceVariableSlot >> javascriptSerialized [
 
-	^ false
+	^ true
 ]
