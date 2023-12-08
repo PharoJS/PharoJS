@@ -601,8 +601,7 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		<< $,;
 		writeClassMethodsAliasesDict;
 		<< ');'.
-	self writeInheritedClassInstanceVariablesFixFor: aClass.
-	self writeClassStateInitializationOf: aClass
+	self writeInheritedClassInstanceVariablesFixFor: aClass
 ]
 
 { #category : #'transpiling classes' }
@@ -634,11 +633,12 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 
 	| sortedClassesToInit classesToInit |
 	classesToInit := classesInWriteOrder select: #needsInitialization.
+	
+	classesInWriteOrder do: [ :aClass |
+		self writeClassStateInitializationOf: aClass ].
 	sortedClassesToInit := self orderForInitialization: classesToInit.
-	^ sortedClassesToInit do: [ :aClass |
-		  self writeClassInitializeOf: aClass.
-		  self writeClassStateInitializationOf: aClass.
-		  self writeClassStateInitializationOf: aClass ]
+	sortedClassesToInit do: [ :aClass |
+		self writeClassInitializeOf: aClass ]
 ]
 
 { #category : #'transpiling aliases' }
@@ -659,15 +659,15 @@ PjTranspiler >> writeClassMethodsOf: aClass [
 ]
 
 { #category : #writing }
-PjTranspiler >> writeClassStateInitializationOf: aClass [ 
-	(aClass class allSlots select: #javascriptSerialized ) do: [ :aSlot | 
+PjTranspiler >> writeClassStateInitializationOf: aClass [
+
+	(aClass class allSlots select: #javascriptSerialized) do: [ :aSlot |
 		self
-		writeNameForClass: aClass;
-		nextPutAll:
-			'.' , aSlot name
-			, '=PhxJsonReader.pj_readFromString_(', (aSlot read: aClass) asPhxJsonString, ')' ;
-		cr.
-		]
+			writeNameForClass: aClass;
+			nextPutAll:
+				'.' , aSlot name , '=PhxJsonReader.pj_readFromString_('''
+				, (aSlot read: aClass) asPhxJsonString , ''')';
+			cr ]
 ]
 
 { #category : #transpiling }
