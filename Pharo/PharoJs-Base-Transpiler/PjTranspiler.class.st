@@ -666,7 +666,7 @@ PjTranspiler >> writeClassStateInitializationOf: aClass [
 			writeNameForClass: aClass;
 			nextPutAll:
 				'.' , aSlot name , '=PhxJsonReader.pj_readFromString_('''
-				, (aSlot read: aClass) asPhxJsonString , ''')';
+				, (aSlot read: aClass) asPhxJsonString , ''');';
 			cr ]
 ]
 

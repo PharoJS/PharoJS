@@ -9,5 +9,25 @@ Class {
 
 { #category : #'class initialization' }
 PjDummyTestObjectWithSeleriazedClassVar class >> initialize [
-	toBeSerialized := 'stuff'
+
+	self toBeSerialized: self pharoOnlyInitialization
+]
+
+{ #category : #'class initialization' }
+PjDummyTestObjectWithSeleriazedClassVar class >> pharoOnlyInitialization [
+
+	<javascript: 'return null'>
+	^ 'stuff'
+]
+
+{ #category : #'class initialization' }
+PjDummyTestObjectWithSeleriazedClassVar class >> toBeSerialized [
+	^ toBeSerialized 
+]
+
+{ #category : #'class initialization' }
+PjDummyTestObjectWithSeleriazedClassVar class >> toBeSerialized: anObject [
+
+	<javascript: 'return null'>
+	toBeSerialized := anObject
 ]
