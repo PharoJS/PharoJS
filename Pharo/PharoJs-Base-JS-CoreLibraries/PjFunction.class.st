@@ -50,8 +50,14 @@ PjFunction >> assert [
 
 { #category : #'instance creation' }
 PjFunction >> basicNew [
-" here so that ordinary Javascript 'classes' will respond to the message"
-	<javascript: 'return new this()'>
+	"When a PharoJS generated class is instantiated using the `new` operator, it receives the initialize message only if the argument is missing or if it is `false`."
+
+	" See `PjTranspiler>>#writeInitializeSupportFor: aClass`"
+
+	<javascript: 'let instance = {};
+	instance.__proto__ = this.prototype;
+	return instance'>
+	
 ]
 
 { #category : #'instance creation' }

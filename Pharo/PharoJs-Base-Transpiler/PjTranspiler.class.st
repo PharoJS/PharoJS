@@ -588,10 +588,11 @@ PjTranspiler >> writeClassDefinitionOf: aClass [
 		writeClassDeclarationOf: aClass;
 		<< ${;
 		cr;
+		writeInitializeSupportFor: aClass;
 		writeMethodsOf: aClass;
 		writeClassVariableDeclarationsOf: aClass;
 		<< '},'.
-	aClass isJsClassPlaceholder ifTrue: [ 
+	aClass isJsClassPlaceholder ifTrue: [
 		self
 			writeNameForClass: aClass;
 			<< $, ].
@@ -730,6 +731,26 @@ PjTranspiler >> writeInheritedClassInstanceVariablesFixFor: aClass [
 				<< '=null;' ] ]
 ]
 
+{ #category : #'transpiling classes' }
+PjTranspiler >> writeInitializeSupportFor: aClass [
+
+	aClass isJsClassPlaceholder ifTrue: [ ^ self ].
+	self
+		<< 'constructor(){
+			super();
+			if(!';
+		writeNameForClass: aClass superclass;
+		<< '.';
+		writeJsSelector: #sendsInitialize;
+		<< '()){this.';
+		writeJsSelector: #initialize;
+		<< '();}}';
+		cr;
+		<< 'static ';
+		writeJsSelector: #sendsInitialize;
+		<< '(){return true}'
+]
+
 { #category : #'transpiling aliases' }
 PjTranspiler >> writeInstallMethodAliasesOf: aClass [
 
@@ -803,4 +824,16 @@ PjTranspiler >> writeMethodsOf: aClass [
 { #category : #'transpiling classes' }
 PjTranspiler >> writeNameForClass: aClass [
 	self nextPutAll: aClass instanceSide nameToUseForJsConversion
+]
+
+{ #category : #'transpiling methods' }
+PjTranspiler >> writeSendsInitializeClassMethod [
+	"This method is used to support sending initialize when a PharoJS generated class is instantiated in plain JS code using the `new` operator as in `new MyPharoJSClass()`. "
+
+	" See `PjTranspiler>>#writeConstructor` and `PjObject class>>#sendsInitialize`"
+
+	self
+		<< 'static ';
+		writeJsSelector: #sendsInitialize;
+		<< '{return true}'
 ]
