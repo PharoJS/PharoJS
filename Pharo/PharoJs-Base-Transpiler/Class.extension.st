@@ -56,7 +56,10 @@ Class >> needsClassDeclaration [
 
 { #category : #'*PharoJs-Base-Transpiler' }
 Class >> needsInitialization [
-	^(self hasClassMethod: #initialize) or: [ self hasClassMethod: #javascriptInitialize ]
+
+	^ (self hasClassMethod: #initialize) or: [
+		  (self hasClassMethod: #javascriptInitialize) or: [
+			  self class allSlots anySatisfy: #needsJavascriptInitialization ] ]
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }

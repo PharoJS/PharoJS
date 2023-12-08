@@ -9,3 +9,9 @@ JavascriptSerializedInstanceVariableSlot >> javascriptSerialized [
 
 	^ true
 ]
+
+{ #category : #'as yet unclassified' }
+JavascriptSerializedInstanceVariableSlot >> needsJavascriptInitialization [
+
+	^ true
+]

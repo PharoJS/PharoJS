@@ -633,10 +633,10 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 
 	| sortedClassesToInit classesToInit |
 	classesToInit := classesInWriteOrder select: #needsInitialization.
-	
-	classesInWriteOrder do: [ :aClass |
-		self writeClassStateInitializationOf: aClass ].
 	sortedClassesToInit := self orderForInitialization: classesToInit.
+	sortedClassesToInit do: [ :aClass |
+		self writeClassStateInitializationOf: aClass ].
+
 	sortedClassesToInit do: [ :aClass |
 		self writeClassInitializeOf: aClass ]
 ]
