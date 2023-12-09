@@ -151,7 +151,6 @@ PjFunction >> jsBasicNew [
 	<javascript: '
 	let instance = {};
 	instance.__proto__ = this.prototype;
-	instance.constructor = this;
 	return instance;'>
 	
 ]
@@ -159,7 +158,7 @@ PjFunction >> jsBasicNew [
 { #category : #'instance creation' }
 PjFunction >> jsNew [
 
-	<javascript: 'new this()'>
+	<javascript: 'return new this()'>
 	
 ]
 
@@ -216,6 +215,15 @@ PjFunction >> on: exception do: handlerAction [
 PjFunction >> printOn: aStream [
 
 	aStream nextPutAll: 'a Block'
+]
+
+{ #category : #'instance creation' }
+PjFunction >> sendsInitialize [
+	"This method is used to support sending initialize when a PharoJS generated class is instantiated in plain JS code using the `new` operator as in `new MyPharoJSClass()`."
+
+	" See `PjTranspiler>>#writeInitializeSupportFor: aClass`"
+
+	^ false
 ]
 
 { #category : #'Behavior: reflection' }

@@ -77,15 +77,6 @@ PjObject class >> nextIdentityHash [
 	^ nextIdentityHash := (nextIdentityHash ifNil: [12345]) hashMultiply
 ]
 
-{ #category : #'pharoJs support' }
-PjObject class >> sendsInitialize [
-	"This method is used to support sending initialize when a PharoJS generated class is instantiated in plain JS code using the `new` operator as in `new MyPharoJSClass()`."
-
-	" See `PjTranspiler>>#writeInitializeSupportFor: aClass`"
-
-	^ false
-]
-
 { #category : #'dictionary emulation' }
 PjObject class >> valuesDo_jsGenerator: transpiler [
 	<pharoJsSkip>

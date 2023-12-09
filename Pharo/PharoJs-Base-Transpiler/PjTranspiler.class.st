@@ -734,11 +734,12 @@ PjTranspiler >> writeInheritedClassInstanceVariablesFixFor: aClass [
 { #category : #'transpiling classes' }
 PjTranspiler >> writeInitializeSupportFor: aClass [
 	"We check the superclass to avoid duplicate sends of #initialize"
+
 	aClass isJsClassPlaceholder ifTrue: [ ^ self ].
 	self
-		<< 'constructor(){
-			super();
-			if(!';
+		<< 'constructor(){';
+		<< 'super();';
+		<< 'if(!';
 		writeNameForClass: aClass superclass;
 		<< '.';
 		writeJsSelector: #sendsInitialize;
@@ -748,7 +749,8 @@ PjTranspiler >> writeInitializeSupportFor: aClass [
 		cr;
 		<< 'static ';
 		writeJsSelector: #sendsInitialize;
-		<< '(){return true}'
+		<< '(){return true}';
+		cr
 ]
 
 { #category : #'transpiling aliases' }
