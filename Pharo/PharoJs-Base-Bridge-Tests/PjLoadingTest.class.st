@@ -92,3 +92,10 @@ PjLoadingTest >> testLoadClassContents [
 	self deny: (third beginsWith: 'function ' , className).
 	self deny: (third endsWith: className , '.', pjPrefix, 'initialize();')
 ]
+
+{ #category : #tests }
+PjLoadingTest >> testSerializedClassInstanceVar [
+	self bridge loadClass: PjDummyTestObjectWithSeleriazedClassVar.
+	self assertEquivalent: [
+		PjDummyTestObjectWithSeleriazedClassVar toBeSerialized ]
+]

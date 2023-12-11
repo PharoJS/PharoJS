@@ -5,17 +5,6 @@ Class {
 }
 
 { #category : #tests }
-PjCoreLibrariesTranspilationTest >> testPjClassWithSerializedSlot [
-
-	self jsCode:
-		(self convertClass: PjDummyTestObjectWithSeleriazedClassVar).
-	self
-		assert: jsCode
-		includes:
-		'PjDummyTestObjectWithSeleriazedClassVar.toBeSerialized=PhxJsonReader.pj_readFromString_(''"stuff"'')'
-]
-
-{ #category : #tests }
 PjCoreLibrariesTranspilationTest >> testPjStringClass [
 	self jsCode: (self convertClass: PjString).
 	self assertInstanceMethod: #= equals: '(other){return this==other}'.

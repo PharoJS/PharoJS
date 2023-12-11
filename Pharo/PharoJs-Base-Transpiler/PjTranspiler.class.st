@@ -198,7 +198,7 @@ PjTranspiler >> convertClass: aClass [
 	actualClassToConvert := aClass classToUseForJsConversion.
 	self writeClassDefinitionOf: actualClassToConvert.
 	self writeClassInitializeOf: actualClassToConvert.
-	self writeClassStateInitializationOf: actualClassToConvert
+
 ]
 
 { #category : #transpiling }
@@ -621,12 +621,22 @@ PjTranspiler >> writeClassExtensionDeclarationOf: aClass [
 ]
 
 { #category : #transpiling }
-PjTranspiler >> writeClassInitializeOf: aClass [
-	aClass needsInitialization ifFalse: [^self].  
-	self 
+PjTranspiler >> writeClassInitializeMessageOf: aClass [
+
+	aClass needsClassInitializeMessage ifFalse: [ ^ self ].
+	self
 		writeNameForClass: aClass;
-		nextPutAll: '.', self pharoJsSelectorPrefix, aClass classInitializeSelector, '();';
+		<< $.;
+		writeJsSelector: aClass classInitializeSelector;
+		<< '();';
 		cr
+]
+
+{ #category : #transpiling }
+PjTranspiler >> writeClassInitializeOf: aClass [
+
+	self writeClassSlotInitializeMessageOf: aClass.
+	self writeClassInitializeMessageOf: aClass
 ]
 
 { #category : #transpiling }
@@ -635,9 +645,6 @@ PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
 	| sortedClassesToInit classesToInit |
 	classesToInit := classesInWriteOrder select: #needsInitialization.
 	sortedClassesToInit := self orderForInitialization: classesToInit.
-	sortedClassesToInit do: [ :aClass |
-		self writeClassStateInitializationOf: aClass ].
-
 	sortedClassesToInit do: [ :aClass |
 		self writeClassInitializeOf: aClass ]
 ]
@@ -660,14 +667,20 @@ PjTranspiler >> writeClassMethodsOf: aClass [
 ]
 
 { #category : #writing }
-PjTranspiler >> writeClassStateInitializationOf: aClass [
+PjTranspiler >> writeClassSlotInitializeMessageOf: aClass [
 
 	(aClass class allSlots select: #javascriptSerialized) do: [ :aSlot |
 		self
 			writeNameForClass: aClass;
-			nextPutAll:
-				'.' , aSlot name , '=PhxJsonReader.pj_readFromString_('''
-				, (aSlot read: aClass) asPhxJsonString , ''');';
+			<< $.;
+			<< aSlot name;
+			<< $=;
+			<< PhxJsonReader name;
+			<< $. ;
+			writeJsSelector: #readFromString:;
+			<< $(;
+			print: (aSlot read: aClass) asPhxJsonString;
+			<< $);
 			cr ]
 ]
 

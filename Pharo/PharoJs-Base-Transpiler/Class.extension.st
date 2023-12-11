@@ -55,11 +55,23 @@ Class >> needsClassDeclaration [
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }
-Class >> needsInitialization [
+Class >> needsClassInitializeMessage [
 
 	^ (self hasClassMethod: #initialize) or: [
-		  (self hasClassMethod: #javascriptInitialize) or: [
-			  self class allSlots anySatisfy: #needsJavascriptInitialization ] ]
+		  (self hasClassMethod: #javascriptInitialize) ]
+]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
+Class >> needsClassSlotInitializeMessage [
+
+	^ self class allSlots anySatisfy: [: aSlot | aSlot needsJavascriptInitialization]
+]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
+Class >> needsInitialization [
+
+	^ (self needsClassInitializeMessage) or: [
+			  self needsClassSlotInitializeMessage ]
 ]
 
 { #category : #'*PharoJs-Base-Transpiler' }

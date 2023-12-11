@@ -123,6 +123,17 @@ PjSingleClassTranspilationTest >> testNative [
 ]
 
 { #category : #tests }
+PjSingleClassTranspilationTest >> testPjClassWithSerializedSlot [
+
+	self jsCode:
+		(self convertClass: PjDummyTestObjectWithSeleriazedClassVar).
+	self
+		assert: jsCode
+		includes:
+		'PjDummyTestObjectWithSeleriazedClassVar.toBeSerialized=PhxJsonReader._readFromString_("\"stuff\"")'
+]
+
+{ #category : #tests }
 PjSingleClassTranspilationTest >> testToDoExpr [
 	self assertInstanceMethod: #toDoWithObjectAsParameter equals: '(){(1)._to_do_(10,Object);return this}'
 ]
