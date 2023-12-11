@@ -125,12 +125,18 @@ PjSingleClassTranspilationTest >> testNative [
 { #category : #tests }
 PjSingleClassTranspilationTest >> testPjClassWithSerializedSlot [
 
+	| expectedCode |
 	self jsCode:
 		(self convertClass: PjDummyTestObjectWithSeleriazedClassVar).
-	self
-		assert: jsCode
-		includes:
-		'PjDummyTestObjectWithSeleriazedClassVar.toBeSerialized=PhxJsonReader._readFromString_("\"stuff\"")'
+	expectedCode := String streamContents: [ :str |
+		                str
+			                << PjDummyTestObjectWithSeleriazedClassVar name;
+			                << '._initFromSerializedState_(';
+			                <<
+				                PjDummyTestObjectWithSeleriazedClassVar
+					                serializedStateForJS asPhxJsonString;
+			                << $) ].
+	self assert: jsCode includes: expectedCode
 ]
 
 { #category : #tests }

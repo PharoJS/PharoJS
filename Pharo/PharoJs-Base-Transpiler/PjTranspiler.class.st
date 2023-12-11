@@ -669,19 +669,15 @@ PjTranspiler >> writeClassMethodsOf: aClass [
 { #category : #writing }
 PjTranspiler >> writeClassSlotInitializeMessageOf: aClass [
 
-	(aClass class allSlots select: #javascriptSerialized) do: [ :aSlot |
-		self
-			writeNameForClass: aClass;
-			<< $.;
-			<< aSlot name;
-			<< $=;
-			<< PhxJsonReader name;
-			<< $. ;
-			writeJsSelector: #readFromString:;
-			<< $(;
-			print: (aSlot read: aClass) asPhxJsonString;
-			<< $);
-			cr ]
+	aClass needsClassSlotInitializeMessage ifFalse: [ ^ self ].
+	self
+		writeNameForClass: aClass;
+		<< '.';
+		writeJsSelector: #initFromSerializedState:;
+		<< $(;
+		print: aClass serializedStateForJS;
+		<< ');';
+		cr
 ]
 
 { #category : #transpiling }

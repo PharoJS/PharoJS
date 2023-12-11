@@ -31,7 +31,7 @@ PjClass class >> jsTranspilationImportMethods [
 	}
 ]
 
-{ #category : #'Behaviour: object creatioin' }
+{ #category : #'Behaviour: object creation' }
 PjClass >> adoptInstance: anObject [
 	anObject js_at: #__proto__ put: (self js_at:#prototype)
 " here so that ordinary Javascript 'classes' will respond to the message"
@@ -63,6 +63,13 @@ PjClass >> hasClassMethod: aSymbol [
 	<jsGenerator: #hasClassMethod_jsGenerator:>
 ]
 
+{ #category : #'state serialization' }
+PjClass >> initFromSerializedState: serializedStateString [
+	| stateObject |
+	stateObject := PhxJsonReader readFromString: serializedStateString.
+	Object assign: self with: stateObject
+]
+
 { #category : #testing }
 PjClass >> isBlock [
 	^ false
@@ -81,7 +88,7 @@ PjClass >> name [
 	return s'>
 ]
 
-{ #category : #'Behaviour: object creatioin' }
+{ #category : #'Behaviour: object creation' }
 PjClass >> newFromJsonString: jsonString [
 	| newInstance |
 	newInstance := JSON js_parse: jsonString.

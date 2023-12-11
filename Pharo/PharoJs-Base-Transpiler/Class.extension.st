@@ -78,3 +78,14 @@ Class >> needsInitialization [
 Class >> printJsOn: aStream [
 	self error: 'Class doesn''t have a literal representation'
 ]
+
+{ #category : #'*PharoJs-Base-Transpiler' }
+Class >> serializedStateForJS [
+
+	<pharoJsSkip>
+	| stateDict |
+	stateDict := Dictionary new.
+	(self class allSlots select: #javascriptSerialized) do: [ :aSlot |
+		stateDict at: aSlot name put: (aSlot read: self) ].
+	^ stateDict asPhxJsonString
+]
