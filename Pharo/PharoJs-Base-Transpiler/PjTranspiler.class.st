@@ -197,7 +197,8 @@ PjTranspiler >> convertClass: aClass [
 	| actualClassToConvert |
 	actualClassToConvert := aClass classToUseForJsConversion.
 	self writeClassDefinitionOf: actualClassToConvert.
-	self writeClassInitializeOf: actualClassToConvert
+	self writeClassInitializeOf: actualClassToConvert.
+	self writeClassStateInitializationOf: actualClassToConvert
 ]
 
 { #category : #transpiling }
@@ -630,11 +631,15 @@ PjTranspiler >> writeClassInitializeOf: aClass [
 
 { #category : #transpiling }
 PjTranspiler >> writeClassInitializeOfAll: classesInWriteOrder [
+
 	| sortedClassesToInit classesToInit |
 	classesToInit := classesInWriteOrder select: #needsInitialization.
 	sortedClassesToInit := self orderForInitialization: classesToInit.
-	^ sortedClassesToInit
-		do: [ :aClass | self writeClassInitializeOf: aClass ]
+	sortedClassesToInit do: [ :aClass |
+		self writeClassStateInitializationOf: aClass ].
+
+	sortedClassesToInit do: [ :aClass |
+		self writeClassInitializeOf: aClass ]
 ]
 
 { #category : #'transpiling aliases' }
@@ -651,6 +656,18 @@ PjTranspiler >> writeClassMethodsOf: aClass [
 			<< 'static ';
 			transpileMethod: aRBMethodNode;
 			addAliasesForClassMethod:aRBMethodNode ;
+			cr ]
+]
+
+{ #category : #writing }
+PjTranspiler >> writeClassStateInitializationOf: aClass [
+
+	(aClass class allSlots select: #javascriptSerialized) do: [ :aSlot |
+		self
+			writeNameForClass: aClass;
+			nextPutAll:
+				'.' , aSlot name , '=PhxJsonReader.pj_readFromString_('''
+				, (aSlot read: aClass) asPhxJsonString , ''');';
 			cr ]
 ]
 
