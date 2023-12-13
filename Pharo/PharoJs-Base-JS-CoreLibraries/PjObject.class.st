@@ -197,10 +197,12 @@ PjObject >> halt [
 { #category : #testing }
 PjObject >> hasOrInheritsProperty: propertyName [
 	"We cannot use JS `propertyName in this` because the `in` operator cannot be used for some objects such as strings"
+
 	| property |
 	property := self js_at: propertyName.
-	property ifNotNil: [ ^true ].
-	^self hasOwnProperty: propertyName
+	property ifNotNil: [ ^ true ].
+	^ (self hasOwnProperty: propertyName) or: [
+		  self javascriptIn: propertyName ]
 ]
 
 { #category : #comparing }
@@ -254,6 +256,11 @@ PjObject >> isEmptyOrNil [
 { #category : #testing }
 PjObject >> isJSPrimitiveType [
 	^ false
+]
+
+{ #category : #'dictionary emulation' }
+PjObject >> javascriptIn: propertyName [
+	<javascript: 'return propertyName in this'>
 ]
 
 { #category : #'dictionary emulation' }
