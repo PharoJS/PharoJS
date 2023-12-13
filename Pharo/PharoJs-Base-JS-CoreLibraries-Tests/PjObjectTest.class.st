@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #tests }
+PjObjectTest >> testAccessorForPrototypeInheritedProperty [
+	self assertBlock: [
+		screen onchange = nil
+		]
+]
+
+{ #category : #tests }
 PjObjectTest >> testNewObjectHasNoEnumeratableKeys [
 	"This is important for many JS third party libraries"
 	self assertBlock: [ Object new allEnumeratableKeys isEmpty ] .
