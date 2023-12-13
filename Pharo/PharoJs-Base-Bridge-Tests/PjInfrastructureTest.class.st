@@ -20,18 +20,20 @@ PjInfrastructureTest >> testAccessorForClass [
 PjInfrastructureTest >> testAccessorForInheritedPropertyWithNilNilValue [
 
 	| a b xValue otherXValue |
-	a := self evalBlock: [ { (#x -> nil) } asJsObject ].
-	b := self evalBlock: [ {  } asJsObject ].
+	a := self evalBlock: [ Object new ].
+	b := self evalBlock: [ Object new ].
 	b instVarNamed: #__proto__ put: a.
-	self assert: b x isNil.
+	3 timesRepeat: [ self should: [ b xXx ] raise: Error].
+	a instVarNamed: #xXx put: nil.
+	self assert: b xXx isNil.
 	xValue := 'wonderful!'.
-	b x: xValue.
-	self assert: b x equals: xValue.
-	self assert: a x isNil.
+	b xXx: xValue.
+	self assert: b xXx equals: xValue.
+	self assert: a xXx isNil.
 	otherXValue := 'somehting else'.
-	a x: otherXValue.
-	self assert: b x equals: xValue.
-	self assert: a x equals: otherXValue
+	a xXx: otherXValue.
+	self assert: b xXx equals: xValue.
+	self assert: a xXx equals: otherXValue
 ]
 
 { #category : #tests }
