@@ -733,23 +733,21 @@ PjTranspiler >> writeInheritedClassInstanceVariablesFixFor: aClass [
 
 { #category : #'transpiling classes' }
 PjTranspiler >> writeInitializeSupportFor: aClass [
-	"We check the superclass to avoid duplicate sends of #initialize"
+	"The constructor ensures the initialize message is sent even if the new operator is used to instantiate PharoJS classes."
+
+	"Since we cannot add this message to the constructor of Object, we have to replicate it in every class we generate since we are unsure about the superclass. However, this replication can lead to repeated initialize message sent by the class of the new object and all its PharoJS generated superclasses."
+
+	"To avoid repeating the initialize message, we use a trick. The absence or presence of arguments is used as a flag. If an argument is present we skip the initialize message. This is why the generated constructor calls the constructor of the superclass with the argument null."
+
+	"An alternative implementation with a boolean constructor argument that materializes the flag is possible in theory. But, it would require adapting the super() call depending whether the superclass is PharoJS generated or not to avoid unintended behaviors. While the null argument is treated in JS as if there are no arguments just like what we had before in PharoJS."
 
 	aClass isJsClassPlaceholder ifTrue: [ ^ self ].
 	self
 		<< 'constructor(){';
-		<< 'super();';
-		<< 'if(!';
-		writeNameForClass: aClass superclass;
-		<< '.';
-		writeJsSelector: #sendsInitialize;
-		<< '()){this.';
+		<< 'super(null);';
+		<< 'if(arguments.length == 0){this.';
 		writeJsSelector: #initialize;
 		<< '();}}';
-		cr;
-		<< 'static ';
-		writeJsSelector: #sendsInitialize;
-		<< '(){return true}';
 		cr
 ]
 
@@ -826,16 +824,4 @@ PjTranspiler >> writeMethodsOf: aClass [
 { #category : #'transpiling classes' }
 PjTranspiler >> writeNameForClass: aClass [
 	self nextPutAll: aClass instanceSide nameToUseForJsConversion
-]
-
-{ #category : #'transpiling methods' }
-PjTranspiler >> writeSendsInitializeClassMethod [
-	"This method is used to support sending initialize when a PharoJS generated class is instantiated in plain JS code using the `new` operator as in `new MyPharoJSClass()`. "
-
-	" See `PjTranspiler>>#writeConstructor` and `PjObject class>>#sendsInitialize`"
-
-	self
-		<< 'static ';
-		writeJsSelector: #sendsInitialize;
-		<< '{return true}'
 ]

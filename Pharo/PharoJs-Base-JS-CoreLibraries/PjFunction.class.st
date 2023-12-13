@@ -50,12 +50,12 @@ PjFunction >> assert [
 
 { #category : #'instance creation' }
 PjFunction >> basicNew [
-	"When a PharoJS generated class is instantiated using the `new` operator, it receives the initialize message."
+	"The initialize message is skipped since we do provide an argument to the constructor."
 
 	" See `PjTranspiler>>#writeInitializeSupportFor: aClass`"
 
-	self sendsInitialize ifFalse: [ ^ self jsNew ].
-	^ self jsBasicNew
+	<javascript: 'return new this(null)'>
+	
 ]
 
 { #category : #'instance creation' }
@@ -146,29 +146,13 @@ PjFunction >> ifCurtailed: curtailBlock [
 ]
 
 { #category : #'instance creation' }
-PjFunction >> jsBasicNew [
-
-	<javascript: '
-	let instance = {};
-	instance.__proto__ = this.prototype;
-	return instance;'>
-	
-]
-
-{ #category : #'instance creation' }
-PjFunction >> jsNew [
-
-	<javascript: 'return new this()'>
-	
-]
-
-{ #category : #'instance creation' }
 PjFunction >> new [
-
-	"When a PharoJS generated class is instantiated using the `new` operator, it receives the initialize message."
+	"The initialize message is sent to the newly created instance since no argument is provided to the constructor."
 
 	" See `PjTranspiler>>#writeInitializeSupportFor: aClass`"
-	^ self jsNew
+
+	<javascript: 'return new this()'>
+	^ self basicNew initialize
 ]
 
 { #category : #'instance creation' }
@@ -215,15 +199,6 @@ PjFunction >> on: exception do: handlerAction [
 PjFunction >> printOn: aStream [
 
 	aStream nextPutAll: 'a Block'
-]
-
-{ #category : #'instance creation' }
-PjFunction >> sendsInitialize [
-	"This method is used to support sending initialize when a PharoJS generated class is instantiated in plain JS code using the `new` operator as in `new MyPharoJSClass()`."
-
-	" See `PjTranspiler>>#writeInitializeSupportFor: aClass`"
-
-	^ false
 ]
 
 { #category : #'Behavior: reflection' }
