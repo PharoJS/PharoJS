@@ -201,8 +201,9 @@ PjObject >> hasOrInheritsProperty: propertyName [
 	| property |
 	property := self js_at: propertyName.
 	property ifNotNil: [ ^ true ].
-	^ (self hasOwnProperty: propertyName) or: [
-		  self javascriptIn: propertyName ]
+	^ self typeof = 'object'
+		  ifTrue: [ self javascriptIn: propertyName ]
+		  ifFalse: [ self hasOwnProperty: propertyName ]
 ]
 
 { #category : #comparing }
