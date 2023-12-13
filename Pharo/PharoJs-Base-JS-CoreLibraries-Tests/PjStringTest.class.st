@@ -82,3 +82,16 @@ PjStringTest >> testSplitOn [
 	self assertEquivalent: [
 		('a.b.c' splitOn: '.') asArray ]
 ]
+
+{ #category : #tests }
+PjStringTest >> testStringHasOrInheritProperty [
+
+	| ivName |
+	ivName := #someIv.
+	self denyBlock: [ 'hello!' hasOrInheritsProperty: ivName ].
+	self denyBlock: [
+		| jsString |
+		jsString := 'wonderful'.
+		jsString js_at: ivName put: 42.
+		jsString hasOrInheritsProperty: ivName ]
+]

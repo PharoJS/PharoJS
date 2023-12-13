@@ -17,12 +17,30 @@ PjInfrastructureTest >> testAccessorForClass [
 ]
 
 { #category : #tests }
+PjInfrastructureTest >> testAccessorForInheritedPropertyWithNilNilValue [
+
+	| a b xValue otherXValue |
+	a := self evalBlock: [ { (#x -> nil) } asJsObject ].
+	b := self evalBlock: [ {  } asJsObject ].
+	b instVarNamed: #__proto__ put: a.
+	self assert: b x isNil.
+	xValue := 'wonderful!'.
+	b x: xValue.
+	self assert: b x equals: xValue.
+	self assert: a x isNil.
+	otherXValue := 'somehting else'.
+	a x: otherXValue.
+	self assert: b x equals: xValue.
+	self assert: a x equals: otherXValue
+]
+
+{ #category : #tests }
 PjInfrastructureTest >> testAccessorInstalledOnClass [
 
 	| a b |
 	b := self evalBlock: [ PjBSubClassOfA ].
 	a := self evalBlock: [ PjASuperClass ].
-	b instVarNamed: #y put: 0.
+	b instVarNamed: #y put: nil.
 	b y: 222.
 	self assert: b y equals: 222.
 	{
@@ -34,11 +52,11 @@ PjInfrastructureTest >> testAccessorInstalledOnClass [
 PjInfrastructureTest >> testAccessorInstalledOnObject [
 
 	| a b |
-	a := self evalBlock: [ { (#x -> 0) } asJsObject ].
+	a := self evalBlock: [ { (#x -> nil) } asJsObject ].
 	self assert: a jsClassName equals: #Object.
 	a x: 111.
 	self assert: a x equals: 111.
-	b := self evalBlock: [ { (#y -> 0) } asJsObject ].
+	b := self evalBlock: [ { (#y -> nil) } asJsObject ].
 	self assert: b jsClassName equals: #Object.
 	b y: 222.
 	self assert: b y equals: 222.
@@ -51,7 +69,7 @@ PjInfrastructureTest >> testAccessorInstalledOnObject [
 
 { #category : #tests }
 PjInfrastructureTest >> testAccessorInstalledOnPrototype [
-
+	"JS classes have a property named #prototype which references an object that acts as prototype for other instances. The prototype owns all instance methods."
 	| a b |
 	a := self evalBlock: [ PjASuperClass new ].
 	a instVarNamed: #x put: nil.

@@ -124,6 +124,11 @@ PjAppTestCase >> defaultBridgeResourceClass [
 ]
 
 { #category : #testing }
+PjAppTestCase >> denyBlock: aBlock [ 
+	self assert: aBlock evaluatesTo: false
+]
+
+{ #category : #testing }
 PjAppTestCase >> evalBlock: aBlock [
 	^self bridge evalBlock: aBlock
 ]

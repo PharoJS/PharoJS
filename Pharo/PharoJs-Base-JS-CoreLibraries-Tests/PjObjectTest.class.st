@@ -5,16 +5,40 @@ Class {
 }
 
 { #category : #tests }
-PjObjectTest >> testAccessorForPrototypeInheritedProperty [
-	self assertBlock: [
-		screen onchange = nil
-		]
+PjObjectTest >> assert: parent andChild: child hasOrInheritProperty: ivName [
+	| objects |
+	child  instVarNamed: #'__proto__' put: parent. 
+	objects := { parent. child }.
+	objects do: [: each | self deny: (each hasOrInheritsProperty: ivName)].
+	parent instVarNamed: ivName put: nil.
+	objects do: [: each | self assert: (each hasOrInheritsProperty: ivName)].
+
+]
+
+{ #category : #tests }
+PjObjectTest >> testClassHasOrInheritProperty [
+	| jsObject jsArray |
+	jsArray := self evalBlock: [ Array ].
+	jsObject := self evalBlock: [ Object ].
+	self assertBlock: [jsArray superclass == jsObject].
+	self assert: jsObject andChild: jsArray hasOrInheritProperty: #classIV.
+	
+	
 ]
 
 { #category : #tests }
 PjObjectTest >> testNewObjectHasNoEnumeratableKeys [
 	"This is important for many JS third party libraries"
 	self assertBlock: [ Object new allEnumeratableKeys isEmpty ] .
+]
+
+{ #category : #tests }
+PjObjectTest >> testObjectHasOrInheritProperty [
+	| parent child |
+	parent := self evalBlock: [ Object new ].
+	child :=  self evalBlock: [ Object new ].
+	self assert: parent andChild: child hasOrInheritProperty: #instanceIV.
+	
 ]
 
 { #category : #tests }
