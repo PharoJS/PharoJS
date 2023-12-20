@@ -742,9 +742,11 @@ PjTranspiler >> writeInitializeSupportFor: aClass [
 	"An alternative implementation with a boolean constructor argument that materializes the flag is possible in theory. But, it would require adapting the super() call depending whether the superclass is PharoJS generated or not to avoid unintended behaviors. While the null argument is treated in JS as if there are no arguments just like what we had before in PharoJS."
 
 	aClass isJsClassPlaceholder ifTrue: [ ^ self ].
+	self << 'constructor(){'.
+	aClass superclass classToUseForJsConversion isJsClassPlaceholder
+		ifTrue: [ self << 'super();' ]
+		ifFalse: [ self << 'super(null);' ].
 	self
-		<< 'constructor(){';
-		<< 'super(null);';
 		<< 'if(arguments.length == 0){this.';
 		writeJsSelector: #initialize;
 		<< '();}}';

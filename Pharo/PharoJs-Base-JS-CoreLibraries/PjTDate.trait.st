@@ -6,6 +6,18 @@ Trait {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Chronology'
 }
 
+{ #category : #'instance creation' }
+PjTDate classSide >> basicNew [
+	"To support sending the initialize message even from plain JS using the new operator 
+	PjFunction class >> basicNew sends an argument to the JS constructor. 
+	This breaks date creation. Hence the redefinition."
+
+	" More in `PjTranspiler>>#writeInitializeSupportFor: aClass`"
+
+	<javascript: 'return new this()'>
+	
+]
+
 { #category : #'pharoJs support' }
 PjTDate classSide >> javascriptName [
 	<pharoJsSkip>

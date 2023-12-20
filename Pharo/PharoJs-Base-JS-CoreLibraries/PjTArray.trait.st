@@ -8,6 +8,18 @@ Trait {
 	#category : #'PharoJs-Base-JS-CoreLibraries-Kernel'
 }
 
+{ #category : #'instance creation' }
+PjTArray classSide >> basicNew [
+	"To support sending the initialize message even from plain JS using the new operator 
+	PjFunction class >> basicNew sends an argument to the JS constructor. 
+	This breaks array creation. Hence the redefinition."
+
+	" More in `PjTranspiler>>#writeInitializeSupportFor: aClass`"
+
+	<javascript: 'return new this()'>
+	
+]
+
 { #category : #enumerating }
 PjTArray classSide >> collect_jsGenerator: transpiler [
 	<pharoJsSkip> 
