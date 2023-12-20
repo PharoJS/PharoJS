@@ -739,7 +739,7 @@ PjTranspiler >> writeInitializeSupportFor: aClass [
 
 	"To avoid repeating the initialize message, we use a trick. The absence or presence of arguments is used as a flag. If an argument is present we skip the initialize message. This is why the generated constructor calls the constructor of the superclass with the argument null."
 
-	"An alternative implementation with a boolean constructor argument that materializes the flag is possible in theory. But, it would require adapting the super() call depending whether the superclass is PharoJS generated or not to avoid unintended behaviors. While the null argument is treated in JS as if there are no arguments just like what we had before in PharoJS."
+	"An alternative implementation with a boolean constructor argument is possible in theory. The argument would represent a flag which value would make skip or perform the initialize. But, solution  breaks the tests."
 
 	aClass isJsClassPlaceholder ifTrue: [ ^ self ].
 	self << 'constructor(){'.
