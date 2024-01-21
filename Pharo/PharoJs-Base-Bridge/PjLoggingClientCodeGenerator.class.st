@@ -40,7 +40,7 @@ PjLoggingClientCodeGenerator >> logoHtmlString [
 { #category : #generating }
 PjLoggingClientCodeGenerator >> logoUrlString [
 
-	^ 'http://car.mines-douai.fr/wp-content/uploads/2015/07/pharoJsLogo2015-07-14.png'
+	^ 'https://raw.githubusercontent.com/PharoJS/PharoJS/pharo11/HTML/PharoJs-TestFramework/PjMinimalFileBasedWebApp/pharoJsLogo.png'
 ]
 
 { #category : #generating }
