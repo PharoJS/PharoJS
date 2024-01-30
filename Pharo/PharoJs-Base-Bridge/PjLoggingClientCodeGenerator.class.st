@@ -40,7 +40,7 @@ PjLoggingClientCodeGenerator >> logoHtmlString [
 { #category : #generating }
 PjLoggingClientCodeGenerator >> logoUrlString [
 
-	^ 'https://raw.githubusercontent.com/PharoJS/PharoJS/pharo11/HTML/PharoJs-TestFramework/PjMinimalFileBasedWebApp/pharoJsLogo.png'
+	^(PjMinimalFileBasedWebApp appFolder / 'pharoJsLogo.png') pathString 
 ]
 
 { #category : #generating }
