@@ -111,9 +111,12 @@ self post: path text: aString then: [ self log: 'Done POST to ', path ]
 
 { #category : #'http operations' }
 PjTWebClientApp >> post: path text: aString then: thenBlock [
-self post: path text: aString then: thenBlock catch: 
 
-	 [ :error | self logError: error onGet: path ]
+	self
+		post: path
+		text: aString
+		then: thenBlock
+		catch: [ :error | self logError: error onPost: path ]
 ]
 
 { #category : #'http operations' }
