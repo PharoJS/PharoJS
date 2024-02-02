@@ -7,6 +7,17 @@ Class {
 	#category : #'PharoJs-Base-Bridge-Client-Kernel'
 }
 
+{ #category : #actions }
+PjLocalWebServedBridgeClient >> initUrlString [
+
+	| serverPort serverApp |
+	serverApp := serverBridge
+		             evalSelector: #currentInstance
+		             sentTo: self serverClass name.
+	serverPort := serverApp port.
+	self urlString: 'http://127.0.0.1:' , serverPort asString
+]
+
 { #category : #accessing }
 PjLocalWebServedBridgeClient >> serverApp [
 
@@ -19,28 +30,29 @@ PjLocalWebServedBridgeClient >> serverBridge [
 ]
 
 { #category : #accessing }
+PjLocalWebServedBridgeClient >> serverBridge: aBridge [ 
+
+	serverBridge := aBridge
+]
+
+{ #category : #accessing }
 PjLocalWebServedBridgeClient >> serverBridgeClient [
 
 	^ serverBridge client
 ]
 
 { #category : #actions }
+PjLocalWebServedBridgeClient >> serverClass [
+
+	^ appClass serverAppClass
+]
+
+{ #category : #actions }
 PjLocalWebServedBridgeClient >> start [
 
-	| serverClass serverApp serverPort |
-	serverBridge
-		ifNil: [
-			serverClass := appClass serverAppClass.
-			serverBridge := serverClass bridge ]
-.
-	serverBridge isServerStarted ifTrue: [
-		^ self ].
-	serverBridge start.
-	serverApp := serverBridge
-		             evalSelector: #currentInstance
-		             sentTo: serverClass name.
-	serverPort := serverApp port.
-	self urlString: 'http://127.0.0.1:' , serverPort asString.
+	serverBridge ifNil: [ self serverBridge: self serverClass bridge ].
+	serverBridge isServerStarted ifFalse: [ serverBridge start. ].
+	self initUrlString.
 	super start
 ]
 
