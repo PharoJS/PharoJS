@@ -23,7 +23,7 @@ PjMultipageExpressClientAppTest >> allBridges [
 	^{bridgePage1 . bridgePage2 . bridgePage3}
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> assertConnected: aBridge [
 
 	| otherBridges |
@@ -45,7 +45,7 @@ PjMultipageExpressClientAppTest >> bridge: aBridge [
 	bridge := aBridge
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> click: buttonID [
 	| button |
 	button := document getElementByID: buttonID.
@@ -53,7 +53,7 @@ PjMultipageExpressClientAppTest >> click: buttonID [
 	button click.
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> setUp [
 
 	| serverBridge |
@@ -70,24 +70,24 @@ PjMultipageExpressClientAppTest >> setUp [
 		
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> stopBridge: aBridge [
 	aBridge ifNil: [ ^self ].
 	aBridge stop
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> tearDown [
 	self allBridges do: [ :each | self stopBridge: each ].
 	super tearDown
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> testNavigateBackUsingHistory [
 	self fail: #todo
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 PjMultipageExpressClientAppTest >> testNavigateFromPage1ToPage2AndToPage3 [
 
 	self assertConnected: bridgePage1.
