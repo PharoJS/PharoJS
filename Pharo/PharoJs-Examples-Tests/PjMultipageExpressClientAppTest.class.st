@@ -42,7 +42,8 @@ PjMultipageExpressClientAppTest >> bridge [
 { #category : #accessing }
 PjMultipageExpressClientAppTest >> bridge: aBridge [
 
-	bridge := aBridge
+	bridge := aBridge.
+	PjBridge soleBridge: bridge
 ]
 
 { #category : #running }

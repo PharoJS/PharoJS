@@ -15,7 +15,8 @@ PjLocalWebServedBridgeClient >> initUrlString [
 		             evalSelector: #currentInstance
 		             sentTo: self serverClass name.
 	serverPort := serverApp port.
-	self urlString: 'http://127.0.0.1:' , serverPort asString
+	self urlString:
+		'http://127.0.0.1:' , serverPort asString , self urlPath
 ]
 
 { #category : #accessing }
@@ -62,4 +63,12 @@ PjLocalWebServedBridgeClient >> stop [
 	serverBridge ifNotNil: [
 		serverBridge stop ].
 	super stop
+]
+
+{ #category : #actions }
+PjLocalWebServedBridgeClient >> urlPath [
+	"Assumes page html is located in server static file folder. But, it might go in a subfolder"
+
+	^ self appClass appFullHtmlFileName pathString allButFirst:
+		  self appClass appFolder pathString size
 ]
