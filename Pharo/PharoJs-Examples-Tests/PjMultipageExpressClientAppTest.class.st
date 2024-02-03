@@ -23,12 +23,19 @@ PjMultipageExpressClientAppTest >> allBridges [
 	^{bridgePage1 . bridgePage2 . bridgePage3}
 ]
 
+{ #category : #accessing }
+PjMultipageExpressClientAppTest >> appClass [ 
+	self bridge ifNil: [ ^super appClass  ].
+	^self bridge appClass
+]
+
 { #category : #running }
 PjMultipageExpressClientAppTest >> assertConnected: aBridge [
 
 	| otherBridges |
 	self waitUntil: [ aBridge isConnected ].
 	self bridge: aBridge.
+	self resetInstanceVariables.
 	self assert: app identicalTo: aBridge app.
 	otherBridges := self allBridges copyWithout: aBridge.
 	otherBridges do: [ :each | self deny: each isConnected ]
@@ -48,10 +55,11 @@ PjMultipageExpressClientAppTest >> bridge: aBridge [
 
 { #category : #running }
 PjMultipageExpressClientAppTest >> click: buttonID [
+
 	| button |
-	button := document getElementByID: buttonID.
+	button := document getElementById: buttonID.
 	self deny: button isNil.
-	button click.
+	button click
 ]
 
 { #category : #running }
