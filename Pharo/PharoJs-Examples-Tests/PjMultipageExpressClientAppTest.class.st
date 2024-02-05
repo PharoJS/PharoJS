@@ -71,22 +71,28 @@ PjMultipageExpressClientAppTest >> setUp [
 	bridgePage2 := PjPage2InMultipageExpressApp bridge.
 	bridgePage3 := PjPage3InMultipageExpressApp bridge.
 	serverBridge := bridgePage1 client serverBridge.
-	{ bridgePage2 . bridgePage3  } do: [ : otherBridge | 
-		otherBridge client serverBridge: serverBridge.
-		otherBridge shouldStartJsInterpreter: false.
-		otherBridge startWithoutWaitingForClient.
-	]
-		
+	{
+		bridgePage2.
+		bridgePage3 } do: [ :otherBridge |
+			otherBridge client serverBridge: serverBridge.
+			otherBridge shouldStartJsInterpreter: false.
+			otherBridge startWithoutWaitingForClient ]
 ]
 
 { #category : #running }
 PjMultipageExpressClientAppTest >> stopBridge: aBridge [
-	aBridge ifNil: [ ^self ].
-	aBridge stop
+
+	aBridge ifNil: [ ^ self ].
+	aBridge == self bridgeResource bridge ifTrue: [ ^ self ].
+	"Ensure client won't stop the the bridge to the expressJs server that is managed by the resource and thus reused accross multiple tests cases. BTW, this is dirty the expressJs server should be restarted upon running each test case!"
+	aBridge client serverBridge: nil.
+	aBridge stop.
+	self waitUntil: [ aBridge isServerStopped ]
 ]
 
 { #category : #running }
 PjMultipageExpressClientAppTest >> tearDown [
+
 	self allBridges do: [ :each | self stopBridge: each ].
 	super tearDown
 ]
