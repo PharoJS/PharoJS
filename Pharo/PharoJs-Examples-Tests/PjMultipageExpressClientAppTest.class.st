@@ -12,15 +12,9 @@ Class {
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 
-{ #category : #'suite parameters' }
-PjMultipageExpressClientAppTest class >> appClass [
-
-	^PjPage1InMultipageExpressApp
-]
-
 { #category : #accessing }
-PjMultipageExpressClientAppTest >> allBridges [
-	^{bridgePage1 . bridgePage2 . bridgePage3}
+PjMultipageExpressClientAppTest >> allPageBridges [
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }
@@ -37,7 +31,7 @@ PjMultipageExpressClientAppTest >> assertConnected: aBridge [
 	self bridge: aBridge.
 	self resetInstanceVariables.
 	self assert: app identicalTo: aBridge app.
-	otherBridges := self allBridges copyWithout: aBridge.
+	otherBridges := self allPageBridges copyWithout: aBridge.
 	otherBridges do: [ :each | self deny: each isConnected ]
 ]
 
@@ -54,37 +48,34 @@ PjMultipageExpressClientAppTest >> bridge: aBridge [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> click: buttonID [
+PjMultipageExpressClientAppTest >> initBridges [
 
-	| button |
-	button := document getElementById: buttonID.
-	self deny: button isNil.
-	button click
+	self subclassResponsibility
 ]
 
 { #category : #running }
 PjMultipageExpressClientAppTest >> setUp [
 
-	| serverBridge |
 	super setUp.
-	bridgePage1 := self bridge.
-	bridgePage2 := PjPage2InMultipageExpressApp bridge.
-	bridgePage3 := PjPage3InMultipageExpressApp bridge.
-	serverBridge := bridgePage1 client serverBridge.
-	{
-		bridgePage2.
-		bridgePage3 } do: [ :otherBridge |
-			otherBridge client serverBridge: serverBridge.
-			otherBridge shouldStartJsInterpreter: false.
-			otherBridge startWithoutWaitingForClient ]
+	self initBridges.
+	self setUpOtherBridges
+]
+
+{ #category : #running }
+PjMultipageExpressClientAppTest >> setUpOtherBridges [
+	| serverBridge otherBridges |
+	serverBridge := self bridge client serverBridge.
+	otherBridges := self allPageBridges copyWithout: self bridge.
+	otherBridges do: [ :eachBridge |
+			eachBridge client serverBridge: serverBridge.
+			eachBridge shouldStartJsInterpreter: false.
+			eachBridge startWithoutWaitingForClient ]
 ]
 
 { #category : #running }
 PjMultipageExpressClientAppTest >> stopBridge: aBridge [
 
 	aBridge ifNil: [ ^ self ].
-	aBridge == self bridgeResource bridge ifTrue: [ ^ self ].
-	"Ensure client won't stop the the bridge to the expressJs server that is managed by the resource and thus reused accross multiple tests cases. BTW, this is dirty the expressJs server should be restarted upon running each test case!"
 	aBridge client serverBridge: nil.
 	aBridge stop.
 	self waitUntil: [ aBridge isServerStopped ]
@@ -93,23 +84,16 @@ PjMultipageExpressClientAppTest >> stopBridge: aBridge [
 { #category : #running }
 PjMultipageExpressClientAppTest >> tearDown [
 
-	self allBridges do: [ :each | self stopBridge: each ].
+	self tearDownPageBridges.
 	super tearDown
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> testNavigateBackUsingHistory [
-	self fail: #todo
-]
+PjMultipageExpressClientAppTest >> tearDownPageBridges [
+	"Ensure client won't stop the bridge to the expressJs server that is managed by the resource and thus reused accross multiple tests cases."
 
-{ #category : #running }
-PjMultipageExpressClientAppTest >> testNavigateFromPage1ToPage2AndToPage3 [
-
-	self assertConnected: bridgePage1.
-	self click: #goToPage2Button.
-	self assertConnected: bridgePage2.
-	self click: #goToPage3Button.
-	self assertConnected: bridgePage3.
-	self click: #goToPage1Button.
-	self assertConnected: bridgePage1
+	| otherBridges |
+	otherBridges := self allPageBridges copyWithout:
+		                self bridgeResource bridge.
+	otherBridges do: [ :each | self stopBridge: each ]
 ]
