@@ -67,8 +67,10 @@ PjLocalWebServedBridgeClient >> stop [
 
 { #category : #actions }
 PjLocalWebServedBridgeClient >> urlPath [
-	"Assumes page html is located in server static file folder. But, it might go in a subfolder"
 
+	| serverAppClass |
+	serverAppClass := self appClass serverAppClass.
 	^ self appClass appFullHtmlFileName pathString allButFirst:
-		  self appClass appFolder pathString size
+		  (serverAppClass appFolder / serverAppClass staticFilesFolderName)
+			  pathString size
 ]

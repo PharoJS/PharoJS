@@ -4,16 +4,9 @@ Class {
 	#category : #'PharoJs-Examples-ExpressJS'
 }
 
-{ #category : #accssing }
-PjPage3InMultipageExpressApp class >> appHtmlFileName [
+{ #category : #exporting }
+PjPage3InMultipageExpressApp class >> defaultAppFolderName [
 
 	<pharoJsSkip>
-	^ 'page3.html'
-]
-
-{ #category : #accssing }
-PjPage3InMultipageExpressApp class >> appJsFileName [
-
-	<pharoJsSkip>
-	^ 'page3.js'
+	^ #page3
 ]
