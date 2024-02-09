@@ -25,6 +25,5 @@ PjPageViewerApp >> initialize [
 { #category : #'page viewing' }
 PjPageViewerApp >> open: url [
 
-	frame src: url.
-
+	frame src: url
 ]
