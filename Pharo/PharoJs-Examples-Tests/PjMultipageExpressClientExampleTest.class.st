@@ -1,12 +1,12 @@
 Class {
-	#name : #PjMultipageExpressClientExampleAppTest,
-	#superclass : #PjMultipageExpressClientAppTest,
+	#name : #PjMultipageExpressClientExampleTest,
+	#superclass : #PjMultipageExpressClientTest,
 	#classTraits : 'PjTAppRunsInJS classTrait',
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 
 { #category : #running }
-PjMultipageExpressClientExampleAppTest >> click: buttonID [
+PjMultipageExpressClientExampleTest >> click: buttonID [
 
 	| button |
 	button := document getElementById: buttonID.
@@ -15,13 +15,13 @@ PjMultipageExpressClientExampleAppTest >> click: buttonID [
 ]
 
 { #category : #running }
-PjMultipageExpressClientExampleAppTest >> pageAppClasses [
+PjMultipageExpressClientExampleTest >> pageAppClasses [
 
 	^PjMultipageExpressClientExampleApp subclasses
 ]
 
 { #category : #running }
-PjMultipageExpressClientExampleAppTest >> testNavigateFromPage1ToPage2AndToPage3 [
+PjMultipageExpressClientExampleTest >> testNavigateFromPage1ToPage2AndToPage3 [
 
 	self openPage: PjPage1InMultipageExpressExampleApp.
 	self click: #goToPage2Button.

@@ -1,5 +1,17 @@
+"
+Root class for testing express JS clients with multiple pages. 
+Each page is controlled via an app instance of a subclass of PjWebApplication.
+
+- Subclasses should define pageAppClasses that answers the list of app classes for all pages to be tested.
+- A test can directly open a given page using method #openPage: which argument is the app class of the page to open.
+- A test can assert that a page is displayed using method #assertShowingPage:  which argument is the app class of the expected page
+
+Implementation
+Relies on PjPageViewerApp to open pages and eventually upon tearDown close them
+
+"
 Class {
-	#name : #PjMultipageExpressClientAppTest,
+	#name : #PjMultipageExpressClientTest,
 	#superclass : #PjWebAppTestCase,
 	#traits : 'PjTAppRunsInJS',
 	#classTraits : 'PjTAppRunsInJS classTrait',
@@ -9,23 +21,28 @@ Class {
 		'serverManagerBridge',
 		'pageBridgesDict'
 	],
-	#category : #'PharoJs-Examples-Tests-ExpressJS'
+	#category : #'PharoJs-TestFramework-Kernel'
 }
 
 { #category : #'suite parameters' }
-PjMultipageExpressClientAppTest class >> appClass [
+PjMultipageExpressClientTest class >> appClass [
 
 	^ PjPageViewerApp 
 ]
 
+{ #category : #testing }
+PjMultipageExpressClientTest class >> isAbstract [ 
+	^self == PjMultipageExpressClientTest 
+]
+
 { #category : #accessing }
-PjMultipageExpressClientAppTest >> appClass [ 
+PjMultipageExpressClientTest >> appClass [ 
 	self bridge ifNil: [ ^super appClass  ].
 	^self bridge appClass
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> assertShowingPage: anAppClass [
+PjMultipageExpressClientTest >> assertShowingPage: anAppClass [
 
 	| otherBridges pageBridge |
 	pageBridge := pageBridgesDict
@@ -39,19 +56,19 @@ PjMultipageExpressClientAppTest >> assertShowingPage: anAppClass [
 ]
 
 { #category : #accessing }
-PjMultipageExpressClientAppTest >> bridge [
+PjMultipageExpressClientTest >> bridge [
 	^activeBridge ifNil: [ super bridge ]
 ]
 
 { #category : #accessing }
-PjMultipageExpressClientAppTest >> bridge: aBridge [
+PjMultipageExpressClientTest >> bridge: aBridge [
 
 	activeBridge := aBridge.
 	PjBridge soleBridge: activeBridge
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> createPageBridges [
+PjMultipageExpressClientTest >> createPageBridges [
 
 	pageBridgesDict := IdentityDictionary new.
 	self pageAppClasses do: [ : class | 
@@ -60,7 +77,7 @@ PjMultipageExpressClientAppTest >> createPageBridges [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> openPage: anAppClass [
+PjMultipageExpressClientTest >> openPage: anAppClass [
 
 	| pageBridge |
 	pageBridge := pageBridgesDict at: anAppClass.
@@ -69,18 +86,18 @@ PjMultipageExpressClientAppTest >> openPage: anAppClass [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> pageAppClasses [
+PjMultipageExpressClientTest >> pageAppClasses [
 	self subclassResponsibility 
 ]
 
 { #category : #accessing }
-PjMultipageExpressClientAppTest >> pageBridges [
+PjMultipageExpressClientTest >> pageBridges [
 
 	^pageBridgesDict values
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> setUp [
+PjMultipageExpressClientTest >> setUp [
 
 	super setUp.
 	pageViewer := app.
@@ -88,7 +105,7 @@ PjMultipageExpressClientAppTest >> setUp [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> setUpOtherPageBridges [
+PjMultipageExpressClientTest >> setUpOtherPageBridges [
 
 	| otherPageBridges serverBridge |
 	serverBridge := serverManagerBridge client serverBridge.
@@ -101,7 +118,7 @@ PjMultipageExpressClientAppTest >> setUpOtherPageBridges [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> setUpPageBridges [
+PjMultipageExpressClientTest >> setUpPageBridges [
 
 	self createPageBridges.
 	self setUpServerManagerBridge.
@@ -109,7 +126,7 @@ PjMultipageExpressClientAppTest >> setUpPageBridges [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> setUpServerManagerBridge [
+PjMultipageExpressClientTest >> setUpServerManagerBridge [
 
 	serverManagerBridge := self pageBridges anyOne.
 	serverManagerBridge
@@ -118,14 +135,14 @@ PjMultipageExpressClientAppTest >> setUpServerManagerBridge [
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> tearDown [
+PjMultipageExpressClientTest >> tearDown [
 
 	self tearDownPageBridges.
 	super tearDown
 ]
 
 { #category : #running }
-PjMultipageExpressClientAppTest >> tearDownPageBridges [
+PjMultipageExpressClientTest >> tearDownPageBridges [
 
 	self pageBridges do: [ :each |
 		each stop. ]
