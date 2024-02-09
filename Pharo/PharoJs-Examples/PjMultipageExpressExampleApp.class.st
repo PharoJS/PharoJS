@@ -1,11 +1,11 @@
 Class {
-	#name : #PjMultipageExpressApp,
+	#name : #PjMultipageExpressExampleApp,
 	#superclass : #PjExpressApp,
 	#category : #'PharoJs-Examples-ExpressJS'
 }
 
 { #category : #initialization }
-PjMultipageExpressApp class >> staticFilesFolderName [
+PjMultipageExpressExampleApp class >> staticFilesFolderName [
 
 	^ 'pages'
 ]

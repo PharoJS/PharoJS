@@ -1,5 +1,5 @@
 Class {
-	#name : #PjMultipageExpressClientApp,
+	#name : #PjMultipageExpressClientExampleApp,
 	#superclass : #PjWebApplication,
 	#traits : 'PjTWebClientApp',
 	#classTraits : 'PjTWebClientApp classTrait',
@@ -7,8 +7,8 @@ Class {
 }
 
 { #category : #exporting }
-PjMultipageExpressClientApp class >> serverAppClass [
+PjMultipageExpressClientExampleApp class >> serverAppClass [
 
 	<pharoJsSkip>
-	^ PjMultipageExpressApp 
+	^ PjMultipageExpressExampleApp 
 ]
