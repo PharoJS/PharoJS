@@ -5,11 +5,6 @@ Class {
 	#category : #'PharoJs-Examples-Tests-ExpressJS'
 }
 
-{ #category : #accessing }
-PjMultipageExpressClientExampleAppTest >> allPageBridges [
-	^{bridgePage1 . bridgePage2 . bridgePage3}
-]
-
 { #category : #running }
 PjMultipageExpressClientExampleAppTest >> click: buttonID [
 
@@ -20,21 +15,20 @@ PjMultipageExpressClientExampleAppTest >> click: buttonID [
 ]
 
 { #category : #running }
-PjMultipageExpressClientExampleAppTest >> createPageBridges [
+PjMultipageExpressClientExampleAppTest >> pageAppClasses [
 
-	bridgePage1 := PjPage1InMultipageExpressExampleApp bridge.
-	bridgePage2 := PjPage2InMultipageExpressExampleApp bridge.
-	bridgePage3 := PjPage3InMultipageExpressExampleApp bridge
+	^PjMultipageExpressClientExampleApp subclasses
 ]
 
 { #category : #running }
 PjMultipageExpressClientExampleAppTest >> testNavigateFromPage1ToPage2AndToPage3 [
 
-	self openPageOfBridge: bridgePage1 .
+	self openPage: PjPage1InMultipageExpressExampleApp.
 	self click: #goToPage2Button.
-	self assertConnected: bridgePage2.
+	self assertShowingPage:  PjPage2InMultipageExpressExampleApp.
 	self click: #goToPage3Button.
-	self assertConnected: bridgePage3.
+	self assertShowingPage:  PjPage3InMultipageExpressExampleApp.
 	self click: #goToPage1Button.
-	self assertConnected: bridgePage1
+	self assertShowingPage:  PjPage1InMultipageExpressExampleApp.
+
 ]
