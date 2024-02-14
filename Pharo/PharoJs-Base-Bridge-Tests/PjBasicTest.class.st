@@ -17,6 +17,31 @@ PjBasicTest >> testBasicEquality [
 { #category : #tests }
 PjBasicTest >> testBooleanEquality [
 
+	self assertBlock: [ true = true ].
+	self assertBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := true.
+		boolean = otherValue ].
+	self assertBlock: [ false = false ].
+	self assertBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := false.
+		boolean = otherValue ].
+	self denyBlock: [ true = false ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := false.
+		boolean = otherValue ].
+	self denyBlock: [ false = true ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := true.
+		boolean = otherValue ].
+
 	self denyBlock: [ true = #Person ].
 	self denyBlock: [
 		| boolean otherValue |
@@ -28,7 +53,7 @@ PjBasicTest >> testBooleanEquality [
 		| boolean otherValue |
 		boolean := true.
 		otherValue := #Person.
-		otherValue = boolean].
+		otherValue = boolean ].
 	self denyBlock: [ false = nil ].
 	self denyBlock: [
 		| boolean otherValue |
@@ -40,8 +65,61 @@ PjBasicTest >> testBooleanEquality [
 		| boolean otherValue |
 		boolean := false.
 		otherValue := nil.
-		otherValue = boolean].
+		otherValue = boolean ]
+]
 
+{ #category : #tests }
+PjBasicTest >> testBooleanInequality [
+
+	self denyBlock: [ true ~= true ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := true.
+		boolean ~= otherValue ].
+	self denyBlock: [ false ~= false ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := false.
+		boolean ~= otherValue ].
+	self assertBlock: [ true ~= false ].
+	self assertBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := false.
+		boolean ~= otherValue ].
+	self assertBlock: [ false ~= true ].
+	self assertBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := true.
+		boolean ~= otherValue ].
+
+	self assertBlock: [ true ~= #Person ].
+	self assertBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := #Person.
+		boolean ~= otherValue ].
+	self denyBlock: [ #Person = true ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := #Person.
+		otherValue = boolean ].
+	self denyBlock: [ false = nil ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := nil.
+		boolean = otherValue ].
+	self assertBlock: [ nil ~= false ].
+	self assertBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := nil.
+		otherValue ~= boolean ]
 ]
 
 { #category : #tests }
@@ -251,6 +329,53 @@ PjBasicTest >> testMultilineConstants [
 		'this
 			and that' size ].
 	self assertEquivalent: [ #( 1 2 3 4 5 6 ) size ]
+]
+
+{ #category : #tests }
+PjBasicTest >> testNilEquality [
+
+	self assertBlock: [ nil = nil ].
+	self assertBlock: [
+		| var1 var2 |
+		var1 := nil.
+		var2 := nil.
+		var1 = var2 ].
+
+	self denyBlock: [ nil = #Pharo ].
+	self denyBlock: [
+		| var1 var2 |
+		var1 := nil.
+		var2 := #Pharo.
+		var1 = var2 ].
+	self denyBlock: [ #Pharo = nil ].
+	self denyBlock: [
+		| var1 var2 |
+		var1 := #Pharo.
+		var2 := nil.
+		var1 = var2 ]
+]
+
+{ #category : #tests }
+PjBasicTest >> testNilInequality [
+
+	self denyBlock: [ nil ~= nil ].
+	self denyBlock: [
+		| var1 var2 |
+		var1 := nil.
+		var2 := nil.
+		var1 ~= var2 ].
+	self assertBlock: [ nil ~= #Pharo ].
+	self assertBlock: [
+		| var1 var2 |
+		var1 := nil.
+		var2 := #Pharo.
+		var1 ~= var2 ].
+	self assertBlock: [ #Pharo ~= nil ].
+	self assertBlock: [
+		| var1 var2 |
+		var1 := #Pharo.
+		var2 := nil.
+		var1 ~= var2 ]
 ]
 
 { #category : #tests }

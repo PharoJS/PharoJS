@@ -74,3 +74,10 @@ PjUndefinedObject >> proxyResponse [
 PjUndefinedObject >> value [
 	^ nil
 ]
+
+{ #category : #comparing }
+PjUndefinedObject >> ~= other [
+
+	<javascript: 'return null!=other'>
+	
+]
