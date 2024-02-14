@@ -30,11 +30,6 @@ PjBoolean >> & aBoolean [
 ]
 
 { #category : #comparing }
-PjBoolean >> = other [
-	<javascript: 'return this==Boolean(other)'>
-]
-
-{ #category : #comparing }
 PjBoolean >> == other [
 	^ self = other
 ]

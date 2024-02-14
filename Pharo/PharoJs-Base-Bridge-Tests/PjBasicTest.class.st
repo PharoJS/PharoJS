@@ -15,6 +15,36 @@ PjBasicTest >> testBasicEquality [
 ]
 
 { #category : #tests }
+PjBasicTest >> testBooleanEquality [
+
+	self denyBlock: [ true = #Person ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := #Person.
+		boolean = otherValue ].
+	self denyBlock: [ #Person = true ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := #Person.
+		otherValue = boolean].
+	self denyBlock: [ false = nil ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := nil.
+		boolean = otherValue ].
+	self denyBlock: [ nil = false ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := nil.
+		otherValue = boolean].
+
+]
+
+{ #category : #tests }
 PjBasicTest >> testBooleanMethods [
 
 	self assertEquivalent: [ true asBit ].
