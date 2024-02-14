@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 PjUndefinedObjectTest >> testNilCannotBeReplaced [
 
-	self assertBlock: [ PjUndefinedObject uniqueInstance == nil yourself ].
+	self assertBlock: [ PjUndefinedObject uniqueInstance value == nil yourself ].
 	self evalBlock: [ 
 		window at: #originalNil put: PjUndefinedObject uniqueInstance ].
 	self
