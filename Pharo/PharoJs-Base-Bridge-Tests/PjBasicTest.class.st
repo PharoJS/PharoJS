@@ -340,6 +340,11 @@ PjBasicTest >> testNilEquality [
 		var1 := nil.
 		var2 := nil.
 		var1 = var2 ].
+	self assertBlock: [
+		| var1 var2 |
+		var1 := nil.
+		var2 := nil.
+		var1 = var2 yourself].
 
 	self denyBlock: [ nil = #Pharo ].
 	self denyBlock: [
@@ -364,6 +369,11 @@ PjBasicTest >> testNilInequality [
 		var1 := nil.
 		var2 := nil.
 		var1 ~= var2 ].
+	self denyBlock: [
+		| var1 var2 |
+		var1 := nil.
+		var2 := nil.
+		var1 ~= var2 yourself ].
 	self assertBlock: [ nil ~= #Pharo ].
 	self assertBlock: [
 		| var1 var2 |

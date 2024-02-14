@@ -75,6 +75,12 @@ PjUndefinedObject >> value [
 	^ nil
 ]
 
+{ #category : #accessing }
+PjUndefinedObject >> yourself [
+
+	^nil
+]
+
 { #category : #comparing }
 PjUndefinedObject >> ~= other [
 
