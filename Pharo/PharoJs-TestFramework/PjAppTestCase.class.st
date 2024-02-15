@@ -64,11 +64,22 @@ PjAppTestCase >> appClass [
 	^self class appClass
 ]
 
-{ #category : #testing }
+{ #category : #asserting }
 PjAppTestCase >> assert: aBlock evaluatesTo: expectedResult [
+
 	| actualResult |
-	actualResult := self evalBlock: aBlock.
-	self assert: actualResult equals: expectedResult.
+	actualResult := (self bridge evalBlock: aBlock) asLocalObject.
+	expectedResult isNumber ifTrue: [ 
+		expectedResult isNaN ifTrue: [ ^ self assert: actualResult isNaN ] ].
+	self assert: actualResult equals: expectedResult
+]
+
+{ #category : #asserting }
+PjAppTestCase >> assert: aBlock evaluatesToRaw: expectedJsonString [
+
+	| actualResult |
+	actualResult := self bridge evalBlock: aBlock.
+	self assert: actualResult asRawJSONString equals: expectedJsonString
 ]
 
 { #category : #testing }
@@ -76,11 +87,27 @@ PjAppTestCase >> assertBlock: aBlock [
 	self assert: aBlock evaluatesTo: true
 ]
 
-{ #category : #testing }
-PjAppTestCase >> assertSmalltalk: smalltalkExpressionString resultsInto: expected [
-	| actual | 
-	actual := self eval: smalltalkExpressionString.
-	self assert: actual equals: expected.
+{ #category : #asserting }
+PjAppTestCase >> assertBlock: block1 equalsBlock: block2 [
+
+	| result1 result2 |
+	result1 := self evalBlock: block1.
+	result2 := self evalBlock: block2.
+	self assert: result1 = result2
+]
+
+{ #category : #asserting }
+PjAppTestCase >> assertEquivalent: aBlock [
+
+	self assert: aBlock evaluatesTo: aBlock value
+]
+
+{ #category : #asserting }
+PjAppTestCase >> assertJavascript: expressionString evaluatesTo: expectedResultString [
+
+	self
+		assert: (self bridge evalJavascript: expressionString)
+		equals: expectedResultString
 ]
 
 { #category : #accessing }
@@ -126,6 +153,15 @@ PjAppTestCase >> defaultBridgeResourceClass [
 { #category : #testing }
 PjAppTestCase >> denyBlock: aBlock [ 
 	self assert: aBlock evaluatesTo: false
+]
+
+{ #category : #asserting }
+PjAppTestCase >> denyBlock: block1 equalsBlock: block2 [
+
+	| result1 result2 |
+	result1 := self evalBlock: block1.
+	result2 := self evalBlock: block2.
+	self deny: result1 equals: result2
 ]
 
 { #category : #testing }

@@ -41,53 +41,6 @@ PjBridgeTestCase >> addToDOM: html [
 		document body appendChild: div ]
 ]
 
-{ #category : #asserting }
-PjBridgeTestCase >> assert: aBlock evaluatesTo: expectedResult [
-
-	| actualResult |
-	actualResult := (self bridge evalBlock: aBlock) asLocalObject.
-	expectedResult isNumber ifTrue: [ 
-		expectedResult isNaN ifTrue: [ ^ self assert: actualResult isNaN ] ].
-	self assert: actualResult equals: expectedResult
-]
-
-{ #category : #asserting }
-PjBridgeTestCase >> assert: aBlock evaluatesToRaw: expectedJsonString [
-
-	| actualResult |
-	actualResult := self bridge evalBlock: aBlock.
-	self assert: actualResult asRawJSONString equals: expectedJsonString
-]
-
-{ #category : #asserting }
-PjBridgeTestCase >> assertBlock: aBlock [
-
-	self assert: aBlock evaluatesTo: true
-]
-
-{ #category : #asserting }
-PjBridgeTestCase >> assertBlock: block1 equalsBlock: block2 [
-
-	| result1 result2 |
-	result1 := self evalBlock: block1.
-	result2 := self evalBlock: block2.
-	self assert: result1 = result2
-]
-
-{ #category : #asserting }
-PjBridgeTestCase >> assertEquivalent: aBlock [
-
-	self assert: aBlock evaluatesTo: aBlock value
-]
-
-{ #category : #asserting }
-PjBridgeTestCase >> assertJavascript: expressionString evaluatesTo: expectedResultString [
-
-	self
-		assert: (self bridge evalJavascript: expressionString)
-		equals: expectedResultString
-]
-
 { #category : #'test support' }
 PjBridgeTestCase >> checkBasic: value [
 
@@ -107,21 +60,6 @@ PjBridgeTestCase >> checkProxy: value [
 					   globalName: value asJSON;
 					   yourself)) getValueWithBridge: self bridge)
 		equals: value
-]
-
-{ #category : #asserting }
-PjBridgeTestCase >> denyBlock: block1 equalsBlock: block2 [
-
-	| result1 result2 |
-	result1 := self evalBlock: block1.
-	result2 := self evalBlock: block2.
-	self deny: result1 equals: result2
-]
-
-{ #category : #'test support' }
-PjBridgeTestCase >> evalBlock: aBlock [
-
-	^ self bridge evalBlock: aBlock
 ]
 
 { #category : #running }

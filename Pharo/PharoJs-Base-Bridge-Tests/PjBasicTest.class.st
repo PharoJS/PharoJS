@@ -48,12 +48,18 @@ PjBasicTest >> testBooleanEquality [
 		boolean := true.
 		otherValue := #Person.
 		boolean = otherValue ].
-	self denyBlock: [ #Person = true ].
+	self denyBlock: [ false = #Person ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := false.
+		otherValue := #Person.
+		boolean = otherValue ].
+	self denyBlock: [ true = #Person ].
 	self denyBlock: [
 		| boolean otherValue |
 		boolean := true.
 		otherValue := #Person.
-		otherValue = boolean ].
+		boolean = otherValue ].
 	self denyBlock: [ false = nil ].
 	self denyBlock: [
 		| boolean otherValue |
@@ -65,7 +71,14 @@ PjBasicTest >> testBooleanEquality [
 		| boolean otherValue |
 		boolean := false.
 		otherValue := nil.
-		otherValue = boolean ]
+		otherValue = boolean ].
+	self denyBlock: [ true = nil ].
+	self denyBlock: [
+		| boolean otherValue |
+		boolean := true.
+		otherValue := nil.
+		boolean = otherValue ].
+
 ]
 
 { #category : #tests }
@@ -126,7 +139,23 @@ PjBasicTest >> testBooleanInequality [
 PjBasicTest >> testBooleanMethods [
 
 	self assertEquivalent: [ true asBit ].
-	self assertEquivalent: [ false asBit ]
+	self assertEquivalent: [ false asBit ].
+	self assertEquivalent: [ true not ]. 
+	self assertEquivalent: [ false not ].
+	self assertBlock: [
+		| exceptionSignaled |
+		exceptionSignaled := false.
+		[ nil not ]
+			on: Error
+			do: [ exceptionSignaled := true ].
+		exceptionSignaled ].
+	self assertBlock: [
+		| exceptionSignaled |
+		exceptionSignaled := false.
+		[ #SunnyDay not ]
+			on: Error
+			do: [ exceptionSignaled := true ].
+		exceptionSignaled ]
 ]
 
 { #category : #tests }

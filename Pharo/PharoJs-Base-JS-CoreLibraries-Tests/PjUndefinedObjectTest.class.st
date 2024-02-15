@@ -7,15 +7,21 @@ Class {
 { #category : #tests }
 PjUndefinedObjectTest >> testNilCannotBeReplaced [
 
-	self assertBlock: [ PjUndefinedObject uniqueInstance value == nil yourself ].
-	self evalBlock: [ 
+	self evalBlock: [
 		window at: #originalNil put: PjUndefinedObject uniqueInstance ].
 	self
-		should: [ 
+		should: [
 		self evalBlock: [ PjUndefinedObject uniqueInstance: #( 42 ) ] ]
 		raise: Error.
-	self assertBlock: [ 
+	self assertBlock: [
 		(window at: #originalNil) == PjUndefinedObject uniqueInstance ]
+]
+
+{ #category : #tests }
+PjUndefinedObjectTest >> testNilObjectDoesNotLeak [
+	self assertBlock: [
+		nil value == nil ].
+	self assertBlock: [ nil yourself == nil ]
 ]
 
 { #category : #tests }
