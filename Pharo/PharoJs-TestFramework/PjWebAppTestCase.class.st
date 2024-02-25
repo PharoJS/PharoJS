@@ -13,3 +13,9 @@ Class {
 PjWebAppTestCase >> document [ 	
 	^document
 ]
+
+{ #category : #accessing }
+PjWebAppTestCase >> window [
+
+	^window
+]

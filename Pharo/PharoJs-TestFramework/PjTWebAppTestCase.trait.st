@@ -4,6 +4,12 @@ Trait {
 }
 
 { #category : #asserting }
+PjTWebAppTestCase >> assertHidden: element [
+
+	self waitUntil: [(self computedDisplayStyleOf: element) = 'none']
+]
+
+{ #category : #asserting }
 PjTWebAppTestCase >> assertInnerHtmlOfElement: domElement equals: expectedValue [
 	self assert: domElement innerHTML equals: expectedValue
 ]
@@ -14,6 +20,12 @@ PjTWebAppTestCase >> assertInnerHtmlOfElementById: id equals: expectedValue [
 	self
 		assertInnerHtmlOfElement: (self document getElementById: id)
 		equals: expectedValue
+]
+
+{ #category : #asserting }
+PjTWebAppTestCase >> assertShowing: element [
+
+	self waitWhile: [ (self computedDisplayStyleOf: element) = 'none' ]
 ]
 
 { #category : #asserting }
@@ -53,6 +65,12 @@ PjTWebAppTestCase >> clickElementById: aString [
 ]
 
 { #category : #'UI handling' }
+PjTWebAppTestCase >> computedDisplayStyleOf: element [
+
+	^ (self window getComputedStyle: element) display
+]
+
+{ #category : #'UI handling' }
 PjTWebAppTestCase >> dispatchEvent: eventName to: htmlElement [
 	htmlElement dispatchEvent: (self newEvent: eventName)
 ]
@@ -69,4 +87,10 @@ PjTWebAppTestCase >> newEvent: eventName [
 	event := self document createEvent: #HTMLEvents.
 	event initEvent: eventName with: true with: true.
 	^ event
+]
+
+{ #category : #accessing }
+PjTWebAppTestCase >> window [
+
+	self explicitRequirement
 ]
