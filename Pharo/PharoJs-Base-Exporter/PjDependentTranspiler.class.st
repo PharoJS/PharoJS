@@ -138,17 +138,26 @@ PjDependentTranspiler >> generateCodeStringFrom: jsAst [
 
 { #category : #transpiling }
 PjDependentTranspiler >> importMethodsAll: aCollection forClass: aClass [
+
 	| importMethods |
 	importMethods := Dictionary new.
-	aCollection
-		do: [ :aSymbol | 
-			(aClass instanceSide hasClassMethod: aSymbol)
-				ifTrue: [ (aClass instanceSide perform: aSymbol)
-						associationsDo: [ :assoc | 
-							importMethods
-								at: assoc key
-								ifPresent: [ :im | im value addAll: assoc value ]
-								ifAbsent: [ importMethods at: assoc key put: assoc value asSet ] ] ] ].
+	aCollection do: [ :aSymbole |
+		aClass classSide pragmas collect: [ :aPragma |
+			aPragma key = aSymbole ifTrue: [
+				(aClass instanceSide perform: aPragma method selector)
+					associationsDo: [ :assoc |
+						importMethods
+							at: assoc key
+							ifPresent: [ :im | im value addAll: assoc value ]
+							ifAbsent: [ importMethods at: assoc key put: assoc value asSet ] ] ] ] ].
+	aCollection do: [ :aSymbol |
+		(aClass instanceSide hasClassMethod: aSymbol) ifTrue: [
+			(aClass instanceSide perform: aSymbol) associationsDo: [ :assoc |
+				importMethods
+					at: assoc key
+					ifPresent: [ :im | im value addAll: assoc value ]
+					ifAbsent: [ importMethods at: assoc key put: assoc value asSet ] ] ] ].
+
 	^ importMethods
 ]
 
