@@ -9,12 +9,13 @@ PjStatistics statsForApp: PjCounterBrowserApp .
 PjStatistics statsForAll: { PjHelloWorldApp. PjMinimalBrowserApplication}
 "
 Class {
-	#name : #PjStatistics,
-	#superclass : #Object,
-	#category : #'PharoJs-Utilities-Statistics'
+	#name : 'PjStatistics',
+	#superclass : 'Object',
+	#category : 'PharoJs-Utilities-Statistics',
+	#package : 'PharoJs-Utilities-Statistics'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 PjStatistics class >> example1 [
 
 	Transcript
@@ -24,7 +25,7 @@ PjStatistics class >> example1 [
 	self statsForApp: PjCounterBrowserApp
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 PjStatistics class >> example2 [
 
 	Transcript
@@ -36,24 +37,26 @@ PjStatistics class >> example2 [
 			PjMinimalWebApplication }
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 PjStatistics class >> statsForAll: appClasses [
 
 	appClasses do: [ : cl | self statsForApp: cl ]
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 PjStatistics class >> statsForApp: appClass [
 
 	| exporter actuallyExportedClasses methodsCount jsCode |
 	exporter := appClass exporterClass newWithAppClass: appClass.
-	jsCode := String streamContents: [ :stream | exporter writeJsCodeOn: stream ].
+	jsCode := String streamContents: [ :stream |
+		          exporter writeJsCodeOn: stream ].
 	actuallyExportedClasses := exporter bootstrapClasses asSet
-		, exporter nonBootstrapClasses asSet collect: #classToUseForJsConversion.
+	                           , exporter nonBootstrapClasses asSet
+		                           collect: #classToUseForJsConversion.
 	methodsCount := actuallyExportedClasses
-		inject: 0
-		into: [ :count :cl | count + cl selectors size ].
-	Transcript 
+		                inject: 0
+		                into: [ :count :cl | count + cl selectors size ].
+	Transcript
 		cr;
 		show: '----------------';
 		cr;
@@ -71,7 +74,7 @@ PjStatistics class >> statsForApp: appClass [
 		show: methodsCount;
 		cr;
 		show: 'Exported JS: ';
-		show: jsCode size humanReadableSIByteSize;
+		show: jsCode size humanReadableSISizeString;
 		cr;
 		show: '----------------'
 ]

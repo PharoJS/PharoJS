@@ -1,1 +1,1 @@
-Package { #name : #'PharoJs-Utilities-Statistics' }
+Package { #name : 'PharoJs-Utilities-Statistics' }
