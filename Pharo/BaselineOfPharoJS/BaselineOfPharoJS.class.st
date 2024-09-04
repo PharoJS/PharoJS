@@ -46,7 +46,7 @@ BaselineOfPharoJS >> groups: spec [
 			group: 'Exporter' with: #('PharoJs-Base-Exporter');
 			group: 'Bridge' with: #('PharoJs-Base-Bridge')	;
 			group: 'Examples' with: #('PharoJs-Examples');
-			group: 'Benchmarks' with: #('PharoJs-Benchmarking');
+			group: 'Benchmarks' with: #('PharoJs-Benchmark-Timing' 'PharoJs-Benchmark-Coverage');
 			group: 'Statistics' with: #('PharoJs-Utilities-Statistics');
 			group: 'Tools' with: #('PharoJs-Tools').
 			
