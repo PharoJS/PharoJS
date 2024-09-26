@@ -2,35 +2,37 @@
 I contain strings that ahould go literally into the output stream
 "
 Class {
-	#name : #PjUnparsedStringNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjUnparsedStringNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'string'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjUnparsedStringNode class >> string: string [
 	^ self new string: string; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjUnparsedStringNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitUnparsedStringNode: self
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjUnparsedStringNode >> asJsAstUsing: astConverter [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjUnparsedStringNode >> string [
 	^ string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjUnparsedStringNode >> string: anObject [
 	string := anObject
 ]

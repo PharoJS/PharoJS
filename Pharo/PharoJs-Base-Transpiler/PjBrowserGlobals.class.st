@@ -4,8 +4,8 @@ I contain globals for all browser Javascript engines.
 Use PjDomGlobals and PjUniversalGlobals too.
 "
 Class {
-	#name : #PjBrowserGlobals,
-	#superclass : #PjJavascriptGlobals,
+	#name : 'PjBrowserGlobals',
+	#superclass : 'PjJavascriptGlobals',
 	#classVars : [
 		'Event',
 		'Float32Array',
@@ -21,5 +21,7 @@ Class {
 		'PjDomGlobals',
 		'PjUniversalGlobals'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }

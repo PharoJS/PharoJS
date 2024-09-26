@@ -2,8 +2,8 @@
 I translate Smalltalk ASTs into PjAST (javascript ASTs)
 "
 Class {
-	#name : #PjAstConverter,
-	#superclass : #Object,
+	#name : 'PjAstConverter',
+	#superclass : 'Object',
 	#instVars : [
 		'blockNestingLevel',
 		'isReturnLegalInBlocks',
@@ -25,46 +25,48 @@ Class {
 		'extraBindings',
 		'loopNestingLevel'
 	],
-	#category : #'PharoJs-Base-Transpiler-Kernel'
+	#category : 'PharoJs-Base-Transpiler-Kernel',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Kernel'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter class >> jsCodeGeneratorPragmaKeyword [
 	"The argument of the pragma is a selector for class side message that generates javascript code that is used as the body of the method.
 	The smalltalk code if any is simply ignored."
 	^#jsGenerator:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter class >> jsCodePragmaKeyword [
 	"The argument of the pragma provides javascript code that is used as the body of the method.
 	The smalltalk code if any is simply ignored."
 	^#javascript:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter class >> jsLiteralGeneratorPragmaKeyword [
 	"The argument of the pragma is a selector for class side message that generates javascript code that is used as the body of the method.
 	The smalltalk code if any is simply ignored."
 	^#jsLiteralGenerator
 ]
 
-{ #category : #conversions }
+{ #category : 'conversions' }
 PjAstConverter >> addAllConversions: aCollection [
 	messageConverter addAllConversions: aCollection
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjAstConverter >> addAllMessageConversions: conversions [
 	self messageConverter addAllConversions: conversions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> allowReturnsInBlocks [
 	self isReturnLegalInBlocks: true
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> astForJsCode: jsCode [
 	^ {(PjUnparsedStringNode
 		string:
@@ -78,30 +80,30 @@ PjAstConverter >> astForJsCode: jsCode [
 						reject: [ :each | each isEmpty or: [ each beginsWith: '//' ] ])))}
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> checkFree: aRBVariableNode [
 	^ blockClosureAnalyser ifNotNil: [
 		blockClosureAnalyser checkFree: aRBVariableNode]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> checkSelfReturn: result [
 	result canPropogateReturns ifFalse: [
 		blockNestingLevel = 0 ifTrue: [ needSelfReturn := true ]].
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> classForConversion [
 	^ classForConversion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> classForConversion: anObject [
 	classForConversion := anObject
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> classForVariable: aRBVariableNode [
 
 	| methodNode |
@@ -110,20 +112,21 @@ PjAstConverter >> classForVariable: aRBVariableNode [
 	^ aRBVariableNode variable definingClass
 ]
 
-{ #category : #public }
-PjAstConverter >> convertAst: ast withPrimitive: anInteger [
-	methodPrimitive := anInteger.
-	^self visit: ast
+{ #category : 'public' }
+PjAstConverter >> convertAst: ast isPrimitive: isPrimitive [
+	isPrimitive ifTrue: [ 
+		PjJavascriptTranspilationError signal: 'primitive method: ', ast selector ].
+	 ^self visit: ast
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> convertBlock: aBlockClosure [
 	blockClosureAnalyser := PjBlockClosureAnalyser onBlock: aBlockClosure.
 	[^ self visit: blockClosureAnalyser sourceNode
 	] ensure: [blockClosureAnalyser := nil]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> convertClosedBlock: block [
 	| savedBlockClosureAnalyser |
 	savedBlockClosureAnalyser := blockClosureAnalyser.
@@ -132,13 +135,13 @@ PjAstConverter >> convertClosedBlock: block [
 	] ensure: [blockClosureAnalyser := savedBlockClosureAnalyser]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> convertFirstStatementOfBlock: stAst [
 	self reset.
 	^ self visit: stAst
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> convertValuedBlock: block [
 	| closedBlockAst closedBlockAstArgs|
 	closedBlockAst := self convertClosedBlock: block.
@@ -146,7 +149,7 @@ PjAstConverter >> convertValuedBlock: block [
 	^PjApplyNode func: closedBlockAst args: closedBlockAstArgs
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> copyStatementsFrom: aRBProgramNode [
 
 	aRBProgramNode statements ifEmpty: [
@@ -154,25 +157,25 @@ PjAstConverter >> copyStatementsFrom: aRBProgramNode [
 	^ aRBProgramNode statements copy
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> discoveredGlobalsPool: aClass [
 	self transpiler ifNotNil: [ 
 	transpiler discoveredGlobalsPool: aClass]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> discoveredMessage: selector [
 		self transpiler ifNil: [ ^ self ].
 		transpiler discoveredMessage: selector
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> discoveredReferenceToClass: aClass [
 	self transpiler ifNil: [ ^self ].
 	self transpiler discoveredReferenceToClass: aClass
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode [
 	| jsGeneratorPragma generatorSelector jsCode |
 	jsGeneratorPragma := aRBMethodNode
@@ -183,7 +186,7 @@ PjAstConverter >> handleJsCodeGeneratorPragmaInMethodNode: aRBMethodNode [
 	^ self astForJsCode: jsCode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
 	| jsCodePragma jsCode |
 	jsCodePragma := aRBMethodNode pragmaNamed: self jsCodePragmaKeyword.
@@ -191,7 +194,7 @@ PjAstConverter >> handleJsCodePragmaInMethodNode: aRBMethodNode [
 	^self astForJsCode: jsCode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode [ 
 	| jsCode forClass selector result |
 	forClass := aRBMethodNode scope outerScope targetClass.
@@ -209,7 +212,7 @@ PjAstConverter >> handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode [
 	^ self astForJsCode: jsCode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 	| body |
 	(aRBMethodNode hasPragmaNamed: self jsCodePragmaKeyword)
@@ -221,10 +224,6 @@ PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 			^self handleJsLiteralGeneratorPragmaInMethodNode: aRBMethodNode ].
 	pushingReturnClass := nil.	"PjReturnNode"
 	needSelfReturn := false.
-	(methodPrimitive ~= 0
-		and: [ methodPrimitive ~= 256 and: [ aRBMethodNode statements isEmpty ] ])
-		ifTrue: [ PjJavascriptTranspilationError
-				signal: 'primitive method with no fallback code: ', aRBMethodNode selector ].
 	body := self visitAllNodes: aRBMethodNode statements.
 	(needSelfReturn
 		and: [ body isEmpty or: [ body expressions last isReturnOrThrow not ] ])
@@ -234,7 +233,7 @@ PjAstConverter >> handlePragmaInMethodNode: aRBMethodNode [
 	^ body
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> handleReturn: aBlock [
 	| savePushingReturnClass result |
 	savePushingReturnClass := pushingReturnClass.
@@ -248,27 +247,27 @@ PjAstConverter >> handleReturn: aBlock [
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> hasInBlockSelfReferences [
 	^hasInBlockSelfReferences
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> hasInBlockSelfReferences: aBoolean [
 	hasInBlockSelfReferences := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> hasNonLocalReturns [
 	^ hasNonLocalReturns
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> hasNonLocalReturns: anObject [
 	hasNonLocalReturns := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> inExpressionDo: aBlock [
 	| savePushing saveNeedSelfReturn |
 	^ [
@@ -284,7 +283,7 @@ PjAstConverter >> inExpressionDo: aBlock [
 	]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjAstConverter >> initialize [
 	super initialize.
 	self messageConverter: self messageConverterClass new.
@@ -297,63 +296,63 @@ PjAstConverter >> initialize [
 	self reset.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjAstConverter >> isInBlock [
 	^blockNestingLevel > 0
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjAstConverter >> isInExpression [
 	^ expressionNestingLevel > 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> isReturnLegalInBlocks [
 	^isReturnLegalInBlocks
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> isReturnLegalInBlocks: aBoolean [
 	isReturnLegalInBlocks := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> jsCodeGeneratorPragmaKeyword [
 	^self class jsCodeGeneratorPragmaKeyword
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> jsCodePragmaKeyword [
 	^self class jsCodePragmaKeyword
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> jsLiteralGeneratorPragmaKeyword [
 	^ self class jsLiteralGeneratorPragmaKeyword
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> messageConverter [
 	^ messageConverter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> messageConverter: anObject [
 	messageConverter := anObject.
 	messageConverter astConverter: self.
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjAstConverter >> messageConverterClass [
 	^PjMessageConverter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> needsAllPaths [
 	^ self isInExpression or: [ pushingReturnClass notNil]
 ]
 
-{ #category : #'temp vars' }
+{ #category : 'temp vars' }
 PjAstConverter >> newTemp [
 	| tempName |
 	tempName := self tempName.
@@ -361,33 +360,33 @@ PjAstConverter >> newTemp [
 	^tempName
 ]
 
-{ #category : #'temp vars' }
+{ #category : 'temp vars' }
 PjAstConverter >> newTemp: tempName [
 	extraTempVariablesToDeclare add: tempName.
 	^ tempName
 ]
 
-{ #category : #'non-nil handling' }
+{ #category : 'non-nil handling' }
 PjAstConverter >> nonNilIdentifiers [
 	^ nonNilIdentifiers ifNil: [ nonNilIdentifiers := Stack new ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> preventNonLocalReturns [
 	self isReturnLegalInBlocks: false
 ]
 
-{ #category : #conversions }
+{ #category : 'conversions' }
 PjAstConverter >> removeAllConversions: aCollection [
 	messageConverter removeAllConversions: aCollection
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjAstConverter >> removeAllMessageConversions: conversions [
 	self messageConverter removeAllConversions: conversions
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> reset [
 	self hasInBlockSelfReferences: false.
 	self hasNonLocalReturns: false.
@@ -396,12 +395,12 @@ PjAstConverter >> reset [
 	tempMaxNumber := 0
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjAstConverter >> resetExtraTempVariablesToDeclare [
 	extraTempVariablesToDeclare := Set new.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> returnNodeWith: someNode [
 	| result |
 	result := someNode acceptVisitor: self.
@@ -410,43 +409,43 @@ PjAstConverter >> returnNodeWith: someNode [
 	^ pushingReturnClass expression: result
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjAstConverter >> setExtraBindings: aDictionary [
 	extraBindings := aDictionary
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> signal: varType ifClosedBlockReferences: id [
 	blockClosureAnalyser
 		ifNotNil: [ PjJavascriptTranspilationError
 				signal: 'reference to ', varType, ' in block: ' , id ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> tempMaxNumber [
 	^ tempMaxNumber
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> tempMaxNumber: anObject [
 	tempMaxNumber := anObject
 ]
 
-{ #category : #'temp vars' }
+{ #category : 'temp vars' }
 PjAstConverter >> tempName [
 	tempNumber := tempNumber + 1.
 	tempNumber > self tempMaxNumber ifTrue: [ self tempMaxNumber: tempNumber ].
 	^ PjStringGenerator tempNamePrefix, tempNumber asString
 ]
 
-{ #category : #'temp vars' }
+{ #category : 'temp vars' }
 PjAstConverter >> tempNameFree: temp [
 	temp ifNil: [ ^ self ].
 	PjStringGenerator tempNamePrefix, tempNumber asString = temp ifFalse: [^ self].
 	tempNumber := tempNumber - 1
 ]
 
-{ #category : #'error handling' }
+{ #category : 'error handling' }
 PjAstConverter >> transpilationError: aString [ 
 	^ PjJavascriptTranspilationError signal: aString,(currentConvertingMethod ifNil: [
 			''
@@ -455,22 +454,22 @@ PjAstConverter >> transpilationError: aString [
 		])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> transpiler [
 	^ transpiler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjAstConverter >> transpiler: aPjTranspiler [
 	transpiler := aPjTranspiler
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visit: aRBAstNode [ 
 	^aRBAstNode acceptVisitor: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitAllNodes: someRBNodes [
 	| expressions lastExpression savedPushing |
 	someRBNodes ifEmpty: [ ^ self checkSelfReturn: (PjSequenceNode expressions: OrderedCollection new)].
@@ -487,25 +486,25 @@ PjAstConverter >> visitAllNodes: someRBNodes [
 	^ PjSequenceNode expressions: expressions
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitArgumentVariableNode: aRBVariableNode [ 
 	(self checkFree: aRBVariableNode) ifNotNil: [ : result | ^ result].
 	^PjArgumentNode identifier: aRBVariableNode name
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitArrayNode: aRBArrayNode [
 	^ self inExpressionDo: [PjArrayNode expressions: (aRBArrayNode statements collect: [: each | self visit: each ])]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitAssignmentNode: aRBAssignmentNode [ 
 	^PjAssignNode 
 		target:  (aRBAssignmentNode variable acceptVisitor: self) 
 		expression: (self inExpressionDo: [aRBAssignmentNode value acceptVisitor: self]).
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitBlockNode: aRBBlockNode [
 	| expressions savedExpressionNestingLevel savePushing savedExtraTempVariablesToDeclare extaTempVars |
 	[
@@ -530,7 +529,7 @@ PjAstConverter >> visitBlockNode: aRBBlockNode [
 		body: expressions
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitCascadeNode: aRBCascadeNode [
 
 	| expressions receiver messageNode |
@@ -557,7 +556,7 @@ PjAstConverter >> visitCascadeNode: aRBCascadeNode [
 	^ PjSequenceNode expressions: expressions
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitClassOrPoolVariable: aRBVariableNode id: id [
 	| variableClass |
 	variableClass := self classForVariable: aRBVariableNode.
@@ -584,12 +583,12 @@ PjAstConverter >> visitClassOrPoolVariable: aRBVariableNode id: id [
 	PjJavascriptTranspilationError signal: 'pool or class variable isn''t: ' , id
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitClassVariableNode: aRBVariableNode [ 
 	^self visitGlobalNode: aRBVariableNode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 	| global id |
 	id := aRBGlobalNode name.
@@ -603,7 +602,7 @@ PjAstConverter >> visitGlobalNode: aRBGlobalNode [
 	^ PjClassNode identifier: global nameToUseForJsConversion
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitGlobalVariableNamed: name [
 
 	| globalVariable globalVariableNode |
@@ -615,12 +614,12 @@ PjAstConverter >> visitGlobalVariableNamed: name [
 	^ self visitGlobalNode: globalVariableNode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitGlobalVariableNode: aRBVariableNode [ 
 	^self visitGlobalNode: aRBVariableNode.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitInlineBlock: aRBProgramNode [
 
 	| statements |
@@ -635,7 +634,7 @@ PjAstConverter >> visitInlineBlock: aRBProgramNode [
 	^ (self visitAllNodes: statements) asSimpleNode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitInlineLoopBlock: aRBProgramNode [
 	loopNestingLevel := loopNestingLevel + 1.
 	[
@@ -643,18 +642,18 @@ PjAstConverter >> visitInlineLoopBlock: aRBProgramNode [
 	] ensure: [ loopNestingLevel := loopNestingLevel - 1 ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitInstanceVariableNode: aRBInstanceVariableNode [
 	(self checkFree: aRBInstanceVariableNode) ifNotNil: [ : result | ^ result].
 	^PjFieldNode target: (self visitSelfNode: nil) selectorNode: (PjInstanceVariableNode identifier: aRBInstanceVariableNode name) isNonNil: true
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitLiteralArrayNode: aRBLiteralArrayNode [ 
 	^ PjArrayNode expressions: (aRBLiteralArrayNode contents collect: [: each | each acceptVisitor: self])
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitLiteralNode: aRBLiteralValueNode [ 
 	^ aRBLiteralValueNode value ifNil: [
 			PjNilNode new
@@ -663,7 +662,7 @@ PjAstConverter >> visitLiteralNode: aRBLiteralValueNode [
 		]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitLiteralValueNode: aRBLiteralValueNode [ 
 	^ aRBLiteralValueNode value ifNil: [
 			PjNilNode new
@@ -672,12 +671,12 @@ PjAstConverter >> visitLiteralValueNode: aRBLiteralValueNode [
 		]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitMessageNode: aRBMessageNode [ 
 	^ self visitMessageNode: aRBMessageNode isNonNil: false
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitMessageNode: aRBMessageNode isNonNil: isNonNil [
 	| target savedPushingReturnClass |
 	(self messageConverter
@@ -699,7 +698,7 @@ PjAstConverter >> visitMessageNode: aRBMessageNode isNonNil: isNonNil [
 		pushingReturnClass := savedPushingReturnClass ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitMethodNode: aRBMethodNode [
 	| body extraTempVars |
 	[
@@ -726,7 +725,7 @@ PjAstConverter >> visitMethodNode: aRBMethodNode [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitReturnNode: aRBReturnNode [ 
 	| savedPushing |
 	savedPushing := pushingReturnClass.
@@ -742,7 +741,7 @@ PjAstConverter >> visitReturnNode: aRBReturnNode [
 		pushingReturnClass := savedPushing]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitSelfNode: aRBSelfNode [ 
 	| inBlock |
 	blockClosureAnalyser ifNotNil: [
@@ -753,7 +752,7 @@ PjAstConverter >> visitSelfNode: aRBSelfNode [
 	^(PjSelfNode inBlock: inBlock) myClass: self classForConversion
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitSuperNode: aRBSuperNode [
 	| inBlock |
 	blockClosureAnalyser ifNotNil: [
@@ -764,23 +763,23 @@ PjAstConverter >> visitSuperNode: aRBSuperNode [
 	^(PjSuperNode inBlock: inBlock) myClass: self classForConversion
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitTemporaryNode: aRBTemporaryNode [
 	^self visitTemporaryVariableNode: aRBTemporaryNode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitTemporaryVariableNode: aRBTemporaryNode [
 	(self checkFree: aRBTemporaryNode) ifNotNil: [ : result | ^ result].
 	^PjTempVariableNode identifier: aRBTemporaryNode name
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitThisContextNode: aRBThisContextNode [
 	^ self transpilationError: 'thisContext not supported'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjAstConverter >> visitVariableNode: aRBVariableNode [
 	| id |
 	id := aRBVariableNode name.
@@ -789,7 +788,7 @@ PjAstConverter >> visitVariableNode: aRBVariableNode [
 	self transpilationError: 'undefined variable "' , aRBVariableNode name , '"'.
 ]
 
-{ #category : #'non-nil handling' }
+{ #category : 'non-nil handling' }
 PjAstConverter >> withNonNil: aPjJavascriptAstNode do: aBlockClosure [ 
 	| result |
 	self nonNilIdentifiers push: aPjJavascriptAstNode.

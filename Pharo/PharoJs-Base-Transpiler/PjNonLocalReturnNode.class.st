@@ -2,12 +2,14 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor or PjASTEqual
 "
 Class {
-	#name : #PjNonLocalReturnNode,
-	#superclass : #PjReturnNode,
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#name : 'PjNonLocalReturnNode',
+	#superclass : 'PjReturnNode',
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjNonLocalReturnNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitNonLocalReturnNode: self
 ]

@@ -2,21 +2,23 @@
 I represent a closed block closure that is valued upon JS code loading. I am useful for bridge interactions.
 "
 Class {
-	#name : #PjValuedClosedBlockClosure,
-	#superclass : #PjClosedBlockClosure,
-	#type : #variable,
+	#name : 'PjValuedClosedBlockClosure',
+	#superclass : 'PjClosedBlockClosure',
+	#type : 'variable',
 	#instVars : [
 		'arguments'
 	],
-	#category : #'PharoJs-Base-Transpiler-Kernel'
+	#category : 'PharoJs-Base-Transpiler-Kernel',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Kernel'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PjValuedClosedBlockClosure class >> newFrom: aBlock [
 	^self newFrom: aBlock withArgs: #()
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PjValuedClosedBlockClosure class >> newFrom: aBlock withArgs: args [
 
 	| newInstance |
@@ -32,17 +34,17 @@ PjValuedClosedBlockClosure class >> newFrom: aBlock withArgs: args [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjValuedClosedBlockClosure >> arguments [
 	^ arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjValuedClosedBlockClosure >> arguments: anObject [
 	arguments := anObject
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjValuedClosedBlockClosure >> convertToJsUsing: aPjTranspiler [ 
 	aPjTranspiler convertValuedBlock: self
 ]

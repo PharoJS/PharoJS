@@ -2,15 +2,17 @@
 I am a polyfill to initialize some globals in a web browser.
 "
 Class {
-	#name : #PjProcessPolyfill,
-	#superclass : #PjJavascriptGlobals,
+	#name : 'PjProcessPolyfill',
+	#superclass : 'PjJavascriptGlobals',
 	#classVars : [
 		'process'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }
 
-{ #category : #polyfill }
+{ #category : 'polyfill' }
 PjProcessPolyfill class >> browserPolyfill: aTranspiler [
 	<pharoJsSkip>
 	super browserPolyfill: aTranspiler.

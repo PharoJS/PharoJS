@@ -98,7 +98,7 @@ PjDependentTranspiler >> convertMethodAst: aMethod [
 	^convertedMethods at: aMethod ifAbsentPut: [
 		converter
 			classForConversion: aMethod methodClass classToUseForJsConversion;
-			convertAst: aMethod ast withPrimitive: aMethod primitive]
+			convertAst: aMethod ast isPrimitive: aMethod isRealPrimitive]
 ]
 
 { #category : 'transpiling' }

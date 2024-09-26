@@ -2,47 +2,49 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor or PjASTEqual
 "
 Class {
-	#name : #PjBinaryNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjBinaryNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'operator',
 		'left',
 		'right'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjBinaryNode class >> operator: operator left: left right: right [
 	^ self new operator: operator; left: left; right: right; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjBinaryNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitBinaryNode: self
 ]
 
-{ #category : #rewriting }
+{ #category : 'rewriting' }
 PjBinaryNode >> copyWith: newOperator [
 	^ self class operator: newOperator left: left right: right
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjBinaryNode >> isComparison [
 	^ #(== != === !== <= >= < > ) includes: operator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBinaryNode >> left [
 	^ left
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBinaryNode >> left: anObject [
 	left := anObject
 ]
 
-{ #category : #rewriting }
+{ #category : 'rewriting' }
 PjBinaryNode >> not [
 	operator = #== ifTrue: [  ^ self copyWith: #!= ].
 	operator = #!= ifTrue: [  ^ self copyWith: #== ].
@@ -52,27 +54,27 @@ PjBinaryNode >> not [
 	^ super not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBinaryNode >> operator [
 	^ operator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBinaryNode >> operator: anObject [
 	operator := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBinaryNode >> right [
 	^ right
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBinaryNode >> right: anObject [
 	right := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PjBinaryNode >> valuesToCompareForEquality [
 	^{self operator. self left. self right}
 ]

@@ -4,32 +4,34 @@ I am used to analyse BlockClosures.
 To close a block closure, i make copies of all free variables in the context of the original block.
 "
 Class {
-	#name : #PjBlockClosureAnalyser,
-	#superclass : #Object,
+	#name : 'PjBlockClosureAnalyser',
+	#superclass : 'Object',
 	#instVars : [
 		'externalVariables',
 		'freeVariables',
 		'blockForAnalysis'
 	],
-	#category : #'PharoJs-Base-Transpiler-Kernel'
+	#category : 'PharoJs-Base-Transpiler-Kernel',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Kernel'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PjBlockClosureAnalyser class >> onBlock: aBlockClosure [
 	^self new blockForAnalysis: aBlockClosure
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBlockClosureAnalyser >> blockForAnalysis [
 	^ blockForAnalysis
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBlockClosureAnalyser >> blockForAnalysis: anObject [
 	blockForAnalysis := anObject
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjBlockClosureAnalyser >> checkFree: aRBVariableNode [
 	| name |
 	name := aRBVariableNode name.
@@ -42,7 +44,7 @@ PjBlockClosureAnalyser >> checkFree: aRBVariableNode [
 	^ nil
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjBlockClosureAnalyser >> closeAst: aPjJavascriptAstNode with: aPjAstConverter [
 	freeVariables isEmpty
 		ifTrue: [ ^ aPjJavascriptAstNode ].
@@ -58,27 +60,27 @@ PjBlockClosureAnalyser >> closeAst: aPjJavascriptAstNode with: aPjAstConverter [
 					[ :each | each convertToJavascriptAstUsing: aPjAstConverter ])
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjBlockClosureAnalyser >> externalVariablesDict [
 	^ externalVariables ifNil: [ externalVariables := blockForAnalysis externalVariablesDict ]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjBlockClosureAnalyser >> initialize [
 	freeVariables := OrderedDictionary new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBlockClosureAnalyser >> isClosed [
 	^self blockForAnalysis isClosed
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PjBlockClosureAnalyser >> register: aString with: anObject [
 	freeVariables at: aString put: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjBlockClosureAnalyser >> sourceNode [
 	^self blockForAnalysis sourceNode.
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #Metaclass }
+Extension { #name : 'Metaclass' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 Metaclass >> classToUseForJsConversion [
 	^ self instanceSide classToUseForJsConversion classSide
 ]

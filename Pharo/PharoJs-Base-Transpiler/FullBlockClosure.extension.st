@@ -1,6 +1,6 @@
-Extension { #name : #FullBlockClosure }
+Extension { #name : 'FullBlockClosure' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 FullBlockClosure >> closedBlockClass [
 
 	^ PjClosedFullBlockClosure

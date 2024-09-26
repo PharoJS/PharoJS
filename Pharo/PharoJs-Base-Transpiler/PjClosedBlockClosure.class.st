@@ -2,10 +2,12 @@
 I represent a block closure without any free variable.
 "
 Class {
-	#name : #PjClosedBlockClosure,
-	#superclass : #BlockClosure,
-	#type : #variable,
+	#name : 'PjClosedBlockClosure',
+	#superclass : 'BlockClosure',
+	#type : 'variable',
 	#traits : 'PjTClosedBlockClosure',
 	#classTraits : 'PjTClosedBlockClosure classTrait',
-	#category : #'PharoJs-Base-Transpiler-Kernel'
+	#category : 'PharoJs-Base-Transpiler-Kernel',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Kernel'
 }

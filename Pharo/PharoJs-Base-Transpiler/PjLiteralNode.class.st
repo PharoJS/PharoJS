@@ -2,27 +2,29 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor
 "
 Class {
-	#name : #PjLiteralNode,
-	#superclass : #PjJavascriptAstNode,
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#name : 'PjLiteralNode',
+	#superclass : 'PjJavascriptAstNode',
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjLiteralNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitLiteralNode: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjLiteralNode >> isLiteralNode [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjLiteralNode >> isNonArray [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjLiteralNode >> isNonNilNode [
 	^ true
 ]

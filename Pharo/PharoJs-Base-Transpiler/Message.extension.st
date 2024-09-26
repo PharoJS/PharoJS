@@ -1,6 +1,6 @@
-Extension { #name : #Message }
+Extension { #name : 'Message' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 Message class >> javascriptInitialize [
 	PjCore messageClass: self
 ]

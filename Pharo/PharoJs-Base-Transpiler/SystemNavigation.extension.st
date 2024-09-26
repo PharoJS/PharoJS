@@ -1,6 +1,6 @@
-Extension { #name : #SystemNavigation }
+Extension { #name : 'SystemNavigation' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 SystemNavigation class >> globalRefsForPharoJS: aClassOrLiteral [
 	^ (self default respondsTo: #allGlobalRefsOn:) ifTrue: [
 			self default allGlobalRefsOn: aClassOrLiteral

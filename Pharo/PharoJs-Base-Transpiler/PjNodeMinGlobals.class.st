@@ -3,8 +3,8 @@ I contain the globals for the Node-based Javascript engines including Electron
 
 "
 Class {
-	#name : #PjNodeMinGlobals,
-	#superclass : #PjJavascriptGlobals,
+	#name : 'PjNodeMinGlobals',
+	#superclass : 'PjJavascriptGlobals',
 	#classVars : [
 		'module',
 		'require'
@@ -13,5 +13,7 @@ Class {
 		'PjProcessPolyfill',
 		'PjUniversalGlobals'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }

@@ -1,6 +1,6 @@
-Extension { #name : #LocalVariable }
+Extension { #name : 'LocalVariable' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 LocalVariable >> valueStartAtContext: aContext [
 
 	| variableContext  |

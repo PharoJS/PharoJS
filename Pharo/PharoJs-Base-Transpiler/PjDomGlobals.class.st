@@ -4,8 +4,8 @@ I contain the globals for all DOM-based Javascript engines
 Use PjUniversalGlobals too
 "
 Class {
-	#name : #PjDomGlobals,
-	#superclass : #PjJavascriptGlobals,
+	#name : 'PjDomGlobals',
+	#superclass : 'PjJavascriptGlobals',
 	#classVars : [
 		'document',
 		'history',
@@ -19,5 +19,7 @@ Class {
 		'PjUniversalGlobals',
 		'PjWebSocketPolyfill'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }

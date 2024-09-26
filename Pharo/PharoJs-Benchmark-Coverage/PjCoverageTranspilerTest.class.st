@@ -22,7 +22,7 @@ PjCoverageTranspilerTest >> tearDown [
 ]
 
 { #category : 'tests' }
-PjCoverageTranspilerTest >> testClassDeclrationTranspilationFailure [
+PjCoverageTranspilerTest >> testClassDeclarationTranspilationFailure [
 
 	| result |
 	result := self transpileClass: nil.
@@ -85,6 +85,45 @@ PjCoverageTranspilerTest >> testTranspileClassWithMethodAccessingThisContext [
 		assertCollection: result successSelectors
 		hasSameElements: #( m1 m2 ).
 	self assertCollection: result failedSelectors hasSameElements: #( currentContext )
+]
+
+{ #category : 'tests' }
+PjCoverageTranspilerTest >> testTranspileClassWithMethodReturningIV [
+
+	| class result method |
+	class := factory make: [: builder|
+		builder slots: #(a)].
+	class
+		compile: 'myIV
+			^a'.
+	method := class compiledMethodAt: #myIV.
+	self assert: method isPrimitive.
+	self assert: method primitive equals: 264.
+	result := self transpileClass: class.
+	self assert: result isSuccess.
+	self
+		assertCollection: result successSelectors
+		hasSameElements: #( myIV ).
+
+]
+
+{ #category : 'tests' }
+PjCoverageTranspilerTest >> testTranspileClassWithMethodReturningSelf [
+
+	| class result method |
+	class := factory newClass.
+	class
+		compile: 'me
+			^self'.
+	method := class compiledMethodAt: #me.
+	self assert: method isPrimitive.
+	self assert: method primitive equals: 256.
+	result := self transpileClass: class.
+	self assert: result isSuccess.
+	self
+		assertCollection: result successSelectors
+		hasSameElements: #( me ).
+
 ]
 
 { #category : 'tests' }

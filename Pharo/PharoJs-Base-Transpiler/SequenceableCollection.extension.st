@@ -1,6 +1,6 @@
-Extension { #name : #SequenceableCollection }
+Extension { #name : 'SequenceableCollection' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 SequenceableCollection >> includes: seq1 before: seq2 [
 	| firstIndex |
 	firstIndex := self indexOfSubCollection: seq1 startingAt: 1 ifAbsent: [^ false].
@@ -8,17 +8,17 @@ SequenceableCollection >> includes: seq1 before: seq2 [
 	^ true
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 SequenceableCollection >> isFreeJavascriptValue [
 	^ self allSatisfy: #isFreeJavascriptValue
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 SequenceableCollection >> isLiteralJavascriptValue [
 	^ self allSatisfy: #isLiteralJavascriptValue
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 SequenceableCollection >> printJsOn: aStream [
 	aStream nextPut: $[.
 	self
