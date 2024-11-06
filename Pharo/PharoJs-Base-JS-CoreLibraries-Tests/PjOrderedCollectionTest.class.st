@@ -66,3 +66,9 @@ PjOrderedCollectionTest >> testRemoveAll [
 	collection removeAll.
 	self assert: collection isEmpty.
 ]
+
+{ #category : 'tests' }
+PjOrderedCollectionTest >> testSerialization [
+
+	self assertEquivalent: [ OrderedCollection new asPhxJsonString ]
+]

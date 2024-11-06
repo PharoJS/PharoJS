@@ -10,7 +10,8 @@ Class {
 		'fingerPrint',
 		'znServer',
 		'webSocket',
-		'bridge'
+		'bridge',
+		'childProcesses'
 	],
 	#classVars : [
 		'CurrentUsablePortNumber'
@@ -71,6 +72,12 @@ PjBridgeServer >> bridge [
 { #category : 'accessing' }
 PjBridgeServer >> bridge: anObject [
 	bridge := anObject
+]
+
+{ #category : 'accessing' }
+PjBridgeServer >> childProcesses [
+
+	^ childProcesses ifNil: [ childProcesses := WeakIdentitySet new ]
 ]
 
 { #category : 'accessing' }
@@ -366,7 +373,10 @@ PjBridgeServer >> startOnPort: aPort [
 { #category : 'stop' }
 PjBridgeServer >> stop [
 
-	self znServer ifNotNil: [ :srv | srv stop ]
+	self znServer ifNotNil: [ :srv | srv stop ].
+	self childProcesses do: [ :each | each terminate ].
+	childProcesses := nil.
+	Smalltalk garbageCollect
 ]
 
 { #category : 'accessing' }
@@ -405,12 +415,13 @@ PjBridgeServer >> urlString [
 { #category : 'accessing' }
 PjBridgeServer >> value: aWebSocket [
 
-	[ 
+	self childProcesses add: Processor activeProcess.
+	[
 	self webSocket: aWebSocket.
-	aWebSocket runWith: [ :aMessage | 
+	aWebSocket runWith: [ :aMessage |
 		self safelyHandleMessage: aMessage forSocket: aWebSocket ] ]
 		on: Error
-		do: [ ]
+		do: [  ]
 ]
 
 { #category : 'accessing' }

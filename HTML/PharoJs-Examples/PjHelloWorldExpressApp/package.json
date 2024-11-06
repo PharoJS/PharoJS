@@ -9,8 +9,8 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.2",
-    "express": "^4.19.2",
-    "serve-static": "^1.15.0",
+    "express": "^4.21.1",
+    "serve-static": "^1.16.2",
     "ws": "^8.17.1"
   },
   "keywords": [],

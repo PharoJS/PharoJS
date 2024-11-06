@@ -28,7 +28,7 @@ PjClass class >> hasClassMethod_jsGenerator: transpiler [
 PjClass class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
 	^{
-		Behavior -> #( subclassesDo: allSubclasses allSubclassesDo: isBehavior ).
+		Behavior -> #( subclassesDo: allSubclasses allSubclassesDo: isBehavior includesBehavior: ).
 		Class -> #( isClass classVarNames).
 	}
 ]
@@ -63,6 +63,12 @@ PjClass >> classVarNamed: aString put: otherString [
 { #category : 'Behavior: reflection' }
 PjClass >> hasClassMethod: aSymbol [
 	<jsGenerator: #hasClassMethod_jsGenerator:>
+]
+
+{ #category : 'testing' }
+PjClass >> identityHash [
+	^ (self instVarNamed: #_js_hash) ifNil: [
+		self instVarNamed: #_js_hash putHidden: self nextIdentityHash ]
 ]
 
 { #category : 'testing' }

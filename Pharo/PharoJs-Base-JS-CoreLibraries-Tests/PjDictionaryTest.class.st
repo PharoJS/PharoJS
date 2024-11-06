@@ -61,14 +61,25 @@ PjDictionaryTest >> testAtIfEmpty [
 
 { #category : 'tests' }
 PjDictionaryTest >> testAtPut [
-	self assertEquivalent: [|d|
-		d := Dictionary new.
-		d at: #x put: 42.
-		d at: #x].
+	| dict key1 value1 key2 value2 key3 value3 |
 	self assert: [|d|
 		d := Dictionary new.
 		d at: #x put: 42.
-		d] evaluatesToRaw: '{"x":42}'
+		d] evaluatesToRaw: '{"x":42}'.
+	dict := self evalBlock: [Dictionary new].
+	key1 := self evalBlock: [ 1@1 ].
+	value1 := 'my first point'.
+	key2 := self evalBlock: [ Object ].
+	value2 := 42.
+	key3 := #x.
+	value3 := self evalBlock: [ Object new ].
+	dict at: key1 put: value1.
+	dict at: key2 put: value2.
+	dict at: key3 put: value3.
+	self assert: (dict at: key1) equals: value1.
+	self assert: (dict at: key2) equals: value2.
+	self assert: (dict at: key3) equals: value3
+
 ]
 
 { #category : 'tests' }

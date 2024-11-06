@@ -12,7 +12,7 @@ Class {
 { #category : 'pharoJs support' }
 PjOrderedCollection class >> jsTranspilationImportMethods [
 	<pharoJsSkip>
-	^{OrderedCollection -> #( join: addAllLast: speciesForTransform).
+	^{OrderedCollection -> #( join: addAllLast: addAllFirst: speciesForTransform).
 	(OrderedCollection class -> #( newFrom: ))}
 
 ]

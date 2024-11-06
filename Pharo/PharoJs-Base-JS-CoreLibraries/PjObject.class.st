@@ -52,7 +52,7 @@ PjObject class >> jsTranspilationImportMethods [
 			      isInteger isCharacter isSymbol isStream isPjProxyOrNil
 			      printOn: shouldBePrintedAsLiteral shouldBePrintedAsLiteral:
 			      isLiteral isSelfEvaluating isSelfEvaluating:
-			      isPoint )).
+			      isPoint isTrait)).
 		  (Collection
 		   -> #( addAll: #ifEmpty:ifNotEmpty: #ifNotEmpty:ifEmpty:
 			      ifEmpty: ifNotEmpty: )).

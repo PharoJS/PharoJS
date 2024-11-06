@@ -79,6 +79,12 @@ PjArrayTest >> testAtPut [
 ]
 
 { #category : 'tests' }
+PjArrayTest >> testAverage [
+	self assertEquivalent: [#(2 3 4 5) average].
+	self assertEquivalent: [#(3 2 6 10) average].
+]
+
+{ #category : 'tests' }
 PjArrayTest >> testCircularReference [
 	| array |
 	array := self bridge evalBlock: [#('X')].

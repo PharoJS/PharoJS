@@ -27,9 +27,9 @@ PjTCollection classSide >> jsTranspilationImportMethodsCollection [
 			      noneSatisfy: #inject:into: #detect:ifFound:ifNone:
 			      #detect:ifNone: #detect:ifFound: remove: isCollection
 			      asDictionary associationsDo: addAll: isEmptyOrNil
-			      removeAll: includesAll: includesAny: copyWith: )).
-		  (Collection class -> #( withAll: )).
-		   }
+			      removeAll: includesAll: includesAny: copyWith: average
+			      sum emptyCheck anyOne min max )).
+		  (Collection class -> #( withAll: )) }
 ]
 
 { #category : 'testing' }
