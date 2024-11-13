@@ -23,7 +23,7 @@ PjImageAnalyzer class >> newAnalysis [
 PjImageAnalyzer class >> printMetricsOnTranscript [
 
 	<example>
-	self newAnalysis printMetricsOnTranscript
+	^self newAnalysis printMetricsOnTranscript; yourself
 ]
 
 { #category : 'anlyzing' }
