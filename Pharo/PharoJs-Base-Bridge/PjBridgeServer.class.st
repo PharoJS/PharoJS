@@ -36,14 +36,24 @@ PjBridgeServer class >> currentUsablePortNumber: aNumber [
 ]
 
 { #category : 'accessing' }
+PjBridgeServer class >> forbiddenPortNumbers [ 
+	"Those are ports usually used for other puprposes and thus [blocked by web browsers](https://kb.diadem.in/blocked-ports-on-new-web-browsers_1432.html).
+	We ensure that the minPortNumber is high enough to skip the first set of block ports.
+	The minPortNumber and maxPortNumber are valid (unblocked)."
+	
+	^#(1719 1720 1721 1722 1723 2049 3659 4045 5060 5062 6000)
+]
+
+{ #category : 'accessing' }
 PjBridgeServer class >> incrementCurrentUsablePortNumber [
 
-	| p |
-	p := self currentUsablePortNumber
+	| newPortNumber |
+	newPortNumber := self currentUsablePortNumber
 		     ifNotNil: [ :cp | cp + 1 ]
 		     ifNil: [ self minPortNumber ].
-	p > self maxPortNumber ifTrue: [ p := self minPortNumber ].
-	self currentUsablePortNumber: p
+	(self forbiddenPortNumbers includes: newPortNumber) ifTrue: [ ^self incrementCurrentUsablePortNumber ].
+	newPortNumber > self maxPortNumber ifTrue: [ newPortNumber := self minPortNumber ].
+	self currentUsablePortNumber: newPortNumber
 ]
 
 { #category : 'accessing' }
@@ -54,7 +64,9 @@ PjBridgeServer class >> maxPortNumber [
 
 { #category : 'accessing' }
 PjBridgeServer class >> minPortNumber [
-
+	"We skip the first forbidden port numbers.
+	Others are defined by #forbiddenPortNUmbers"
+	
 	^ 1024
 ]
 
