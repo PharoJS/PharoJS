@@ -209,7 +209,6 @@ PjAppTestCase >> setUp [
 PjAppTestCase >> tearDown [
 
 	self appClass resetCurrentInstance.
-	self bridge ifNotNil: [ :aBridge | aBridge resetProxiesImmediately ].
 	[WorldMorph doOneCycle] forkAt: Processor timingPriority . "Give a chance to UI process to refressh and show progress"
 	super tearDown
 ]
