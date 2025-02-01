@@ -33,9 +33,9 @@ PjTWebBridgeClient >> openWebBrowserOn: urlString [
 
 { #category : 'initialization' }
 PjTWebBridgeClient >> reset [
-	self sendMessage: PjMessageReload new.
 	self resetProxiesImmediately.
-	super reset
+	[self sendMessage: PjMessageReload new ] forkAt: Processor timingPriority.
+	super reset.
 ]
 
 { #category : 'actions' }
