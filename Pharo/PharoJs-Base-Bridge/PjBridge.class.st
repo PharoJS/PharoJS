@@ -481,6 +481,12 @@ PjBridge >> removeFinalizeFor: proxy ifAbsent: aBlock [
 { #category : 'public' }
 PjBridge >> resetClient [
 
+	self resetClientRetries: 1
+]
+
+{ #category : 'public' }
+PjBridge >> resetClientRetries: retryCount [
+
 	| oldWebSocket |
 	oldWebSocket := self webSocket.
 	self client reset.
@@ -491,7 +497,9 @@ PjBridge >> resetClient [
 				ifTrue: [ oldWebSocket close ] ]
 		onTimeOutDo: [ self error: 'Client did NOT reconnect!' ]
 		timeOutDuration: self client startTimeout.
-	self waitForClientToStart
+	[self waitForClientToStart] on: Error do: [ : ex |
+		retryCount = 0 ifTrue: [ ex pass ]. 
+		self resetClientRetries: retryCount - 1 ]
 ]
 
 { #category : 'initialization' }
