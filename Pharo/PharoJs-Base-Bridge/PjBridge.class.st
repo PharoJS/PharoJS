@@ -428,7 +428,7 @@ PjBridge >> loadClass: aClass [
 { #category : 'actions' }
 PjBridge >> minimumStepDuration [
 
-	^ 25 milliSeconds
+	^ 50 milliSeconds
 ]
 
 { #category : 'actions' }
