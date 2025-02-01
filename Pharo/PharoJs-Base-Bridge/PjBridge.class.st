@@ -507,15 +507,14 @@ PjBridge >> resetProxiesImmediately [
 	"Leaving this to garbage collection leads to inpredictable results,
 	because finalizations might occur in a next (reloaded) client JS session"
 
-	| finalizer |
-	self proxies do: [ : proxy |
-		finalizer := self removeFinalizeFor: proxy ifAbsent: [nil].
-		finalizer ifNotNil: [ "finlizer finalize""For now, NOT executing the finalizations (which sends delete proxy messages to the client), because of unknown problems.
-					This should be made synchronous anyway by waiting for acknowledgement from client.
-					For now, removing them (inactivating) is enough, we only execute this method when we no further need the client."
-			 ]].
-	proxies := nil
-	"Smalltalk garbageCollect. "
+	| finalizer oldProxies |
+	[Smalltalk garbageCollect.
+	oldProxies := self proxies.
+	proxies := nil.
+	oldProxies do: [ : proxy |
+			finalizer := self removeFinalizeFor: proxy ifAbsent: [nil].
+			finalizer ifNotNil: [finalizer finalize]
+		] ] forkAt: Processor timingPriority 
 ]
 
 { #category : 'public' }
