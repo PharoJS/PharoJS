@@ -11,6 +11,13 @@ Trait {
 	#tag : 'Client-Kernel'
 }
 
+{ #category : 'initialization' }
+PjTWebBridgeClient >> basicReset [
+
+	self resetProxiesImmediately.
+	self sendMessage: PjMessageReload new
+]
+
 { #category : 'actions' }
 PjTWebBridgeClient >> openBrowserInBackground [
 
@@ -29,13 +36,6 @@ PjTWebBridgeClient >> openWebBrowserOn: urlString [
 	WebBrowser
 		openOn: urlString 
 		inBackground: self openBrowserInBackground
-]
-
-{ #category : 'initialization' }
-PjTWebBridgeClient >> reset [
-	self resetProxiesImmediately.
-	[self sendMessage: PjMessageReload new ] forkAt: Processor timingPriority.
-	super reset.
 ]
 
 { #category : 'actions' }

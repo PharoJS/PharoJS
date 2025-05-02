@@ -72,6 +72,14 @@ PjBrowserBridgeClient >> initializeWithBridge: aBridge [
 	self server html: self codeGenerator html.
 ]
 
+{ #category : 'initialization' }
+PjBrowserBridgeClient >> reset [
+
+	self resetProxiesImmediately.
+	[ self sendMessage: PjMessageReload new ] fork.
+	super reset
+]
+
 { #category : 'accessing' }
 PjBrowserBridgeClient >> serverUrl [
 	^self server url

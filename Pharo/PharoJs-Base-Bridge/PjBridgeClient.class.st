@@ -30,6 +30,11 @@ PjBridgeClient >> appClass [
 	^ appClass ifNil: [ self defaultAppClass ]
 ]
 
+{ #category : 'initialization' }
+PjBridgeClient >> basicReset [
+	^self
+]
+
 { #category : 'accessing' }
 PjBridgeClient >> bridge [
 
@@ -127,9 +132,10 @@ PjBridgeClient >> pharoJsSelectorPrefix [
 { #category : 'initialization' }
 PjBridgeClient >> reset [
 
+	self clientId: nil.
+	self basicReset.
 	self initializeWithAppClass: self appClass.
 	self initializeWithBridge: self bridge.
-	self clientId: nil.
 	"Resetting the client, requires  transpiler to be initialized with classes and messages that were perviously transpiled upon export and then loaded on the JS side (DNU). This is driven by the exporter."
 	String streamContents: [ :aStream |
 		self exporter writeJsCodeOn: aStream ]
