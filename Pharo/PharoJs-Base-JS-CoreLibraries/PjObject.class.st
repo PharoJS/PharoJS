@@ -418,6 +418,11 @@ PjObject >> valuesDo: aBlock [
 	<jsGenerator: #valuesDo_jsGenerator:>
 ]
 
+{ #category : 'printing' }
+PjObject >> writeLog: anObject [
+	console log: anObject
+]
+
 { #category : 'accessing' }
 PjObject >> yourself [
 	^self
