@@ -73,6 +73,22 @@ PjBridge class >> bridgeForAppClass: appClass client: bridgeClient [
 		  yourself
 ]
 
+{ #category : 'bridge handling' }
+PjBridge class >> cleanUpProcesses [
+
+	Smalltalk garbageCollect.
+	Process allInstances
+		select: [ :each | each priority = 30 ]
+		thenDo: #terminate.
+
+	Smalltalk garbageCollect.
+	Process allInstances
+		select: [ :each |
+			each name beginsWithSubCollection: 'ZnMultiThreadedServer HTTP' ]
+		thenDo: #terminate.
+	Smalltalk garbageCollect
+]
+
 { #category : 'accessing' }
 PjBridge class >> debugClass [
 
@@ -125,12 +141,19 @@ PjBridge class >> startOn: portNumber title: title [
 
 { #category : 'bridge handling' }
 PjBridge class >> stop [
+
 	<script>
-	
-	self soleBridge ifNotNil: [ 
-		self soleBridge stop.
-		self soleBridge: nil.
-		Smalltalk garbageCollect ]
+	self soleBridge ifNil: [ ^ self ].
+	self soleBridge stop.
+	self soleBridge: nil
+]
+
+{ #category : 'bridge handling' }
+PjBridge class >> stopAndCleanUp [
+
+	<script>
+	self stop.
+	self cleanUpProcesses
 ]
 
 { #category : 'actions' }

@@ -129,6 +129,15 @@ PjBridgeTestResource >> resetClient [
 	Smalltalk garbageCollect] forkAt: Processor timingPriority "Free system semaphores"
 ]
 
+{ #category : 'initialization' }
+PjBridgeTestResource >> setUp [
+	"Ensure bridge is stopped and all processes with communication with JS were destroyed"
+	super setUp.
+	PjBridge stopAndCleanUp.
+
+
+]
+
 { #category : 'running' }
 PjBridgeTestResource >> setUpClient [
 	^self bridge client openBrowserInBackground: self isClientBrowserOpenedInBackground
