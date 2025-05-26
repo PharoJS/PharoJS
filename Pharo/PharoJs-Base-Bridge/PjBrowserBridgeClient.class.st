@@ -59,11 +59,6 @@ PjBrowserBridgeClient >> defaultAppClass [
 ]
 
 { #category : 'accessing' }
-PjBrowserBridgeClient >> exporterClass [
-	^ PjExporter
-]
-
-{ #category : 'accessing' }
 PjBrowserBridgeClient >> initializeWithBridge: aBridge [
 	super initializeWithBridge: aBridge.
 	self codeGenerator resetHtmlGenerator.

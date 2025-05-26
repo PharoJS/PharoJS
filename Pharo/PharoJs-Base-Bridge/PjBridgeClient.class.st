@@ -91,7 +91,7 @@ PjBridgeClient >> exporter [
 { #category : 'accessing' }
 PjBridgeClient >> exporterClass [
 
-	self subclassResponsibility
+	^self appClass exporterClass 
 ]
 
 { #category : 'accessing' }

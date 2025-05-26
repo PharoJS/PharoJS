@@ -9,19 +9,13 @@ Class {
 	#tag : 'Client-Kernel'
 }
 
-{ #category : 'accessing - files' }
+{ #category : 'exporting' }
 PjFileBasedBridgeClient >> appFolder [
 
 	^ self appClass appFolder
 ]
 
-{ #category : 'accessing' }
-PjFileBasedBridgeClient >> exporterClass [
-
-	^ PjFileExporter
-]
-
-{ #category : 'accessing - files' }
+{ #category : 'exporting' }
 PjFileBasedBridgeClient >> fileName [
 
 	^ self appClass appFullJsFileName
@@ -33,8 +27,8 @@ PjFileBasedBridgeClient >> start [
 	super start
 ]
 
-{ #category : 'accessing - files' }
+{ #category : 'exporting' }
 PjFileBasedBridgeClient >> writeFiles [
 
-	exporter writeJavascriptFileNamed: self fileName
+	exporter writeFiles
 ]
