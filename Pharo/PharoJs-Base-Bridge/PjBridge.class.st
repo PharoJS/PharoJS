@@ -84,7 +84,7 @@ PjBridge class >> cleanUpProcesses [
 	Smalltalk garbageCollect.
 	Process allInstances
 		select: [ :each |
-			each name beginsWithSubCollection: 'ZnMultiThreadedServer HTTP' ]
+			each name beginsWith: 'ZnMultiThreadedServer HTTP' ]
 		thenDo: #terminate.
 	Smalltalk garbageCollect
 ]
