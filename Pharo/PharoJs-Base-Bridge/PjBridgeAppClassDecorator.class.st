@@ -36,6 +36,17 @@ PjBridgeAppClassDecorator >> appClasses [
 	^ self rawAppClass appClasses , self classesForBridgeClient
 ]
 
+{ #category : 'exporting' }
+PjBridgeAppClassDecorator >> appFullHtmlFileName [
+
+	^ rawAppClass appFullHtmlFileName
+]
+
+{ #category : 'exporting' }
+PjBridgeAppClassDecorator >> appFullJsFileName [
+	^rawAppClass appFullJsFileName
+]
+
 { #category : 'accessing' }
 PjBridgeAppClassDecorator >> appLaunchBlock [
 
