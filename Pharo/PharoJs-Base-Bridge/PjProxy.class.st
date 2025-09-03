@@ -137,6 +137,11 @@ PjProxy >> asLocalObject [
 		  1 to: size do: [ :index | s nextPut: (self at: index) ] ]
 ]
 
+{ #category : 'nil' }
+PjProxy >> asPhxJsonString [
+	^ self doesNotUnderstand: (Message selector: #asPhxJsonString)
+]
+
 { #category : 'converting' }
 PjProxy >> asRawJSONString [
 

@@ -331,6 +331,14 @@ PhxBridgedJsonSerialisationTests >> testSerializeOrderedCollectionInPharoMatrial
 ]
 
 { #category : 'tests' }
+PhxBridgedJsonSerialisationTests >> testSerializeProxy [
+
+	| proxyOnJsArray |
+	proxyOnJsArray := self evalBlock: [#(1 2 3) ].
+	self assert: proxyOnJsArray asPhxJsonString equals: '{"class":"Array","instance":[1,2,3]}'
+]
+
+{ #category : 'tests' }
 PhxBridgedJsonSerialisationTests >> testSerializeSet [
 
 	self
