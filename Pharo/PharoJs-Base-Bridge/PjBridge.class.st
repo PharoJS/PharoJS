@@ -448,6 +448,11 @@ PjBridge >> loadClass: aClass [
 	^ aClass
 ]
 
+{ #category : 'accessing' }
+PjBridge >> maxMillisecondsToWaitForResponse [
+	^2000
+]
+
 { #category : 'actions' }
 PjBridge >> minimumStepDuration [
 
@@ -564,10 +569,13 @@ PjBridge >> sendMessageAndWaitForResponse: msg [
 
 	| responseMsg resultForSentMessage |
 	self sendMessage: msg.
-	monitor critical: [ 
-		monitor waitUntil: [ 
-			responseMsg := self incomingResponseMessageForSentMessage: msg.
-			responseMsg notNil ] ].
+	monitor critical: [
+		monitor
+			waitUntil: [
+				responseMsg := self incomingResponseMessageForSentMessage: msg.
+				responseMsg notNil ]
+			for: nil
+			maxMilliseconds: self maxMillisecondsToWaitForResponse ].
 	resultForSentMessage := self valueFromResponseMessage: responseMsg.
 	self executeCallbacksUntilDepletion.
 	^ resultForSentMessage
