@@ -10,11 +10,11 @@ Class {
 	#superclass : 'Object',
 	#traits : 'PjTKernelClass',
 	#classTraits : 'PjTKernelClass classTrait',
+	#classVars : [
+		'LastIdentityHash'
+	],
 	#pools : [
 		'PjDomGlobals'
-	],
-	#classInstVars : [
-		'nextIdentityHash'
 	],
 	#category : 'PharoJs-Base-JS-CoreLibraries-Kernel',
 	#package : 'PharoJs-Base-JS-CoreLibraries',
@@ -76,7 +76,9 @@ PjObject class >> keysDo_jsGenerator: transpiler [
 
 { #category : 'comparing' }
 PjObject class >> nextIdentityHash [
-	^ nextIdentityHash := (nextIdentityHash ifNil: [12345]) hashMultiply
+
+	^ LastIdentityHash := (LastIdentityHash ifNil: [
+		                       Time millisecondClockValue ]) hashMultiply
 ]
 
 { #category : 'dictionary emulation' }

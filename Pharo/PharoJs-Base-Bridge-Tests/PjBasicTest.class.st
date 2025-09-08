@@ -328,6 +328,16 @@ PjBasicTest >> testIfTrueIfFalse [
 ]
 
 { #category : 'tests' }
+PjBasicTest >> testInstancesOfDifferentClassesHaveDifferentHashes [
+
+	self assertEquivalent: [
+		| x y |
+		x := PjCounter new.
+		y := PjUser new.
+		x hash ~= y hash ]
+]
+
+{ #category : 'tests' }
 PjBasicTest >> testJsGlobalAccess [
 
 	self
