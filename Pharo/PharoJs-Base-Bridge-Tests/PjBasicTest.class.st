@@ -334,6 +334,11 @@ PjBasicTest >> testInstancesOfDifferentClassesHaveDifferentHashes [
 		| x y |
 		x := PjCounter new.
 		y := PjUser new.
+		x hash ~= y hash ].
+	self assertEquivalent: [
+		| x y |
+		x := PjCounter.
+		y := PjUser.
 		x hash ~= y hash ]
 ]
 
