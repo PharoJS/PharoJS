@@ -18,13 +18,13 @@ PjRxParser class >> javascriptName [
 
 { #category : 'testing' }
 PjRxParser >> matchesIn: aString [
-	^ aString match: self
+
+	^ (aString match: self) ifNil: [ #() ]
 ]
 
 { #category : 'testing' }
 PjRxParser >> matchesIn: aString do: aBlock [
 	| matches |
 	matches := (self matchesIn: aString).
-	matches ifNil: [ ^ self ].
 	^ matches do: aBlock
 ]

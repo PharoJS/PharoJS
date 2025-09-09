@@ -483,6 +483,26 @@ PjBasicTest >> testNumber [
 ]
 
 { #category : 'tests' }
+PjBasicTest >> testRegexMatchesIn [
+
+	self assertEquivalent: [ ('a' asRegex matchesIn: '123') asArray ].
+	self assertEquivalent: [ ('a' asRegex matchesIn: 'a123a') asArray ]
+]
+
+{ #category : 'tests' }
+PjBasicTest >> testRegexMatchesInDo [
+
+	self assertEquivalent: [ |count|
+		count := 0.
+		'a' asRegex matchesIn: '123' do: [: each | count := count + 1 ].
+		count].
+	self assertEquivalent: [ |count|
+		count := 0.
+		'a' asRegex matchesIn: 'a123a' do: [: each | count := count + 1 ].
+		count]
+]
+
+{ #category : 'tests' }
 PjBasicTest >> testResettingTheApp [
 
 	self resetApp.
