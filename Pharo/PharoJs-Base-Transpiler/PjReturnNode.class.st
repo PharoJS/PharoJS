@@ -2,40 +2,42 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor or PjASTEqual
 "
 Class {
-	#name : #PjReturnNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjReturnNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'expression'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjReturnNode class >> expression: expression [
 	^ self new expression: expression; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjReturnNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitReturnNode: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjReturnNode >> canPropogateReturns [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjReturnNode >> expression [
 	^ expression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjReturnNode >> expression: anObject [
 	expression := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjReturnNode >> isReturnOrThrow [
 	^true
 ]

@@ -2,57 +2,59 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor
 "
 Class {
-	#name : #PjMethodNode,
-	#superclass : #PjFunctionNode,
+	#name : 'PjMethodNode',
+	#superclass : 'PjFunctionNode',
 	#instVars : [
 		'methodName',
 		'needsSelf',
 		'isClassMethod'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjMethodNode class >> methodName: methodName body: body [
 	^ self parameters: #() locals: #() body: body methodName: methodName needsSelf: false isClassMethod: false
 ]
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjMethodNode class >> parameters: parameters locals: locals body: body methodName: methodName needsSelf: needsSelf isClassMethod: isClassMethod [
 	^ (self parameters: parameters locals: locals body: body) needsSelf: needsSelf; methodName: methodName; isClassMethod: isClassMethod; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjMethodNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitMethodNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMethodNode >> isClassMethod [
 	^ isClassMethod
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMethodNode >> isClassMethod: anObject [
 	isClassMethod := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMethodNode >> methodName [
 	^ methodName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMethodNode >> methodName: anObject [
 	methodName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMethodNode >> needsSelf [
 	^ needsSelf
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMethodNode >> needsSelf: anObject [
 	needsSelf := anObject
 ]

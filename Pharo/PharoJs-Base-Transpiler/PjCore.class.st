@@ -7,22 +7,25 @@ It is called Smalltalk in Javascript and isn't a class proper, because it has to
 It is output specially by the Exporter.
 "
 Class {
-	#name : #PjCore,
-	#superclass : #Object,
+	#name : 'PjCore',
+	#superclass : 'Object',
 	#pools : [
 		'PjUniversalGlobals'
 	],
 	#classInstVars : [
 		'messageClass',
 		'nilInJs',
-		'selectorCache',
+		'pharoJsSelectorCache',
+		'smalltalkSelectorCache',
 		'metaclassClass',
 		'theClassClass'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> accessorTargetFor: anObject [
 	"JS objects created with the brace notation are instances of Object.
 	It does not make sense to add to Object getter/setters on properties of such objects."
@@ -36,7 +39,31 @@ PjCore class >> accessorTargetFor: anObject [
 	^ prototype
 ]
 
-{ #category : #initalize }
+{ #category : 'selector converting' }
+PjCore class >> cache: aCache at: aSelector ifAbsentPut: newValue [
+
+
+	(aCache js_at: aSelector) ifNil: [
+		aCache js_at: aSelector put: newValue ].
+]
+
+{ #category : 'selector converting' }
+PjCore class >> cache: aCache at: aSelector ifPresent: aSingleArgBlock [
+
+	| cachedValue |
+	(aCache js_hasOwnProperty: aSelector) ifFalse: [^self].
+	cachedValue := aCache js_at: aSelector.
+	^aSingleArgBlock value: cachedValue
+]
+
+{ #category : 'selector converting' }
+PjCore class >> cacheSmalltalkSelector: stSelector pharoJsSelector: pharoJsFunctionName [
+	self cache: smalltalkSelectorCache at: pharoJsFunctionName ifAbsentPut: stSelector.
+	self cache: pharoJsSelectorCache at: stSelector ifAbsentPut: pharoJsFunctionName
+
+]
+
+{ #category : 'initalize' }
 PjCore class >> emptyJavascriptObject [
 	"Object.create(null) creates an even emptier JS object, but it isn't an Object (i.e. has no methods)."
 	<javascript: '
@@ -44,7 +71,7 @@ PjCore class >> emptyJavascriptObject [
 	'>
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> handleDNU: aMessage for: anObject [
 	" this could be a smalltalk object or a native JS object "
 
@@ -61,7 +88,7 @@ PjCore class >> handleDNU: aMessage for: anObject [
 				  , aMessage selector ]
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> hasCapitalizedName: anObject [
 	"Name being a property we need to access it directly. 
 	We cannot rely on accessor generation through since this method is this exact purpose.
@@ -74,36 +101,36 @@ PjCore class >> hasCapitalizedName: anObject [
 	^ firstCharacter = firstCharacter capitalized
 ]
 
-{ #category : #'reflection support' }
+{ #category : 'reflection support' }
 PjCore class >> initInheritanceAndInstantiationLinks [
 
 	Object js_setPrototypeOf: Object to: (theClassClass js_at: #prototype).
 	Object js_setPrototypeOf: theClassClass to: PjFunction
 ]
 
-{ #category : #'nil support' }
+{ #category : 'nil support' }
 PjCore class >> initNilInJs [
 	" specifically install in the global space, rather than in the Smalltalk global space "
 	globalThis js_at: self nilTestFunctionName put: (self nilIfUndefined) 
 ]
 
-{ #category : #'throw support' }
+{ #category : 'throw support' }
 PjCore class >> initThrowInJs [
 	" specifically install in the global space, rather than in the Smalltalk global space "
 	globalThis js_at: self throwFunctionName put: (self throwFunction)
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 PjCore class >> initializeCore [
-	selectorCache := self emptyJavascriptObject.
+	self resetSelectorCache.
 	self initNilInJs.
 	self initThrowInJs.
 	self initInheritanceAndInstantiationLinks.
 	self messageClass: self.
-	self metaclassClass: self.
+	self metaclassClass: self
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> install: aFunction named: pjSelector in: target [
 
 	(Object js_isFrozen: target) ifFalse: [
@@ -113,7 +140,7 @@ PjCore class >> install: aFunction named: pjSelector in: target [
 			properties: (self propertySet: aFunction) ]
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> installAndPerform: selector alias: pjSelector for: anObject args: args function: aFunction [
 
 	| target |
@@ -124,7 +151,7 @@ PjCore class >> installAndPerform: selector alias: pjSelector for: anObject args
 	^ aFunction js_apply: anObject args: args
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> installAndPerformAccessor: pjSelector property: peropertyName for: anObject args: args [
 
 	| accessor target |
@@ -139,7 +166,7 @@ PjCore class >> installAndPerformAccessor: pjSelector property: peropertyName fo
 	^ accessor js_apply: anObject args: args
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> installDnu: selector for: anObject args: args pjSelector: pjSelector else: aBlock [
 	"anObject could be a smalltalk object or a native JS object for a JS library"
 
@@ -172,19 +199,27 @@ PjCore class >> installDnu: selector for: anObject args: args pjSelector: pjSele
 		  args: args
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> isBasicFunction: anObject [
 
 	(self isClassOrBasicFunction: anObject) ifFalse: [ ^ false ].
 	^ (self hasCapitalizedName: anObject) not
 ]
 
-{ #category : #'nil support' }
+{ #category : 'selector converting' }
+PjCore class >> isBinarySelector: aSelector [
+
+	| firstCharacter |
+	firstCharacter := aSelector js_at: 0.
+	^ (firstCharacter isLetter or: [ '$_' includes: firstCharacter ]) not
+]
+
+{ #category : 'nil support' }
 PjCore class >> isBrowserPlatform [
 	^ (self at: #navigator) isNotNil
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> isClass: anObject [
 
 	(self isClassOrBasicFunction: anObject) ifFalse: [ ^false ].
@@ -192,24 +227,24 @@ PjCore class >> isClass: anObject [
 
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> isClassOrBasicFunction: anObject [
 
 	<javascript: 'return "function" == typeof anObject'>
 	
 ]
 
-{ #category : #'nil support' }
+{ #category : 'nil support' }
 PjCore class >> isDomPlatform [
 	^ (self at: #document) isNotNil
 ]
 
-{ #category : #'nil support' }
+{ #category : 'nil support' }
 PjCore class >> isNodePlatform [
 	^ (self at: #navigator) isNil
 ]
 
-{ #category : #accessing }
+{ #category : 'selector converting' }
 PjCore class >> isPharoJsSelector: aSelector [
 	"Answer true if the argument has been generated by PharoJS"
 	| prefixSize |
@@ -218,18 +253,18 @@ PjCore class >> isPharoJsSelector: aSelector [
 	^ (aSelector js_substring: 0 to: prefixSize) = self pharoJsSelectorPrefix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjCore class >> javascriptName [
 	<pharoJsSkip>
 	^ #Smalltalk
 ]
 
-{ #category : #'reflection support' }
+{ #category : 'reflection support' }
 PjCore class >> keys: anObject [
 	<jsGenerator: #keys_jsGenerator:>
 ]
 
-{ #category : #'reflection support' }
+{ #category : 'reflection support' }
 PjCore class >> keys_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'
@@ -239,17 +274,17 @@ PjCore class >> keys_jsGenerator: transpiler [
 	'
 ]
 
-{ #category : #logging }
+{ #category : 'logging' }
 PjCore class >> log: message [
 	console js_log: message
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> makeDNU: aSelector [
 	<jsGenerator: #makeDNU_jsGenerator:>
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> makeDNU_jsGenerator: transpiler [
 	<pharoJsSkip>
 	|prefix|
@@ -269,7 +304,7 @@ PjCore class >> makeDNU_jsGenerator: transpiler [
 	}'
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> makeGetter: selector [
 
 	<javascript: 'return function(){
@@ -279,30 +314,31 @@ PjCore class >> makeGetter: selector [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'selector converting' }
 PjCore class >> makePharoJsSelector: aSelector [
-	| result |
-	(self isPharoJsSelector: aSelector)
-		ifTrue: [ ^ aSelector ].
-	(selectorCache js_hasOwnProperty: aSelector)
-		ifTrue: [ ^ selectorCache js_at: aSelector ].
-	aSelector
-		ifNotNil: [ :sel | 
-			(sel isLetter or: [ (aSelector js_at: 0) = '$' ])
-				ifTrue: [ result := sel js_split: ':' ]
-				ifFalse: [ result := #().
-					1 to: sel size do:
-						[ :idx | result js_push: (sel js_charCodeAt: idx - 1) js_toString ].
-					result js_push: nil ].
-			result := self pharoJsSelectorPrefix , (result js_join: '_') ].
-	(selectorCache js_at: result)
-		ifNil: [ selectorCache js_at: result put: aSelector ].
-	(selectorCache js_at: aSelector)
-		ifNil: [ selectorCache js_at: aSelector put: result ].
-	^ result
+
+	| pjSelector |
+	(self isPharoJsSelector: aSelector) ifTrue: [ ^ aSelector ].
+	self
+		cache: pharoJsSelectorCache
+		at: aSelector
+		ifPresent: [ :cachedValue | ^ cachedValue ].
+	aSelector ifNotNil: [ :selector |
+		(self isBinarySelector: aSelector)
+			ifFalse: [
+				pjSelector := (selector js_split: '_') js_join: '_$'.
+				pjSelector := pjSelector js_split: ':' ]
+			ifTrue: [
+				pjSelector := #(  ).
+				1 to: selector size do: [ :idx |
+					pjSelector js_push: (selector js_charCodeAt: idx - 1) js_toString ].
+				pjSelector js_push: nil ].
+		pjSelector := self pharoJsSelectorPrefix , (pjSelector js_join: '_') ].
+	self cacheSmalltalkSelector: aSelector pharoJsSelector: pjSelector.
+	^ pjSelector
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> makeSetter: selector [
 
 	<javascript:
@@ -310,40 +346,42 @@ PjCore class >> makeSetter: selector [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'selector converting' }
 PjCore class >> makeSmalltalkSelector: aSelector [
-	| result |
+
+	| stSelector trimmed columnsIntroduced |
 	(self isPharoJsSelector: aSelector) ifFalse: [ ^ aSelector ].
-	(selectorCache js_hasOwnProperty: aSelector) ifTrue: [
-		^ selectorCache js_at: aSelector ].
-	result := aSelector js_split: '_'.
-	result js_shift.
-	((result js_at: 0) js_at: 0) > '9' ifTrue: [ ^ result js_join: ':' ].
-	result js_pop.
-	0 to: (result js_at: #length)-1 do: [ :index |
-		result js_at: index put: (Character value: (result js_at: index)) ].
-	result := result js_join: ''.
-	(selectorCache js_at: result) ifNil: [ selectorCache js_at: result put: aSelector ].
-	(selectorCache js_at: aSelector) ifNil: [ selectorCache js_at: aSelector put: result ].
-	^ result
+	self
+		cache: smalltalkSelectorCache
+		at: aSelector
+		ifPresent: [ :cachedValue | ^ cachedValue ].
+	trimmed := aSelector copyFrom: self pharoJsSelectorPrefix size + 1.
+	columnsIntroduced := trimmed
+		                     js_replace:
+		                     self
+			                     underscoreNotFollowdByDollarRegularExpression
+		                     with: ':'.
+	stSelector := columnsIntroduced copyWithout: '$'.
+	self cacheSmalltalkSelector: stSelector pharoJsSelector: aSelector.
+	^ stSelector
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> messageClass: anObject [
 	messageClass := anObject
 ]
 
-{ #category : #'reflection support' }
+{ #category : 'reflection support' }
 PjCore class >> metaclassClass: anObject [
 	metaclassClass := anObject
 ]
 
-{ #category : #'reflection support' }
+{ #category : 'reflection support' }
 PjCore class >> metaclassOf: aClass [
 	<jsGenerator: #metaclassOf_jsGenerator:>
 ]
 
-{ #category : #'reflection support' }
+{ #category : 'reflection support' }
 PjCore class >> metaclassOf_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'if(this.metaclassClass!==this) return this.metaclassClass.', transpiler pharoJsSelectorPrefix, 'metaclassOf_(aClass);
@@ -356,7 +394,7 @@ PjCore class >> metaclassOf_jsGenerator: transpiler [
 	'
 ]
 
-{ #category : #'nil support' }
+{ #category : 'nil support' }
 PjCore class >> nilIfUndefined [
 	"In case PjUndefinedObject is not created yet, use a placeholder object, just for declaring."
 	<javascript: 'globalThis.PjUndefinedObject |= {};
@@ -367,24 +405,24 @@ PjCore class >> nilIfUndefined [
 	
 ]
 
-{ #category : #'nil support' }
+{ #category : 'nil support' }
 PjCore class >> nilTestFunctionName [
 	^ '$asNil$'
 ]
 
-{ #category : #accessing }
+{ #category : 'selector converting' }
 PjCore class >> pharoJsSelectorPrefix [
 	<jsGenerator: #pharoJsSelectorPrefix_jsGenerator:>
 	^ self error: 'Only for Javascript side'
 ]
 
-{ #category : #accessing }
+{ #category : 'selector converting' }
 PjCore class >> pharoJsSelectorPrefix_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^ 'return ',transpiler pharoJsSelectorPrefix asJSON
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> propertySet: func [
 
 	<javascript: 'return {
@@ -395,7 +433,7 @@ PjCore class >> propertySet: func [
 	
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> registerDnu: aSelector [
 	| selector props |
 	selector := self makePharoJsSelector: aSelector.
@@ -409,12 +447,12 @@ PjCore class >> registerDnu: aSelector [
 	^ selector
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> registerDnuForAll: anArray [
 	anArray js_forEach: [ : each | self registerDnu: each ]
 ]
 
-{ #category : #importing }
+{ #category : 'importing' }
 PjCore class >> require: moduleName [
 
 	<jsAlias: #require>
@@ -422,12 +460,19 @@ PjCore class >> require: moduleName [
 	^ globalThis require: moduleName
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'selector converting' }
+PjCore class >> resetSelectorCache [
+
+	pharoJsSelectorCache := self emptyJavascriptObject.
+	smalltalkSelectorCache := self emptyJavascriptObject
+]
+
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> selector: selector arguments: args [
 	<jsGenerator: #selector_arguments_jsGenerator:>
 ]
 
-{ #category : #'doesNotUnderstand support' }
+{ #category : 'doesNotUnderstand support' }
 PjCore class >> selector_arguments_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'if(this.messageClass!==this)
@@ -440,12 +485,19 @@ PjCore class >> selector_arguments_jsGenerator: transpiler [
 		}'
 ]
 
-{ #category : #'throw support' }
+{ #category : 'throw support' }
 PjCore class >> throwFunction [
 	<javascript: 'return function(arg){throw arg}'>
 ]
 
-{ #category : #'throw support' }
+{ #category : 'throw support' }
 PjCore class >> throwFunctionName [
 	^ '$throw$'
+]
+
+{ #category : 'selector converting' }
+PjCore class >> underscoreNotFollowdByDollarRegularExpression [
+
+	<javascript: 'return /_(?!\$)/g'>
+	^ self error: 'Only for Javascript side'
 ]

@@ -1,11 +1,11 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 String >> isLiteralJavascriptValue [
 	^ true
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 String >> printJsOn: aStream [
 	aStream nextPut: $".
 	self do: [ : each |
@@ -13,7 +13,7 @@ String >> printJsOn: aStream [
 	aStream nextPut: $".
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 String >> printOneJsCharacter: each onStream: aStream [
 	each < 32 ifTrue: [
 		aStream nextPut: $\.

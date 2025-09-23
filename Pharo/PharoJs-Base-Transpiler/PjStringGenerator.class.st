@@ -53,8 +53,8 @@ Precedence	Operator type	Associativity
 
 "
 Class {
-	#name : #PjStringGenerator,
-	#superclass : #Object,
+	#name : 'PjStringGenerator',
+	#superclass : 'Object',
 	#traits : 'PjTStreamWriter',
 	#classTraits : 'PjTStreamWriter classTrait',
 	#instVars : [
@@ -80,20 +80,22 @@ Class {
 		'OperatorPrecedencesDict',
 		'StatementPrecedence'
 	],
-	#category : #'PharoJs-Base-Transpiler-Kernel'
+	#category : 'PharoJs-Base-Transpiler-Kernel',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Kernel'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator class >> JsReservedWordsForInstanceVariables [
 	^ JsReservedWordsForInstanceVariables
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> classVariablesHolderName [
 	^ 'prototype'
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 PjStringGenerator class >> initialize [
 	FunctionDefnPrecedence := 3.
 	StatementPrecedence := -1.
@@ -134,47 +136,47 @@ PjStringGenerator class >> initialize [
 	JsReservedWordsForInstanceVariables := Set newFrom: #(constructor prototype)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator class >> memberAccessPrecedence [
 	^MemberAccessPrecedence
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> nilInJavascript [
 	^ nil asJSON
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> nilTestFunctionName [
 	^ self transpilerClass coreClass nilTestFunctionName
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> nonLocalReturnVariableName [
 	^ '$_err_$'
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> selfName [
 	^ '$_self_$'
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> tempNamePrefix [
 	^ '$'
 ]
 
-{ #category : #'Javascript names' }
+{ #category : 'Javascript names' }
 PjStringGenerator class >> transpilerClass [
 	^ PjTranspiler
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjStringGenerator >> asString: aPjAST [
 		^ String streamContents: [ :aStream | self asString: aPjAST on: aStream ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjStringGenerator >> asString: aPjAST on: aStream [
 	jsStream := aStream.
 	currentPrecedenceLevel := -1.
@@ -182,7 +184,7 @@ PjStringGenerator >> asString: aPjAST on: aStream [
 	aPjAST acceptVisitor: self.
 ]
 
-{ #category : #precedence }
+{ #category : 'precedence' }
 PjStringGenerator >> atPrecedence: precedence do: aBlock [
 	| savedPrecedence |
 	currentPrecedenceLevel > precedence ifTrue: [ self writeNonBrace: $( ].
@@ -196,62 +198,62 @@ PjStringGenerator >> atPrecedence: precedence do: aBlock [
 	]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> currentClass [
 	^ currentClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> currentClass: anObject [
 	currentClass := anObject
 ]
 
-{ #category : #precedence }
+{ #category : 'precedence' }
 PjStringGenerator >> isAtStatementPrecedence [
 	^ currentPrecedenceLevel = StatementPrecedence
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> jsStream [
 	^jsStream
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> maybeWriteSemicolon [
 	wroteCloseBrace ifFalse: [ ^ self writeNonBrace: $; ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> nilTestFunctionName [
 	^self class nilTestFunctionName
 ]
 
-{ #category : #precedence }
+{ #category : 'precedence' }
 PjStringGenerator >> nonLocalReturnVariableName [
 	^ self class nonLocalReturnVariableName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> pharoJsSelectorPrefix [
 	^ pharoJsSelectorPrefix ifNil: [pharoJsSelectorPrefix := transpiler pharoJsSelectorPrefix]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> selectorsPrefix [
 	^ transpiler pharoJsSelectorPrefix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringGenerator >> transpiler: aPjTranspiler [ 
 	transpiler := aPjTranspiler
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visit: jsAstNode [ 
 	^jsAstNode acceptVisitor: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitApplyNode: aPjApplyNode [ 
 	| args func |
 	args := aPjApplyNode args.
@@ -267,12 +269,12 @@ PjStringGenerator >> visitApplyNode: aPjApplyNode [
 	]]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitArgumentNode: aPjTempVariableNode [ 
 	self writeVariable: aPjTempVariableNode identifier escapingIfIn: JsReservedWordsForVariables
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitArrayNode: aPjArrayNode [ 
 	self writeNonBrace: $[.
 	aPjArrayNode expressions do: [: expr |
@@ -283,7 +285,7 @@ PjStringGenerator >> visitArrayNode: aPjArrayNode [
 	self writeNonBrace: $]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitAssignNode: aPjAssignNode [
 	| saveDoingAssignment |
 "	(aPjAssignNode target isNonlocalClassOrPoolVariableReference: self currentClass) ifTrue: [
@@ -308,7 +310,7 @@ PjStringGenerator >> visitAssignNode: aPjAssignNode [
 	]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitBinaryNode: aPjABinaryNode [
 	self atPrecedence: (OperatorPrecedencesDict at: aPjABinaryNode operator) do: [
 		self
@@ -318,7 +320,7 @@ PjStringGenerator >> visitBinaryNode: aPjABinaryNode [
 	]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitBlockNode: aPjMethodNode [
 	currentPrecedenceLevel = StatementPrecedence ifFalse: [
 		self visitFunctionNode: aPjMethodNode.
@@ -329,12 +331,12 @@ PjStringGenerator >> visitBlockNode: aPjMethodNode [
 		wroteCloseBrace := false]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitClassNode: aPjClassNode [
 	self nextPutAll: aPjClassNode identifier
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitClassVariableNode: aPjClassVariableNode [
 	self
 		writeNonBrace: (aPjClassVariableNode poolReferenceWith: transpiler);
@@ -342,7 +344,7 @@ PjStringGenerator >> visitClassVariableNode: aPjClassVariableNode [
 		writeVariable: aPjClassVariableNode identifier escapingIfIn: JsReservedWordsForInstanceVariables.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitFieldNode: aPjFieldNode [
 	| target isLiteral isNonNil |
 	target := aPjFieldNode target.
@@ -368,7 +370,7 @@ PjStringGenerator >> visitFieldNode: aPjFieldNode [
 		]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitFieldNodeWithId: fieldId [
 	fieldId isLiteralSelector ifTrue: [ ^ self visit: fieldId ].
 	(fieldId isLiteralNode
@@ -385,7 +387,7 @@ PjStringGenerator >> visitFieldNodeWithId: fieldId [
 		writeNonBrace: $]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitFunctionNode: aPjFunctionNode [
 
 	self atPrecedence: FunctionDefnPrecedence do: [ 
@@ -393,30 +395,30 @@ PjStringGenerator >> visitFunctionNode: aPjFunctionNode [
 		self writeFunctionBody: aPjFunctionNode ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitGlobalNode: aPjGlobalNode [
 	self nextPutAll: aPjGlobalNode identifier
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitInstanceVariableNode: aPjTempVariableNode [
 	self
 		writeNonBrace: $.;
 		writeVariable: aPjTempVariableNode identifier escapingIfIn: JsReservedWordsForInstanceVariables
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitLiteralValueNode: aPjALiteral [
 	self print: aPjALiteral value
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitMessageSelectorNode: aPjMessageSelectorNode [
 	self writeNonBrace: $..
 	self writeJsSelector: aPjMessageSelectorNode identifier onStream: self jsStream
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitMethodNode: aPjMethodNode [
 
 	| savedClass |
@@ -432,12 +434,12 @@ PjStringGenerator >> visitMethodNode: aPjMethodNode [
 		currentClass := savedClass ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitNilNode: aPjIfNilIfNotNilNode [ 
 	self nextPutAll: self class nilInJavascript
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitNonLocalReturnNode: aPjNonLocalReturnNode [
 	self isAtStatementPrecedence ifTrue: [
 		self nextPutAll: 'throw '
@@ -450,7 +452,7 @@ PjStringGenerator >> visitNonLocalReturnNode: aPjNonLocalReturnNode [
 	self isAtStatementPrecedence ifFalse: [ self nextPut: $)]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitObjectNode: aPjObjectNode [
 	| dictionary |
 	dictionary := aPjObjectNode dictionary.
@@ -469,12 +471,12 @@ PjStringGenerator >> visitObjectNode: aPjObjectNode [
 	self writeNonBrace: $} " even though this is a brace, it isn't an end-of-statement brace "
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitPoolVariableNode: aPjClassVariableNode [
 	self visitClassVariableNode: aPjClassVariableNode
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitReturnNode: aPjAReturn [
 	self isAtStatementPrecedence ifFalse: [
 		self error: 'PjAReturn not at statement level'
@@ -485,13 +487,13 @@ PjStringGenerator >> visitReturnNode: aPjAReturn [
 	wroteCloseBrace := false
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitSelfNode: aPjASelf [
 	aPjASelf inBlock ifTrue: [ ^ self nextPutAll: self class selfName ].
 	self nextPutAll: 'this'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
 	self isAtStatementPrecedence ifFalse: [self writeNonBrace:  $(].
 	aPjSequenceNode expressions do: [: expr |
@@ -507,17 +509,17 @@ PjStringGenerator >> visitSequenceNode: aPjSequenceNode [
 		ifFalse: [ self writeNonBrace: $)]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitSuperNode: aPjSuperNode [
 	self nextPutAll: 'super'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitTempVariableNode: aPjTempVariableNode [ 
 	self writeVariable: aPjTempVariableNode identifier escapingIfIn: JsReservedWordsForVariables
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitTryNode: aPjATry [ 
 	self atPrecedence: StatementPrecedence do:  [
 		self nextPutAll: 'var ';
@@ -532,7 +534,7 @@ PjStringGenerator >> visitTryNode: aPjATry [
 	]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitUnaryNode: aPjUnaryNode [ 
 	self atPrecedence: (OperatorPrecedencesDict at: aPjUnaryNode operator) do: [
 		self
@@ -541,17 +543,17 @@ PjStringGenerator >> visitUnaryNode: aPjUnaryNode [
 	]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitUnparsedStringNode: aPjUnparsedStringNode [
 	self nextPutAll: aPjUnparsedStringNode string
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjStringGenerator >> visitVariableNode: aPjVariableNode [
 	self nextPutAll: aPjVariableNode identifier
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeBodyStatements: aBodyContainingNode [
 	currentPrecedenceLevel := StatementPrecedence.
 	wroteCloseBrace := false.
@@ -560,13 +562,13 @@ PjStringGenerator >> writeBodyStatements: aBodyContainingNode [
 		separatedBy: [ self maybeWriteSemicolon ]
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeCloseBrace [
 	self nextPut: $}.
 	wroteCloseBrace := true
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeFunctionBody: aPjFunctionNode [
 	self
 		nextPut: ${;
@@ -575,7 +577,7 @@ PjStringGenerator >> writeFunctionBody: aPjFunctionNode [
 		writeCloseBrace
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeFunctionHeader: aPjFunctionNode [
 
 	self
@@ -584,7 +586,7 @@ PjStringGenerator >> writeFunctionHeader: aPjFunctionNode [
 		nextPut: $); nextPutAll: '=>'
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeFunctionLocals: aPjFunctionNode [
 		aPjFunctionNode locals isEmpty ifTrue: [
 			aPjFunctionNode needsSelf ifFalse: [^self]].
@@ -600,7 +602,7 @@ PjStringGenerator >> writeFunctionLocals: aPjFunctionNode [
 		self nextPut: $;
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeNonBrace: aCharacterOrString [
 	aCharacterOrString isString ifTrue: [
 		self nextPutAll: aCharacterOrString
@@ -610,7 +612,7 @@ PjStringGenerator >> writeNonBrace: aCharacterOrString [
 	wroteCloseBrace := false.
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PjStringGenerator >> writeSafeNames: aCollection [
 	aCollection do: [ : each | 
 		self writeVariable: each escapingIfIn: JsReservedWordsForVariables ]

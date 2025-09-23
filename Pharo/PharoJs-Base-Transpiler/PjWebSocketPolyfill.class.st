@@ -4,15 +4,17 @@ I am the polyfill for WebSocket for Node.
 This will force the appropriate package to be loaded when running on Node.
 "
 Class {
-	#name : #PjWebSocketPolyfill,
-	#superclass : #PjJavascriptGlobals,
+	#name : 'PjWebSocketPolyfill',
+	#superclass : 'PjJavascriptGlobals',
 	#classVars : [
 		'WebSocket'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }
 
-{ #category : #'pharojs globals' }
+{ #category : 'pharojs globals' }
 PjWebSocketPolyfill class >> nodePackageName [
 	<pharoJsSkip>
 	^ 'ws'

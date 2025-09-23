@@ -2,17 +2,19 @@
 I am a pool variable for visiting with a subclass of PjASTVisitor
 "
 Class {
-	#name : #PjPoolVariableNode,
-	#superclass : #PjClassVariableNode,
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#name : 'PjPoolVariableNode',
+	#superclass : 'PjClassVariableNode',
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjPoolVariableNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitPoolVariableNode: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPoolVariableNode >> isNonlocalClassOrPoolVariableReference: aClass [
 	^ true
 ]

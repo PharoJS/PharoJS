@@ -2,15 +2,17 @@
 Trait for closed block closure handling
 "
 Trait {
-	#name : #PjTClosedBlockClosure,
+	#name : 'PjTClosedBlockClosure',
 	#instVars : [
 		'originalBlock',
 		'externalVariablesDict'
 	],
-	#category : #'PharoJs-Base-Transpiler-Kernel'
+	#category : 'PharoJs-Base-Transpiler-Kernel',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Kernel'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PjTClosedBlockClosure classSide >> compiledBlock: aCompiledBlock numArgs: numArgs originalBlock: aBlock [
 
 	^ (self
@@ -22,53 +24,53 @@ PjTClosedBlockClosure classSide >> compiledBlock: aCompiledBlock numArgs: numArg
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjTClosedBlockClosure >> acceptVisitor: aPjAstConverter [
 	^ aPjAstConverter convertClosedBlock: self
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjTClosedBlockClosure >> asClosedBlock [
 	^self
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjTClosedBlockClosure >> convertToJsUsing: aPjTranspiler [ 
 	aPjTranspiler convertClosedBlock: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjTClosedBlockClosure >> externalVariable: variable formContext: context [
 	^variable valueStartAtContext: context
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjTClosedBlockClosure >> externalVariable: name fromMethod: method [
 	^ method instVarNamed: name
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 PjTClosedBlockClosure >> externalVariablesDict [
 	^ externalVariablesDict
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjTClosedBlockClosure >> isClosed [
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjTClosedBlockClosure >> originalBlock [
 	^ originalBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjTClosedBlockClosure >> originalBlock: aBlock [
 	originalBlock := aBlock.
 	externalVariablesDict := self externalVariablesDictOf: originalBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjTClosedBlockClosure >> sourceNode [
 	^ originalBlock sourceNode
 ]

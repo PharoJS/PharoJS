@@ -2,40 +2,42 @@
 I produce a Javascript object with fields from my dictionary
 "
 Class {
-	#name : #PjObjectNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjObjectNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'dictionary'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjObjectNode class >> dictionary: dictionary [
 	^ self new dictionary: dictionary; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjObjectNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitObjectNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjObjectNode >> dictionary [
 	^ dictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjObjectNode >> dictionary: anObject [
 	dictionary := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjObjectNode >> isNonArray [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjObjectNode >> isNonNilNode [
 	^ true
 ]

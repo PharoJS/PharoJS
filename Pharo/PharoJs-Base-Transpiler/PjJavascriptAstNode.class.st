@@ -5,97 +5,99 @@ Used also for test to see if the transpilation makes the right AST
 
 "
 Class {
-	#name : #PjJavascriptAstNode,
-	#superclass : #Object,
+	#name : 'PjJavascriptAstNode',
+	#superclass : 'Object',
 	#traits : 'TEquality',
 	#classTraits : 'TEquality classTrait',
 	#instVars : [
 		'myClass'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjJavascriptAstNode class >> myClass: anInteger [
 	^ self new myClass: anInteger;yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjJavascriptAstNode >> acceptVisitor: aPjASTVisitor [
 	self subclassResponsibility
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjJavascriptAstNode >> asJsAstBody [
 	^{self}
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjJavascriptAstNode >> asSimpleNode [
 	^ self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> canPropogateReturns [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjJavascriptAstNode >> expressions [
 	^ { self }
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isComparison [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isLiteralNode [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isLiteralSelector [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isNonNil [
 	^ self isNonNilNode
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isNonNilNode [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isNonlocalClassOrPoolVariableReference: aClass [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isNot [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isPjJavascriptAstNode [
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isReturnOrThrow [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isSelfNode [
 	^ false
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PjJavascriptAstNode >> isSimilarTo: anObject [ 
 	| myValues otherValues |
 	self species = anObject species ifFalse: [^false].
@@ -109,27 +111,27 @@ PjJavascriptAstNode >> isSimilarTo: anObject [
 	^true.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjJavascriptAstNode >> isSuperSend [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjJavascriptAstNode >> myClass [
 	^ myClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjJavascriptAstNode >> myClass: anObject [
 	myClass := anObject
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjJavascriptAstNode >> not [
 	^ PjUnaryNode operator: #! expression: self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PjJavascriptAstNode >> printOn: aStream [
 	| instVars needParens |
 	instVars := self class allInstVarNames copyWithoutAll: #(myClass inBlock).
@@ -154,7 +156,7 @@ PjJavascriptAstNode >> printOn: aStream [
 		nextPutAll: (needParens ifTrue: [ ')' ] ifFalse: [ '' ])
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PjJavascriptAstNode >> valuesToCompareForSimilarity [
 	^ self valuesToCompareForEquality select: [ : each | each isPjJavascriptAstNode ]
 ]

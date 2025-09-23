@@ -4,17 +4,19 @@ I optimize js_at: to Javascript object/array references.
 Required by bootstrap code
 "
 Class {
-	#name : #PjJsAtConversion,
-	#superclass : #PjSpecialMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-MessageConversions'
+	#name : 'PjJsAtConversion',
+	#superclass : 'PjSpecialMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-MessageConversions',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'MessageConversions'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjJsAtConversion >> convertReceiver: receiver args: args [
 	^PjFieldNode target: (self visit: receiver) selectorNode: (self visit: args first) isNonNil: true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjJsAtConversion >> selector [
 	^ #js_at:
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #SharedPool }
+Extension { #name : 'SharedPool' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 SharedPool class >> isJavascriptGlobalsPool [
 	^ false
 ]

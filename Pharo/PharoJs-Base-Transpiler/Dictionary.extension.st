@@ -1,6 +1,6 @@
-Extension { #name : #Dictionary }
+Extension { #name : 'Dictionary' }
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 Dictionary >> isFreeJavascriptValue [
 	self keysAndValuesDo: [ : key : value |
 		key isString ifFalse: [ ^ false ] .
@@ -8,7 +8,7 @@ Dictionary >> isFreeJavascriptValue [
 	^ true
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 Dictionary >> isLiteralJavascriptValue [
 	self keysAndValuesDo: [ : key : value |
 		key isString ifFalse: [ ^ false ] .
@@ -16,7 +16,7 @@ Dictionary >> isLiteralJavascriptValue [
 	^ true
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler' }
+{ #category : '*PharoJs-Base-Transpiler' }
 Dictionary >> printJsOn: aStream [
 	| first |
 	first := true.

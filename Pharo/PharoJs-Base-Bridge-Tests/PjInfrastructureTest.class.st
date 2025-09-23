@@ -39,6 +39,20 @@ PjInfrastructureTest >> testAccessorForInheritedPropertyWithNilNilValue [
 ]
 
 { #category : 'tests' }
+PjInfrastructureTest >> testAccessorForIvWithUnderscore [
+	| a b |
+	a := self evalBlock: [ PjASuperClass new ].
+	a instVarNamed: #_x put: nil.
+	a _x: 111.
+	self assert: a _x equals: 111.
+	b := self evalBlock: [ PjASuperClass new ].
+	b instVarNamed: #y_y put: nil.
+	b y_y: 222.
+	self assert: b y_y equals: 222.
+
+]
+
+{ #category : 'tests' }
 PjInfrastructureTest >> testAccessorInstalledOnClass [
 
 	| a b |
@@ -167,20 +181,6 @@ PjInfrastructureTest >> testIs [
 ]
 
 { #category : 'tests' }
-PjInfrastructureTest >> testJSSelector [
-
-	|prefix|
-	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
-	self assert: [PjCore makePharoJsSelector: #foo] evaluatesTo: prefix, 'foo'.
-	self assert: [PjCore makePharoJsSelector: #foo:] evaluatesTo: prefix, 'foo_'.
-	self assert: [PjCore makePharoJsSelector: ','] evaluatesTo: prefix, '44_'.
-	self assert: [PjCore makePharoJsSelector: prefix, '44_'] evaluatesTo: prefix, '44_'.
-	self assert: [PjCore makePharoJsSelector: prefix, 'foo'] evaluatesTo: prefix, 'foo'.
-	self assert: [PjCore makePharoJsSelector: prefix, 'foo_'] evaluatesTo: prefix, 'foo_'.
-	self assert: [PjCore makePharoJsSelector: #'$foo:'] evaluatesTo: prefix, '$foo_'.
-]
-
-{ #category : 'tests' }
 PjInfrastructureTest >> testOpenUrlWithParameters [
 
 	| clientUrl |
@@ -196,14 +196,71 @@ PjInfrastructureTest >> testOpenUrlWithParameters [
 ]
 
 { #category : 'tests' }
-PjInfrastructureTest >> testSTSelector [
+PjInfrastructureTest >> testSelectorPharoJsToStConversion [
 
-	self assert: [ PjCore makeSmalltalkSelector: #foo ] evaluatesTo: 'foo'.
-	self assert: [ PjCore makeSmalltalkSelector: #foo: ] evaluatesTo: 'foo:'.
-	self assert: [ PjCore makeSmalltalkSelector: #, ] evaluatesTo: ','.
-	self assert: [ PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, '44_' ] evaluatesTo: ','.
-	self assert: [ PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo' ] evaluatesTo: 'foo'.
-	self assert: [ PjCore makeSmalltalkSelector: PjCore pharoJsSelectorPrefix, 'foo_' ] evaluatesTo: 'foo:'
+	| prefix |
+	prefix := self evalBlock: [ PjCore pharoJsSelectorPrefix ].
+	{ #foo -> 'foo'.
+	#foo: -> 'foo_'.
+	',' -> '44_'.
+	'$foo:' ->  '$foo_'.
+	 }
+	asDictionary keysAndValuesDo: [ : inputSelector : pjSelectorPostfix | 
+	self
+		assert: [ PjCore makePharoJsSelector: inputSelector ]
+		evaluatesTo: prefix , pjSelectorPostfix.
+	].
+
+	#('44_' 'foo' 'foo_') do: [ : selectorPostfix  | 
+	self
+		assert: [ PjCore makePharoJsSelector: prefix, selectorPostfix ]
+		evaluatesTo: prefix , selectorPostfix.
+	].
+
+]
+
+{ #category : 'tests' }
+PjInfrastructureTest >> testSelectorRoundtripConversion [
+
+	| prefix |
+	prefix := self bridge exporter transpiler pharoJsSelectorPrefix.
+	#( foo foo: _foo foo_ _foo: foo_: __foo: foo__: _foo_:_bar_: ) do: [
+		:selector |
+		self
+			assert: [
+				PjCore resetSelectorCache.
+				PjCore makeSmalltalkSelector:
+					(PjCore makePharoJsSelector: selector) ]
+			evaluatesTo: selector ]
+]
+
+{ #category : 'tests' }
+PjInfrastructureTest >> testSelectorStToPharoJsConversion [
+
+	| pjPrefix |
+	{
+		(#foo -> 'foo').
+		(#foo: -> 'foo:').
+		(#, -> ',') } asDictionary keysAndValuesDo: [
+		:providedSelector
+		:exepectResult |
+		self
+			assert: [ PjCore makeSmalltalkSelector: providedSelector ]
+			evaluatesTo: exepectResult ].
+	pjPrefix := self evalBlock: [ PjCore pharoJsSelectorPrefix ].
+	{
+		('44_' -> ',').
+		(#foo -> 'foo').
+		(#foo_ -> 'foo:').
+		('foo_$' -> 'foo_').
+		('foo_$_bar_' -> 'foo_:bar:').
+		('_$foo' -> '_foo') } asDictionary keysAndValuesDo: [
+		:providedSelector
+		:exepectResult |
+		self
+			assert: [
+			PjCore makeSmalltalkSelector: (pjPrefix , providedSelector) ]
+			evaluatesTo: exepectResult ]
 ]
 
 { #category : 'tests' }

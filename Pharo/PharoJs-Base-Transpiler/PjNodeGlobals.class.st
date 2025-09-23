@@ -3,11 +3,13 @@ I contain the globals for the NodeJS Javascript engine.
 
 "
 Class {
-	#name : #PjNodeGlobals,
-	#superclass : #PjJavascriptGlobals,
+	#name : 'PjNodeGlobals',
+	#superclass : 'PjJavascriptGlobals',
 	#pools : [
 		'PjNodeMinGlobals',
 		'PjWebSocketPolyfill'
 	],
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }

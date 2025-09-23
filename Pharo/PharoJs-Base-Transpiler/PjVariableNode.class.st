@@ -2,35 +2,37 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor or PjASTEqual
 "
 Class {
-	#name : #PjVariableNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjVariableNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'identifier'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjVariableNode class >> identifier: identifier [
 	^ self new identifier: identifier; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjVariableNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitVariableNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjVariableNode >> identifier [
 	^ identifier
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjVariableNode >> identifier: anObject [
 	identifier := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjVariableNode >> valuesToCompareForSimilarity [
 	^self identifier
 ]

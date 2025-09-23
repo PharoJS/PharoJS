@@ -58,7 +58,8 @@ PjTArray classSide >> jsTranspilationImportMethodsArray [
 
 		  (Collection
 		   ->
-		   #( doWithIndex: printElementsOn: printNameOn: identityIncludes: asSortedCollection:)).
+			   #( doWithIndex: printElementsOn: printNameOn: identityIncludes:
+			      asSortedCollection: copyWithout: copyWithoutAll: )).
 		  (SequenceableCollection
 		   ->
 			   #( withIndexDo: allButFirst allButFirst: allButLast allButLast:

@@ -2,40 +2,42 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor
 "
 Class {
-	#name : #PjMessageSelectorNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjMessageSelectorNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'identifier'
 	],
-	#category : #'PharoJs-Base-Transpiler-AST'
+	#category : 'PharoJs-Base-Transpiler-AST',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjMessageSelectorNode class >> identifier: identifier [
 	^ self new identifier: identifier; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjMessageSelectorNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitMessageSelectorNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMessageSelectorNode >> identifier [
 	^ identifier
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjMessageSelectorNode >> identifier: anObject [
 	identifier := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjMessageSelectorNode >> isLiteralSelector [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjMessageSelectorNode >> valuesToCompareForSimilarity [
 	^self identifier
 ]

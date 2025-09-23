@@ -6,35 +6,37 @@ Subclasses may simply enumerate globals as class variables, or they may be polyf
 Each polyfil subclass should override one or more of the *Polyfill: methods to write the necessary header code to install the polyfill
 "
 Class {
-	#name : #PjJavascriptGlobals,
-	#superclass : #SharedPool,
-	#category : #'PharoJs-Base-Transpiler-Globals'
+	#name : 'PjJavascriptGlobals',
+	#superclass : 'SharedPool',
+	#category : 'PharoJs-Base-Transpiler-Globals',
+	#package : 'PharoJs-Base-Transpiler',
+	#tag : 'Globals'
 }
 
-{ #category : #polyfill }
+{ #category : 'polyfill' }
 PjJavascriptGlobals class >> browserPolyfill: aTranspiler [
 	<pharoJsSkip>
 ]
 
-{ #category : #polyfill }
+{ #category : 'polyfill' }
 PjJavascriptGlobals class >> domPolyfill: aTranspiler [
 	<pharoJsSkip>
 ]
 
-{ #category : #'pharojs support' }
+{ #category : 'pharojs support' }
 PjJavascriptGlobals class >> isJavascriptGlobalsPool [
 	<pharoJsSkip>
 	^ true
 ]
 
-{ #category : #polyfill }
+{ #category : 'polyfill' }
 PjJavascriptGlobals class >> nodePackageName [
 	<pharoJsSkip>
 " override this with the name of the package to be require'd "
 	^ nil
 ]
 
-{ #category : #polyfill }
+{ #category : 'polyfill' }
 PjJavascriptGlobals class >> nodePolyfill: aTranspiler [
 	<pharoJsSkip>
 	self nodePackageName ifNil: [ ^ self ].
@@ -47,7 +49,7 @@ PjJavascriptGlobals class >> nodePolyfill: aTranspiler [
 		nextPutAll: '");';cr
 ]
 
-{ #category : #polyfill }
+{ #category : 'polyfill' }
 PjJavascriptGlobals class >> requiredPolyfills [
 	^ #()
 ]

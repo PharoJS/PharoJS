@@ -4,7 +4,7 @@ strings in Javascript world
 Class {
 	#name : 'PjString',
 	#superclass : 'PjObject',
-	#traits : 'PjTKernelClass + PjTArray',
+	#traits : '(PjTKernelClass + PjTArray) @ {#arraySelect:->#select:}',
 	#classTraits : 'PjTKernelClass classTrait + PjTArray classTrait',
 	#pools : [
 		'PjDomGlobals'
@@ -371,6 +371,14 @@ PjString >> replaceFrom: start to: stop with: replacement startingAt: repStart [
 { #category : 'converting' }
 PjString >> reversed [
 	^ '' join: self asArray reverse
+]
+
+{ #category : 'enumerating' }
+PjString >> select: aBlock [
+
+	| array |
+	array := self arraySelect: aBlock.
+	^ array js_join: ''
 ]
 
 { #category : 'testing' }
