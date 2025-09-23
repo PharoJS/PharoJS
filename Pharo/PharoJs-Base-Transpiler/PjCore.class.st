@@ -316,6 +316,7 @@ PjCore class >> makeGetter: selector [
 
 { #category : 'selector converting' }
 PjCore class >> makePharoJsSelector: aSelector [
+	"This should comply with PjTStreamWriter >> #writeSelectorChar:on:isInBinarySelector:"
 
 	| pjSelector |
 	(self isPharoJsSelector: aSelector) ifTrue: [ ^ aSelector ].

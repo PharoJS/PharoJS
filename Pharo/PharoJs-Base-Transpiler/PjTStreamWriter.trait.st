@@ -84,12 +84,14 @@ PjTStreamWriter >> writeJsSelector: aSelector onStream: aStream [
 
 { #category : 'writing' }
 PjTStreamWriter >> writeSelectorChar: character on: aStream isInBinarySelector: isInBinarySelector [
-	isInBinarySelector ifTrue: [ 
-			character asciiValue printOn: aStream.
-			^aStream nextPut: $_ ].
-	character = $: ifTrue: [ 
-		^aStream nextPut: $_ ].
-	aStream nextPut: character
+
+	"This should comply with PjCore class >> #makePharoJsSelector:"
+	isInBinarySelector ifTrue: [
+		character asciiValue printOn: aStream.
+		^ aStream nextPut: $_ ].
+	character = $: ifTrue: [ ^ aStream nextPut: $_ ].
+	aStream nextPut: character.
+	character = $_ ifTrue: [ aStream nextPut: $$ ]
 ]
 
 { #category : 'writing' }

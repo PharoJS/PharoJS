@@ -345,6 +345,24 @@ PjStringGenerationTest >> testReturn [
 ]
 
 { #category : 'tests' }
+PjStringGenerationTest >> testSelectorsWithUnderscore [
+
+	{ 
+	#_foo -> '__$foo'.
+	#foo_ -> '_foo_$'.
+	#_foo: -> '__$foo_'.
+	#foo_: -> '_foo_$_'.
+	#foo_bar: -> '_foo_$bar_'.
+	#__foo: -> '__$_$foo_'.
+	#foo__: -> '_foo_$_$_'.
+	#_foo_:_bar_: -> '__$foo_$__$bar_$_'} asDictionary keysAndValuesDo: [ : stSelector : jsSelector |
+	self
+		assert: (self apply: (PjSelfNode myClass: Integer) selector: stSelector )
+		asStringEquals: 'this.', jsSelector, '()' ].
+
+]
+
+{ #category : 'tests' }
 PjStringGenerationTest >> testSelf [
 	self assert: selfNode asStringEquals: 'this'.
 	self
