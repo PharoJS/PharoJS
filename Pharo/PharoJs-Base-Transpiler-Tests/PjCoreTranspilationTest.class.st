@@ -28,7 +28,20 @@ PjCoreTranspilationTest >> testInstanceSideMethods [
 PjCoreTranspilationTest >> testOptimizedJsAt [
 	| method asNil |
 	asNil := PjStringGenerator nilTestFunctionName.
+	method := self classMethod: #handleDNU:for:.
+	self assert: (method indexOfSubCollection: 'selector=((', asNil,'(aMessage)._selector()).split(":"))[0]') > 0.
+
+]
+
+{ #category : 'tests' }
+PjCoreTranspilationTest >> testOptimizedMessagesWithJsMarker [
+
+	| method asNil |
+	asNil := PjStringGenerator nilTestFunctionName.
 	method := self classMethod: #makePharoJsSelector:.
-	self assert: (method indexOfSubCollection: asNil,'(aSelector[0])._61_(') > 0.
-	self assert: (method indexOfSubCollection: asNil ,'(this.selectorCache.hasOwnProperty(aSelector))._ifTrue_(') > 0.
+	self assert:
+		(method indexOfSubCollection: '(selector.split("_")).join("_$")') > 0.
+	self assert: (method indexOfSubCollection: 'pjSelector.push(') > 0.
+	self assert: (method indexOfSubCollection: 'selector.charCodeAt(', asNil, '(idx)._45_(1)))') > 0.
+
 ]
