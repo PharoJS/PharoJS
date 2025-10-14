@@ -50,6 +50,13 @@ PjDictionary >> asJsObject [
 	^jsObject
 ]
 
+{ #category : 'enumerating' }
+PjDictionary >> associationsDo: aBlock [
+	self keysAndValuesDo: [: key : value |
+		aBlock value: (Association key: key value: value)
+	]
+]
+
 { #category : 'dictionary access' }
 PjDictionary >> at: key [
 	^super at: (self keyFrom: key)

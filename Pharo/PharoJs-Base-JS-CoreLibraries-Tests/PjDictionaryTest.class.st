@@ -18,6 +18,18 @@ PjDictionaryTest >> testAsDictionary [
 ]
 
 { #category : 'tests' }
+PjDictionaryTest >> testAssociationsDo [
+	| result |
+	result := self evalBlock: [ | intermediate dict | 
+		intermediate := ''.
+		dict := { #k1 -> #v1 . #k2 -> #v2 } asDictionary.
+		dict associationsDo: [ :association | intermediate := intermediate , association key ].
+		intermediate.
+	].
+	self assert: result equals: 'k1k2'.
+]
+
+{ #category : 'tests' }
 PjDictionaryTest >> testAtIfAbsent [
 	self assertEquivalent: [|d|
 		d := Dictionary new.
