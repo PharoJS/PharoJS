@@ -11,6 +11,22 @@ Class {
 }
 
 { #category : 'tests' }
+PjProxyTest >> assertIsInspectable: anObject withIvNames: expectedIvNames [
+	"#keysForProxy is used by PjProxy >> #inspectionItems:"
+	
+	| dict |
+	dict := self inspectionDictionaryFor: anObject.
+	dict keys includesAll: expectedIvNames
+]
+
+{ #category : 'tests' }
+PjProxyTest >> inspectionDictionaryFor: anObject [
+	"#keysForProxy is used by PjProxy >> #inspectionItems:"
+	
+	^anObject keysForProxy asDictionary
+]
+
+{ #category : 'tests' }
 PjProxyTest >> testArrayEquality [
 
 	self assertBlock: [ #() ] equalsBlock: [ #() ].
@@ -156,6 +172,34 @@ PjProxyTest >> testGetElementById [
 		appendChild: rectangle.
 	self assert: (document getElementById: 'grn') id equals: 'grn'.
 	self assert: (document js_getElementById: 'grn') id equals: 'grn'
+]
+
+{ #category : 'tests' }
+PjProxyTest >> testInspectProxyForDocument [
+	
+	self assertIsInspectable: document withIvNames: #()
+]
+
+{ #category : 'tests' }
+PjProxyTest >> testInspectProxyForSelfReferencingObject [
+	
+	| selfReferencer |
+	selfReferencer := self evalBlock: [ { #mySelf -> nil } asJsObject ].
+	selfReferencer instVarNamed: #mySelf put: selfReferencer.
+	self assertIsInspectable: selfReferencer withIvNames: #(mySelf).
+	self assert: ((self inspectionDictionaryFor: selfReferencer) at: #mySelf) equals: 'self'
+]
+
+{ #category : 'tests' }
+PjProxyTest >> testInspectProxyForWithReferenceCycles [
+	
+	| o1 o2 o3|
+	o1 := self evalBlock: [ {  } asJsObject ].
+	o2 := self evalBlock: [ {#o1 -> o1  } asJsObject ].	
+	o3 := self evalBlock: [ {#o2 -> o2  } asJsObject ].	
+	o1 instVarNamed: #o2 put: o2.
+	o1 instVarNamed: #o3 put: o3.
+	self assertIsInspectable: o1 withIvNames: #(o2 o3).
 ]
 
 { #category : 'tests' }
