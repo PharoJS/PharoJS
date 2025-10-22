@@ -3,17 +3,19 @@ A class used in tests with some ""subclass responsibility"" methods defined as a
 
 "
 Class {
-	#name : #PjToolsTestClass2,
-	#superclass : #PjToolsTestClass1,
-	#category : #'PharoJs-Tools-Tests-Data'
+	#name : 'PjToolsTestClass2',
+	#superclass : 'PjToolsTestClass1',
+	#category : 'PharoJs-Tools-Tests-Data',
+	#package : 'PharoJs-Tools-Tests',
+	#tag : 'Data'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjToolsTestClass2 class >> c1 [
 	^ 12
 ]
 
-{ #category : #'abstract sample methods' }
+{ #category : 'abstract sample methods' }
 PjToolsTestClass2 >> m1 [
 	^ 4
 ]

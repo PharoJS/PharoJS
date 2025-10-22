@@ -3,17 +3,19 @@ A class used in tests with some concrete methods originally defined as ""subclas
 
 "
 Class {
-	#name : #PjToolsTestClass3,
-	#superclass : #PjToolsTestClass2,
-	#category : #'PharoJs-Tools-Tests-Data'
+	#name : 'PjToolsTestClass3',
+	#superclass : 'PjToolsTestClass2',
+	#category : 'PharoJs-Tools-Tests-Data',
+	#package : 'PharoJs-Tools-Tests',
+	#tag : 'Data'
 }
 
-{ #category : #settings }
+{ #category : 'settings' }
 PjToolsTestClass3 class >> playgroundDoNotList [
 	<pharoJsSkip>
 ]
 
-{ #category : #'concrete sample methods' }
+{ #category : 'concrete sample methods' }
 PjToolsTestClass3 >> m2 [
 	^ 7
 ]

@@ -165,6 +165,7 @@ PjPlayground >> initBindings [
 
 	| jsGlobal |
 	self addWorkspaceVariableNamed: #bridge value: bridge.
+	self addWorkspaceVariableNamed: #app value: bridge app.
 	bridge client jsGlobalNames do: [ :jsGlobalName | 
 		jsGlobal := PjProxy proxyNamed: jsGlobalName onBridge: bridge.
 		self addWorkspaceVariableNamed: jsGlobalName value: jsGlobal ]

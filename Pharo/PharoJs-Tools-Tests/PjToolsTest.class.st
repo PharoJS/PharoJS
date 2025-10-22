@@ -1,10 +1,12 @@
 Class {
-	#name : #PjToolsTest,
-	#superclass : #TestCase,
-	#category : #'PharoJs-Tools-Tests-Base'
+	#name : 'PjToolsTest',
+	#superclass : 'TestCase',
+	#category : 'PharoJs-Tools-Tests-Base',
+	#package : 'PharoJs-Tools-Tests',
+	#tag : 'Base'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjToolsTest >> testClassAbstract [
 	"Test that subclasses of PjApplication return true for #isAbstract although they might 
 	 not necessarily implement an #isAbstract method. Having a single subclass responsibility

@@ -1,24 +1,26 @@
 Class {
-	#name : #PjAppPlaygroundTest,
-	#superclass : #PjPlaygroundTest,
+	#name : 'PjAppPlaygroundTest',
+	#superclass : 'PjPlaygroundTest',
 	#traits : 'PjTWaitUntilReady',
 	#classTraits : 'PjTWaitUntilReady classTrait',
-	#category : #'PharoJs-Tools-Tests-Playground'
+	#category : 'PharoJs-Tools-Tests-Playground',
+	#package : 'PharoJs-Tools-Tests',
+	#tag : 'Playground'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PjAppPlaygroundTest class >> shouldInheritSelectors [
 	^true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PjAppPlaygroundTest >> setUpPlayground [
 
 	playground := PjMinimalFileBasedWebApp playground.
 	self waitUntil: [ playground bridge isConnected ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PjAppPlaygroundTest >> testVerifyTitle [
 
 	self assert: (playground title includesSubstring: 'PharoJS').

@@ -3,17 +3,19 @@ A class used in tests with some concrete methods originally defined as ""subclas
 
 "
 Class {
-	#name : #PjToolsTestClass2b,
-	#superclass : #PjToolsTestClass1,
-	#category : #'PharoJs-Tools-Tests-Data'
+	#name : 'PjToolsTestClass2b',
+	#superclass : 'PjToolsTestClass1',
+	#category : 'PharoJs-Tools-Tests-Data',
+	#package : 'PharoJs-Tools-Tests',
+	#tag : 'Data'
 }
 
-{ #category : #'concrete sample methods' }
+{ #category : 'concrete sample methods' }
 PjToolsTestClass2b >> m1 [
 	^ #m1
 ]
 
-{ #category : #'concrete sample methods' }
+{ #category : 'concrete sample methods' }
 PjToolsTestClass2b >> m2 [
 	^ #m2
 ]

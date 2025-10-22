@@ -1,19 +1,26 @@
 Class {
-	#name : #PjPlaygroundTest,
-	#superclass : #TestCase,
+	#name : 'PjPlaygroundTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'playground',
 		'window'
 	],
-	#category : #'PharoJs-Tools-Tests-Playground'
+	#category : 'PharoJs-Tools-Tests-Playground',
+	#package : 'PharoJs-Tools-Tests',
+	#tag : 'Playground'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
+PjPlaygroundTest >> bridge [
+	^playground bridge
+]
+
+{ #category : 'testing' }
 PjPlaygroundTest >> closeWindow [
 	window ifNotNil: [ window delete ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPlaygroundTest >> eval: statementsString [
 
 	| codePresenter |
@@ -24,7 +31,7 @@ PjPlaygroundTest >> eval: statementsString [
 		  onError: [ :err | err pass ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPlaygroundTest >> setUp [
 
 	super setUp.
@@ -32,20 +39,27 @@ PjPlaygroundTest >> setUp [
 	window := playground window
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPlaygroundTest >> setUpPlayground [
 
 	playground := PjWebApplication playground.
 	playground title: 'PharoJS Playground Test'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPlaygroundTest >> tearDown [
 	super tearDown.
 	self closeWindow
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
+PjPlaygroundTest >> testAppPresetVariable [
+	|result| 
+	self shouldnt: [result := self eval: 'app'] raise: Error.
+	self assert: result identicalTo: self bridge app
+]
+
+{ #category : 'testing' }
 PjPlaygroundTest >> testReadJsGlobal [
 	|result|
 	self shouldnt: [result := self eval: 'window.'] raise: Error.
@@ -53,7 +67,7 @@ PjPlaygroundTest >> testReadJsGlobal [
 	self assert: result asJSON equals: #window
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPlaygroundTest >> testSendMessageToGlobal [
 	|result|
 	self shouldnt: [result := self eval: 'window document.'] raise: Error.
@@ -61,7 +75,7 @@ PjPlaygroundTest >> testSendMessageToGlobal [
 	self assert: result asJSON equals: #document
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjPlaygroundTest >> testSetNewVariable [
 	|result| 
 	self shouldnt: [result := self eval: 'newVar := 1.'] raise: Error.
