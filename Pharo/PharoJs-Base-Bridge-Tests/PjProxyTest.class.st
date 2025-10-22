@@ -176,8 +176,9 @@ PjProxyTest >> testGetElementById [
 
 { #category : 'tests' }
 PjProxyTest >> testInspectProxyForDocument [
-	
-	self assertIsInspectable: document withIvNames: #()
+	self 
+		assertIsInspectable: document 
+		withIvNames: #(baseURI body fullscreen head location scripts stylesheets title). 
 ]
 
 { #category : 'tests' }
