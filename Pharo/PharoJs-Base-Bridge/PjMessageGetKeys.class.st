@@ -16,9 +16,7 @@ PjMessageGetKeys >> evaluateInContext: aMessageContext [
 	wsd := aMessageContext websocketDelegate.
 	responseMsg := PjMessageGetKeysResponse newWithId.
 	jsObject := globalThis instVarNamed: self proxyInfo globalName.
-	console log: 'get keys object:' with: jsObject.
 	assocs := self keyValuePairsOf: jsObject.
-	console log: 'get keys assocs:' with: assocs.
 	responseMsg contents: assocs.
 	responseMsg inResponseToId: self id.
 	wsd tryToSendMessage: responseMsg
@@ -30,9 +28,10 @@ PjMessageGetKeys >> keyValuePairsOf: anObject [
 	| results |
 	results := OrderedCollection new.
 	anObject allEnumeratableKeysDo: [ :key | 
-		| value |
+		| value valueString |
 		value := anObject instVarNamed: key.
-		results add: key -> (JSON stringify: value) ].
+		valueString := self stringFrom: value for: anObject.
+		results add: key -> valueString ].
 	^ results
 ]
 
@@ -58,4 +57,14 @@ PjMessageGetKeys >> proxyInfo [
 PjMessageGetKeys >> proxyInfo: anObject [
 
 	proxyInfo := anObject
+]
+
+{ #category : 'public' }
+PjMessageGetKeys >> stringFrom: value for: anObject [
+	| head body |
+	value == anObject  ifTrue: [ ^'self' ].
+	head := value printString.
+	body := [value asPhxJsonString] on: Error do: ['{...}'].
+	(body beginsWith: ${) ifFalse: [ ^head ].
+	^head, ' ', body
 ]
