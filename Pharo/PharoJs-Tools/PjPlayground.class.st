@@ -31,7 +31,7 @@ PjPlayground class >> initialize [
 	SystemAnnouncer uniqueInstance
 		unsubscribe: self;
 		when: ClassAnnouncement do: [ self resetMenuBar ] for: self.
-	MicDocumentBrowser reset
+	MicDocumentBrowserPresenter reset
 ]
 
 { #category : 'opening' }
@@ -80,7 +80,7 @@ PjPlayground class >> pharoJsMenuOn: aBuilder [
 				label: 'PharoJS Help';
 				icon: (self iconNamed: #smallHelp);
 				action: [
-					MicDocumentBrowser openDocument: 'github://PharoJS/PharoJsDoc' ].
+					MicDocumentBrowserPresenter openDocument: 'github://PharoJS/PharoJsDoc' ].
 			self applicationList do: [ :class |
 				| n |
 				n := class name.
