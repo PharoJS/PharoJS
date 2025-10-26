@@ -51,7 +51,8 @@ Class {
 		'client',
 		'shouldStartJsInterpreter',
 		'monitor',
-		'incomingMessageFrames'
+		'incomingMessageFrames',
+		'hotCodeUpdater'
 	],
 	#category : 'PharoJs-Base-Bridge-Kernel',
 	#package : 'PharoJs-Base-Bridge',
@@ -377,7 +378,8 @@ PjBridge >> initialize [
 			 receiver: self;
 			 selector: #stop;
 			 yourself).
-	monitor := Monitor new
+	monitor := Monitor new.
+	hotCodeUpdater := PjHotCodeUpdater new
 ]
 
 { #category : 'accessing' }
@@ -402,7 +404,8 @@ PjBridge >> isClientIdReceived [
 
 { #category : 'public' }
 PjBridge >> isConnected [
-
+	
+	self server ifNil: [ ^false ].
 	self webSocket ifNil: [ ^ false ].
 	^ self webSocket isConnected
 ]

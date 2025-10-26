@@ -190,6 +190,11 @@ PjDependentTranspiler >> invalidateMethods: aCollection [
 	aCollection do: [ : method | self invalidateMethod: method ]
 ]
 
+{ #category : 'testing' }
+PjDependentTranspiler >> isAlreadyConverted: aClass [
+	^convertedClasses includes: aClass 
+]
+
 { #category : 'statistics' }
 PjDependentTranspiler >> numberOfClasses [
 
