@@ -51,7 +51,7 @@ PjHotCodeUpdater >> loadClassExtension: classExtension withClassMethod: newMetho
 { #category : 'updating' }
 PjHotCodeUpdater >> loadClassExtension: classExtension withInstanceMethod: newMethod [
 
-	classExtension compiledMethod 
+	classExtension methodDict 
 		at: newMethod selector 
 		put: newMethod.
 	self loadClass: classExtension
