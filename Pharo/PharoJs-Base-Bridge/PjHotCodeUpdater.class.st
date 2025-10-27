@@ -23,6 +23,9 @@ PjHotCodeUpdater >> initialize [
 	SystemAnnouncer uniqueInstance weak
 		when: MethodAdded
 		do: [ :annoucement | self onMethodAdded: annoucement ]
+		for: self;
+		when: MethodModified
+		do: [ :annoucement | self onMethodModified: annoucement ]
 		for: self
 ]
 
@@ -77,6 +80,14 @@ PjHotCodeUpdater >> onMethodAdded: annoucement [
 	self updateMethod: newMethod in: newMethod methodClass
 ]
 
+{ #category : 'annoucement handling' }
+PjHotCodeUpdater >> onMethodModified: annoucement [
+
+	| newMethod |
+	newMethod := annoucement newMethod.
+	self updateMethod: newMethod in: newMethod methodClass
+]
+
 { #category : 'initialization' }
 PjHotCodeUpdater >> unsubscribe [
 
@@ -118,6 +129,6 @@ PjHotCodeUpdater >> withNewClassExtensionFor: aBehavior do: aBlock [
 		extension := self newClassExtensionFor: aBehavior.
 		aBlock value: extension 
 	] ensure: [ 
-		factory cleanUp
+		factory delete: extension 
 	]
 ]
