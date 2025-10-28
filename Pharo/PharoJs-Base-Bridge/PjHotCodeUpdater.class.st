@@ -2,17 +2,31 @@ Class {
 	#name : 'PjHotCodeUpdater',
 	#superclass : 'Object',
 	#instVars : [
-		'factory'
+		'factory',
+		'bridge'
 	],
 	#category : 'PharoJs-Base-Bridge-Kernel',
 	#package : 'PharoJs-Base-Bridge',
 	#tag : 'Kernel'
 }
 
+{ #category : 'instance creation' }
+PjHotCodeUpdater class >> bridge: aBridge [
+	^self new
+		bridge: aBridge;
+		yourself	
+]
+
 { #category : 'accessing' }
 PjHotCodeUpdater >> bridge [
 
-	^ PjBridge soleBridge
+	^ bridge
+]
+
+{ #category : 'accessing' }
+PjHotCodeUpdater >> bridge: aBridge [
+
+	bridge := aBridge
 ]
 
 { #category : 'initialization' }

@@ -352,6 +352,11 @@ PjBridge >> exporter [
 ]
 
 { #category : 'accessing' }
+PjBridge >> hotCodeUpdater [
+	^hotCodeUpdater 
+]
+
+{ #category : 'accessing' }
 PjBridge >> incomingMessages [
 
 	^ incomingMessageFrames last
@@ -379,7 +384,7 @@ PjBridge >> initialize [
 			 selector: #stop;
 			 yourself).
 	monitor := Monitor new.
-	hotCodeUpdater := PjHotCodeUpdater new
+	hotCodeUpdater := PjHotCodeUpdater bridge: self
 ]
 
 { #category : 'accessing' }

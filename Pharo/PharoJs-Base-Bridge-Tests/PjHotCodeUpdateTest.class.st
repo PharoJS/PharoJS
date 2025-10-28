@@ -167,9 +167,13 @@ PjHotCodeUpdateTest >> testLeafInstanceMethodChanged [
 
 { #category : 'tests' }
 PjHotCodeUpdateTest >> testUpdaterDoesNothingIfBridgeIsNil [
-	self fail: #todo.
-
-	
+	| changedClass |
+	changedClass := factory newClass.
+	self bridge loadClass: changedClass.
+	self bridge hotCodeUpdater bridge: nil.
+	changedClass compile: 'm1
+	^42'.
+	self fail: #todo
 	
 ]
 
