@@ -172,6 +172,23 @@ PjHotCodeUpdateTest >> testLeafInstanceMethodChanged [
 ]
 
 { #category : 'tests' }
+PjHotCodeUpdateTest >> testSuperclassMethodAdditions [
+	| changedClass jsSubclass subclass |
+	changedClass := factory newClass. 
+	subclass := factory make: [ : builder | builder superclass: changedClass ].
+	self bridge loadClass: subclass.
+	jsSubclass := self bridge jsGlobalAt: subclass name.
+	self should: [ jsSubclass m1 ] raise: Error. 
+	changedClass class compile: 'm1
+	^42'. 
+	self assert: jsSubclass m1 equals: 42.
+	changedClass class compile: 'm2
+	^12345'.
+	self assert: jsSubclass m2 equals: 12345.
+
+]
+
+{ #category : 'tests' }
 PjHotCodeUpdateTest >> testUpdaterDoesNothingIfBridgeIsNil [
 
 	| changedClass |
