@@ -40,6 +40,20 @@ PjHotCodeUpdateTest >> testClassMethodAddedToNonLoadedClass [
 ]
 
 { #category : 'tests' }
+PjHotCodeUpdateTest >> testClassNameChange [
+	| changedClass firstName jsClass newName |
+	changedClass := factory newClass. 
+	self bridge loadClass: changedClass.
+	firstName := changedClass name.
+	jsClass := self bridge jsGlobalAt: firstName.
+	newName := factory newBehaviorName.
+	changedClass rename: newName.
+	self assert: jsClass name equals: newName.
+	self assert: (self bridge jsGlobalAt: newName) identicalTo: jsClass.
+	 
+]
+
+{ #category : 'tests' }
 PjHotCodeUpdateTest >> testInstanceMethodAddedToNonLoadedClass [
 
 	| changedClass |
@@ -195,6 +209,32 @@ PjHotCodeUpdateTest >> testLeafInstanceMethodRemoval [
 	jsInstance := jsClass new.
 	changedClass removeSelector: #m1. 
 	self should: [ jsInstance m1 ] raise: Error. 
+
+]
+
+{ #category : 'tests' }
+PjHotCodeUpdateTest >> testSuperclassChange [
+	| firstSuperclass subclass jsSubclass jsInstance newSuperclass jsFirstSuperclass |
+	firstSuperclass := factory newClass.
+	firstSuperclass compile: 'm1
+		^#m1'.
+	firstSuperclass class compile: 'mc1
+		^#mc1'.
+	subclass := factory make: [ : builder | builder superclass: firstSuperclass ].
+	self bridge loadClass: subclass.
+	jsFirstSuperclass := self bridge jsGlobalAt: firstSuperclass name.
+	jsSubclass := self bridge jsGlobalAt: subclass name.
+	jsInstance := jsSubclass new.
+	newSuperclass := factory newClass.
+	newSuperclass compile: 'm2
+		^#m2'.
+	newSuperclass class compile: 'mc2
+		^#mc2'.
+	subclass superclass: newSuperclass.
+	self should: [ jsInstance m1 ] raise: Error.
+	self should: [ jsSubclass mc1 ] raise: Error.
+	self assert: jsInstance m2 equals: 'm2'.
+	self assert: jsSubclass mc2 equals: 'mc2'.
 
 ]
 
