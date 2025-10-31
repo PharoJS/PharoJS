@@ -119,6 +119,19 @@ PjHotCodeUpdateTest >> testLeafClassMethodChanged [
 ]
 
 { #category : 'tests' }
+PjHotCodeUpdateTest >> testLeafClassMethodRemoval [
+	| changedClass jsClass |
+	changedClass := factory newClass. 
+	changedClass class compile: 'm1
+	^42'. 
+	self bridge loadClass: changedClass.
+	jsClass := self bridge jsGlobalAt: changedClass name.
+	changedClass class removeSelector: #m1. 
+	self should: [ jsClass m1 ] raise: Error. 
+
+]
+
+{ #category : 'tests' }
 PjHotCodeUpdateTest >> testLeafInstanceIvAdditions [
 	| changedClass jsClass jsInstance | 
 	changedClass := factory newClass.
@@ -169,6 +182,20 @@ PjHotCodeUpdateTest >> testLeafInstanceMethodChanged [
 	changedClass compile: 'm1
 	^12345'.
 	self assert: jsInstance m1 equals: 12345.
+]
+
+{ #category : 'tests' }
+PjHotCodeUpdateTest >> testLeafInstanceMethodRemoval [
+	| changedClass jsClass jsInstance |
+	changedClass := factory newClass. 
+	changedClass compile: 'm1
+	^42'. 
+	self bridge loadClass: changedClass.
+	jsClass := self bridge jsGlobalAt: changedClass name.
+	jsInstance := jsClass new.
+	changedClass removeSelector: #m1. 
+	self should: [ jsInstance m1 ] raise: Error. 
+
 ]
 
 { #category : 'tests' }

@@ -40,7 +40,15 @@ PjHotCodeUpdater >> initialize [
 		for: self;
 		when: MethodModified
 		do: [ :annoucement | self onMethodModified: annoucement ]
+		for: self;
+		when: MethodRemoved
+		do: [ :annoucement | self onMethodRemoved: annoucement ]
 		for: self
+]
+
+{ #category : 'removing' }
+PjHotCodeUpdater >> jsSelectorFrom: selector [
+	^String streamContents: [ : str | self transpiler writeJsSelector: selector onStream: str]
 ]
 
 { #category : 'updating' }
@@ -95,12 +103,53 @@ PjHotCodeUpdater >> onMethodModified: annoucement [
 	self updateMethod: newMethod in: newMethod methodClass
 ]
 
-{ #category : 'updating' }
+{ #category : 'annoucement handling' }
+PjHotCodeUpdater >> onMethodRemoved: annoucement [
+
+	| removedMethod |
+	removedMethod := annoucement methodRemoved.
+	self removeMethod: removedMethod from: removedMethod methodClass
+]
+
+{ #category : 'removing' }
+PjHotCodeUpdater >> removeMethod: removedMethod from: aClass [
+
+	| selector |
+	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
+	selector := removedMethod selector.
+	aClass isMeta ifTrue: [
+		^ self removeMethodAt: selector fromMetaclass: aClass ].
+	self removeMethodAt: selector fromClass: aClass
+]
+
+{ #category : 'removing' }
+PjHotCodeUpdater >> removeMethodAt: selector fromClass: aMetaclass [
+	| jsClass jsSelector |
+	jsClass := self bridge jsGlobalAt: aMetaclass instanceSide name.
+	jsSelector := self jsSelectorFrom: selector. 
+	jsClass prototype at: jsSelector put: nil
+]
+
+{ #category : 'removing' }
+PjHotCodeUpdater >> removeMethodAt: selector fromMetaclass: aMetaclass [
+	| jsClass jsSelector |
+	jsClass := self bridge jsGlobalAt: aMetaclass instanceSide name.
+	jsSelector := self jsSelectorFrom: selector. 
+	jsClass at: jsSelector put: nil
+]
+
+{ #category : 'testing' }
 PjHotCodeUpdater >> shouldUpdateClass: aClass [
 
 	self bridge ifNil: [ ^false ].
 	self bridge isConnected ifFalse: [ ^false ].
-	^self bridge transpiler isAlreadyConverted: aClass instanceSide 
+	^self transpiler isAlreadyConverted: aClass instanceSide 
+]
+
+{ #category : 'accessing' }
+PjHotCodeUpdater >> transpiler [
+
+	^ self bridge transpiler
 ]
 
 { #category : 'initialization' }
