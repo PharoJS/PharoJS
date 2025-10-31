@@ -9,6 +9,12 @@ Class {
 	#tag : 'Base'
 }
 
+{ #category : 'tests' }
+PjHotCodeUpdateTest >> hotCodeUpdater [
+
+	^ self bridge hotCodeUpdater
+]
+
 { #category : 'running' }
 PjHotCodeUpdateTest >> setUp [ 
 	super setUp.
@@ -167,28 +173,33 @@ PjHotCodeUpdateTest >> testLeafInstanceMethodChanged [
 
 { #category : 'tests' }
 PjHotCodeUpdateTest >> testUpdaterDoesNothingIfBridgeIsNil [
+
 	| changedClass |
 	changedClass := factory newClass.
 	self bridge loadClass: changedClass.
-	self bridge hotCodeUpdater bridge: nil.
+	self hotCodeUpdater bridge: nil.
 	changedClass compile: 'm1
 	^42'.
-	self fail: #todo
-	
+	self
+		shouldnt: [
+			self hotCodeUpdater
+				updateMethod: changedClass >> #m1
+				in: changedClass ]
+		raise: Error
 ]
 
 { #category : 'tests' }
 PjHotCodeUpdateTest >> testUpdaterDoesNothingIfBridgeIsNotConnected [
-	self fail: #todo.
-
-	
-	
-]
-
-{ #category : 'tests' }
-PjHotCodeUpdateTest >> testUpdaterUnsubscribesUponBridgeStopOrGc [
-	self fail: #todo.
-
-	
-	
+	| changedClass |
+	changedClass := factory newClass.
+	self bridge loadClass: changedClass.
+	self bridge stop.
+	changedClass compile: 'm1
+	^42'.
+	self
+		shouldnt: [
+			self hotCodeUpdater
+				updateMethod: changedClass >> #m1
+				in: changedClass ]
+		raise: Error
 ]

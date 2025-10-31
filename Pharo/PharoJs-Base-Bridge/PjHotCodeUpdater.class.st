@@ -44,15 +44,8 @@ PjHotCodeUpdater >> initialize [
 ]
 
 { #category : 'updating' }
-PjHotCodeUpdater >> isLoadedClass: aClass [
-
-	^self bridge transpiler isAlreadyConverted: aClass instanceSide 
-]
-
-{ #category : 'updating' }
 PjHotCodeUpdater >> loadClass: aClass [
 	
-	self bridge isConnected ifFalse: [ ^self].
 	self bridge loadClass: aClass instanceSide.
 
 ]
@@ -102,6 +95,14 @@ PjHotCodeUpdater >> onMethodModified: annoucement [
 	self updateMethod: newMethod in: newMethod methodClass
 ]
 
+{ #category : 'updating' }
+PjHotCodeUpdater >> shouldUpdateClass: aClass [
+
+	self bridge ifNil: [ ^false ].
+	self bridge isConnected ifFalse: [ ^false ].
+	^self bridge transpiler isAlreadyConverted: aClass instanceSide 
+]
+
 { #category : 'initialization' }
 PjHotCodeUpdater >> unsubscribe [
 
@@ -111,7 +112,7 @@ PjHotCodeUpdater >> unsubscribe [
 { #category : 'updating' }
 PjHotCodeUpdater >> updateMethod: aCompiledMethod in: aClass [
 
-	(self isLoadedClass: aClass) ifFalse: [ ^self ].
+	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
 	aClass isMeta ifTrue: [
 		^ self updateMethod: aCompiledMethod inMetaclass: aClass ].
 	self updateMethod: aCompiledMethod inClass: aClass
