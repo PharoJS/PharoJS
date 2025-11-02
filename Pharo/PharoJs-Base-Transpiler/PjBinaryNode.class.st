@@ -44,13 +44,13 @@ PjBinaryNode >> left: anObject [
 	left := anObject
 ]
 
-{ #category : 'rewriting' }
+{ #category : 'converting' }
 PjBinaryNode >> not [
 	operator = #== ifTrue: [  ^ self copyWith: #!= ].
 	operator = #!= ifTrue: [  ^ self copyWith: #== ].
 	operator = #=== ifTrue: [  ^ self copyWith: #!== ].
 	operator = #!== ifTrue: [  ^ self copyWith: #=== ].
-	(#( <= >= < > ) includes: operator) ifTrue: [ ^ self class operator: operator left: right right: left].
+	(#( <= >= ) includes: operator) ifTrue: [ ^ self class operator: operator left: right right: left].
 	^ super not
 ]
 

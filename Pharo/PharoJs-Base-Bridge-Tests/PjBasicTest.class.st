@@ -300,6 +300,38 @@ PjBasicTest >> testIdentity [
 ]
 
 { #category : 'tests' }
+PjBasicTest >> testIfFalseGreaterThanSameValue [
+
+	| bugClass expectedResponse jsClass jsInstance |
+	bugClass := classFactory newClass.
+	expectedResponse := 'Expected Response!'.
+	bugClass compile: 'bugDemo
+    1 > 1 ifFalse: [ ^''', expectedResponse ,''' ].
+    ^''Unexpected response'''.
+	self bridge loadClass: bugClass.	
+	jsClass := self bridge jsGlobalAt: bugClass name.
+	jsInstance := jsClass new.
+	self assert: jsInstance bugDemo equals: expectedResponse.
+
+]
+
+{ #category : 'tests' }
+PjBasicTest >> testIfFalseLessThanSameValue [
+
+	| bugClass expectedResponse jsClass jsInstance |
+	bugClass := classFactory newClass.
+	expectedResponse := 'Expected Response!'.
+	bugClass compile: 'bugDemo
+    1 < 1 ifFalse: [ ^''', expectedResponse ,''' ].
+    ^''Unexpected response'''.
+	self bridge loadClass: bugClass.	
+	jsClass := self bridge jsGlobalAt: bugClass name.
+	jsInstance := jsClass new.
+	self assert: jsInstance bugDemo equals: expectedResponse.
+
+]
+
+{ #category : 'tests' }
 PjBasicTest >> testIfNilIfNotNil [
 
 	self assertEquivalent: [ nil ifNil: [ 1 ] ].
