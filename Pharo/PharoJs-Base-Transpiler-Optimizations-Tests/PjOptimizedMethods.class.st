@@ -2,12 +2,14 @@
 Sample methods for PjOptimizedMethodTest
 "
 Class {
-	#name : #PjOptimizedMethods,
-	#superclass : #Object,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Support'
+	#name : 'PjOptimizedMethods',
+	#superclass : 'Object',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Tests-Support',
+	#package : 'PharoJs-Base-Transpiler-Optimizations-Tests',
+	#tag : 'Support'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PjOptimizedMethods >> shouldReturnTrue [
     false
         ifTrue: [ 1 ifNil: [  ] ]
@@ -16,7 +18,7 @@ PjOptimizedMethods >> shouldReturnTrue [
     ^ false
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PjOptimizedMethods >> shouldReturnTrue2 [
     false
         ifTrue: [ 1 ifNil: [  ] ]

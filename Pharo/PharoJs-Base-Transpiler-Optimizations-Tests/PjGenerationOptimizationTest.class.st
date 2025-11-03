@@ -1,10 +1,12 @@
 Class {
-	#name : #PjGenerationOptimizationTest,
-	#superclass : #PjStringGenerationTest,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
+	#name : 'PjGenerationOptimizationTest',
+	#superclass : 'PjStringGenerationTest',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Tests-Tests',
+	#package : 'PharoJs-Base-Transpiler-Optimizations-Tests',
+	#tag : 'Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testAnd [
 	| y inputAst |
 	y := PjTempVariableNode identifier: #y.
@@ -18,7 +20,7 @@ PjGenerationOptimizationTest >> testAnd [
 	self assert:  inputAst asStringEquals: 'this._foo_(true==y&&1)'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfFalse [
 	| y inputAst returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -33,7 +35,7 @@ PjGenerationOptimizationTest >> testIfFalse [
 	self assert:  returnAst asStringEquals: 'return true==y?null:1'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfNil [
 	| inputAst tempVariable tempVariableName y |
 	y := PjTempVariableNode identifier: #y.
@@ -51,7 +53,7 @@ PjGenerationOptimizationTest >> testIfNil [
 	self assert: inputAst asStringEquals: 'if($asNil$(y)._foo()==null){1}'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfNilCaseForIfNilIfNotNil [
 	| expectedAst tempVariable tempVariableName y |
 	y := PjTempVariableNode identifier: #y.
@@ -69,7 +71,7 @@ PjGenerationOptimizationTest >> testIfNilCaseForIfNilIfNotNil [
 		asStringEquals: 'return ($1=$asNil$(y)._foo())==null?1:$1'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfNotNil [
 	| expectedAst tempVariable tempVariableName y |
 	y := PjTempVariableNode identifier: #y.
@@ -120,7 +122,7 @@ PjGenerationOptimizationTest >> testIfNotNil [
 		asStringEquals: 'if(y!=null){return 1}'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 	| expectedAst tempVariable tempVariableName y |
 	y := PjTempVariableNode identifier: #y.
@@ -162,7 +164,7 @@ PjGenerationOptimizationTest >> testIfNotNilCaseForIfNilIfNotNil [
 	self assert: expectedAst asStringEquals: 'if((x=$asNil$(y)._foo())==null){1;}else{x._foo()}'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfTrue [
 	| y inputAst |
 	y := PjTempVariableNode identifier: #y.
@@ -172,7 +174,7 @@ PjGenerationOptimizationTest >> testIfTrue [
 	self assert:  inputAst asStringEquals: 'if(true==y){1}'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testIfTrueIfFalse [
 	| y inputAst returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -185,7 +187,7 @@ PjGenerationOptimizationTest >> testIfTrueIfFalse [
 	self assert:  returnAst asStringEquals: 'return true==y?1:2'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testOr [
 	| y inputAst |
 	y := PjTempVariableNode identifier: #y.
@@ -199,7 +201,7 @@ PjGenerationOptimizationTest >> testOr [
 	self assert:  inputAst asStringEquals: 'this._foo_(true==y||1)'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testSequence [
 	| x inputAst |
 	x := PjTempVariableNode identifier: #x.
@@ -278,7 +280,7 @@ PjGenerationOptimizationTest >> testSequence [
 		asStringEquals: '((a)=>{var d;if(true==false){};d=false;return a})'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testToDo [
 	| in a xNode temp1 temp2 |
 	a := PjTempVariableNode identifier: #a.
@@ -336,7 +338,7 @@ PjGenerationOptimizationTest >> testToDo [
 		asStringEquals: 'for(var x=1,$1=a;x>=$1;x+=-2){$in=x;return a}'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjGenerationOptimizationTest >> testWhile [
 	| for a in |
 	for := PjTempVariableNode identifier: #for.

@@ -1,16 +1,18 @@
 Class {
-	#name : #PjOptimizedClassTranspilationTest,
-	#superclass : #PjTranspilationClassCompilationTest,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
+	#name : 'PjOptimizedClassTranspilationTest',
+	#superclass : 'PjTranspilationClassCompilationTest',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Tests-Tests',
+	#package : 'PharoJs-Base-Transpiler-Optimizations-Tests',
+	#tag : 'Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PjOptimizedClassTranspilationTest >> setUp [
 	super setUp.
 	transpiler addAllOptionalConversions
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjOptimizedClassTranspilationTest >> testBlockTempNames [
 	self generateJsCodeForClasses: { PjClassForTranspilationTest }.
 	self assertInstanceMethod: #blockWithUnnamedParameter
@@ -21,7 +23,7 @@ PjOptimizedClassTranspilationTest >> testBlockTempNames [
 		equals: '(){var foo;if((foo=this._m1())==null){return null;}else{return $asNil$(foo)._m1()}}'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjOptimizedClassTranspilationTest >> testBlocksAndReturns [
 	self jsCode: (self convertClass: PjClassForTranspilationTest).
 	self assertInstanceMethod: #whileNotAtEnd
@@ -30,7 +32,7 @@ PjOptimizedClassTranspilationTest >> testBlocksAndReturns [
 		equals: '(){this._m_((x)=>{while(true==$asNil$(x)._m1()){}});while(true==this._m2()){}return this}'.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjOptimizedClassTranspilationTest >> testSubIf [
 	self jsCode: (self convertClass: PjClassForTranspilationTest).
 	self assertClassMethod: #setupMessage

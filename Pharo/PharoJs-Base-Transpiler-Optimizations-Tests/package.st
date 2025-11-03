@@ -1,1 +1,1 @@
-Package { #name : #'PharoJs-Base-Transpiler-Optimizations-Tests' }
+Package { #name : 'PharoJs-Base-Transpiler-Optimizations-Tests' }

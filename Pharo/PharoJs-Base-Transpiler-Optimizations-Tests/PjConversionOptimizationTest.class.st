@@ -1,17 +1,19 @@
 Class {
-	#name : #PjConversionOptimizationTest,
-	#superclass : #PjSpecialMessagesConversionTest,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Tests-Tests'
+	#name : 'PjConversionOptimizationTest',
+	#superclass : 'PjSpecialMessagesConversionTest',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Tests-Tests',
+	#package : 'PharoJs-Base-Transpiler-Optimizations-Tests',
+	#tag : 'Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> assertUnoptimizedContentsOf: aBlock [
 	| actualJsAst |
 	actualJsAst := self convertFirstStatementOfBlock: aBlock.
 	self assert: actualJsAst class = PjApplyNode
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testAnd [
 	| expectedAst y returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -30,7 +32,7 @@ PjConversionOptimizationTest >> testAnd [
 	self assertContentsOf: [ y and: 1] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testBlockReturns [
 	| expectedAst tempId temp xArg |
 	messageConverter
@@ -131,7 +133,7 @@ PjConversionOptimizationTest >> testBlockReturns [
 		convertsTo: expectedAst
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testBlockReturns1 [
 	| expectedAst |
 	messageConverter
@@ -166,7 +168,7 @@ PjConversionOptimizationTest >> testBlockReturns1 [
 		convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testComparisons [
 	| y x |
 	y := PjTempVariableNode identifier: #y.
@@ -184,7 +186,7 @@ PjConversionOptimizationTest >> testComparisons [
 	self assertContentsOf: [ 1~=y ] convertsTo: (PjBinaryNode operator: #!= left: one right: y).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfFalse [
 	| expectedAst y returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -202,7 +204,7 @@ PjConversionOptimizationTest >> testIfFalse [
 	self assertContentsOf: [ y ifFalse: 1] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfFalseifTrue [
 	| expectedAst y |
 	y := PjTempVariableNode identifier: #y.
@@ -222,7 +224,7 @@ PjConversionOptimizationTest >> testIfFalseifTrue [
 	self assertContentsOf: [ y not ifFalse: 2 ifTrue: 1] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfNil [
 	| expectedAst tempVariable tempVariableName y |
 	y := PjTempVariableNode identifier: #y.
@@ -261,7 +263,7 @@ PjConversionOptimizationTest >> testIfNil [
 	self assertContentsOf: [ y foo ifNil: [ 1 ] ] convertsTo: expectedAst
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfNilIfNotNil [
 	| expectedAst y |
 	y := PjTempVariableNode identifier: #y.
@@ -282,7 +284,7 @@ PjConversionOptimizationTest >> testIfNilIfNotNil [
 	self assertContentsOf: [ y ifNil: [1 ] ifNotNil: [: x | x]] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfNotNil [
 	| expectedAst y |
 	y := PjTempVariableNode identifier: #y.
@@ -315,7 +317,7 @@ PjConversionOptimizationTest >> testIfNotNil [
 	self assertContentsOf: [ ^ y ifNotNil: [: x | x]] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfNotNilifNil [
 	| expectedAst y |
 	y := PjTempVariableNode identifier: #y.
@@ -338,7 +340,7 @@ PjConversionOptimizationTest >> testIfNotNilifNil [
 			]] convertsTo: expectedAst
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfTrue [
 	| expectedAst y returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -360,7 +362,7 @@ PjConversionOptimizationTest >> testIfTrue [
 	self assertContentsOf: [ y ifTrue: [1. 2.] ] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testIfTrueIfFalse [
 	| expectedAst y returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -379,7 +381,7 @@ PjConversionOptimizationTest >> testIfTrueIfFalse [
 	self assertContentsOf: [ ^ y ifTrue: 1 ifFalse: 2] convertsTo: returnAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testInlineBlockReturns [
 	| expectedAst |
 	messageConverter
@@ -442,7 +444,7 @@ PjConversionOptimizationTest >> testInlineBlockReturns [
 		convertsTo: expectedAst
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testInlineBlockTempvars [
 	| expectedAst block |
 	messageConverter
@@ -463,7 +465,7 @@ PjConversionOptimizationTest >> testInlineBlockTempvars [
 	self assertContentsOf: block convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testMethodReturns1 [
 	| expectedBody expectedAst |
 	messageConverter
@@ -478,7 +480,7 @@ PjConversionOptimizationTest >> testMethodReturns1 [
 	self assertMethod: #return1 convertsTo: expectedAst
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testMethodReturns2And3 [
 	| expectedBody expectedAst |
 	messageConverter
@@ -497,7 +499,7 @@ PjConversionOptimizationTest >> testMethodReturns2And3 [
 			self assertMethod: selector convertsTo: expectedAst ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testMethodReturns4 [
 	| expectedBody expectedAst |
 	messageConverter
@@ -514,7 +516,7 @@ PjConversionOptimizationTest >> testMethodReturns4 [
 	self assertMethod: #return4 convertsTo: expectedAst
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testOr [
 	| expectedAst y returnAst |
 	y := PjTempVariableNode identifier: #y.
@@ -533,7 +535,7 @@ PjConversionOptimizationTest >> testOr [
 	self assertContentsOf: [ y or: 1] convertsTo: expectedAst.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testStringConcatenation [
 	messageConverter
 		addAllConversions: {PjStringAppendOptimization}.
@@ -542,7 +544,7 @@ PjConversionOptimizationTest >> testStringConcatenation [
 	self assertContentsOf: [ 'hello',1,2 ] convertsTo: (PjBinaryNode operator: #+ left: (PjBinaryNode operator: #+ left: helloString right: one) right: two).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testTimesRepeat [
 	| in a temp1 temp2 |
 	a := PjTempVariableNode identifier: #a.
@@ -576,7 +578,7 @@ PjConversionOptimizationTest >> testTimesRepeat [
 			}).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testToDo [
 	<expectedFailure> " temporarily disabled optimization "
 	| in a xNode temp1 temp2 |
@@ -640,7 +642,7 @@ PjConversionOptimizationTest >> testToDo [
 			}).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjConversionOptimizationTest >> testWhile [
 
 	| for in a blockNode applyNodeArgs |
