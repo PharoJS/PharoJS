@@ -11,14 +11,14 @@ Class {
 	#tag : 'Kernel'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'pharoJs support' }
 PjClass class >> classPool_jsGenerator: transpiler [
 
 	<pharoJsSkip>
 	^ 'return this.' , transpiler classVarsPoolName
 ]
 
-{ #category : 'Behavior: reflection' }
+{ #category : 'pharoJs support' }
 PjClass class >> hasClassMethod_jsGenerator: transpiler [
 	<pharoJsSkip>
 	^'return this.__proto__.hasOwnProperty(Smalltalk.', transpiler pharoJsSelectorPrefix, 'makePharoJsSelector_(aSymbol))'
