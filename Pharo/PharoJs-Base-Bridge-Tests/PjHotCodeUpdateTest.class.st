@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : 'tests' }
+PjHotCodeUpdateTest >> assertJsSubclass: jsSubclass parallelInheritanceToJsSuperclass: jsSuperclass [
+	self assert: jsSubclass __proto__ identicalTo: jsSuperclass.
+	self assert: jsSubclass prototype __proto__ identicalTo: jsSuperclass prototype.
+]
+
+{ #category : 'tests' }
 PjHotCodeUpdateTest >> hotCodeUpdater [
 
 	^ self bridge hotCodeUpdater
@@ -23,7 +29,7 @@ PjHotCodeUpdateTest >> setUp [
 
 { #category : 'running' }
 PjHotCodeUpdateTest >> tearDown [ 
-	factory cleanUp.
+	factory ifNotNil: [factory cleanUp].
 	PjHotCodeUpdater allInstancesDo: #unsubscribe.
 	super tearDown.
 
@@ -214,7 +220,7 @@ PjHotCodeUpdateTest >> testLeafInstanceMethodRemoval [
 
 { #category : 'tests' }
 PjHotCodeUpdateTest >> testSuperclassChange [
-	| firstSuperclass subclass jsSubclass jsInstance newSuperclass jsFirstSuperclass |
+	| firstSuperclass subclass jsSubclass jsInstance newSuperclass jsFirstSuperclass jsNewSuperclass |
 	firstSuperclass := factory newClass.
 	firstSuperclass compile: 'm1
 		^#m1'.
@@ -222,8 +228,8 @@ PjHotCodeUpdateTest >> testSuperclassChange [
 		^#mc1'.
 	subclass := factory make: [ : builder | builder superclass: firstSuperclass ].
 	self bridge loadClass: subclass.
-	jsFirstSuperclass := self bridge jsGlobalAt: firstSuperclass name.
 	jsSubclass := self bridge jsGlobalAt: subclass name.
+	jsFirstSuperclass := self bridge jsGlobalAt: firstSuperclass name.
 	jsInstance := jsSubclass new.
 	newSuperclass := factory newClass.
 	newSuperclass compile: 'm2
@@ -231,6 +237,10 @@ PjHotCodeUpdateTest >> testSuperclassChange [
 	newSuperclass class compile: 'mc2
 		^#mc2'.
 	subclass superclass: newSuperclass.
+	jsNewSuperclass := self bridge jsGlobalAt: newSuperclass name.
+	self assertJsSubclass: jsSubclass parallelInheritanceToJsSuperclass: jsNewSuperclass.
+	self deny: (jsFirstSuperclass subclasses includes: jsSubclass).
+	self assert: (jsNewSuperclass subclasses includes: jsSubclass).
 	self should: [ jsInstance m1 ] raise: Error.
 	self should: [ jsSubclass mc1 ] raise: Error.
 	self assert: jsInstance m2 equals: 'm2'.

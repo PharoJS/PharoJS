@@ -29,6 +29,11 @@ PjHotCodeUpdater >> bridge: aBridge [
 	bridge := aBridge
 ]
 
+{ #category : 'accessing' }
+PjHotCodeUpdater >> globalThis [
+	^self bridge jsGlobalAt: #globalThis
+]
+
 { #category : 'initialization' }
 PjHotCodeUpdater >> initialize [
 
@@ -43,6 +48,12 @@ PjHotCodeUpdater >> initialize [
 		for: self;
 		when: MethodRemoved
 		do: [ :annoucement | self onMethodRemoved: annoucement ]
+		for: self;
+		when: ClassRenamed
+		do: [ :annoucement | self onClassRenamed: annoucement ]
+		for: self;
+		when: ClassModificationApplied
+		do: [ : annoucement | self onClassModified: annoucement ]
 		for: self
 ]
 
@@ -85,6 +96,23 @@ PjHotCodeUpdater >> newClassExtensionFor: aBehavior [
 			<pharoJsSkip>
 	^ #' , actualClass name.
 	^extension
+]
+
+{ #category : 'annoucement handling' }
+PjHotCodeUpdater >> onClassModified: annoucement [
+
+	self 
+		updateClassModified: annoucement classAffected
+
+]
+
+{ #category : 'annoucement handling' }
+PjHotCodeUpdater >> onClassRenamed: annoucement [
+
+	self 
+		updateClass: annoucement classRenamed
+		newName: annoucement newName 
+		oldName: annoucement oldName
 ]
 
 { #category : 'annoucement handling' }
@@ -156,6 +184,34 @@ PjHotCodeUpdater >> transpiler [
 PjHotCodeUpdater >> unsubscribe [
 
 	SystemAnnouncer uniqueInstance unsubscribe: self
+]
+
+{ #category : 'updating' }
+PjHotCodeUpdater >> updateClass: aClass newName: newName oldName: oldName [
+	"Javascript class names are read-only.
+	So, we can only introduce a global variable pointing to the same class.
+	This is only a partial solution."
+	
+	| jsClass |
+	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
+	jsClass := self bridge jsGlobalAt: oldName.
+	self globalThis at: newName put: jsClass
+]
+
+{ #category : 'updating' }
+PjHotCodeUpdater >> updateClassModified: aClass [
+	
+	| jsClass jsOldSuperclass jsNewSuperclass currentSuperclass |
+	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
+	jsClass := self bridge jsGlobalAt: aClass name.
+	currentSuperclass := aClass superclass. 
+	jsOldSuperclass := jsClass superclass.
+	jsOldSuperclass name == currentSuperclass name ifTrue: [ ^self ].
+	self loadClass: currentSuperclass.
+	jsNewSuperclass := self bridge jsGlobalAt: currentSuperclass name.
+	jsClass superclass: jsNewSuperclass.
+	jsOldSuperclass removeSubclass: jsClass.
+	jsNewSuperclass addSubclass: jsClass
 ]
 
 { #category : 'updating' }

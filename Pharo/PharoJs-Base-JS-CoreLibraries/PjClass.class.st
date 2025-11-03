@@ -33,6 +33,11 @@ PjClass class >> jsTranspilationImportMethods [
 	}
 ]
 
+{ #category : 'Behavior: reflection' }
+PjClass >> addSubclass: aClass [
+	self subclasses add: aClass
+]
+
 { #category : 'Behaviour: object creatioin' }
 PjClass >> adoptInstance: anObject [
 	anObject js_at: #__proto__ put: (self js_at:#prototype)
@@ -110,8 +115,19 @@ PjClass >> prototype [
 ]
 
 { #category : 'Behavior: reflection' }
+PjClass >> removeSubclass: aClass [
+	self subclasses remove: aClass
+]
+
+{ #category : 'Behavior: reflection' }
 PjClass >> subclasses [
 	^ subclasses
+]
+
+{ #category : 'Behavior: reflection' }
+PjClass >> superclass: newSuperclass [
+	Object js_setPrototypeOf: self to: newSuperclass.
+	Object js_setPrototypeOf: self prototype to: newSuperclass prototype
 ]
 
 { #category : 'Behavior: reflection' }
