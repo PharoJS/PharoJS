@@ -5,6 +5,9 @@ Class {
 		'factory',
 		'bridge'
 	],
+	#pools : [
+		'PjUniversalGlobals'
+	],
 	#category : 'PharoJs-Base-Bridge-Kernel',
 	#package : 'PharoJs-Base-Bridge',
 	#tag : 'Kernel'
@@ -189,13 +192,16 @@ PjHotCodeUpdater >> unsubscribe [
 { #category : 'updating' }
 PjHotCodeUpdater >> updateClass: aClass newName: newName oldName: oldName [
 	"Javascript class names are read-only.
-	So, we can only introduce a global variable pointing to the same class.
-	This is only a partial solution."
+	So, we need to make it writable first."
 	
 	| jsClass |
 	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
 	jsClass := self bridge jsGlobalAt: oldName.
-	self globalThis at: newName put: jsClass
+	self bridge evalBlock: [ 
+		globalThis at: newName put: jsClass.
+		Object defineProperty: jsClass named: #name attributes: { #writable -> true } asJsObject.
+		jsClass name: newName
+	] 
 ]
 
 { #category : 'updating' }
