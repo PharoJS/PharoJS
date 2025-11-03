@@ -208,6 +208,7 @@ PjHotCodeUpdater >> updateClass: aClass newName: newName oldName: oldName [
 PjHotCodeUpdater >> updateClassModified: aClass [
 	
 	| jsClass jsOldSuperclass jsNewSuperclass currentSuperclass |
+	aClass isMeta ifTrue: [ ^self ].
 	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
 	jsClass := self bridge jsGlobalAt: aClass name.
 	currentSuperclass := aClass superclass. 
