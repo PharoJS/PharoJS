@@ -300,6 +300,15 @@ PjObject >> keysDo: aBlock [
 	<jsGenerator: #keysDo_jsGenerator:>
 ]
 
+{ #category : 'reflection' }
+PjObject >> makeWritableInstVarNamed: propertyName [
+
+	Object
+		js_defineProperty: self
+		named: propertyName
+		descriptor: { (#writable -> true) } asJsObject
+]
+
 { #category : 'message performing' }
 PjObject >> perform: selector [
 	^ (self js_at: (PjCore registerDnu: selector)) call: self
