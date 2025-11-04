@@ -154,7 +154,8 @@ PjBridge class >> stopAndCleanUp [
 
 	<script>
 	self stop.
-	self cleanUpProcesses
+	self cleanUpProcesses.
+	PjHotCodeUpdater allInstancesDo: #unsubscribe 
 ]
 
 { #category : 'actions' }
