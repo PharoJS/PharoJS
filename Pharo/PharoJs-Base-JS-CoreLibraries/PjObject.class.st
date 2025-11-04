@@ -194,6 +194,13 @@ PjObject >> flag: aSymbol [
 ]
 
 { #category : 'reflection' }
+PjObject >> forceInstVarNamed: propertyName put: newValue [
+	self makeWritableInstVarNamed: propertyName.
+	self instVarNamed: propertyName put: newValue 
+	
+]
+
+{ #category : 'reflection' }
 PjObject >> halt [
 	<javascript: 'debugger'>
 ]
@@ -229,17 +236,17 @@ PjObject >> includesKey: key [
 PjObject >> initialize [
 ]
 
-{ #category : 'introspection' }
+{ #category : 'reflection' }
 PjObject >> instVarNamed: aString [
 	^ self js_at: aString
 ]
 
-{ #category : 'introspection' }
+{ #category : 'reflection' }
 PjObject >> instVarNamed: aString put: anObject [
 	^ self js_at: aString put: anObject
 ]
 
-{ #category : 'introspection' }
+{ #category : 'reflection' }
 PjObject >> instVarNamed: aString putHidden: anObject [
 	<javascript: '
 	try{Object.defineProperty(this,aString,{value:anObject,writable:true})}catch(e){}

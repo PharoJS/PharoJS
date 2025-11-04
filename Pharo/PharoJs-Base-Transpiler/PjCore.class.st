@@ -136,8 +136,8 @@ PjCore class >> install: aFunction named: pjSelector in: target [
 	(Object js_isFrozen: target) ifFalse: [
 		Object
 			js_defineProperty: target
-			field: pjSelector
-			properties: (self propertySet: aFunction) ]
+			named: pjSelector
+			descriptor: (self propertyDescriptorForFunction: aFunction) ]
 ]
 
 { #category : 'doesNotUnderstand support' }
@@ -424,7 +424,7 @@ PjCore class >> pharoJsSelectorPrefix_jsGenerator: transpiler [
 ]
 
 { #category : 'doesNotUnderstand support' }
-PjCore class >> propertySet: func [
+PjCore class >> propertyDescriptorForFunction: func [
 
 	<javascript: 'return {
 		enumerable: false,
@@ -442,8 +442,8 @@ PjCore class >> registerDnu: aSelector [
 		props := self makeDNU: aSelector.
 		Object
 			js_defineProperty: (Object js_at:#prototype)
-			field: selector
-			properties: (self propertySet: props)
+			named: selector
+			descriptor: (self propertyDescriptorForFunction: props)
 	].
 	^ selector
 ]

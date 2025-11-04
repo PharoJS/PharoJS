@@ -193,15 +193,13 @@ PjHotCodeUpdater >> unsubscribe [
 PjHotCodeUpdater >> updateClass: aClass newName: newName oldName: oldName [
 	"Javascript class names are read-only.
 	So, we need to make it writable first."
-	
+
 	| jsClass |
-	(self shouldUpdateClass: aClass) ifFalse: [ ^self ].
+	(self shouldUpdateClass: aClass) ifFalse: [ ^ self ].
 	jsClass := self bridge jsGlobalAt: oldName.
-	self bridge evalBlock: [ 
+	self bridge evalBlock: [
 		globalThis at: newName put: jsClass.
-		Object defineProperty: jsClass named: #name attributes: { #writable -> true } asJsObject.
-		jsClass name: newName
-	] 
+		jsClass forceInstVarNamed: #name put: newName ]
 ]
 
 { #category : 'updating' }
