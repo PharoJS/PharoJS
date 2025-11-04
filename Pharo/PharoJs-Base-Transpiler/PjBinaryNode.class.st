@@ -9,10 +9,34 @@ Class {
 		'left',
 		'right'
 	],
+	#classVars : [
+		'NegationMappingDict'
+	],
 	#category : 'PharoJs-Base-Transpiler-AST',
 	#package : 'PharoJs-Base-Transpiler',
 	#tag : 'AST'
 }
+
+{ #category : 'accessing' }
+PjBinaryNode class >> negationMappingAssociations [
+
+	^ {
+		  (#'==' -> #'!=').
+		  (#'!=' -> #'==').
+		  (#'===' -> #'!==').
+		  (#'!==' -> #'===').
+		  (#'<=' -> #>).
+		  (#< -> #'>=').
+		  (#> -> #'<=').
+		  (#'>=' -> #<) }
+]
+
+{ #category : 'accessing' }
+PjBinaryNode class >> negationMappingDict [
+
+	^ NegationMappingDict ifNil: [
+		  NegationMappingDict := self negationMappingAssociations asDictionary ]
+]
 
 { #category : 'creating' }
 PjBinaryNode class >> operator: operator left: left right: right [
@@ -44,14 +68,19 @@ PjBinaryNode >> left: anObject [
 	left := anObject
 ]
 
+{ #category : 'accessing' }
+PjBinaryNode >> negationMappingDict [
+	^self class negationMappingDict
+]
+
 { #category : 'converting' }
 PjBinaryNode >> not [
-	operator = #== ifTrue: [  ^ self copyWith: #!= ].
-	operator = #!= ifTrue: [  ^ self copyWith: #== ].
-	operator = #=== ifTrue: [  ^ self copyWith: #!== ].
-	operator = #!== ifTrue: [  ^ self copyWith: #=== ].
-	(#( <= >= ) includes: operator) ifTrue: [ ^ self class operator: operator left: right right: left].
-	^ super not
+
+	| inverseOperator |
+	inverseOperator := self negationMappingDict
+		                   at: operator
+		                   ifAbsent: [ ^ super not ].
+	^ self copyWith: inverseOperator
 ]
 
 { #category : 'accessing' }

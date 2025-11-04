@@ -300,6 +300,21 @@ PjBasicTest >> testIdentity [
 ]
 
 { #category : 'tests' }
+PjBasicTest >> testIfFalseGreaterThanOrEqualToSameValue [
+
+	| bugClass expectedResponse jsClass jsInstance |
+	bugClass := classFactory newClass.
+	expectedResponse := 'Expected Response!'.
+	bugClass compile: 'bugDemo
+    1 >= 1 ifFalse: [ ^''Unexpected response''].
+	^''' , expectedResponse , ''''.
+	self bridge loadClass: bugClass.
+	jsClass := self bridge jsGlobalAt: bugClass name.
+	jsInstance := jsClass new.
+	self assert: jsInstance bugDemo equals: expectedResponse
+]
+
+{ #category : 'tests' }
 PjBasicTest >> testIfFalseGreaterThanSameValue [
 
 	| bugClass expectedResponse jsClass jsInstance |
@@ -316,19 +331,33 @@ PjBasicTest >> testIfFalseGreaterThanSameValue [
 ]
 
 { #category : 'tests' }
+PjBasicTest >> testIfFalseLessThanOrEqualToSameValue [
+
+	| bugClass expectedResponse jsClass jsInstance |
+	bugClass := classFactory newClass.
+	expectedResponse := 'Expected Response!'.
+	bugClass compile: 'bugDemo
+    1 <= 1 ifFalse: [ ^''Unexpected response''].
+	^''' , expectedResponse , ''''.
+	self bridge loadClass: bugClass.
+	jsClass := self bridge jsGlobalAt: bugClass name.
+	jsInstance := jsClass new.
+	self assert: jsInstance bugDemo equals: expectedResponse
+]
+
+{ #category : 'tests' }
 PjBasicTest >> testIfFalseLessThanSameValue [
 
 	| bugClass expectedResponse jsClass jsInstance |
 	bugClass := classFactory newClass.
 	expectedResponse := 'Expected Response!'.
 	bugClass compile: 'bugDemo
-    1 < 1 ifFalse: [ ^''', expectedResponse ,''' ].
+    1 < 1 ifFalse: [ ^''' , expectedResponse , ''' ].
     ^''Unexpected response'''.
-	self bridge loadClass: bugClass.	
+	self bridge loadClass: bugClass.
 	jsClass := self bridge jsGlobalAt: bugClass name.
 	jsInstance := jsClass new.
-	self assert: jsInstance bugDemo equals: expectedResponse.
-
+	self assert: jsInstance bugDemo equals: expectedResponse
 ]
 
 { #category : 'tests' }
