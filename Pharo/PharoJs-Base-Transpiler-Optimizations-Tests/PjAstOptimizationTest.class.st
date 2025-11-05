@@ -14,6 +14,8 @@ PjAstOptimizationTest >> testNotTransformation [
 	self assert: selfNode not equals: (PjUnaryNode operator: #! expression: selfNode).
 	self assert: (PjUnaryNode operator: #! expression: selfNode) not equals: selfNode.
 	self assert: selfNode not not equals: selfNode.
-	self assert: (PjBinaryNode operator: #<= left: v1 right: v2) not equals: (PjBinaryNode operator: #<= left: v2 right: v1).
-	self assert: (PjBinaryNode operator: #>= left: v1 right: v2) not equals: (PjBinaryNode operator: #>= left: v2 right: v1)
+	self assert: (PjBinaryNode operator: #<= left: v1 right: v2) not equals: (PjBinaryNode operator: #> left: v1 right: v2).
+	self assert: (PjBinaryNode operator: #>= left: v1 right: v2) not equals: (PjBinaryNode operator: #< left: v1 right: v2).
+	self assert: (PjBinaryNode operator: #< left: v1 right: v2) not equals: (PjBinaryNode operator: #>= left: v1 right: v2).
+	self assert: (PjBinaryNode operator: #> left: v1 right: v2) not equals: (PjBinaryNode operator: #<= left: v1 right: v2)
 ]
