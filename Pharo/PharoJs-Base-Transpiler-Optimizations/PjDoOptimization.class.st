@@ -1,16 +1,18 @@
 Class {
-	#name : #PjDoOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjDoOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjDoOptimization >> convertReceiver: aRBMessageNode args: aCollection [
 	self flag: #todo.
 	^ nil
 ]
 
-{ #category : #optimizing }
+{ #category : 'optimizing' }
 PjDoOptimization >> selector [
 	^ #do:
 ]

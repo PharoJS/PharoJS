@@ -1,10 +1,12 @@
 Class {
-	#name : #PjStringAppendOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjStringAppendOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjStringAppendOptimization >> convertReceiver: receiver args: args [
 	| left |
 	self inExpressionDo: [
@@ -17,7 +19,7 @@ PjStringAppendOptimization >> convertReceiver: receiver args: args [
 		) myClass: String
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjStringAppendOptimization >> selector [
 	^#,
 ]

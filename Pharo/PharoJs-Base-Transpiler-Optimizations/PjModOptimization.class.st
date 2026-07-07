@@ -1,15 +1,17 @@
 Class {
-	#name : #PjModOptimization,
-	#superclass : #PjArithmeticOptimization,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjModOptimization',
+	#superclass : 'PjArithmeticOptimization',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjModOptimization >> operator [
 	^ #%
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjModOptimization >> selector [
 	^#\\
 ]

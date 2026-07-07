@@ -1,15 +1,17 @@
 Class {
-	#name : #PjWhileOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjWhileOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjWhileOptimization >> continueValue [
 	self subclassResponsibility
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjWhileOptimization >> convertReceiver: receiver args: args [
 	| test body |
 	self astConverter isInExpression ifTrue: [ ^ nil ].

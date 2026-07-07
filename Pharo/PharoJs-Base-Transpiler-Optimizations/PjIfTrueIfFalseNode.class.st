@@ -2,30 +2,32 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor or PjASTEqual
 "
 Class {
-	#name : #PjIfTrueIfFalseNode,
-	#superclass : #PjIfTrueNode,
+	#name : 'PjIfTrueIfFalseNode',
+	#superclass : 'PjIfTrueNode',
 	#instVars : [
 		'whenFalse'
 	],
-	#category : #'PharoJs-Base-Transpiler-Optimizations-AST'
+	#category : 'PharoJs-Base-Transpiler-Optimizations-AST',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjIfTrueIfFalseNode class >> test: test whenTrue: whenTrue whenFalse: whenFalse [
 	^ self new test: test; whenTrue: whenTrue; whenFalse: whenFalse; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjIfTrueIfFalseNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitIfTrueIfFalseNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfTrueIfFalseNode >> whenFalse [
 	^ whenFalse
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfTrueIfFalseNode >> whenFalse: anObject [
 	whenFalse := anObject
 ]

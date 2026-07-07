@@ -2,46 +2,48 @@
 I am part of the representation of a Javascript AST for visiting
 "
 Class {
-	#name : #PjWhileNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjWhileNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'test',
 		'body'
 	],
-	#category : #'PharoJs-Base-Transpiler-Optimizations-AST'
+	#category : 'PharoJs-Base-Transpiler-Optimizations-AST',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjWhileNode class >> test: test body: body [
 	^ self new test: test; body: body asArray; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjWhileNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitWhileNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjWhileNode >> body [
 	^ body
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjWhileNode >> body: anObject [
 	body := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjWhileNode >> canPropogateReturns [
 	^ true " not really, but we don't want to add a 'return this' at the end "
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjWhileNode >> test [
 	^ test
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjWhileNode >> test: anObject [
 	test := anObject
 ]

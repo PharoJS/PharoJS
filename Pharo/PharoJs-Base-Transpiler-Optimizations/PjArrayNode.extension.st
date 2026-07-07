@@ -1,6 +1,6 @@
-Extension { #name : #PjArrayNode }
+Extension { #name : 'PjArrayNode' }
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations' }
 PjArrayNode >> isArray [
 	^ true
 ]

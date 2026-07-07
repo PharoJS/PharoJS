@@ -2,12 +2,14 @@
 I handle optimizations of various flavors of ifNil:ifNotNil:
 "
 Class {
-	#name : #PjIfNilIfNotNilOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjIfNilIfNotNilOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjIfNilIfNotNilOptimization >> convertReceiver: receiverNode args: aCollection [ 
 	| notNilBlockNode |
 	aCollection first isOptimizableAsContionalBlock ifFalse: [ ^ nil ].
@@ -29,12 +31,12 @@ PjIfNilIfNotNilOptimization >> convertReceiver: receiverNode args: aCollection [
 		whenNil: (self visitInlineBlock: aCollection first)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfNilIfNotNilOptimization >> selector [
 	^#ifNil:ifNotNil:
 ]
 
-{ #category : #optimizing }
+{ #category : 'optimizing' }
 PjIfNilIfNotNilOptimization >> test: aTest whenNotNil: whenNotAst whenNil: whenAst [
 	(aTest class = PjUnaryNode and: [ aTest operator = #! ]) ifTrue: [
 		^PjIfNilIfNotNilNode

@@ -1,10 +1,12 @@
 Class {
-	#name : #PjOrOptimization,
-	#superclass : #PjIfTrueIfFalseOptimization,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjOrOptimization',
+	#superclass : 'PjIfTrueIfFalseOptimization',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjOrOptimization >> convertReceiver: receiverNode args: aCollection [ 
 	| test |
 	aCollection first isOptimizableAsContionalBlock ifFalse: [ ^ nil ].
@@ -17,7 +19,7 @@ PjOrOptimization >> convertReceiver: receiverNode args: aCollection [
 		whenFalse: (self visitInlineBlock: aCollection first)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjOrOptimization >> selector [
 	^#or:
 ]

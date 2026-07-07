@@ -2,30 +2,32 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor
 "
 Class {
-	#name : #PjIfNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjIfNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'test'
 	],
-	#category : #'PharoJs-Base-Transpiler-Optimizations-AST'
+	#category : 'PharoJs-Base-Transpiler-Optimizations-AST',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjIfNode class >> test: test [
 	^ self new test: test; yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjIfNode >> canPropogateReturns [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfNode >> test [
 	^ test
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfNode >> test: anObject [
 	test := anObject
 ]
