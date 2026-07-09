@@ -60,17 +60,14 @@ PjApplication class >> currentInstance [
 PjApplication class >> ensureRequiredPackagesInstalled [
 
 	<pharoJsSkip>
-	self npmPackageNames ifEmpty: [
-		^ self inform: 'No NPM package required' ].
-	self inform:
-		'Ensure required NPM packages installed for ' , self name.
+	self npmPackageNames ifEmpty: [ ^ InformativeNotification signal: 'No NPM package required' ].
+	self inform: 'Ensure required NPM packages installed for ' , self name.
 	self inAppFolderRunCommandLine: [ :str |
-		str << 'npm init -y'.
-		self writeCommandDelimiterOn: str.
-		self npmPackageNames
-			do: [ :packageName |
-			self writeEnsureNpmPackage: packageName on: str ]
-			separatedBy: [ self writeCommandDelimiterOn: str ] ]
+			str << 'npm init -y'.
+			self writeCommandDelimiterOn: str.
+			self npmPackageNames
+				do: [ :packageName | self writeEnsureNpmPackage: packageName on: str ]
+				separatedBy: [ self writeCommandDelimiterOn: str ] ]
 ]
 
 { #category : 'accessing' }
