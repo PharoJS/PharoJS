@@ -1,10 +1,12 @@
 Class {
-	#name : #PjToDoOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjToDoOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjToDoOptimization >> convertReceiver: receiver args: args [
 	| from to by body toName byName |
 	true ifTrue: [ ^ nil ].
@@ -41,7 +43,7 @@ PjToDoOptimization >> convertReceiver: receiver args: args [
 			body: body ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjToDoOptimization >> selector [
 	^ #to:do:
 ]

@@ -1,10 +1,12 @@
 Class {
-	#name : #PjIfNilOptimization,
-	#superclass : #PjIfNilIfNotNilOptimization,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjIfNilOptimization',
+	#superclass : 'PjIfNilIfNotNilOptimization',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #optimizing }
+{ #category : 'optimizing' }
 PjIfNilOptimization >> convertReceiver: receiverNode args: aCollection [
 	aCollection first isOptimizableAsContionalBlock ifFalse: [ ^ nil ].
 	self needsAllPaths ifTrue: [
@@ -18,7 +20,7 @@ PjIfNilOptimization >> convertReceiver: receiverNode args: aCollection [
 		whenNil: (self visitInlineBlock: aCollection first).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfNilOptimization >> selector [
 	^#ifNil:
 ]

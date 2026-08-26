@@ -1,15 +1,17 @@
 Class {
-	#name : #PjNotEqualsOptimization,
-	#superclass : #PjEqualsOptimization,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjNotEqualsOptimization',
+	#superclass : 'PjEqualsOptimization',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjNotEqualsOptimization >> operator [
 	^ #!=
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjNotEqualsOptimization >> selector [
 	^#~=
 ]

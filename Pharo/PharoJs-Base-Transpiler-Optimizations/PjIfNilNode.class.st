@@ -2,30 +2,32 @@
 I am part of the representation of a Javascript AST for visiting with a subclass of PjASTVisitor
 "
 Class {
-	#name : #PjIfNilNode,
-	#superclass : #PjIfNode,
+	#name : 'PjIfNilNode',
+	#superclass : 'PjIfNode',
 	#instVars : [
 		'whenNil'
 	],
-	#category : #'PharoJs-Base-Transpiler-Optimizations-AST'
+	#category : 'PharoJs-Base-Transpiler-Optimizations-AST',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'AST'
 }
 
-{ #category : #creating }
+{ #category : 'creating' }
 PjIfNilNode class >> test: test whenNil: whenNil [
 	^ self new test: test; whenNil: whenNil; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjIfNilNode >> acceptVisitor: aPjASTVisitor [
 	^ aPjASTVisitor visitIfNilNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfNilNode >> whenNil [
 	^ whenNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfNilNode >> whenNil: anObject [
 	whenNil := anObject
 ]

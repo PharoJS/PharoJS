@@ -2,68 +2,70 @@
 I am part of the representation of a Javascript AST for visiting
 "
 Class {
-	#name : #PjForLoopNode,
-	#superclass : #PjJavascriptAstNode,
+	#name : 'PjForLoopNode',
+	#superclass : 'PjJavascriptAstNode',
 	#instVars : [
 		'from',
 		'to',
 		'by',
 		'body'
 	],
-	#category : #'PharoJs-Base-Transpiler-Optimizations-AST'
+	#category : 'PharoJs-Base-Transpiler-Optimizations-AST',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'AST'
 }
 
-{ #category : #creation }
+{ #category : 'creation' }
 PjForLoopNode class >> from: from to: to by: by body: body [
 	^ self new from: from; to: to; by: by; body: body
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PjForLoopNode >> acceptVisitor: aPjStringGenerator [
 	^ aPjStringGenerator visitToDoByNode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> body [
 	^ body
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> body: aCollection [
 	body := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> by [
 	^ by
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> by: aPjAstNode [
 	by := aPjAstNode
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PjForLoopNode >> canPropogateReturns [
 	^ true " not really, but we don't want to add a 'return this' at the end "
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> from [
 	^ from
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> from: aPjAstNode [
 	from := aPjAstNode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> to [
 	^ to
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjForLoopNode >> to: aPjAstNode [
 	to := aPjAstNode
 ]

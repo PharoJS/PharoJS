@@ -2,23 +2,25 @@
 Straight equality comparison doesn't work for arrays, so if we can't show that the left or right values are non-arrays, must fallback to method call.
 "
 Class {
-	#name : #PjEqualsOptimization,
-	#superclass : #PjComparisonOptimization,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjEqualsOptimization',
+	#superclass : 'PjComparisonOptimization',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjEqualsOptimization >> isOkWith: receiver and: arg [
 	receiver isNonArray ifFalse: [ arg isNonArray ifFalse: [ ^ false ]].
 	^ true
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjEqualsOptimization >> operator [
 	^ #==
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjEqualsOptimization >> selector [
 	^#=
 ]

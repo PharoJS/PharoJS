@@ -1,15 +1,17 @@
 Class {
-	#name : #PjWhileFalseDoOptimization,
-	#superclass : #PjWhileOptimization,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjWhileFalseDoOptimization',
+	#superclass : 'PjWhileOptimization',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjWhileFalseDoOptimization >> continueValue [
 	^ false
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjWhileFalseDoOptimization >> selector [
 	^ #whileFalse:
 ]

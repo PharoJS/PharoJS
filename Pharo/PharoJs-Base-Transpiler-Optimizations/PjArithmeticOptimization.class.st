@@ -2,12 +2,14 @@
 My subclasses are optimizations for all of the arithmetic operators
 "
 Class {
-	#name : #PjArithmeticOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjArithmeticOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjArithmeticOptimization >> convertReceiver: receiver args: args [
 	| left right |
 	self inExpressionDo: [
@@ -17,12 +19,12 @@ PjArithmeticOptimization >> convertReceiver: receiver args: args [
 	^ PjBinaryNode operator: self operator left: left right: right
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjArithmeticOptimization >> isOkWith: receiver and: arg [
 	^ receiver isLiteralNode or: [ arg isLiteralNode ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjArithmeticOptimization >> operator [
 	^ self selector
 ]

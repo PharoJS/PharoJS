@@ -1,10 +1,12 @@
 Class {
-	#name : #PjTimesRepeatOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjTimesRepeatOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjTimesRepeatOptimization >> convertReceiver: receiver args: args [
 	| from to body fromName toName |
 	self astConverter isInExpression ifTrue: [ ^ nil ].
@@ -32,7 +34,7 @@ PjTimesRepeatOptimization >> convertReceiver: receiver args: args [
 			body: body ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjTimesRepeatOptimization >> selector [
 	^ #timesRepeat:
 ]

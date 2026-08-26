@@ -1,6 +1,6 @@
-Extension { #name : #PjFunctionNode }
+Extension { #name : 'PjFunctionNode' }
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations' }
 PjFunctionNode >> isBlock [
 	^ true
 ]

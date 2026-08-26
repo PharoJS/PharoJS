@@ -2,12 +2,14 @@
 I handle optimizations of various flavors of ifTrue:ifFalse
 "
 Class {
-	#name : #PjIfTrueIfFalseOptimization,
-	#superclass : #PjOptionalMessageConversion,
-	#category : #'PharoJs-Base-Transpiler-Optimizations-Optimizations'
+	#name : 'PjIfTrueIfFalseOptimization',
+	#superclass : 'PjOptionalMessageConversion',
+	#category : 'PharoJs-Base-Transpiler-Optimizations-Optimizations',
+	#package : 'PharoJs-Base-Transpiler-Optimizations',
+	#tag : 'Optimizations'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PjIfTrueIfFalseOptimization >> convertReceiver: receiverNode args: aCollection [ 
 	| test first second |
 	aCollection first isOptimizableAsContionalBlock ifFalse: [ ^ nil ].
@@ -21,7 +23,7 @@ PjIfTrueIfFalseOptimization >> convertReceiver: receiverNode args: aCollection [
 		whenFalse: second
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PjIfTrueIfFalseOptimization >> selector [
 	^#ifTrue:ifFalse:
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #PjStringGenerator }
+Extension { #name : 'PjStringGenerator' }
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> trueTest: test [
 	| comparator testExpression |
 	comparator := true.
@@ -17,7 +17,7 @@ PjStringGenerator >> trueTest: test [
 		atPrecedence: EqualityPrecedence+0.5 do: [self visit: testExpression]
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitIfNilIfNotNilNode: aPjIfNilIfNotNilNode [
 	| then else |
 	then := aPjIfNilIfNotNilNode whenNil.
@@ -38,7 +38,7 @@ PjStringGenerator >> visitIfNilIfNotNilNode: aPjIfNilIfNotNilNode [
 		writeNonBrace: $}
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitIfNilNode: aPjIfNilNode [ 
 	| then |
 	then := aPjIfNilNode whenNil.
@@ -55,7 +55,7 @@ PjStringGenerator >> visitIfNilNode: aPjIfNilNode [
 		writeNonBrace: $}
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitIfNotNilNode: aPjIfNotNilNode [ 
 	| body |
 	body := aPjIfNotNilNode whenNotNil.
@@ -72,7 +72,7 @@ PjStringGenerator >> visitIfNotNilNode: aPjIfNotNilNode [
 		writeNonBrace: $}
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitIfTrueIfFalseNode: aPjIfTrueIfFalseNode [
 	self isAtStatementPrecedence ifFalse: [
 		^ self writeConditionalExpression: aPjIfTrueIfFalseNode test
@@ -89,7 +89,7 @@ PjStringGenerator >> visitIfTrueIfFalseNode: aPjIfTrueIfFalseNode [
 		writeNonBrace: $}
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitIfTrueNode: aPjIfTrueNode [
 	self isAtStatementPrecedence ifFalse: [
 		^ self writeConditionalExpression: aPjIfTrueNode test then: PjNilNode new else: aPjIfTrueNode whenTrue
@@ -102,7 +102,7 @@ PjStringGenerator >> visitIfTrueNode: aPjIfTrueNode [
 		writeNonBrace: $}
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitToDoByNode: aPjToDoByNode [ 
 	| step limit |
 	limit := aPjToDoByNode to constantOrZero.
@@ -151,7 +151,7 @@ PjStringGenerator >> visitToDoByNode: aPjToDoByNode [
 	self writeLoopBody: aPjToDoByNode body
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> visitWhileNode: aPjWhileNode [
 	self isAtStatementPrecedence
 		ifFalse: [ self error: 'PjWhileNode not at statement level' ].
@@ -161,7 +161,7 @@ PjStringGenerator >> visitWhileNode: aPjWhileNode [
 	self writeLoopBody: aPjWhileNode body
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> writeConditionalExpression: test then: thenAst else: elseAst [
 	self atPrecedence: ConditionalPrecedence do: [.
 		self
@@ -184,14 +184,14 @@ PjStringGenerator >> writeConditionalExpression: test then: thenAst else: elseAs
 	]
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> writeIfNilExpression: test then: thenAst else: elseAst [
 	self writeConditionalExpression: (PjBinaryNode operator: #== left: test  right: PjNilNode new)
 		then: thenAst 
 		else: elseAst
 ]
 
-{ #category : #'*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
+{ #category : '*PharoJs-Base-Transpiler-Optimizations-Optimizations' }
 PjStringGenerator >> writeLoopBody: body [
 	self writeNonBrace: '){'.
 	body asOrderedCollection
