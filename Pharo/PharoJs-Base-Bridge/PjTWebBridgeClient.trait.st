@@ -33,7 +33,7 @@ PjTWebBridgeClient >> openBrowserInBackground: aBoolean [
 { #category : 'actions' }
 PjTWebBridgeClient >> openWebBrowserOn: urlString [
 
-	WebBrowser
+	PjWebBrowser
 		openOn: urlString 
 		inBackground: self openBrowserInBackground
 ]
@@ -46,7 +46,7 @@ PjTWebBridgeClient >> sendMessage: aMessage [
 { #category : 'actions' }
 PjTWebBridgeClient >> startJsInterpreter [
 
-	WebBrowser
+	PjWebBrowser
 		openOn: self urlString
 		inBackground: self openBrowserInBackground
 ]

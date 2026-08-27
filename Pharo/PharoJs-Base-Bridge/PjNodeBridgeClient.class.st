@@ -26,7 +26,7 @@ PjNodeBridgeClient >> reset [
 { #category : 'actions' }
 PjNodeBridgeClient >> runNodeOn: aFileName inFolder: aFolder [
 
-	WebBrowser openTerminalWithNodeOn: aFileName inFolder: aFolder
+	PjNodeJS run: aFileName inFolder: aFolder
 ]
 
 { #category : 'actions' }
