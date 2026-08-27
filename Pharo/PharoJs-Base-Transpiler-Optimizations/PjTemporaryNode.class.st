@@ -5,11 +5,7 @@ Note: I'm in the RB AST heirarchy, not the PjJavascript AST heirarchy
 "
 Class {
 	#name : 'PjTemporaryNode',
-	#superclass : 'RBVariableNode',
-	#instVars : [
-		'test',
-		'body'
-	],
+	#superclass : 'OCVariableNode',
 	#category : 'PharoJs-Base-Transpiler-Optimizations-AST',
 	#package : 'PharoJs-Base-Transpiler-Optimizations',
 	#tag : 'AST'
