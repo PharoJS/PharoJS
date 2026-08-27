@@ -41,7 +41,7 @@ Metacello new
   load
 ```
 Where `XX` is a number to match one of the following branches: 
-- 'pharo14': instable
+- `pharo14`: instable
 - `pharo13`: stable
 - `pharo12`: obsolete
 - `pharo11`: obsolete, frozen
