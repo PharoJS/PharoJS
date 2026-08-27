@@ -23,8 +23,10 @@ PjApplication class >> classSubclassResponsibilitySet [
 { #category : '*PharoJs-Tools' }
 PjApplication class >> fileList [
 
-	<pharoJsSkip>
-	(FileList openOn: self appFolder) 
+	<pharoJsSkip> 
+	StFileSystemPresenter new 
+		currentDirectory: self appFolder; 
+		open
 ]
 
 { #category : '*PharoJs-Tools' }
